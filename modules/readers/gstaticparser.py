@@ -2,11 +2,12 @@ import regex as re
 import pandas as pd
 import os
 from pathlib import Path
+from datamodel_b07_tc.core import Potentiostatic
 
 
 
 class GstaticParser:
-    def __init__(self, path_to_directory: str | bytes | os.PathLike):
+    def __init__(self, path_to_directory: str | bytes | os.PathLike, ):
         """Pass the path to a directory containing CSV-type files of the GC to be
         read.
 
