@@ -1,4 +1,4 @@
-from .dataset import Dataset
+from .datasetb07 import DatasetB07
 from .generalinformation import GeneralInformation
 from .author import Author
 from .experiment import Experiment
@@ -7,31 +7,36 @@ from .device import Device
 from .pump import Pump
 from .thermocouple import Thermocouple
 from .massflowmeter import MassFlowMeter
-from .massflowrate import MassFlowRate
 from .parameter import Parameter
-from .data import Data
+from .potentiostat import Potentiostat
 from .tubing import Tubing
+from .insulation import Insulation
 from .input import Input
 from .output import Output
 from .chemical import Chemical
 from .stoichiometry import Stoichiometry
-from .insulation import Insulation
-from .gc import GC
+from .data import Data
+from .metadata import Metadata
+from .measurement import Measurement
+from .massflowrate import MassFlowRate
 from .gcmeasurement import GCMeasurement
+from .potentiostaticmeasurement import PotentiostaticMeasurement
 from .series import Series
 from .calculation import Calculation
 from .calibration import Calibration
+from .datatype import DataType
 from .thermocoupletype import ThermocoupleType
 from .material import Material
 from .pumptype import PumpType
-from .role import Role
+from .reactantrole import ReactantRole
 from .devicelist import DeviceList
 from .unit import Unit
+from .listofmeasurements import ListOfMeasurements
 
 __doc__ = ""
 
 __all__ = [
-    "Dataset",
+    "DatasetB07",
     "GeneralInformation",
     "Author",
     "Experiment",
@@ -40,24 +45,29 @@ __all__ = [
     "Pump",
     "Thermocouple",
     "MassFlowMeter",
-    "MassFlowRate",
     "Parameter",
-    "Data",
+    "Potentiostat",
     "Tubing",
+    "Insulation",
     "Input",
     "Output",
     "Chemical",
     "Stoichiometry",
-    "Insulation",
-    "GC",
+    "Data",
+    "Metadata",
+    "Measurement",
+    "MassFlowRate",
     "GCMeasurement",
+    "PotentiostaticMeasurement",
     "Series",
     "Calculation",
     "Calibration",
+    "DataType",
     "ThermocoupleType",
     "Material",
     "PumpType",
-    "Role",
+    "ReactantRole",
     "DeviceList",
     "Unit",
+    "ListOfMeasurements",
 ]

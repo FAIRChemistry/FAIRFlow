@@ -1,15 +1,15 @@
-import sdRDM
 
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+from .measurement import Measurement
 from .data import Data
 
 
 @forge_signature
-class MassFlowRate(sdRDM.DataModel):
+class MassFlowRate(Measurement):
 
     """"""
 
@@ -29,9 +29,14 @@ class MassFlowRate(sdRDM.DataModel):
         description="flow rate.",
     )
 
+    second_test: Optional[str] = Field(
+        default=None,
+        description="second test.",
+    )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="96bbf6ec578d62bf60443d8a32630f121f735f0a"
+        default="087d97eb5882e9a8535a8faaabe6baaea7a85f78"
     )

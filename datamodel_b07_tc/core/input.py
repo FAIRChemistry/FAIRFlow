@@ -7,8 +7,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .chemical import Chemical
+from .reactantrole import ReactantRole
 from .stoichiometry import Stoichiometry
-from .role import Role
 
 
 @forge_signature
@@ -32,7 +32,7 @@ class Input(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="96bbf6ec578d62bf60443d8a32630f121f735f0a"
+        default="087d97eb5882e9a8535a8faaabe6baaea7a85f78"
     )
 
     def add_to_component(
@@ -43,7 +43,7 @@ class Input(sdRDM.DataModel):
         supplier: Optional[str] = None,
         stoichiometry: Optional[Stoichiometry] = None,
         state_of_matter: Optional[str] = None,
-        role: Optional[Role] = None,
+        reactant_role: Optional[ReactantRole] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -57,7 +57,7 @@ class Input(sdRDM.DataModel):
             supplier (): name of the supplier of the compound.. Defaults to None
             stoichiometry (): stoichiometric information like equivalents, mass, amount of substance, volume. Defaults to None
             state_of_matter (): s for solid, l for liquid and g for gaseous. Defaults to None
-            role (): Role of the chemical.. Defaults to None
+            reactant_role (): Role that a reactand plays in a chemical reaction or  in a process.. Defaults to None
         """
 
         params = {
@@ -67,7 +67,7 @@ class Input(sdRDM.DataModel):
             "supplier": supplier,
             "stoichiometry": stoichiometry,
             "state_of_matter": state_of_matter,
-            "role": role,
+            "reactant_role": reactant_role,
         }
 
         if id is not None:

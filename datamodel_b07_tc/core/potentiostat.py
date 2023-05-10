@@ -4,29 +4,30 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+from .metadata import Metadata
 from .measurement import Measurement
-from .data import Data
+from .device import Device
 
 
 @forge_signature
-class GCMeasurement(Measurement):
+class Potentiostat(Device):
 
     """"""
 
     id: str = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("gcmeasurementINDEX"),
+        default_factory=IDGenerator("potentiostatINDEX"),
         xml="@id",
     )
 
-    retention_times: Optional[Data] = Field(
+    measurement: Optional[Measurement] = Field(
         default=None,
-        description="retention time.",
+        description="Measuring Data.",
     )
 
-    peak_areas: Optional[Data] = Field(
+    metadata: Optional[Metadata] = Field(
         default=None,
-        description="peak area.",
+        description="Metadata of the Potentiostat.",
     )
 
     __repo__: Optional[str] = PrivateAttr(

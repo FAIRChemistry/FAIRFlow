@@ -9,24 +9,24 @@ from .data import Data
 
 
 @forge_signature
-class GCMeasurement(Measurement):
+class PotentiostaticMeasurement(Measurement):
 
     """"""
 
     id: str = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("gcmeasurementINDEX"),
+        default_factory=IDGenerator("potentiostaticmeasurementINDEX"),
         xml="@id",
     )
 
-    retention_times: Optional[Data] = Field(
+    time: Optional[Data] = Field(
         default=None,
-        description="retention time.",
+        description="time.",
     )
 
-    peak_areas: Optional[Data] = Field(
+    voltage: Optional[Data] = Field(
         default=None,
-        description="peak area.",
+        description="voltage.",
     )
 
     __repo__: Optional[str] = PrivateAttr(

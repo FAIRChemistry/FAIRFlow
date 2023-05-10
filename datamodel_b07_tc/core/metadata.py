@@ -6,27 +6,43 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .unit import Unit
+from .datatype import DataType
 
 
 @forge_signature
-class Parameter(sdRDM.DataModel):
+class Metadata(sdRDM.DataModel):
 
     """"""
 
     id: str = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("parameterINDEX"),
+        default_factory=IDGenerator("metadataINDEX"),
         xml="@id",
     )
 
-    value: Optional[float] = Field(
+    quantity: Optional[str] = Field(
         default=None,
-        description="values.",
+        description="Name of the quantity.",
+    )
+
+    data_type: Optional[DataType] = Field(
+        default=None,
+        description="type of the quantity.",
+    )
+
+    mode: Optional[str] = Field(
+        default=None,
+        description="mode of the qantity.",
+    )
+
+    size: Optional[float] = Field(
+        default=None,
+        description="size of the quantity.",
     )
 
     unit: Optional[Unit] = Field(
         default=None,
-        description="unit of the values.",
+        description="unit of the quantity.",
     )
 
     __repo__: Optional[str] = PrivateAttr(

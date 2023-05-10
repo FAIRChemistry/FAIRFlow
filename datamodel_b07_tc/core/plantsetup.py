@@ -7,12 +7,12 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .chemical import Chemical
-from .tubing import Tubing
-from .device import Device
-from .input import Input
 from .material import Material
-from .output import Output
 from .insulation import Insulation
+from .input import Input
+from .device import Device
+from .tubing import Tubing
+from .output import Output
 
 
 @forge_signature
@@ -54,7 +54,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="96bbf6ec578d62bf60443d8a32630f121f735f0a"
+        default="087d97eb5882e9a8535a8faaabe6baaea7a85f78"
     )
 
     def add_to_devices(
@@ -62,7 +62,7 @@ class PlantSetup(sdRDM.DataModel):
         manufacturer: Optional[str] = None,
         device_type: Optional[str] = None,
         series: Optional[str] = None,
-        on_off: Optional[str] = None,
+        on_off: Optional[bool] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -73,7 +73,7 @@ class PlantSetup(sdRDM.DataModel):
             manufacturer (): name of the manufacturer of the device.. Defaults to None
             device_type (): type given by the manufacturer of the device.. Defaults to None
             series (): the series of the device.. Defaults to None
-            on_off (): operational mode of the flow module.. Defaults to None
+            on_off (): operational mode of the flow module. True is on and False is off.. Defaults to None
         """
 
         params = {

@@ -5,9 +5,9 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from pydantic.types import Enum
 
 from .data import Data
+from .unit import Unit
 from .calibration import Calibration
 
 
@@ -38,7 +38,7 @@ class Calculation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="96bbf6ec578d62bf60443d8a32630f121f735f0a"
+        default="087d97eb5882e9a8535a8faaabe6baaea7a85f78"
     )
 
     def add_to_calibrations(
@@ -78,7 +78,7 @@ class Calculation(sdRDM.DataModel):
     def add_to_faraday_coefficients(
         self,
         values: List[float] = ListPlus(),
-        unit: Optional[Enum] = None,
+        unit: Optional[Unit] = None,
         id: Optional[str] = None,
     ) -> None:
         """

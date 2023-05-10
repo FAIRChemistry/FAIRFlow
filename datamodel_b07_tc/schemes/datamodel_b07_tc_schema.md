@@ -3,11 +3,15 @@ classDiagram
     Device <-- Pump
     Device <-- Thermocouple
     Device <-- MassFlowMeter
-    Device <-- GC
-    Dataset *-- GeneralInformation
-    Dataset *-- Experiment
+    Device <-- Potentiostat
+    Measurement <-- MassFlowRate
+    Measurement <-- GCMeasurement
+    Measurement <-- PotentiostaticMeasurement
+    DatasetB07 *-- GeneralInformation
+    DatasetB07 *-- Experiment
     GeneralInformation *-- Author
     Experiment *-- PlantSetup
+    Experiment *-- Measurement
     Experiment *-- Calculation
     PlantSetup *-- Device
     PlantSetup *-- Tubing
@@ -15,24 +19,31 @@ classDiagram
     PlantSetup *-- Output
     Pump *-- PumpType
     Thermocouple *-- ThermocoupleType
-    MassFlowMeter *-- MassFlowRate
     MassFlowMeter *-- Parameter
-    MassFlowRate *-- Data
     Parameter *-- Unit
+    Potentiostat *-- Metadata
+    Potentiostat *-- Measurement
     Tubing *-- Material
     Tubing *-- Insulation
+    Insulation *-- Material
     Input *-- Chemical
     Output *-- Chemical
-    Chemical *-- Role
+    Chemical *-- ReactantRole
     Chemical *-- Stoichiometry
-    Insulation *-- Material
-    GC *-- GCMeasurement
+    Data *-- Unit
+    Metadata *-- DataType
+    Metadata *-- Unit
+    Measurement *-- ListOfMeasurements
+    Measurement *-- Data
+    Measurement *-- Metadata
+    MassFlowRate *-- Data
     GCMeasurement *-- Data
+    PotentiostaticMeasurement *-- Data
     Calculation *-- Data
     Calculation *-- Calibration
     Calibration *-- Data
     
-    class Dataset {
+    class DatasetB07 {
         +GeneralInformation general_information
         +Experiment[0..*] experiments
     }
@@ -50,6 +61,7 @@ classDiagram
     
     class Experiment {
         +PlantSetup plant_setup
+        +Measurement[0..*] measurements
         +Calculation calculations
     }
     
@@ -64,7 +76,7 @@ classDiagram
         +string manufacturer
         +string device_type
         +string series
-        +string on_off
+        +boolean on_off
     }
     
     class Pump {
@@ -78,12 +90,6 @@ classDiagram
     class MassFlowMeter {
         +Parameter min_flow
         +Parameter max_flow
-        +MassFlowRate[0..*] mass_flow_rates
-    }
-    
-    class MassFlowRate {
-        +Data time
-        +Data flow_rate
     }
     
     class Parameter {
@@ -91,9 +97,9 @@ classDiagram
         +Unit unit
     }
     
-    class Data {
-        +float[0..*] values
-        +enum unit
+    class Potentiostat {
+        +Measurement measurement
+        +Metadata metadata
     }
     
     class Tubing {
@@ -102,6 +108,11 @@ classDiagram
         +float outer_diameter
         +integer length
         +Insulation insulation
+    }
+    
+    class Insulation {
+        +float thickness
+        +Material material
     }
     
     class Input {
@@ -119,7 +130,7 @@ classDiagram
         +string supplier
         +Stoichiometry stoichiometry
         +string state_of_matter
-        +Role role
+        +ReactantRole reactant_role
     }
     
     class Stoichiometry {
@@ -133,18 +144,39 @@ classDiagram
         +float molar_concentration
     }
     
-    class Insulation {
-        +float thickness
-        +Material material
+    class Data {
+        +float[0..*] values
+        +Unit unit
     }
     
-    class GC {
-        +GCMeasurement[0..*] gc_measurements
+    class Metadata {
+        +string quantity
+        +DataType data_type
+        +string mode
+        +float size
+        +Unit unit
+    }
+    
+    class Measurement {
+        +Data experimental_data
+        +Metadata metadata
+        +ListOfMeasurements list_of_measurements
+    }
+    
+    class MassFlowRate {
+        +Data time
+        +Data flow_rate
+        +string second_test
     }
     
     class GCMeasurement {
-        +Data[0..*] retention_time
-        +Data[0..*] peak_area
+        +Data retention_times
+        +Data peak_areas
+    }
+    
+    class PotentiostaticMeasurement {
+        +Data time
+        +Data voltage
     }
     
     class Series {
@@ -162,6 +194,19 @@ classDiagram
         +Data slope
         +Data intercept
         +Data coefficient_of_determination
+    }
+    
+    class DataType {
+        << Enumeration >>
+        +STRING
+        +FLOAT
+        +DATE
+        +TIME
+        +DATETIME
+        +BOOLEAN
+        +INTEGER
+        +NONE
+        +LABEL
     }
     
     class ThermocoupleType {
@@ -188,7 +233,7 @@ classDiagram
         +DIAPHRAGMPUMP
     }
     
-    class Role {
+    class ReactantRole {
         << Enumeration >>
         +EDUCT
         +PRODUCT
@@ -201,6 +246,7 @@ classDiagram
         << Enumeration >>
         +MASSFLOWCONTROLLER
         +HPLC
+        +GC
         +POTENTIOSTAT
         +PRESSURETRANSDUCER
         +CONTROLUNIT
@@ -222,6 +268,11 @@ classDiagram
         +KILOGRAMPERHOUR
         +GRAMPERSECOND
         +MILLILITERPERSECOND
+    }
+    
+    class ListOfMeasurements {
+        << Enumeration >>
+        +POTENTIOSTATIC
     }
     
 ```

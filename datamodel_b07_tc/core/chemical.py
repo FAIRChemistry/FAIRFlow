@@ -6,8 +6,8 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+from .reactantrole import ReactantRole
 from .stoichiometry import Stoichiometry
-from .role import Role
 
 
 @forge_signature
@@ -55,14 +55,16 @@ class Chemical(sdRDM.DataModel):
         description="s for solid, l for liquid and g for gaseous",
     )
 
-    role: Optional[Role] = Field(
+    reactant_role: Optional[ReactantRole] = Field(
         default=None,
-        description="Role of the chemical.",
+        description=(
+            "Role that a reactand plays in a chemical reaction or  in a process."
+        ),
     )
 
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="96bbf6ec578d62bf60443d8a32630f121f735f0a"
+        default="087d97eb5882e9a8535a8faaabe6baaea7a85f78"
     )

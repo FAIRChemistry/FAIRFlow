@@ -5,7 +5,8 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from pydantic.types import Enum
+
+from .unit import Unit
 
 
 @forge_signature
@@ -25,7 +26,7 @@ class Data(sdRDM.DataModel):
         description="values.",
     )
 
-    unit: Optional[Enum] = Field(
+    unit: Optional[Unit] = Field(
         default=None,
         description="unit of the values.",
     )
@@ -34,5 +35,5 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="96bbf6ec578d62bf60443d8a32630f121f735f0a"
+        default="087d97eb5882e9a8535a8faaabe6baaea7a85f78"
     )
