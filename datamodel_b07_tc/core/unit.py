@@ -8,6 +8,7 @@ class Unit(Enum):
     SECONDS = "s"
     MINUTES = "min"
     HOURS = "h"
+    DATETIME = "datetime"
     KILOGRAMS = "kg"
     GRAMS = "g"
     MILLIGRAMS = "mg"

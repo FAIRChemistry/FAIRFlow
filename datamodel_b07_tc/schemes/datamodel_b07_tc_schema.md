@@ -7,8 +7,8 @@ classDiagram
     Measurement <-- MassFlowRate
     Measurement <-- GCMeasurement
     Measurement <-- PotentiostaticMeasurement
-    DatasetB07 *-- GeneralInformation
-    DatasetB07 *-- Experiment
+    Dataset *-- GeneralInformation
+    Dataset *-- Experiment
     GeneralInformation *-- Author
     Experiment *-- PlantSetup
     Experiment *-- Measurement
@@ -43,7 +43,7 @@ classDiagram
     Calculation *-- Calibration
     Calibration *-- Data
     
-    class DatasetB07 {
+    class Dataset {
         +GeneralInformation general_information
         +Experiment[0..*] experiments
     }
@@ -166,9 +166,10 @@ classDiagram
     }
     
     class MassFlowRate {
+        +Data datetime
         +Data time
+        +Data signal
         +Data flow_rate
-        +string second_test
     }
     
     class GCMeasurement {
@@ -262,6 +263,7 @@ classDiagram
         +SECONDS
         +MINUTES
         +HOURS
+        +DATETIME
         +KILOGRAMS
         +GRAMS
         +MILLIGRAMS

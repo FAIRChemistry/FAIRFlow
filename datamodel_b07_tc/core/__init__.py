@@ -1,4 +1,4 @@
-from .datasetb07 import DatasetB07
+from .dataset import Dataset
 from .generalinformation import GeneralInformation
 from .author import Author
 from .experiment import Experiment
@@ -36,7 +36,7 @@ from .listofmeasurements import ListOfMeasurements
 __doc__ = ""
 
 __all__ = [
-    "DatasetB07",
+    "Dataset",
     "GeneralInformation",
     "Author",
     "Experiment",

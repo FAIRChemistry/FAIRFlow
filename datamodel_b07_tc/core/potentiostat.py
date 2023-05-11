@@ -34,5 +34,5 @@ class Potentiostat(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="0c60f2b0a6c35d66c401c995ad1e9a5a8c126b0f"
+        default="b0391632160302c9d4e10ac85b13233140acdeff"
     )

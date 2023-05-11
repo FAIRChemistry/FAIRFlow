@@ -19,9 +19,19 @@ class MassFlowRate(Measurement):
         xml="@id",
     )
 
+    datetime: Optional[Data] = Field(
+        default=None,
+        description="date and time of the mass flow rate measurement.",
+    )
+
     time: Optional[Data] = Field(
         default=None,
         description="time in seconds.",
+    )
+
+    signal: Optional[Data] = Field(
+        default=None,
+        description="signal of the mass flow rate measurement.",
     )
 
     flow_rate: Optional[Data] = Field(
@@ -29,14 +39,9 @@ class MassFlowRate(Measurement):
         description="flow rate.",
     )
 
-    second_test: Optional[str] = Field(
-        default=None,
-        description="second test.",
-    )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="0c60f2b0a6c35d66c401c995ad1e9a5a8c126b0f"
+        default="b0391632160302c9d4e10ac85b13233140acdeff"
     )
