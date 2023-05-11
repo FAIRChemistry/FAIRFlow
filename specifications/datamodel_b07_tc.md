@@ -269,6 +269,7 @@ Stoichiometric information about the compound.
     - Type: Unit
     - Description: unit of the parameter.
   - description
+    - Type: string
     - Description: description of the parameter.
 
 
