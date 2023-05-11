@@ -290,7 +290,7 @@ Stoichiometric information about the compound.
 ### MassFlowRate[_Measurement_]
 
 - datetime
-  - Type: Datetime
+  - Type: DateTime
   - Description: date and time of the mass flow rate measurement.
 - time
   - Type: Data
