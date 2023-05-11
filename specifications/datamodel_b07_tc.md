@@ -5,7 +5,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 ## Objects
 
 
-### DatasetB07
+### Dataset
 
 - general_information
   - Type: GeneralInformation
@@ -289,15 +289,19 @@ Stoichiometric information about the compound.
 
 ### MassFlowRate[_Measurement_]
 
+- datetime
+  - Type: Datetime
+  - Description: date and time of the mass flow rate measurement.
 - time
   - Type: Data
   - Description: time in seconds.
+- signal
+  - Type: Data
+  - Description: signal of the mass flow rate measurement.
 - flow_rate
   - Type: Data
   - Description: flow rate.
-- second_test
-  - Type: string
-  - Description: second test.
+
 
 ### GCMeasurement[_Measurement_]
 

@@ -4,6 +4,12 @@ import pint_pandas
 import os
 from pathlib import Path
 from datetime import datetime
+from datamodel_b07_tc.core import Unit
+from datamodel_b07_tc.core.data import Data
+from datamodel_b07_tc.core.metadata import Metadata
+from datamodel_b07_tc.core.massflowrate import (
+    MassFlowRate,
+)
 
 
 class MFMParser:
@@ -61,6 +67,22 @@ class MFMParser:
             exp_data_df["datetime"], format="%d.%m.%Y ; %H:%M:%S"
         )
         # exp_data_df.columns = name_column
+
+        exp_data_list = []
+        for index, row in exp_data_df.iterrows():
+            datetime = row[0]
+            time = row[1]
+            signal = row[2]
+            flow_rate = row[3]
+            exp_data_list.append(
+                MassFlowRate(
+                    datetime=datetime,
+                    time=time,
+                    signal=signal,
+                    flow_rate=flow_rate,
+                )
+            )
+        pot = PotentiostaticMeasurement(metadata=exp_data_list)
         return exp_data_df
 
     # def extract_metadata(self, filestem: str) -> dict:

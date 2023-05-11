@@ -48,28 +48,28 @@ class GstaticParser:
                 "Abbreviation",
                 "Type",
                 "Parameter",
-                "Description_or_unit",
+                "Description",
             ],
             engine="python",
             encoding="utf-8",
             skiprows=[0, 1, *[i for i in range(55, 3658)]],
         )
-        # metadata_list = []
-        # for index, row in metadata.iterrows():
-        #     abbreviation = row[0]
-        #     type = row[1]
-        #     parameter = row[2]
-        #     description = row[3]
-        #     metadata_list.append(
-        #         Metadata(
-        #             abbreviation=abbreviation,
-        #             type=type,
-        #             parameter=parameter,
-        #             description=description,
-        #         )
-        #     )
-        # pot = PotentiostaticMeasurement(metadata=metadata_list)
-        return metadata  # , pot
+        metadata_list = []
+        for index, row in metadata.iterrows():
+            abbreviation = row[0]
+            type = row[1]
+            parameter = row[2]
+            description = row[3]
+            metadata_list.append(
+                Metadata(
+                    abbreviation=abbreviation,
+                    type=type,
+                    parameter=parameter,
+                    description=description,
+                )
+            )
+        pot = PotentiostaticMeasurement(metadata=metadata_list)
+        return metadata, pot
 
     @property
     def available_files(self) -> list[str]:
