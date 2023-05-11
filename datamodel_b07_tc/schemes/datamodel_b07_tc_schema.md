@@ -150,11 +150,13 @@ classDiagram
     }
     
     class Metadata {
-        +string quantity
+        +string parameter
+        +string abbreviation
         +DataType data_type
         +string mode
         +float size
         +Unit unit
+        +string description
     }
     
     class Measurement {
