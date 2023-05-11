@@ -60,5 +60,5 @@ class Stoichiometry(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e243332d34aace2b933a1385915f3b8871a64409"
+        default="0c60f2b0a6c35d66c401c995ad1e9a5a8c126b0f"
     )

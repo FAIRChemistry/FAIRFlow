@@ -6,12 +6,12 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .plantsetup import PlantSetup
-from .listofmeasurements import ListOfMeasurements
-from .measurement import Measurement
-from .metadata import Metadata
-from .calculation import Calculation
 from .data import Data
+from .metadata import Metadata
+from .measurement import Measurement
+from .listofmeasurements import ListOfMeasurements
+from .calculation import Calculation
+from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -49,13 +49,13 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e243332d34aace2b933a1385915f3b8871a64409"
+        default="0c60f2b0a6c35d66c401c995ad1e9a5a8c126b0f"
     )
 
     def add_to_measurements(
         self,
         experimental_data: Optional[Data] = None,
-        metadata: Optional[Metadata] = None,
+        metadata: List[Metadata] = ListPlus(),
         list_of_measurements: Optional[ListOfMeasurements] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -65,7 +65,7 @@ class Experiment(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Measurement' object. Defaults to 'None'.
             experimental_data (): experimental data of a measurement.. Defaults to None
-            metadata (): metadata of a measurement.. Defaults to None
+            metadata (): metadata of a measurement.. Defaults to ListPlus()
             list_of_measurements (): list of measurements, that do not need any further quantities explanation. E.g., only metadata are of interest.. Defaults to None
         """
 

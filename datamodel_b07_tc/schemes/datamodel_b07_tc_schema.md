@@ -161,7 +161,7 @@ classDiagram
     
     class Measurement {
         +Data experimental_data
-        +Metadata metadata
+        +Metadata[0..*] metadata
         +ListOfMeasurements list_of_measurements
     }
     

@@ -1,13 +1,16 @@
 import sdRDM
 
-from typing import Optional
+from typing import List, Optional
 from pydantic import Field, PrivateAttr
+from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .listofmeasurements import ListOfMeasurements
-from .metadata import Metadata
+from .unit import Unit
 from .data import Data
+from .metadata import Metadata
+from .listofmeasurements import ListOfMeasurements
+from .datatype import DataType
 
 
 @forge_signature
@@ -26,8 +29,9 @@ class Measurement(sdRDM.DataModel):
         description="experimental data of a measurement.",
     )
 
-    metadata: Optional[Metadata] = Field(
-        default=None,
+    metadata: List[Metadata] = Field(
+        default_factory=ListPlus,
+        multiple=True,
         description="metadata of a measurement.",
     )
 
@@ -43,5 +47,45 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e243332d34aace2b933a1385915f3b8871a64409"
+        default="0c60f2b0a6c35d66c401c995ad1e9a5a8c126b0f"
     )
+
+    def add_to_metadata(
+        self,
+        parameter: Optional[str] = None,
+        abbreviation: Optional[str] = None,
+        data_type: Optional[DataType] = None,
+        mode: Optional[str] = None,
+        size: Optional[float] = None,
+        unit: Optional[Unit] = None,
+        description: Optional[str] = None,
+        id: Optional[str] = None,
+    ) -> None:
+        """
+        This method adds an object of type 'Metadata' to attribute metadata
+
+        Args:
+            id (str): Unique identifier of the 'Metadata' object. Defaults to 'None'.
+            parameter (): Name of the parameter.. Defaults to None
+            abbreviation (): abbreviation for the parameter.. Defaults to None
+            data_type (): type of the parameter.. Defaults to None
+            mode (): mode of the parameter. E.g., on and off.. Defaults to None
+            size (): size of the parameter.. Defaults to None
+            unit (): unit of the parameter.. Defaults to None
+            description (): description of the parameter.. Defaults to None
+        """
+
+        params = {
+            "parameter": parameter,
+            "abbreviation": abbreviation,
+            "data_type": data_type,
+            "mode": mode,
+            "size": size,
+            "unit": unit,
+            "description": description,
+        }
+
+        if id is not None:
+            params["id"] = id
+
+        self.metadata.append(Metadata(**params))
