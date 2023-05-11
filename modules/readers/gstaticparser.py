@@ -2,7 +2,12 @@ import regex as re
 import pandas as pd
 import os
 from pathlib import Path
-from datamodel_b07_tc.core.potentiostat import Potentiostat
+from datamodel_b07_tc.core import Unit
+from datamodel_b07_tc.core.data import Data
+from datamodel_b07_tc.core.metadata import Metadata
+from datamodel_b07_tc.core.potentiostaticmeasurement import (
+    PotentiostaticMeasurement,
+)
 
 
 class GstaticParser:
@@ -42,16 +47,29 @@ class GstaticParser:
             names=[
                 "Abbreviation",
                 "Type",
-                "Quantity",
-                "Description_and_unit",
+                "Parameter",
+                "Description_or_unit",
             ],
             engine="python",
             encoding="utf-8",
             skiprows=[0, 1, *[i for i in range(55, 3658)]],
         )
-        pot = potentiostat.Potentiostat()
-
-        return metadata
+        # metadata_list = []
+        # for index, row in metadata.iterrows():
+        #     abbreviation = row[0]
+        #     type = row[1]
+        #     parameter = row[2]
+        #     description = row[3]
+        #     metadata_list.append(
+        #         Metadata(
+        #             abbreviation=abbreviation,
+        #             type=type,
+        #             parameter=parameter,
+        #             description=description,
+        #         )
+        #     )
+        # pot = PotentiostaticMeasurement(metadata=metadata_list)
+        return metadata  # , pot
 
     @property
     def available_files(self) -> list[str]:
