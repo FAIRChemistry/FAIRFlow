@@ -280,6 +280,7 @@ Stoichiometric information about the compound.
   - Description: experimental data of a measurement.
 - metadata
   - Type: Metadata
+  - Multiple: True
   - Description: metadata of a measurement.
 - list_of_measurements
   - Type: ListOfMeasurements
