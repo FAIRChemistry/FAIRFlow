@@ -2,12 +2,14 @@ import regex as re
 import pandas as pd
 import os
 from pathlib import Path
-from datamodel_b07_tc.core import Potentiostatic
-
+from datamodel_b07_tc.core.potentiostat import Potentiostat
 
 
 class GstaticParser:
-    def __init__(self, path_to_directory: str | bytes | os.PathLike, ):
+    def __init__(
+        self,
+        path_to_directory: str | bytes | os.PathLike,
+    ):
         """Pass the path to a directory containing CSV-type files of the GC to be
         read.
 
@@ -47,6 +49,8 @@ class GstaticParser:
             encoding="utf-8",
             skiprows=[0, 1, *[i for i in range(55, 3658)]],
         )
+        pot = potentiostat.Potentiostat()
+
         return metadata
 
     @property

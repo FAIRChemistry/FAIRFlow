@@ -250,21 +250,26 @@ Stoichiometric information about the compound.
 
 ### Metadata
 
-  - quantity
+  - parameter
     - Type: string
-    - Description: Name of the quantity.
+    - Description: Name of the parameter.
+  - abbreviation
+    - Type: string
+    - Description: abbreviation for the parameter.
   - data_type
     - Type: DataType
-    - Description: type of the quantity.
+    - Description: type of the parameter.
   - mode
     - Type: string
-    - Description: mode of the qantity.
+    - Description: mode of the parameter. E.g., on and off.
   - size
     - Type: float
-    - Description: size of the quantity.
+    - Description: size of the parameter.
   - unit
     - Type: Unit
-    - Description: unit of the quantity.
+    - Description: unit of the parameter.
+  - description
+    - Description: description of the parameter.
 
 
 ### Measurement
