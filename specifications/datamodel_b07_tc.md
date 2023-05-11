@@ -290,7 +290,7 @@ Stoichiometric information about the compound.
 ### MassFlowRate[_Measurement_]
 
 - datetime
-  - Type: DateTime
+  - Type: Data
   - Description: date and time of the mass flow rate measurement.
 - time
   - Type: Data
@@ -455,6 +455,7 @@ PERCENTAGE = "%"
 SECONDS = "s"
 MINUTES = "min"
 HOURS = "h"
+DATETIME = "datetime"
 KILOGRAMS = "kg"
 GRAMS = "g"
 MILLIGRAMS = "mg"
