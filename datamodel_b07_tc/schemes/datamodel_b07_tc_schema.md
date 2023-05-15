@@ -166,7 +166,7 @@ classDiagram
     }
     
     class MassFlowRate {
-        +datetime datetime
+        +float datetime
         +Data time
         +Data signal
         +Data flow_rate
