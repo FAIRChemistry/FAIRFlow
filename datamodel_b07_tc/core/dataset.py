@@ -6,11 +6,11 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .measurement import Measurement
+from .plantsetup import PlantSetup
 from .calculation import Calculation
 from .experiment import Experiment
+from .measurement import Measurement
 from .generalinformation import GeneralInformation
-from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -39,7 +39,7 @@ class Dataset(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="b0391632160302c9d4e10ac85b13233140acdeff"
+        default="e5d9b4a8d27b65e575138f9e5c8608a689ba2688"
     )
 
     def add_to_experiments(
