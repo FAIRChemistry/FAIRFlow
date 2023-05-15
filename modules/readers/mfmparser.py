@@ -67,23 +67,24 @@ class MFMParser:
             exp_data_df["datetime"], format="%d.%m.%Y ; %H:%M:%S"
         )
         # exp_data_df.columns = name_column
+        datetime = Data(
+            values=list(exp_data_df["datetime"].dt.to_pydatetime()),
+            unit=Unit.DATETIME,
+        )
+        time = Data(values=list(exp_data_df["time"]), unit=Unit.SECONDS)
+        signal = Data(values=list(exp_data_df["signal"]), unit=Unit.NONE)
+        flow_rate = Data(
+            values=list(exp_data_df["flow_rate"]),
+            unit=Unit.MILLILITERPERSECOND,
+        )
+        mfr = MassFlowRate(
+            datetime=datetime,
+            time=time,
+            signal=signal,
+            flow_rate=flow_rate,
+        )
 
-        exp_data_list = []
-        for index, row in exp_data_df.iterrows():
-            datetime = row[0]
-            time = row[1]
-            signal = row[2]
-            flow_rate = row[3]
-            exp_data_list.append(
-                MassFlowRate(
-                    datetime=datetime,
-                    time=time,
-                    signal=signal,
-                    flow_rate=flow_rate,
-                )
-            )
-        pot = PotentiostaticMeasurement(metadata=exp_data_list)
-        return exp_data_df
+        return exp_data_df, mfr
 
     # def extract_metadata(self, filestem: str) -> dict:
     #     with open(self._available_files[filestem], "r") as f:
