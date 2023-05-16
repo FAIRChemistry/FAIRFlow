@@ -8,6 +8,7 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from .unit import Unit
 from .quantity import Quantity
+from .datatype import DataType
 
 
 @forge_signature
@@ -26,7 +27,7 @@ class Data(sdRDM.DataModel):
         description="quantity of a value.",
     )
 
-    values: List[float] = Field(
+    values: List[DataType] = Field(
         default_factory=ListPlus,
         multiple=True,
         description="values.",
@@ -41,5 +42,5 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ed79bb80b9bdc03cf475b3d3eb64ad1286ccf2d4"
+        default="cfa50a71b09fa2d5fb0c474c7a62a01f2acacf98"
     )
