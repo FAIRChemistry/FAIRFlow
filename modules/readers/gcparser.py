@@ -64,62 +64,16 @@ class GCParser:
             exp_data_list.append(
                 GCMeasurement(
                     peak_number=row[0],
-                    retention_time=row[1],
-                    signal=row[2],
+                    retention_time=Data(values=row[1], unit=Unit.SECONDS),
+                    signal=Data(values=row[2], unit=Unit.NONE),
                     peak_type=row[3],
-                    peak_area=row[4],
-                    peak_height=row[5],
-                    peak_area_percentage=row[6],
+                    peak_area=Data(values=row[4], unit=Unit.NONE),
+                    peak_height=Data(values=row[5], unit=Unit.NONE),
+                    peak_area_percentage=Data(values=row[6], unit=Unit.PERCENTAGE),
                 )
             )
         return exp_data_df, exp_data_list
 
-
-
-
-
-
-
-        Peak_number = Data(
-            values=list(exp_data_df["time"]),
-            unit=Unit.SECONDS.value,
-        )
-        Retention_time = Data(
-            values=list(exp_data_df["signal"]),
-            unit=Unit.NONE.value,
-        )
-        Signal = Data(
-            values=list(exp_data_df["flow_rate"]),
-            unit=Unit.MILLILITERPERSECOND.value,
-        )
-        Peak_type = GCMeasurement(
-            Peak_number=Peak_number,
-            time=time,
-            signal=signal,
-            flow_rate=flow_rate,
-        )
-        Area = GCMeasurement(
-            datetime=datetime,
-            time=time,
-            signal=signal,
-            flow_rate=flow_rate,
-        )
-        Height = GCMeasurement(
-            datetime=datetime,
-            time=time,
-            signal=signal,
-            flow_rate=flow_rate,
-        )
-        Area_percentage = GCMeasurement(
-            datetime=datetime,
-            time=time,
-            signal=signal,
-            flow_rate=flow_rate,
-        )
-
-
-
-        return exp_data_df
 
     def extract_metadata(self, filestem: str) -> pd.DataFrame:
         """Extract only data block as a `pandas.DataFrame`.
