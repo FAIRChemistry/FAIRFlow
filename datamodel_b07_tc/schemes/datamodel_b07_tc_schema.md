@@ -27,6 +27,7 @@ classDiagram
     Output *-- Chemical
     Chemical *-- ReactantRole
     Chemical *-- Stoichiometry
+    Data *-- DataType
     Data *-- Unit
     Data *-- Quantity
     Metadata *-- DataType
@@ -141,7 +142,7 @@ classDiagram
     
     class Data {
         +Quantity quantity
-        +float[0..*] values
+        +DataType[0..*] values
         +Unit unit
     }
     
