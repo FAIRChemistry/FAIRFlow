@@ -174,6 +174,7 @@ classDiagram
     class GCMeasurement {
         +int peak_number
         +float retention_time
+        +float signal
         +float peak_area
         +float peak_height
         +float peak_area_percentage
