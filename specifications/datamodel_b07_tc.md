@@ -312,6 +312,9 @@ Stoichiometric information about the compound.
 - retention_time
   - Type: float
   - Description: retention time.
+- signal
+  - Type: float
+  - Description: signal of the peak.
 - peak_area
   - Type: float
   - Description: peak area.
