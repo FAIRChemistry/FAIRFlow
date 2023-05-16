@@ -239,36 +239,39 @@ Stoichiometric information about the compound.
 
 ### Data
 
-  - values
-    - Type: float
-    - Multiple: True
-    - Description: values.
-  - unit
-    - Type: Unit
-    - Description: unit of the values.
+- quantity
+  - Type: Quantity
+  - Description: quantity of a value.
+- values
+  - Type: float
+  - Multiple: True
+  - Description: values.
+- unit
+  - Type: Unit
+  - Description: unit of the values.
 
 
 ### Metadata
 
-  - parameter
-    - Type: string
-    - Description: Name of the parameter.
-  - abbreviation
-    - Type: string
-    - Description: abbreviation for the parameter.
-  - data_type
-    - Type: DataType
-    - Description: type of the parameter.
-  - mode
-    - Type: string
-    - Description: mode of the parameter. E.g., on and off.
-  - size
-    - Type: float
-    - Description: size of the parameter.
-  - unit
-    - Type: Unit
-    - Description: unit of the parameter.
-  - description
+- parameter
+  - Type: string
+  - Description: Name of the parameter.
+- abbreviation
+  - Type: string
+  - Description: abbreviation for the parameter.
+- data_type
+  - Type: DataType
+  - Description: type of the parameter.
+- mode
+  - Type: string
+  - Description: mode of the parameter. E.g., on and off.
+- size
+  - Type: float
+  - Description: size of the parameter.
+- unit
+  - Type: Unit
+  - Description: unit of the parameter.
+- description
     - Type: string
     - Description: description of the parameter.
 
@@ -277,74 +280,15 @@ Stoichiometric information about the compound.
 
 - experimental_data
   - Type: Data
+  - Multiple: True
   - Description: experimental data of a measurement.
 - metadata
   - Type: Metadata
   - Multiple: True
   - Description: metadata of a measurement.
-- list_of_measurements
-  - Type: ListOfMeasurements
-  - Description: list of measurements, that do not need any further quantities explanation. E.g., only metadata are of interest.
-
-
-### MassFlowRate[_Measurement_]
-
-- datetime
-  - Type: string
-  - Multiple: True
-  - Description: date and time of the mass flow rate measurement.
-- time
-  - Type: Data
-  - Description: time in seconds.
-- signal
-  - Type: Data
-  - Description: signal of the mass flow rate measurement.
-- flow_rate
-  - Type: Data
-  - Description: flow rate.
-
-
-### GCMeasurement[_Measurement_]
-
-- peak_number
-  - Type: int
-  - Description: peak number.
-- retention_time
-  - Type: float
-  - Description: retention time.
-- signal
-  - Type: float
-  - Description: signal of the peak.
-- peak_type
-  - Type: string
-  - Description: peak type.
-- peak_area
-  - Type: float
-  - Description: peak area.
-- peak_height
-  - Type: float
-  - Description: peak height.
-- peak_area_percentage
-  - Type: float
-  - Description: peak area in percent.
-
-
-### PotentiostaticMeasurement[_Measurement_]
-
-- time
-  - Type: Data
-  - Description: time.
-- voltage
-  - Type: Data
-  - Description: voltage.
-
-
-### Series
-
-- values
-  - Type: float
-  - Multiple: True
-  - Description: bla
+- measurement_type
+  - Type: MeasurementType
+  - Description: type of a measurement, e.g. potentiostatic or gas chromatography.
 
 
 ### Calculation
@@ -472,7 +416,7 @@ PERCENTAGE = "%"
 SECONDS = "s"
 MINUTES = "min"
 HOURS = "h"
-DATETIME = "datetime"
+YEARSMONTHSDAYSHOURSMINUTESSECONDS = "YYYY:MM:DD:HH:MM:SS"
 KILOGRAMS = "kg"
 GRAMS = "g"
 MILLIGRAMS = "mg"
@@ -484,10 +428,34 @@ MILLILITERPERSECOND = "ml/s"
 ```
 
 
-### ListOfMeasurements
+### Quantity
+
+List of different quantities.
+
+```python
+TIME = "Time"
+VOLTAGE = "Voltage"
+CURRENT = "Current"
+MASS = "Mass"
+MASSFLOWRATE = "Mass flow rate"
+DATETIME = "Date time"
+FRACTION = "Fraction"
+SIGNAL = "Signal"
+PEAKNUMBER = "Peak number"
+RETENTIONTIME = "Retention time"
+PEAKTYPE = "Peak type"
+PEAKAREA = "Peak area"
+PEAKHEIGHT = "Peak height"
+PEAKAREAPERCENTAGE = "Peak area percentage"
+```
+
+
+### MeasurementType
 
 List of different measurements that do not need any further quantities to be defined.
 
 ```python
 POTENTIOSTATIC = "Potentiostatic Measurement"
+GC = "GC Measurement"
+MFM = "MFM Measurement"
 ``` 
