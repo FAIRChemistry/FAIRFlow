@@ -175,6 +175,7 @@ classDiagram
         +int peak_number
         +float retention_time
         +float signal
+        +string peak_type
         +float peak_area
         +float peak_height
         +float peak_area_percentage
