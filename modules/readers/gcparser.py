@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-class GCEDParser:
+class GCParser:
     def __init__(self, path_to_directory: str | bytes | os.PathLike):
         """Pass the path to a directory containing CSV-type files of the GC to be
         read.
@@ -55,6 +55,35 @@ class GCEDParser:
             encoding="utf-16_le",
         )
         return exp_data_df
+
+    def extract_metadata(self, filestem: str) -> pd.DataFrame:
+        """Extract only data block as a `pandas.DataFrame`.
+
+        Args:
+            filestem (str): Name of the file (only stem) of which the data is to be extracted.
+
+        Returns:
+            pandas.DataFrame: DataFrame containing only the data from the file.
+        """
+        metadata_df = pd.read_csv(
+            self._available_files[filestem],
+            sep=",",
+            names=[
+                "column_1",
+                "column_2",
+                "column_3"
+                #     "Peak_Number",
+                #     "Retention_Time",
+                #     "Signal",
+                #     "Peak_Type",
+                #     "Area",
+                #     "Height",
+                #     "Area_Percentage",
+            ],
+            engine="python",
+            encoding="utf-16_le",
+        )
+        return metadata_df
 
     @property
     def available_files(self) -> list[str]:

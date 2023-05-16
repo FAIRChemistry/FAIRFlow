@@ -306,12 +306,22 @@ Stoichiometric information about the compound.
 
 ### GCMeasurement[_Measurement_]
 
-- retention_times
-  - Type: Data
+- peak_number
+  - Type: int
+  - Description: peak number.
+- retention_time
+  - Type: float
   - Description: retention time.
-- peak_areas
-  - Type: Data
+- peak_area
+  - Type: float
   - Description: peak area.
+- peak_height
+  - Type: float
+  - Description: peak height.
+- peak_area_percentage
+  - Type: float
+  - Description: peak area in percent.
+
 
 ### PotentiostaticMeasurement[_Measurement_]
 

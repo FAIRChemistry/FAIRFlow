@@ -46,10 +46,10 @@ class MFMParser:
         #                 num_line = i + 1
 
         names_column = [
-            "datetime",
-            "time",
-            "signal",
-            "flow_rate",
+            "Datetime",
+            "Time",
+            "Signal",
+            "Flow_rate",
         ]
         # ["/ (yyyy-mm-dd hh:mm:ss)", "/ (s)", "/ (1)", "/ (ml per s)"],
         exp_data_df = pd.read_csv(
@@ -62,42 +62,36 @@ class MFMParser:
             # skiprows=[j for j in range(num_line)],
         )
         exp_data_df = exp_data_df.dropna()
-        exp_data_df["datetime"] = pd.to_datetime(
-            exp_data_df["datetime"], format="%d.%m.%Y ; %H:%M:%S"
+        exp_data_df["Datetime"] = pd.to_datetime(
+            exp_data_df["Datetime"], format="%d.%m.%Y ; %H:%M:%S"
         )
         # exp_data_df.columns = name_column
-        datetime = list(exp_data_df["datetime"].astype("str"))
+        datetime = list(exp_data_df["Datetime"].astype("str"))
         # Data(
         # values=list(exp_data_df["datetime"]),
         # .dt.to_pydatetime()
         #     unit=Unit.DATETIME,
         # )
         time = Data(
-            values=list(exp_data_df["time"]),
+            values=list(exp_data_df["Time"]),
             unit=Unit.SECONDS.value,
         )
         signal = Data(
-            values=list(exp_data_df["signal"]),
+            values=list(exp_data_df["Signal"]),
             unit=Unit.NONE.value,
         )
         flow_rate = Data(
-            values=list(exp_data_df["flow_rate"]),
+            values=list(exp_data_df["Flow_rate"]),
             unit=Unit.MILLILITERPERSECOND.value,
         )
-        list_of_types = [
-            "type_of_datetime:" + str(type(datetime)),
-            "type_of_time:" + str(type(time)),
-            "type_of_signal:" + str(type(signal)),
-            "type_of_flow_rate:" + str(type(flow_rate)),
-        ]
         mfr = MassFlowRate(
-            # datetime=datetime,
+            datetime=datetime,
             time=time,
             signal=signal,
             flow_rate=flow_rate,
         )
 
-        return list_of_types, exp_data_df, mfr
+        return exp_data_df, mfr
 
     # def extract_metadata(self, filestem: str) -> dict:
     #     with open(self._available_files[filestem], "r") as f:
