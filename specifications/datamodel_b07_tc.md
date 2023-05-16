@@ -243,23 +243,11 @@ Stoichiometric information about the compound.
   - Type: Quantity
   - Description: quantity of a value.
 - values
-  - Type: Values
+  - Type: float, string, datetime
   - Description: values.
 - unit
   - Type: Unit
   - Description: unit of the values.
-
-
-### Values
-
-- floats
-  - Type: float
-  - Multiple: True
-  - Description: values of data type float.
-- strings
-  - Type: string
-  - Multiple: True
-  - Description: values of data type string.
 
 
 ### Metadata

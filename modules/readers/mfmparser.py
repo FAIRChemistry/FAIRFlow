@@ -5,6 +5,7 @@ from datetime import datetime
 
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.quantity import Quantity
+from datamodel_b07_tc.core.values import Values
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.measurement import Measurement
 from datamodel_b07_tc.core.measurementtype import MeasurementType
@@ -66,7 +67,11 @@ class MFMParser:
             exp_data_df["Datetime"], format="%d.%m.%Y ; %H:%M:%S"
         )
         # exp_data_df.columns = name_column
-        datetime = list(exp_data_df["Datetime"].astype("str"))
+        datetime = Data(
+            quantity=Quantity.DATETIME.value,
+            values=Values(strings=list(exp_data_df["Datetime"].astype("str"))),
+            unit=Unit.YEARSMONTHSDAYSHOURSMINUTESSECONDS.value,
+        )
         # Data(
         # values=list(exp_data_df["datetime"]),
         # .dt.to_pydatetime()
@@ -74,17 +79,17 @@ class MFMParser:
         # )
         time = Data(
             quantity=Quantity.TIME.value,
-            values=list(exp_data_df["Time"]),
+            values=Values(floats=list(exp_data_df["Time"])),
             unit=Unit.SECONDS.value,
         )
         signal = Data(
             quantity=Quantity.SIGNAL.value,
-            values=list(exp_data_df["Signal"]),
+            values=Values(floats=list(exp_data_df["Signal"])),
             unit=Unit.NONE.value,
         )
         flow_rate = Data(
             quantity=Quantity.MASSFLOWRATE.value,
-            values=list(exp_data_df["Flow_rate"]),
+            values=Values(floats=list(exp_data_df["Flow_rate"])),
             unit=Unit.MILLILITERPERSECOND.value,
         )
         mfr = Measurement(
