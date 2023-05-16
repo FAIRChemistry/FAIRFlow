@@ -16,7 +16,6 @@ from .output import Output
 from .chemical import Chemical
 from .stoichiometry import Stoichiometry
 from .data import Data
-from .values import Values
 from .metadata import Metadata
 from .measurement import Measurement
 from .calculation import Calculation
@@ -52,7 +51,6 @@ __all__ = [
     "Chemical",
     "Stoichiometry",
     "Data",
-    "Values",
     "Metadata",
     "Measurement",
     "Calculation",

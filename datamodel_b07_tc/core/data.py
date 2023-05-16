@@ -1,13 +1,13 @@
 import sdRDM
 
-from typing import Optional
+from typing import Optional, Union
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
+from datetime import datetime
 
-from .unit import Unit
 from .quantity import Quantity
-from .values import Values
+from .unit import Unit
 
 
 @forge_signature
@@ -26,7 +26,7 @@ class Data(sdRDM.DataModel):
         description="quantity of a value.",
     )
 
-    values: Optional[Values] = Field(
+    values: Union[float, str, datetime, None] = Field(
         default=None,
         description="values.",
     )
@@ -40,5 +40,5 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="1868255755c897190362907bed191a98450f9d11"
+        default="89bafe6cb4730e9ef596157d40746f132b6dd2f0"
     )

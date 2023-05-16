@@ -29,7 +29,6 @@ classDiagram
     Chemical *-- Stoichiometry
     Data *-- Unit
     Data *-- Quantity
-    Data *-- Values
     Metadata *-- DataType
     Metadata *-- Unit
     Measurement *-- MeasurementType
@@ -142,13 +141,8 @@ classDiagram
     
     class Data {
         +Quantity quantity
-        +Values values
+        +float, string, datetime values
         +Unit unit
-    }
-    
-    class Values {
-        +float[0..*] floats
-        +string[0..*] strings
     }
     
     class Metadata {

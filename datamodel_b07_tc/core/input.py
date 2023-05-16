@@ -32,7 +32,7 @@ class Input(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="1868255755c897190362907bed191a98450f9d11"
+        default="89bafe6cb4730e9ef596157d40746f132b6dd2f0"
     )
 
     def add_to_component(
