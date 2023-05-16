@@ -3,11 +3,11 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.data import Data
-from datamodel_b07_tc.core.massflowrate import (
-    MassFlowRate,
-)
+from datamodel_b07_tc.core.quantity import Quantity
+from datamodel_b07_tc.core.unit import Unit
+from datamodel_b07_tc.core.measurement import Measurement
+from datamodel_b07_tc.core.measurementtype import MeasurementType
 
 
 class MFMParser:
@@ -73,22 +73,23 @@ class MFMParser:
         #     unit=Unit.DATETIME,
         # )
         time = Data(
+            quantity=Quantity.TIME.value,
             values=list(exp_data_df["Time"]),
             unit=Unit.SECONDS.value,
         )
         signal = Data(
+            quantity=Quantity.SIGNAL.value,
             values=list(exp_data_df["Signal"]),
             unit=Unit.NONE.value,
         )
         flow_rate = Data(
+            quantity=Quantity.MASSFLOWRATE.value,
             values=list(exp_data_df["Flow_rate"]),
             unit=Unit.MILLILITERPERSECOND.value,
         )
-        mfr = MassFlowRate(
-            datetime=datetime,
-            time=time,
-            signal=signal,
-            flow_rate=flow_rate,
+        mfr = Measurement(
+            measurement_type=MeasurementType.MFM.value,
+            experimental_data=[datetime, time, signal, flow_rate],
         )
 
         return exp_data_df, mfr

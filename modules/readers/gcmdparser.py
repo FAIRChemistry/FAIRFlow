@@ -43,9 +43,9 @@ class GCMDParser:
             self._available_files[filestem],
             sep=",",
             names=[
-                "column_1",
-                "column_2",
-                "column_3"
+                "Column_1",
+                "Column_2",
+                "Column_3"
                 #     "Peak_Number",
                 #     "Retention_Time",
                 #     "Signal",

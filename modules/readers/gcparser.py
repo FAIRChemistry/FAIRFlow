@@ -4,7 +4,6 @@ from pathlib import Path
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.gcmeasurement import GCMeasurement
-)
 
 
 class GCParser:
@@ -69,11 +68,12 @@ class GCParser:
                     peak_type=row[3],
                     peak_area=Data(values=row[4], unit=Unit.NONE),
                     peak_height=Data(values=row[5], unit=Unit.NONE),
-                    peak_area_percentage=Data(values=row[6], unit=Unit.PERCENTAGE),
+                    peak_area_percentage=Data(
+                        values=row[6], unit=Unit.PERCENTAGE
+                    ),
                 )
             )
         return exp_data_df, exp_data_list
-
 
     def extract_metadata(self, filestem: str) -> pd.DataFrame:
         """Extract only data block as a `pandas.DataFrame`.

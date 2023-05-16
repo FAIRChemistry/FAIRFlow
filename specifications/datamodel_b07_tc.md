@@ -243,7 +243,7 @@ Stoichiometric information about the compound.
   - Type: Quantity
   - Description: quantity of a value.
 - values
-  - Type: float
+  - Type: DataType
   - Multiple: True
   - Description: values.
 - unit
