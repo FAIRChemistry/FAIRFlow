@@ -33,5 +33,5 @@ class MassFlowMeter(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="a92cd7e4d0326d4eafac9c6c2b73ea481e0b61b8"
+        default="daa7338c6c1e84bf8cf2e7b2a6e61d55c7eab98d"
     )

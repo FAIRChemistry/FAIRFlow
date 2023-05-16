@@ -1,11 +1,12 @@
 
-from typing import Optional
+from typing import List, Optional
 from pydantic import Field, PrivateAttr
+from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .data import Data
 from .measurement import Measurement
+from .data import Data
 
 
 @forge_signature
@@ -19,8 +20,9 @@ class MassFlowRate(Measurement):
         xml="@id",
     )
 
-    datetime: Optional[float] = Field(
-        default=None,
+    datetime: List[str] = Field(
+        default_factory=ListPlus,
+        multiple=True,
         description="date and time of the mass flow rate measurement.",
     )
 
@@ -43,5 +45,5 @@ class MassFlowRate(Measurement):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="a92cd7e4d0326d4eafac9c6c2b73ea481e0b61b8"
+        default="daa7338c6c1e84bf8cf2e7b2a6e61d55c7eab98d"
     )
