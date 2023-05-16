@@ -6,9 +6,10 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .calibration import Calibration
-from .unit import Unit
 from .data import Data
+from .calibration import Calibration
+from .quantity import Quantity
+from .unit import Unit
 
 
 @forge_signature
@@ -38,7 +39,7 @@ class Calculation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="5759762c7f6104d4f74cb748b30649873f52c50f"
+        default="ed79bb80b9bdc03cf475b3d3eb64ad1286ccf2d4"
     )
 
     def add_to_calibrations(
@@ -77,6 +78,7 @@ class Calculation(sdRDM.DataModel):
 
     def add_to_faraday_coefficients(
         self,
+        quantity: Optional[Quantity] = None,
         values: List[float] = ListPlus(),
         unit: Optional[Unit] = None,
         id: Optional[str] = None,
@@ -86,11 +88,13 @@ class Calculation(sdRDM.DataModel):
 
         Args:
             id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
+            quantity (): quantity of a value.. Defaults to None
             values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
 
         params = {
+            "quantity": quantity,
             "values": values,
             "unit": unit,
         }

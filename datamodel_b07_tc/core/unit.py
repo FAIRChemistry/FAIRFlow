@@ -8,7 +8,7 @@ class Unit(Enum):
     SECONDS = "s"
     MINUTES = "min"
     HOURS = "h"
-    DATETIME = "datetime"
+    YEARSMONTHSDAYSHOURSMINUTESSECONDS = "YYYY:MM:DD:HH:MM:SS"
     KILOGRAMS = "kg"
     GRAMS = "g"
     MILLIGRAMS = "mg"

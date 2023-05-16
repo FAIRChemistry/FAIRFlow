@@ -18,10 +18,6 @@ from .stoichiometry import Stoichiometry
 from .data import Data
 from .metadata import Metadata
 from .measurement import Measurement
-from .massflowrate import MassFlowRate
-from .gcmeasurement import GCMeasurement
-from .potentiostaticmeasurement import PotentiostaticMeasurement
-from .series import Series
 from .calculation import Calculation
 from .calibration import Calibration
 from .datatype import DataType
@@ -31,7 +27,8 @@ from .pumptype import PumpType
 from .reactantrole import ReactantRole
 from .devicelist import DeviceList
 from .unit import Unit
-from .listofmeasurements import ListOfMeasurements
+from .quantity import Quantity
+from .measurementtype import MeasurementType
 
 __doc__ = ""
 
@@ -56,10 +53,6 @@ __all__ = [
     "Data",
     "Metadata",
     "Measurement",
-    "MassFlowRate",
-    "GCMeasurement",
-    "PotentiostaticMeasurement",
-    "Series",
     "Calculation",
     "Calibration",
     "DataType",
@@ -69,5 +62,6 @@ __all__ = [
     "ReactantRole",
     "DeviceList",
     "Unit",
-    "ListOfMeasurements",
+    "Quantity",
+    "MeasurementType",
 ]

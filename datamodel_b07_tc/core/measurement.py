@@ -6,11 +6,12 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .unit import Unit
-from .metadata import Metadata
 from .data import Data
+from .quantity import Quantity
+from .metadata import Metadata
+from .unit import Unit
 from .datatype import DataType
-from .listofmeasurements import ListOfMeasurements
+from .measurementtype import MeasurementType
 
 
 @forge_signature
@@ -24,8 +25,9 @@ class Measurement(sdRDM.DataModel):
         xml="@id",
     )
 
-    experimental_data: Optional[Data] = Field(
-        default=None,
+    experimental_data: List[Data] = Field(
+        default_factory=ListPlus,
+        multiple=True,
         description="experimental data of a measurement.",
     )
 
@@ -35,20 +37,45 @@ class Measurement(sdRDM.DataModel):
         description="metadata of a measurement.",
     )
 
-    list_of_measurements: Optional[ListOfMeasurements] = Field(
+    measurement_type: Optional[MeasurementType] = Field(
         default=None,
-        description=(
-            "list of measurements, that do not need any further quantities explanation."
-            " E.g., only metadata are of interest."
-        ),
+        description="type of a measurement, e.g. potentiostatic or gas chromatography.",
     )
 
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="5759762c7f6104d4f74cb748b30649873f52c50f"
+        default="ed79bb80b9bdc03cf475b3d3eb64ad1286ccf2d4"
     )
+
+    def add_to_experimental_data(
+        self,
+        quantity: Optional[Quantity] = None,
+        values: List[float] = ListPlus(),
+        unit: Optional[Unit] = None,
+        id: Optional[str] = None,
+    ) -> None:
+        """
+        This method adds an object of type 'Data' to attribute experimental_data
+
+        Args:
+            id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
+            quantity (): quantity of a value.. Defaults to None
+            values (): values.. Defaults to ListPlus()
+            unit (): unit of the values.. Defaults to None
+        """
+
+        params = {
+            "quantity": quantity,
+            "values": values,
+            "unit": unit,
+        }
+
+        if id is not None:
+            params["id"] = id
+
+        self.experimental_data.append(Data(**params))
 
     def add_to_metadata(
         self,

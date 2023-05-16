@@ -6,12 +6,12 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .plantsetup import PlantSetup
-from .calculation import Calculation
-from .data import Data
-from .measurement import Measurement
 from .metadata import Metadata
-from .listofmeasurements import ListOfMeasurements
+from .plantsetup import PlantSetup
+from .measurement import Measurement
+from .measurementtype import MeasurementType
+from .data import Data
+from .calculation import Calculation
 
 
 @forge_signature
@@ -49,14 +49,14 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="5759762c7f6104d4f74cb748b30649873f52c50f"
+        default="ed79bb80b9bdc03cf475b3d3eb64ad1286ccf2d4"
     )
 
     def add_to_measurements(
         self,
-        experimental_data: Optional[Data] = None,
+        experimental_data: List[Data] = ListPlus(),
         metadata: List[Metadata] = ListPlus(),
-        list_of_measurements: Optional[ListOfMeasurements] = None,
+        measurement_type: Optional[MeasurementType] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -64,15 +64,15 @@ class Experiment(sdRDM.DataModel):
 
         Args:
             id (str): Unique identifier of the 'Measurement' object. Defaults to 'None'.
-            experimental_data (): experimental data of a measurement.. Defaults to None
+            experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
             metadata (): metadata of a measurement.. Defaults to ListPlus()
-            list_of_measurements (): list of measurements, that do not need any further quantities explanation. E.g., only metadata are of interest.. Defaults to None
+            measurement_type (): type of a measurement, e.g. potentiostatic or gas chromatography.. Defaults to None
         """
 
         params = {
             "experimental_data": experimental_data,
             "metadata": metadata,
-            "list_of_measurements": list_of_measurements,
+            "measurement_type": measurement_type,
         }
 
         if id is not None:

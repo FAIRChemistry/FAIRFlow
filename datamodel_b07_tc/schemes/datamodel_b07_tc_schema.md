@@ -4,9 +4,6 @@ classDiagram
     Device <-- Thermocouple
     Device <-- MassFlowMeter
     Device <-- Potentiostat
-    Measurement <-- MassFlowRate
-    Measurement <-- GCMeasurement
-    Measurement <-- PotentiostaticMeasurement
     Dataset *-- GeneralInformation
     Dataset *-- Experiment
     GeneralInformation *-- Author
@@ -31,13 +28,12 @@ classDiagram
     Chemical *-- ReactantRole
     Chemical *-- Stoichiometry
     Data *-- Unit
+    Data *-- Quantity
     Metadata *-- DataType
     Metadata *-- Unit
-    Measurement *-- ListOfMeasurements
+    Measurement *-- MeasurementType
     Measurement *-- Data
     Measurement *-- Metadata
-    MassFlowRate *-- Data
-    PotentiostaticMeasurement *-- Data
     Calculation *-- Data
     Calculation *-- Calibration
     Calibration *-- Data
@@ -144,6 +140,7 @@ classDiagram
     }
     
     class Data {
+        +Quantity quantity
         +float[0..*] values
         +Unit unit
     }
@@ -159,35 +156,9 @@ classDiagram
     }
     
     class Measurement {
-        +Data experimental_data
+        +Data[0..*] experimental_data
         +Metadata[0..*] metadata
-        +ListOfMeasurements list_of_measurements
-    }
-    
-    class MassFlowRate {
-        +string[0..*] datetime
-        +Data time
-        +Data signal
-        +Data flow_rate
-    }
-    
-    class GCMeasurement {
-        +int peak_number
-        +float retention_time
-        +float signal
-        +string peak_type
-        +float peak_area
-        +float peak_height
-        +float peak_area_percentage
-    }
-    
-    class PotentiostaticMeasurement {
-        +Data time
-        +Data voltage
-    }
-    
-    class Series {
-        +float[0..*] values
+        +MeasurementType measurement_type
     }
     
     class Calculation {
@@ -267,7 +238,7 @@ classDiagram
         +SECONDS
         +MINUTES
         +HOURS
-        +DATETIME
+        +YEARSMONTHSDAYSHOURSMINUTESSECONDS
         +KILOGRAMS
         +GRAMS
         +MILLIGRAMS
@@ -278,9 +249,29 @@ classDiagram
         +MILLILITERPERSECOND
     }
     
-    class ListOfMeasurements {
+    class Quantity {
+        << Enumeration >>
+        +TIME
+        +VOLTAGE
+        +CURRENT
+        +MASS
+        +MASSFLOWRATE
+        +DATETIME
+        +FRACTION
+        +SIGNAL
+        +PEAKNUMBER
+        +RETENTIONTIME
+        +PEAKTYPE
+        +PEAKAREA
+        +PEAKHEIGHT
+        +PEAKAREAPERCENTAGE
+    }
+    
+    class MeasurementType {
         << Enumeration >>
         +POTENTIOSTATIC
+        +GC
+        +MFM
     }
     
 ```
