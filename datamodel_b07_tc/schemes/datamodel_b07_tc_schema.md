@@ -37,7 +37,6 @@ classDiagram
     Measurement *-- Data
     Measurement *-- Metadata
     MassFlowRate *-- Data
-    GCMeasurement *-- Data
     PotentiostaticMeasurement *-- Data
     Calculation *-- Data
     Calculation *-- Calibration
@@ -173,8 +172,11 @@ classDiagram
     }
     
     class GCMeasurement {
-        +Data retention_times
-        +Data peak_areas
+        +int peak_number
+        +float retention_time
+        +float peak_area
+        +float peak_height
+        +float peak_area_percentage
     }
     
     class PotentiostaticMeasurement {

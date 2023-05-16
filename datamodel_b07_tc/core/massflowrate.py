@@ -5,8 +5,8 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .measurement import Measurement
 from .data import Data
+from .measurement import Measurement
 
 
 @forge_signature
@@ -45,5 +45,5 @@ class MassFlowRate(Measurement):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="daa7338c6c1e84bf8cf2e7b2a6e61d55c7eab98d"
+        default="3a6c173775e313eeca09bcb6fcb7b85bdeba9b9d"
     )
