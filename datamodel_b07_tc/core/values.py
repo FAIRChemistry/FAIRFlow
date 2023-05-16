@@ -1,33 +1,32 @@
+import sdRDM
 
-from typing import Optional
+from typing import List, Optional
 from pydantic import Field, PrivateAttr
+from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .measurement import Measurement
-from .metadata import Metadata
-from .device import Device
-
-
 @forge_signature
-class Potentiostat(Device):
+class Values(sdRDM.DataModel):
 
     """"""
 
     id: str = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("potentiostatINDEX"),
+        default_factory=IDGenerator("valuesINDEX"),
         xml="@id",
     )
 
-    measurement: Optional[Measurement] = Field(
-        default=None,
-        description="Measuring Data.",
+    floats: List[float] = Field(
+        default_factory=ListPlus,
+        multiple=True,
+        description="values of data type float.",
     )
 
-    metadata: Optional[Metadata] = Field(
-        default=None,
-        description="Metadata of the Potentiostat.",
+    strings: List[str] = Field(
+        default_factory=ListPlus,
+        multiple=True,
+        description="values of data type string.",
     )
 
     __repo__: Optional[str] = PrivateAttr(

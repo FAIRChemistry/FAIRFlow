@@ -8,8 +8,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from .unit import Unit
 from .quantity import Quantity
+from .values import Values
 from .data import Data
-from .datatype import DataType
 
 
 @forge_signature
@@ -54,13 +54,13 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="cfa50a71b09fa2d5fb0c474c7a62a01f2acacf98"
+        default="1868255755c897190362907bed191a98450f9d11"
     )
 
     def add_to_peak_area(
         self,
         quantity: Optional[Quantity] = None,
-        values: List[DataType] = ListPlus(),
+        values: Optional[Values] = None,
         unit: Optional[Unit] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -70,7 +70,7 @@ class Calibration(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
             quantity (): quantity of a value.. Defaults to None
-            values (): values.. Defaults to ListPlus()
+            values (): values.. Defaults to None
             unit (): unit of the values.. Defaults to None
         """
 
@@ -88,7 +88,7 @@ class Calibration(sdRDM.DataModel):
     def add_to_concentration(
         self,
         quantity: Optional[Quantity] = None,
-        values: List[DataType] = ListPlus(),
+        values: Optional[Values] = None,
         unit: Optional[Unit] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -98,7 +98,7 @@ class Calibration(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
             quantity (): quantity of a value.. Defaults to None
-            values (): values.. Defaults to ListPlus()
+            values (): values.. Defaults to None
             unit (): unit of the values.. Defaults to None
         """
 
