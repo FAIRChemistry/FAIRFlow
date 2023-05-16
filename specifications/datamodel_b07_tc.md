@@ -315,6 +315,9 @@ Stoichiometric information about the compound.
 - signal
   - Type: float
   - Description: signal of the peak.
+- peak_type
+  - Type: string
+  - Description: peak type.
 - peak_area
   - Type: float
   - Description: peak area.
