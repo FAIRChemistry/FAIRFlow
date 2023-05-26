@@ -1,11 +1,10 @@
 import pandas as pd
 import os
+
 from pathlib import Path
 from datetime import datetime
-
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.quantity import Quantity
-from datamodel_b07_tc.core.values import Values
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.measurement import Measurement
 from datamodel_b07_tc.core.measurementtype import MeasurementType
@@ -39,65 +38,86 @@ class MFMParser:
         }
 
     def extract_exp_data(self, filestem: str):
-        #     with open(self._available_files[filestem], "r") as f:
-        #         Lines = f.readlines()
-        #         for i, line in enumerate(Lines):
-        #             if line.strip() == "Time,Value":
-        #                 name_column = line.strip().split(sep=",")
-        #                 num_line = i + 1
-
         names_column = [
             "Datetime",
             "Time",
             "Signal",
             "Flow_rate",
         ]
-        # ["/ (yyyy-mm-dd hh:mm:ss)", "/ (s)", "/ (1)", "/ (ml per s)"],
-        exp_data_df = pd.read_csv(
+        mfm_exp_data_df = pd.read_csv(
             self._available_files[filestem],
             sep=",",
             names=names_column,
             engine="python",
             encoding="utf-8",
-            skiprows=1
-            # skiprows=[j for j in range(num_line)],
+            skiprows=1,
         )
-        exp_data_df = exp_data_df.dropna()
-        exp_data_df["Datetime"] = pd.to_datetime(
-            exp_data_df["Datetime"], format="%d.%m.%Y ; %H:%M:%S"
+        mfm_exp_data_df = mfm_exp_data_df.dropna()
+        mfm_exp_data_df["Datetime"] = pd.to_datetime(
+            mfm_exp_data_df["Datetime"], format="%d.%m.%Y ; %H:%M:%S"
         )
-        # exp_data_df.columns = name_column
-        datetime = Data(
-            quantity=Quantity.DATETIME.value,
-            values=Values(strings=list(exp_data_df["Datetime"].astype("str"))),
-            unit=Unit.YEARSMONTHSDAYSHOURSMINUTESSECONDS.value,
-        )
-        # Data(
-        # values=list(exp_data_df["datetime"]),
-        # .dt.to_pydatetime()
-        #     unit=Unit.DATETIME,
+        # record = mfm_exp_data_df.to_dict(orient="list")
+        # mapping = [
+        #     {"values": "Datetime"},
+        #     {"values": "Time"},
+        #     {"values": "Signal"},
+        #     {"values": "flow_rate"},
+        # ]
+        # units_formulae = [
+        #     {
+        #         "datetime": {
+        #             "quantity": Quantity.DATETIME.value,
+        #             "unit": Unit.YEARSMONTHSDAYSHOURSMINUTESSECONDS.value,
+        #         }
+        #     },
+        #     {
+        #         "time": {
+        #             "quantity": Quantity.TIME.value,
+        #             "unit": Unit.SECONDS.value,
+        #         }
+        #     },
+        #     {
+        #         "signal": {
+        #             "quantity": Quantity.SIGNALvalue,
+        #             "unit": Unit.NONE.value,
+        #         }
+        #     },
+        #     {
+        #         "flow_rate": {
+        #             "quantity": Quantity.MASSFLOWRATE.value,
+        #             "unit": Unit.MILLILITERPERSECOND.value,
+        #         },
+        #     },
+        # ]
+        # exp_data = {}
+        # for dict in units_formulae.items():
+        #     exp_data[dict.keys()[0]] = Data(
+        #         *{key: value for key, value in dict.values()},
+        #         **{key: record[value] for key, value in mapping.items()}
+        #     )
+        # mfm = Measurement(
+        #     measurement_type=MeasurementType.MFM.value,
+        #     experimental_data=[value for value in exp_data.values()],
         # )
-        time = Data(
-            quantity=Quantity.TIME.value,
-            values=Values(floats=list(exp_data_df["Time"])),
-            unit=Unit.SECONDS.value,
-        )
-        signal = Data(
-            quantity=Quantity.SIGNAL.value,
-            values=Values(floats=list(exp_data_df["Signal"])),
-            unit=Unit.NONE.value,
-        )
-        flow_rate = Data(
-            quantity=Quantity.MASSFLOWRATE.value,
-            values=Values(floats=list(exp_data_df["Flow_rate"])),
-            unit=Unit.MILLILITERPERSECOND.value,
-        )
-        mfr = Measurement(
-            measurement_type=MeasurementType.MFM.value,
-            experimental_data=[datetime, time, signal, flow_rate],
-        )
+        return mfm_exp_data_df  # , mfm
 
-        return exp_data_df, mfr
+    @property
+    def available_files(self) -> list[str]:
+        return self._available_files
+
+        # for line in open(self.file, 'r'):
+        #     line = line.strip()
+        #     if '=' in line:
+        #         key_value = re.split('=', line.strip(r'_'))
+        #         try:
+        #             self.meta_data[key_value[0]] = float(key_value[1].strip("'"))
+        #         except ValueError:
+        #             self.meta_data[key_value[0]] = key_value[1].strip("'")
+        # meta_data = self.meta_data
+        # self.convert_datetime(meta_data)
+        # self.rename_2theta(meta_data)
+        # self.concatinate_wls(meta_data)
+        # return meta_data
 
     # def extract_metadata(self, filestem: str) -> dict:
     #     with open(self._available_files[filestem], "r") as f:
@@ -114,20 +134,3 @@ class MFMParser:
     #         skiprows=[j for j in range(num_line, i + 1)],
     #     )
     #     return metadata
-
-    @property
-    def available_files(self) -> list[str]:
-        return self._available_files
-        # for line in open(self.file, 'r'):
-        #     line = line.strip()
-        #     if '=' in line:
-        #         key_value = re.split('=', line.strip(r'_'))
-        #         try:
-        #             self.meta_data[key_value[0]] = float(key_value[1].strip("'"))
-        #         except ValueError:
-        #             self.meta_data[key_value[0]] = key_value[1].strip("'")
-        # meta_data = self.meta_data
-        # self.convert_datetime(meta_data)
-        # self.rename_2theta(meta_data)
-        # self.concatinate_wls(meta_data)
-        # return meta_data

@@ -1,17 +1,17 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .measurement import Measurement
 from .data import Data
 from .plantsetup import PlantSetup
 from .measurementtype import MeasurementType
-from .calculation import Calculation
 from .metadata import Metadata
+from .calculation import Calculation
+from .measurement import Measurement
 
 
 @forge_signature
@@ -45,18 +45,11 @@ class Experiment(sdRDM.DataModel):
         ),
     )
 
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="89bafe6cb4730e9ef596157d40746f132b6dd2f0"
-    )
-
     def add_to_measurements(
         self,
-        experimental_data: List[Data] = ListPlus(),
-        metadata: List[Metadata] = ListPlus(),
         measurement_type: Optional[MeasurementType] = None,
+        metadata: List[Metadata] = ListPlus(),
+        experimental_data: List[Data] = ListPlus(),
         id: Optional[str] = None,
     ) -> None:
         """
@@ -64,15 +57,15 @@ class Experiment(sdRDM.DataModel):
 
         Args:
             id (str): Unique identifier of the 'Measurement' object. Defaults to 'None'.
-            experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
-            metadata (): metadata of a measurement.. Defaults to ListPlus()
             measurement_type (): type of a measurement, e.g. potentiostatic or gas chromatography.. Defaults to None
+            metadata (): metadata of a measurement.. Defaults to ListPlus()
+            experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
         """
 
         params = {
-            "experimental_data": experimental_data,
-            "metadata": metadata,
             "measurement_type": measurement_type,
+            "metadata": metadata,
+            "experimental_data": experimental_data,
         }
 
         if id is not None:

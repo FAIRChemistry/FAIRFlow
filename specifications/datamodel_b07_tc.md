@@ -243,7 +243,8 @@ Stoichiometric information about the compound.
   - Type: Quantity
   - Description: quantity of a value.
 - values
-  - Type: float, string, datetime
+  - Type: float, string, datetime, Timestamp
+  - Multiple: True
   - Description: values.
 - unit
   - Type: Unit
@@ -255,20 +256,20 @@ Stoichiometric information about the compound.
 - parameter
   - Type: string
   - Description: Name of the parameter.
+- value
+  - Type: string, float, datetime
+  - Description: value of the parameter.
 - abbreviation
   - Type: string
   - Description: abbreviation for the parameter.
 - data_type
-  - Type: DataType
+  - Type: DataType, string
   - Description: type of the parameter.
 - mode
   - Type: string
   - Description: mode of the parameter. E.g., on and off.
-- size
-  - Type: float
-  - Description: size of the parameter.
 - unit
-  - Type: Unit
+  - Type: Unit, string
   - Description: unit of the parameter.
 - description
     - Type: string
@@ -277,17 +278,17 @@ Stoichiometric information about the compound.
 
 ### Measurement
 
-- experimental_data
-  - Type: Data
-  - Multiple: True
-  - Description: experimental data of a measurement.
+- _measurement_type_
+  - Type: MeasurementType
+  - Description: type of a measurement, e.g. potentiostatic or gas chromatography.
 - metadata
   - Type: Metadata
   - Multiple: True
   - Description: metadata of a measurement.
-- measurement_type
-  - Type: MeasurementType
-  - Description: type of a measurement, e.g. potentiostatic or gas chromatography.
+- experimental_data
+  - Type: Data
+  - Multiple: True
+  - Description: experimental data of a measurement.
 
 
 ### Calculation

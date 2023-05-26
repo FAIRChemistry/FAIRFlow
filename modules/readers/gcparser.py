@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.data import Data
-from datamodel_b07_tc.core.gcmeasurement import GCMeasurement
+from datamodel_b07_tc.core.measurement import Measurement
+from datamodel_b07_tc.core.metadata import Metadata
 
 
 class GCParser:
@@ -61,7 +62,7 @@ class GCParser:
         exp_data_list = []
         for index, row in exp_data_df.iterrows():
             exp_data_list.append(
-                GCMeasurement(
+                Measurement(
                     peak_number=row[0],
                     retention_time=Data(values=row[1], unit=Unit.SECONDS),
                     signal=Data(values=row[2], unit=Unit.NONE),
@@ -88,9 +89,9 @@ class GCParser:
             self._available_files[filestem],
             sep=",",
             names=[
-                "column_1",
-                "column_2",
-                "column_3"
+                "parameter",
+                "value",
+                "description",
                 #     "Peak_Number",
                 #     "Retention_Time",
                 #     "Signal",
@@ -102,7 +103,17 @@ class GCParser:
             engine="python",
             encoding="utf-16_le",
         )
-        return metadata_df
+
+        metadata_list = []
+        for index, row in metadata_df.iterrows():
+            metadata_list.append(
+                Metadata(
+                    parameter=row[0],
+                    value=row[1],
+                    description=row[2],
+                )
+            )
+        return metadata_list, metadata_df
 
     @property
     def available_files(self) -> list[str]:

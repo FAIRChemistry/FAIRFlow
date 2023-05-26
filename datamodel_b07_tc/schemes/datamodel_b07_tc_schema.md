@@ -141,24 +141,24 @@ classDiagram
     
     class Data {
         +Quantity quantity
-        +float, string, datetime values
+        +float, string, datetime[0..*] values
         +Unit unit
     }
     
     class Metadata {
         +string parameter
+        +string, float, datetime value
         +string abbreviation
-        +DataType data_type
+        +DataType, string data_type
         +string mode
-        +float size
-        +Unit unit
+        +Unit, string unit
         +string description
     }
     
     class Measurement {
-        +Data[0..*] experimental_data
-        +Metadata[0..*] metadata
         +MeasurementType measurement_type
+        +Metadata[0..*] metadata
+        +Data[0..*] experimental_data
     }
     
     class Calculation {

@@ -1,15 +1,15 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .data import Data
 from .quantity import Quantity
 from .unit import Unit
+from .data import Data
 
 
 @forge_signature
@@ -50,17 +50,10 @@ class Calibration(sdRDM.DataModel):
         description="coefficients of the (linear) calibration functions.",
     )
 
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="89bafe6cb4730e9ef596157d40746f132b6dd2f0"
-    )
-
     def add_to_peak_area(
         self,
         quantity: Optional[Quantity] = None,
-        values: Union[float, str, datetime, None] = None,
+        values: List[Union[float, str, datetime]] = ListPlus(),
         unit: Optional[Unit] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -70,7 +63,7 @@ class Calibration(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
             quantity (): quantity of a value.. Defaults to None
-            values (): values.. Defaults to None
+            values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
 
@@ -88,7 +81,7 @@ class Calibration(sdRDM.DataModel):
     def add_to_concentration(
         self,
         quantity: Optional[Quantity] = None,
-        values: Union[float, str, datetime, None] = None,
+        values: List[Union[float, str, datetime]] = ListPlus(),
         unit: Optional[Unit] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -98,7 +91,7 @@ class Calibration(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
             quantity (): quantity of a value.. Defaults to None
-            values (): values.. Defaults to None
+            values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
 

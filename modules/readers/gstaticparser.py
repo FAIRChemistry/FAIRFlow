@@ -5,9 +5,7 @@ from pathlib import Path
 from datamodel_b07_tc.core import Unit
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.metadata import Metadata
-from datamodel_b07_tc.core.potentiostaticmeasurement import (
-    PotentiostaticMeasurement,
-)
+from datamodel_b07_tc.core.measurement import Measurement
 
 
 class GstaticParser:
@@ -41,35 +39,33 @@ class GstaticParser:
         }
 
     def extract_metadata(self, filestem: str) -> dict:
-        metadata = pd.read_csv(
+        metadata_df = pd.read_csv(
             self._available_files[filestem],
             sep="\t",
             names=[
-                "Abbreviation",
-                "Type",
                 "Parameter",
+                "Data_type",
+                "Value",
                 "Description",
             ],
             engine="python",
             encoding="utf-8",
-            skiprows=[0, 1, *[i for i in range(55, 3658)]],
+            skiprows=[
+                *[i for i in range(0, 7)],
+                *[j for j in range(55, 3658)],
+            ],
         )
         metadata_list = []
-        for index, row in metadata.iterrows():
-            abbreviation = row[0]
-            type = row[1]
-            parameter = row[2]
-            description = row[3]
+        for index, row in metadata_df.iterrows():
             metadata_list.append(
                 Metadata(
-                    abbreviation=abbreviation,
-                    type=type,
-                    parameter=parameter,
-                    description=description,
+                    parameter=row[0],
+                    data_type=row[1],
+                    value=row[2],
+                    description=row[3],
                 )
             )
-        pot = PotentiostaticMeasurement(metadata=metadata_list)
-        return metadata, pot
+        return metadata_df, metadata_list
 
     @property
     def available_files(self) -> list[str]:
