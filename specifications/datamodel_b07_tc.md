@@ -243,7 +243,7 @@ Stoichiometric information about the compound.
   - Type: Quantity
   - Description: quantity of a value.
 - values
-  - Type: float, string, datetime, Timestamp
+  - Type: float, string, datetime
   - Multiple: True
   - Description: values.
 - unit
@@ -304,7 +304,9 @@ Stoichiometric information about the compound.
   
 
 ### Calibration
-
+- species
+  - Type: Species
+  - Description: Species for which the calibration was performed.
 - peak_area
   - Type: Data
   - Multiple: True
@@ -416,7 +418,7 @@ PERCENTAGE = "%"
 SECONDS = "s"
 MINUTES = "min"
 HOURS = "h"
-YEARSMONTHSDAYSHOURSMINUTESSECONDS = "YYYY:MM:DD:HH:MM:SS"
+YEARSMONTHSDAYSHOURSMINUTESSECONDS = "YYYY-MM-DDTHH:MM:SS. mmmmmm"
 KILOGRAMS = "kg"
 GRAMS = "g"
 MILLIGRAMS = "mg"
@@ -459,3 +461,15 @@ POTENTIOSTATIC = "Potentiostatic Measurement"
 GC = "GC Measurement"
 MFM = "MFM Measurement"
 ``` 
+### Species
+
+List of different species.
+
+```python
+HYDROGEN = "H2"
+CARBONDIOXIDE = "CO2"
+CARBONMONOXIDE = "CO"
+METHANE = "CH4"
+ETHENE = "C2H6"
+ETHANE = "C2H4"
+```

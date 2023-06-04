@@ -7,8 +7,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .chemical import Chemical
-from .stoichiometry import Stoichiometry
 from .reactantrole import ReactantRole
+from .stoichiometry import Stoichiometry
 
 
 @forge_signature
@@ -16,7 +16,7 @@ class Input(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("inputINDEX"),
         xml="@id",

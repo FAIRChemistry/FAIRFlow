@@ -7,12 +7,12 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .quantity import Quantity
-from .unit import Unit
-from .measurementtype import MeasurementType
-from .data import Data
 from .datatype import DataType
 from .metadata import Metadata
+from .measurementtype import MeasurementType
+from .quantity import Quantity
+from .data import Data
+from .unit import Unit
 
 
 @forge_signature
@@ -20,7 +20,7 @@ class Measurement(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("measurementINDEX"),
         xml="@id",

@@ -1,0 +1,23 @@
+{
+  "id": "dataset0",
+  "general_information": {
+    "id": "generalinformation0",
+    "title": "Electrocatalytic CO2-reduction on carbon",
+    "description": "The aim of this project is to blablabla",
+    "authors": [
+      {
+        "id": "author0",
+        "name": "Richard Sch\u00f6mig",
+        "affiliation": "University of Stuttgart"
+      },
+      {
+        "id": "author1",
+        "name": "Maximilian Schmidt",
+        "affiliation": "University of Stuttgart"
+      }
+    ]
+  },
+  "__source__": {
+    "root": "Dataset"
+  }
+}

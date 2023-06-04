@@ -4,8 +4,8 @@ from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .metadata import Metadata
 from .measurement import Measurement
+from .metadata import Metadata
 from .device import Device
 
 
@@ -14,7 +14,7 @@ class Potentiostat(Device):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("potentiostatINDEX"),
         xml="@id",

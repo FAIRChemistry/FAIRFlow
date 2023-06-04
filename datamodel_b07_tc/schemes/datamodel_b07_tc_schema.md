@@ -36,6 +36,7 @@ classDiagram
     Measurement *-- Metadata
     Calculation *-- Data
     Calculation *-- Calibration
+    Calibration *-- Species
     Calibration *-- Data
     
     class Dataset {
@@ -167,6 +168,7 @@ classDiagram
     }
     
     class Calibration {
+        +Species species
         +Data[0..*] peak_area
         +Data[0..*] concentration
         +Data slope
@@ -272,6 +274,16 @@ classDiagram
         +POTENTIOSTATIC
         +GC
         +MFM
+    }
+    
+    class Species {
+        << Enumeration >>
+        +HYDROGEN
+        +CARBONDIOXIDE
+        +CARBONMONOXIDE
+        +METHANE
+        +ETHENE
+        +ETHANE
     }
     
 ```

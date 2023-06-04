@@ -6,8 +6,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .unit import Unit
 from .datatype import DataType
+from .unit import Unit
 
 
 @forge_signature
@@ -15,7 +15,7 @@ class Metadata(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("metadataINDEX"),
         xml="@id",

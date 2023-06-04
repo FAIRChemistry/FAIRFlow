@@ -13,7 +13,7 @@ class MassFlowMeter(Device):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("massflowmeterINDEX"),
         xml="@id",

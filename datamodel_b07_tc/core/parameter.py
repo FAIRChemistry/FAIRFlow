@@ -13,7 +13,7 @@ class Parameter(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("parameterINDEX"),
         xml="@id",

@@ -6,12 +6,12 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+from .measurement import Measurement
+from .metadata import Metadata
 from .data import Data
 from .plantsetup import PlantSetup
 from .measurementtype import MeasurementType
-from .metadata import Metadata
 from .calculation import Calculation
-from .measurement import Measurement
 
 
 @forge_signature
@@ -19,7 +19,7 @@ class Experiment(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("experimentINDEX"),
         xml="@id",

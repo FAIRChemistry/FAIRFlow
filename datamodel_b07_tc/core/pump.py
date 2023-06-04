@@ -4,8 +4,8 @@ from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .pumptype import PumpType
 from .device import Device
+from .pumptype import PumpType
 
 
 @forge_signature
@@ -13,7 +13,7 @@ class Pump(Device):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("pumpINDEX"),
         xml="@id",

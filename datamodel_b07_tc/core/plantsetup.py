@@ -6,12 +6,12 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .material import Material
-from .insulation import Insulation
-from .output import Output
-from .chemical import Chemical
 from .tubing import Tubing
+from .chemical import Chemical
+from .insulation import Insulation
+from .material import Material
 from .input import Input
+from .output import Output
 from .device import Device
 
 
@@ -20,7 +20,7 @@ class PlantSetup(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("plantsetupINDEX"),
         xml="@id",

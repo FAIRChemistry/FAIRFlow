@@ -1,8 +1,11 @@
 import pandas as pd
 import os
+
 from pathlib import Path
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.data import Data
+from datamodel_b07_tc.core.data import Quantity
+from datamodel_b07_tc.core.measurement import MeasurementType
 from datamodel_b07_tc.core.measurement import Measurement
 from datamodel_b07_tc.core.metadata import Metadata
 
@@ -43,7 +46,7 @@ class GCParser:
         Returns:
             pandas.DataFrame: DataFrame containing only the data from the file.
         """
-        exp_data_df = pd.read_csv(
+        gc_exp_data_df = pd.read_csv(
             self._available_files[filestem],
             sep=",",
             names=[
@@ -52,29 +55,61 @@ class GCParser:
                 "Signal",
                 "Peak_type",
                 "Peak_area",
-                "peak_height",
+                "Peak_height",
                 "Peak_area_percentage",
             ],
             engine="python",
             encoding="utf-16_le",
         )
 
-        exp_data_list = []
-        for index, row in exp_data_df.iterrows():
-            exp_data_list.append(
-                Measurement(
-                    peak_number=row[0],
-                    retention_time=Data(values=row[1], unit=Unit.SECONDS),
-                    signal=Data(values=row[2], unit=Unit.NONE),
-                    peak_type=row[3],
-                    peak_area=Data(values=row[4], unit=Unit.NONE),
-                    peak_height=Data(values=row[5], unit=Unit.NONE),
-                    peak_area_percentage=Data(
-                        values=row[6], unit=Unit.PERCENTAGE
-                    ),
-                )
+        record = gc_exp_data_df.to_dict(orient="list")
+        mapping = [
+            {"values": "Peak_number"},
+            {"values": "Retention_time"},
+            {"values": "Signal"},
+            {"values": "Peak_type"},
+            {"values": "Peak_area"},
+            {"values": "Peak_height"},
+            {"values": "Peak_area_percentage"},
+        ]
+        units_formulae = {
+            "peak_number": {
+                "quantity": Quantity.PEAKNUMBER.value,
+                "unit": Unit.NONE.value,
+            },
+            "retention_time": {
+                "quantity": Quantity.RETENTIONTIME.value,
+                "unit": Unit.SECONDS.value,
+            },
+            "signal": {
+                "quantity": Quantity.SIGNAL.value,
+                "unit": Unit.NONE.value,
+            },
+            "peak_type": {
+                "quantity": Quantity.PEAKTYPE.value,
+                "unit": Unit.NONE.value,
+            },
+            "peak_area": {
+                "quantity": Quantity.PEAKAREA.value,
+                "unit": Unit.NONE.value,
+            },
+            "peak_height": {
+                "quantity": Quantity.PEAKHEIGHT.value,
+                "unit": Unit.NONE.value,
+            },
+            "peak_area_percentage": {
+                "quantity": Quantity.PEAKAREAPERCENTAGE.value,
+                "unit": Unit.PERCENTAGE.value,
+            },
+        }
+
+        gc_exp_data = {}
+        for i, (param, dict) in enumerate(units_formulae.items()):
+            gc_exp_data[param] = Data(
+                **{key: value for key, value in dict.items()},
+                **{key: record[value] for key, value in mapping[i].items()}
             )
-        return exp_data_df, exp_data_list
+        return gc_exp_data_df, gc_exp_data
 
     def extract_metadata(self, filestem: str) -> pd.DataFrame:
         """Extract only data block as a `pandas.DataFrame`.
@@ -85,35 +120,22 @@ class GCParser:
         Returns:
             pandas.DataFrame: DataFrame containing only the data from the file.
         """
-        metadata_df = pd.read_csv(
+        gc_metadata_df = pd.read_csv(
             self._available_files[filestem],
             sep=",",
             names=[
                 "parameter",
                 "value",
                 "description",
-                #     "Peak_Number",
-                #     "Retention_Time",
-                #     "Signal",
-                #     "Peak_Type",
-                #     "Area",
-                #     "Height",
-                #     "Area_Percentage",
             ],
             engine="python",
             encoding="utf-16_le",
         )
-
-        metadata_list = []
-        for index, row in metadata_df.iterrows():
-            metadata_list.append(
-                Metadata(
-                    parameter=row[0],
-                    value=row[1],
-                    description=row[2],
-                )
-            )
-        return metadata_list, metadata_df
+        record = gc_metadata_df.to_dict(orient="records")
+        gc_metadata = {}
+        for i, entry in enumerate(record):
+            gc_metadata[i] = Metadata(**entry)
+        return gc_metadata_df, gc_metadata
 
     @property
     def available_files(self) -> list[str]:

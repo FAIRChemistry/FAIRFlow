@@ -8,8 +8,9 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 from datetime import datetime
 
 from .quantity import Quantity
-from .unit import Unit
+from .species import Species
 from .data import Data
+from .unit import Unit
 
 
 @forge_signature
@@ -17,10 +18,15 @@ class Calibration(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("calibrationINDEX"),
         xml="@id",
+    )
+
+    species: Optional[Species] = Field(
+        default=None,
+        description="Species for which the calibration was performed.",
     )
 
     peak_area: List[Data] = Field(

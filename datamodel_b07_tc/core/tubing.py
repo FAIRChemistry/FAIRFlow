@@ -5,8 +5,8 @@ from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .material import Material
 from .insulation import Insulation
+from .material import Material
 
 
 @forge_signature
@@ -14,7 +14,7 @@ class Tubing(sdRDM.DataModel):
 
     """"""
 
-    id: str = Field(
+    id: Optional[str] = Field(
         description="Unique identifier of the given object.",
         default_factory=IDGenerator("tubingINDEX"),
         xml="@id",

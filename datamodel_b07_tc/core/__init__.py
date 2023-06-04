@@ -29,6 +29,7 @@ from .devicelist import DeviceList
 from .unit import Unit
 from .quantity import Quantity
 from .measurementtype import MeasurementType
+from .species import Species
 
 __doc__ = ""
 
@@ -64,4 +65,5 @@ __all__ = [
     "Unit",
     "Quantity",
     "MeasurementType",
+    "Species",
 ]
