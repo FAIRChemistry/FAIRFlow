@@ -1,11 +1,11 @@
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .parameter import Parameter
 from .device import Device
+from .parameter import Parameter
 
 
 @forge_signature
@@ -27,4 +27,11 @@ class MassFlowMeter(Device):
     max_flow: Optional[Parameter] = Field(
         default=None,
         description="Maximum possible flow rate.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="5fdd27504705d8dfabdb6a1210039f98b4e65bbb"
     )
