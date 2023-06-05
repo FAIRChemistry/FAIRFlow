@@ -1,6 +1,6 @@
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -22,4 +22,11 @@ class Pump(Device):
     pump_type: Optional[PumpType] = Field(
         default=None,
         description="type of the pump.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="66a1a1ef8dfb8b8fa8af6dec408f57c5f13a37c7"
     )

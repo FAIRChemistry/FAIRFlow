@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
@@ -34,6 +34,13 @@ class GeneralInformation(sdRDM.DataModel):
         default_factory=ListPlus,
         multiple=True,
         description="authors of this dataset.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="66a1a1ef8dfb8b8fa8af6dec408f57c5f13a37c7"
     )
 
     def add_to_authors(

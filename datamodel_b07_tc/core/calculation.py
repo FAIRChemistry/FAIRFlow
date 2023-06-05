@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
@@ -9,9 +9,9 @@ from datetime import datetime
 
 from .data import Data
 from .species import Species
-from .calibration import Calibration
 from .quantity import Quantity
 from .unit import Unit
+from .calibration import Calibration
 
 
 @forge_signature
@@ -35,6 +35,13 @@ class Calculation(sdRDM.DataModel):
         default_factory=ListPlus,
         multiple=True,
         description="Faraday coefficients.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="66a1a1ef8dfb8b8fa8af6dec408f57c5f13a37c7"
     )
 
     def add_to_calibrations(
