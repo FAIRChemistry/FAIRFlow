@@ -1,16 +1,16 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .unit import Unit
-from .species import Species
 from .data import Data
+from .species import Species
 from .quantity import Quantity
+from .unit import Unit
 
 
 @forge_signature
@@ -54,13 +54,6 @@ class Calibration(sdRDM.DataModel):
     coefficient_of_determination: Optional[Data] = Field(
         default=None,
         description="coefficients of the (linear) calibration functions.",
-    )
-
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="5fdd27504705d8dfabdb6a1210039f98b4e65bbb"
     )
 
     def add_to_peak_area(

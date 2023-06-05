@@ -1,13 +1,13 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .reactantrole import ReactantRole
 from .stoichiometry import Stoichiometry
+from .reactantrole import ReactantRole
 from .chemical import Chemical
 
 
@@ -26,13 +26,6 @@ class Input(sdRDM.DataModel):
         default_factory=ListPlus,
         multiple=True,
         description="component of the output fluid.",
-    )
-
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="5fdd27504705d8dfabdb6a1210039f98b4e65bbb"
     )
 
     def add_to_component(

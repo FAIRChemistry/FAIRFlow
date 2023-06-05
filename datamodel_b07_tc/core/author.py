@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -24,11 +24,4 @@ class Author(sdRDM.DataModel):
     affiliation: Optional[str] = Field(
         default=None,
         description="organization the author is affiliated to.",
-    )
-
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="5fdd27504705d8dfabdb6a1210039f98b4e65bbb"
     )

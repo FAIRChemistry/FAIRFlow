@@ -267,6 +267,9 @@ classDiagram
         +PEAKAREA
         +PEAKHEIGHT
         +PEAKAREAPERCENTAGE
+        +SLOPE
+        +INTERCEPT
+        +COEFFDET
     }
     
     class MeasurementType {

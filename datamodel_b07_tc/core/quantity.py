@@ -16,3 +16,6 @@ class Quantity(Enum):
     PEAKAREA = "Peak area"
     PEAKHEIGHT = "Peak height"
     PEAKAREAPERCENTAGE = "Peak area percentage"
+    SLOPE = "Slope"
+    INTERCEPT = "Intercept"
+    COEFFDET = "Coefficient of determination"

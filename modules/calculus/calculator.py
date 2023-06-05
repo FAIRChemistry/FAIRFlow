@@ -4,6 +4,11 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
+from datamodel_b07_tc.core.dataset import Dataset
+from datamodel_b07_tc.core.data import Data
+from datamodel_b07_tc.core.unit import Unit
+from datamodel_b07_tc.core.quantity import Quantity
+
 
 # from datamodel_b07_tc.core import
 
@@ -17,30 +22,48 @@ class Calculator:
 
     def calibrate(
         self,
-        calibration_input_dict: dict,
+        dataset: Dataset,
     ) -> pd.DataFrame:
-        _cali = calibration_input_dict
+        d = dataset
+        c = d.experiments[-1].calculations
+
         _col = ["slope", "intercept", "coef_det"]
-        _n = [n for n in _cali.keys()]
+        # _n = [n for n in _cali.keys()]
         cali_result_df = pd.DataFrame(
-            index=_n,
+            # index=_n,
             columns=_col,
         )
-        for species, cali_values in _cali.items():
+
+        for calibration in c.calibrations:
+            species = calibration.species
+            peak_areas = calibration.peak_area[0].values
+            concentrations = calibration.concentration[0].values
             f = linear_model.LinearRegression(fit_intercept=True)
             f.fit(
-                np.array(cali_values[0]).reshape(-1, 1),
-                np.array(cali_values[1]),
+                np.array(peak_areas).reshape(-1, 1),
+                np.array(concentrations),
             )
             slope, intercept = f.coef_[0], f.intercept_
             coef_det = f.score(
-                np.array(cali_values[0]).reshape(-1, 1),
-                np.array(cali_values[1]),
+                np.array(peak_areas).reshape(-1, 1),
+                np.array(concentrations),
             )
             cali_result_df.loc[species] = [slope, intercept, coef_det]
-        return cali_result_df
+            calibration.slope = Data(
+                quantity=Quantity.SLOPE, values=[slope], unit=Unit.PERCENTAGE
+            )
+            calibration.intercept = Data(
+                quantity=Quantity.INTERCEPT,
+                values=[intercept],
+                unit=Unit.PERCENTAGE,
+            )
+            calibration.coefficient_of_determination = Data(
+                quantity=Quantity.COEFFDET, values=[coef_det], unit=Unit.NONE
+            )
 
-    def calculate_volume_fractions(
+        return cali_result_df, d
+
+    def calc_vol_frac(
         self,
         peak_area_dict: dict,
         calibration_result_df: pd.DataFrame,

@@ -18,6 +18,9 @@
     ]
   },
   "__source__": {
-    "root": "Dataset"
+    "root": "Dataset",
+    "repo": "https://github.com/FAIRChemistry/datamodel_b07_tc.git",
+    "commit": "d186a6e10b01eee2a44763c86ef28e3cbc12ab86",
+    "url": "https://github.com/FAIRChemistry/datamodel_b07_tc/tree/d186a6e10b01eee2a44763c86ef28e3cbc12ab86"
   }
 }
