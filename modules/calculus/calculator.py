@@ -4,7 +4,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
-from datamodel_b07_tc.core.dataset import Dataset
+from datamodel_b07_tc.core.experiment import Experiment
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.quantity import Quantity
@@ -22,33 +22,34 @@ class Calculator:
 
     def calibrate(
         self,
-        dataset: Dataset,
+        experiment: Experiment,
     ) -> pd.DataFrame:
-        d = dataset
-        c = d.experiments[-1].calculations
+        calculations = experiment.calculations
 
-        _col = ["slope", "intercept", "coef_det"]
-        # _n = [n for n in _cali.keys()]
-        cali_result_df = pd.DataFrame(
-            # index=_n,
-            columns=_col,
+        column_names = ["Slope", "Intercept", "Coefficient_of_determination"]
+        calibration_result_df = pd.DataFrame(
+            columns=column_names,
         )
 
-        for calibration in c.calibrations:
+        for calibration in calculations.calibrations:
             species = calibration.species
             peak_areas = calibration.peak_area[0].values
             concentrations = calibration.concentration[0].values
-            f = linear_model.LinearRegression(fit_intercept=True)
-            f.fit(
+            function = linear_model.LinearRegression(fit_intercept=True)
+            function.fit(
                 np.array(peak_areas).reshape(-1, 1),
                 np.array(concentrations),
             )
-            slope, intercept = f.coef_[0], f.intercept_
-            coef_det = f.score(
+            slope, intercept = function.coef_[0], function.intercept_
+            coefficient_of_determination = function.score(
                 np.array(peak_areas).reshape(-1, 1),
                 np.array(concentrations),
             )
-            cali_result_df.loc[species] = [slope, intercept, coef_det]
+            calibration_result_df.loc[species] = [
+                slope,
+                intercept,
+                coefficient_of_determination,
+            ]
             calibration.slope = Data(
                 quantity=Quantity.SLOPE, values=[slope], unit=Unit.PERCENTAGE
             )
@@ -58,61 +59,110 @@ class Calculator:
                 unit=Unit.PERCENTAGE,
             )
             calibration.coefficient_of_determination = Data(
-                quantity=Quantity.COEFFDET, values=[coef_det], unit=Unit.NONE
+                quantity=Quantity.COEFFDET,
+                values=[coefficient_of_determination],
+                unit=Unit.NONE,
             )
 
-        return cali_result_df, d
+        return calibration_result_df, experiment
 
-    def calc_vol_frac(
+    def calculate_volumetric_fractions(
         self,
         peak_area_dict: dict,
         calibration_result_df: pd.DataFrame,
     ) -> pd.DataFrame:
-        _r_df = calibration_result_df
-        _p = peak_area_dict
-        _vol_frac_df = pd.DataFrame(
-            index=_r_df.index, columns=["volume_fraction"]
+        volumetric_fractions_df = pd.DataFrame(
+            index=calibration_result_df.index, columns=["Volumetric_fraction"]
         )
-        for key, value in _p.items():
-            _vol_frac_df.loc[key] = (
-                value * _r_df.loc[key][0] + _r_df.loc[key][1]
+        for species, peak_area in peak_area_dict.items():
+            volumetric_fractions_df.loc[species] = (
+                peak_area * calibration_result_df.loc[species][0]
+                + calibration_result_df.loc[species][1]
             )
-        return _vol_frac_df
+        return volumetric_fractions_df
 
     def calculate_conversion_factor(
         self,
-        volume_fractions: pd.DataFrame,
-        correction_factors: dict,
+        volumetric_fractions_df: pd.DataFrame,
+        correction_factors_dict: dict,
     ) -> pd.DataFrame:
-        _vol_frac_df = volume_fractions
-        f_corr_dict = correction_factors
-        f_conv = (
+        conversion_factor = (
             1
             / (
-                (_vol_frac_df.loc["H2"][0] / 100) / f_corr_dict["H2"]
+                (volumetric_fractions_df.loc["H2"][0] / 100)
+                / correction_factors_dict["H2"]
                 + (
                     1
-                    - (_vol_frac_df.loc["H2"][0] / 100)
-                    + (_vol_frac_df.loc["CO"][0]) / 100
+                    - (volumetric_fractions_df.loc["H2"][0] / 100)
+                    + (volumetric_fractions_df.loc["CO"][0]) / 100
                 )
-                / f_corr_dict["CO2"]
-                + (_vol_frac_df.loc["CO"][0] / 100) / f_corr_dict["CO"]
+                / correction_factors_dict["CO2"]
+                + (volumetric_fractions_df.loc["CO"][0] / 100)
+                / correction_factors_dict["CO"]
             )
-            / f_corr_dict["CO2"]
+            / correction_factors_dict["CO2"]
         )
 
         # for key, value in f_corr_dict.items():
         # conversion_factors_df = pd.DataFrame(index=columns='conversion_factors')
 
-        return f_conv
+        return conversion_factor
 
-    def calculate_vol_flow_r(
-        self, conversion_factor: float, volumetric_flow_measured: pd.DataFrame
+    def calculate_real_volumetric_flow(
+        self,
+        conversion_factor: float,
+        measured_volumetric_flow_df: pd.DataFrame,
     ) -> pd.DataFrame:
-        f_conv = conversion_factor
-        _vol_flow_m = volumetric_flow_measured
-        _vol_flow_r = _vol_flow_m.multiply(f_conv)
-        return _vol_flow_r
+        real_volumetric_flow_df = measured_volumetric_flow_df["Flow"].multiply(
+            conversion_factor
+        )
+        return real_volumetric_flow_df
+
+    def calculate_volumetric_flow_fractions(
+        self,
+        real_volumetric_flow: float,
+        volumetric_fractions_df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        rename = {"Volumetric_fraction": "Volumetric_flow_fraction"}
+        volumetric_flow_fractions_df = volumetric_fractions_df.multiply(
+            real_volumetric_flow
+        ).rename(columns=rename)
+        return volumetric_flow_fractions_df
+
+    def calcualte_material_flow(
+        self,
+        volumetric_flow_fractions_df: pd.DataFrame,
+    ):
+        molecular_volume = 22.41396954
+        rename = {"Volumetric_flow_fraction": "Material_flow"}
+        material_flow_df = volumetric_flow_fractions_df.divide(
+            molecular_volume
+        ).rename(columns=rename)
+        return material_flow_df
+
+    def calculate_theoretical_material_flow(
+        self, initial_current, initial_time, electrode_surface_area
+    ):
+        positive_initial_current = abs(initial_current)
+        current_density = positive_initial_current / electrode_surface_area
+        faraday_constant = 96485.3321
+        factors = {
+            "H2": 2,
+            "CO": 2,
+            "CO2": 2,
+            "CH4": 8,
+            "C2H4": 12,
+            "C2H6": 16,
+        }
+        theoretical_material_flow_df = pd.DataFrame(
+            index=[species for species in factors.keys()],
+            columns=["Theoretical_material_flow"],
+        )
+        for species, factor in factors.items():
+            theoretical_material_flow_df.loc[species] = (
+                initial_time / 60 * current_density / 1000 * factor
+            ) / (2 * faraday_constant)
+        return theoretical_material_flow_df
 
     def plot(self):
         fig, ax = plt.subplots(figsize=(10, 6))

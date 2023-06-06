@@ -124,9 +124,9 @@ class GCParser:
             self._available_files[filestem],
             sep=",",
             names=[
-                "parameter",
-                "value",
-                "description",
+                "Parameter",
+                "Value",
+                "Description",
             ],
             engine="python",
             encoding="utf-16_le",
