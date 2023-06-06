@@ -7,11 +7,11 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .data import Data
 from .species import Species
-from .quantity import Quantity
 from .unit import Unit
 from .calibration import Calibration
+from .data import Data
+from .quantity import Quantity
 
 
 @forge_signature
@@ -41,14 +41,14 @@ class Calculation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="66a1a1ef8dfb8b8fa8af6dec408f57c5f13a37c7"
+        default="bb0e745ce48c41c1231aa5de1f300ce63fd7a450"
     )
 
     def add_to_calibrations(
         self,
         species: Optional[Species] = None,
-        peak_area: List[Data] = ListPlus(),
-        concentration: List[Data] = ListPlus(),
+        peak_area: Optional[Data] = None,
+        concentration: Optional[Data] = None,
         slope: Optional[Data] = None,
         intercept: Optional[Data] = None,
         coefficient_of_determination: Optional[Data] = None,
@@ -60,8 +60,8 @@ class Calculation(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Calibration' object. Defaults to 'None'.
             species (): Species for which the calibration was performed.. Defaults to None
-            peak_area (): Recorded peak areas of the individual calibration solutions.. Defaults to ListPlus()
-            concentration (): concentrations of the individual calibration solutions.. Defaults to ListPlus()
+            peak_area (): Recorded peak areas of the individual calibration solutions.. Defaults to None
+            concentration (): concentrations of the individual calibration solutions.. Defaults to None
             slope (): slopes of the (linear) calibration functions.. Defaults to None
             intercept (): intercept of the (linear) calibration functions.. Defaults to None
             coefficient_of_determination (): coefficients of the (linear) calibration functions.. Defaults to None

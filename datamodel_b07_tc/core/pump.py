@@ -28,5 +28,5 @@ class Pump(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="66a1a1ef8dfb8b8fa8af6dec408f57c5f13a37c7"
+        default="bb0e745ce48c41c1231aa5de1f300ce63fd7a450"
     )

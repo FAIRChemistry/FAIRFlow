@@ -1,16 +1,12 @@
 import sdRDM
 
-from typing import Optional, Union, List
+from typing import Optional
 from pydantic import Field, PrivateAttr
-from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime
 
-from .data import Data
 from .species import Species
-from .quantity import Quantity
-from .unit import Unit
+from .data import Data
 
 
 @forge_signature
@@ -29,15 +25,13 @@ class Calibration(sdRDM.DataModel):
         description="Species for which the calibration was performed.",
     )
 
-    peak_area: List[Data] = Field(
-        default_factory=ListPlus,
-        multiple=True,
+    peak_area: Optional[Data] = Field(
+        default=None,
         description="Recorded peak areas of the individual calibration solutions.",
     )
 
-    concentration: List[Data] = Field(
-        default_factory=ListPlus,
-        multiple=True,
+    concentration: Optional[Data] = Field(
+        default=None,
         description="concentrations of the individual calibration solutions.",
     )
 
@@ -60,61 +54,5 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="66a1a1ef8dfb8b8fa8af6dec408f57c5f13a37c7"
+        default="bb0e745ce48c41c1231aa5de1f300ce63fd7a450"
     )
-
-    def add_to_peak_area(
-        self,
-        quantity: Optional[Quantity] = None,
-        values: List[Union[float, str, datetime]] = ListPlus(),
-        unit: Optional[Unit] = None,
-        id: Optional[str] = None,
-    ) -> None:
-        """
-        This method adds an object of type 'Data' to attribute peak_area
-
-        Args:
-            id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
-            quantity (): quantity of a value.. Defaults to None
-            values (): values.. Defaults to ListPlus()
-            unit (): unit of the values.. Defaults to None
-        """
-
-        params = {
-            "quantity": quantity,
-            "values": values,
-            "unit": unit,
-        }
-
-        if id is not None:
-            params["id"] = id
-
-        self.peak_area.append(Data(**params))
-
-    def add_to_concentration(
-        self,
-        quantity: Optional[Quantity] = None,
-        values: List[Union[float, str, datetime]] = ListPlus(),
-        unit: Optional[Unit] = None,
-        id: Optional[str] = None,
-    ) -> None:
-        """
-        This method adds an object of type 'Data' to attribute concentration
-
-        Args:
-            id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
-            quantity (): quantity of a value.. Defaults to None
-            values (): values.. Defaults to ListPlus()
-            unit (): unit of the values.. Defaults to None
-        """
-
-        params = {
-            "quantity": quantity,
-            "values": values,
-            "unit": unit,
-        }
-
-        if id is not None:
-            params["id"] = id
-
-        self.concentration.append(Data(**params))
