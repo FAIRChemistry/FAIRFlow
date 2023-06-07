@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional, Union
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
@@ -54,11 +54,4 @@ class Metadata(sdRDM.DataModel):
     description: Optional[str] = Field(
         default=None,
         description="description of the parameter.",
-    )
-
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="bb0e745ce48c41c1231aa5de1f300ce63fd7a450"
     )

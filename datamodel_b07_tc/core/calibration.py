@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -48,11 +48,4 @@ class Calibration(sdRDM.DataModel):
     coefficient_of_determination: Optional[Data] = Field(
         default=None,
         description="coefficients of the (linear) calibration functions.",
-    )
-
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="bb0e745ce48c41c1231aa5de1f300ce63fd7a450"
     )

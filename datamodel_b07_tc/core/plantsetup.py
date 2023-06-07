@@ -1,18 +1,18 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .input import Input
-from .device import Device
-from .chemical import Chemical
-from .output import Output
 from .material import Material
+from .output import Output
 from .tubing import Tubing
 from .insulation import Insulation
+from .device import Device
+from .chemical import Chemical
 
 
 @forge_signature
@@ -48,13 +48,6 @@ class PlantSetup(sdRDM.DataModel):
         default_factory=ListPlus,
         multiple=True,
         description="bla",
-    )
-
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="bb0e745ce48c41c1231aa5de1f300ce63fd7a450"
     )
 
     def add_to_devices(

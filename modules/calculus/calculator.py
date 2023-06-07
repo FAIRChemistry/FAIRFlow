@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 from datamodel_b07_tc.core.experiment import Experiment
+from datamodel_b07_tc.core.calibration import Calibration
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.quantity import Quantity
@@ -22,34 +23,36 @@ class Calculator:
 
     def calibrate(
         self,
-        experiment: Experiment,
+        calibration_input_dict: dict,
     ) -> pd.DataFrame:
-        calculations = experiment.calculations
-
-        column_names = ["Slope", "Intercept", "Coefficient_of_determination"]
-        calibration_result_df = pd.DataFrame(
+        column_names = [
+            "Peak_areas",
+            "Concentrations",
+            "Slope",
+            "Intercept",
+            "Coefficient_of_determination",
+        ]
+        calibration_df = pd.DataFrame(
             columns=column_names,
+            index=[species for species in calibration_input_dict.keys()],
         )
-
-        for calibration in calculations.calibrations:
-            species = calibration.species
-            peak_areas = calibration.peak_area[0].values
-            concentrations = calibration.concentration[0].values
+        calibration_dict = {}
+        for key, value in calibration_input_dict.items():
+            calibration = Calibration(
+                species=value[0].value,
+                peak_area=Data(values=value[1], unit=Unit.NONE),
+                concentration=Data(values=value[2], unit=Unit.PERCENTAGE),
+            )
             function = linear_model.LinearRegression(fit_intercept=True)
             function.fit(
-                np.array(peak_areas).reshape(-1, 1),
-                np.array(concentrations),
+                np.array(calibration.peak_area.values).reshape(-1, 1),
+                np.array(calibration.concentration.values),
             )
             slope, intercept = function.coef_[0], function.intercept_
             coefficient_of_determination = function.score(
-                np.array(peak_areas).reshape(-1, 1),
-                np.array(concentrations),
+                np.array(calibration.peak_area.values).reshape(-1, 1),
+                np.array(calibration.concentration.values),
             )
-            calibration_result_df.loc[species] = [
-                slope,
-                intercept,
-                coefficient_of_determination,
-            ]
             calibration.slope = Data(
                 quantity=Quantity.SLOPE, values=[slope], unit=Unit.PERCENTAGE
             )
@@ -63,21 +66,29 @@ class Calculator:
                 values=[coefficient_of_determination],
                 unit=Unit.NONE,
             )
+            calibration_dict[key] = calibration
+            calibration_df.loc[calibration.species] = [
+                calibration.peak_area.values,
+                calibration.concentration.values,
+                calibration.slope.values[0],
+                calibration.intercept.values[0],
+                calibration.coefficient_of_determination.values[0],
+            ]
 
-        return calibration_result_df, experiment
+        return calibration_df, calibration_dict
 
     def calculate_volumetric_fractions(
         self,
         peak_area_dict: dict,
-        calibration_result_df: pd.DataFrame,
+        calibration_df: pd.DataFrame,
     ) -> pd.DataFrame:
         volumetric_fractions_df = pd.DataFrame(
-            index=calibration_result_df.index, columns=["Volumetric_fraction"]
+            index=calibration_df.index, columns=["Volumetric_fraction"]
         )
         for species, peak_area in peak_area_dict.items():
             volumetric_fractions_df.loc[species] = (
-                peak_area * calibration_result_df.loc[species][0]
-                + calibration_result_df.loc[species][1]
+                peak_area * calibration_df.loc[species][0]
+                + calibration_df.loc[species][1]
             )
         return volumetric_fractions_df
 
