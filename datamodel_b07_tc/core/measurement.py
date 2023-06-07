@@ -1,18 +1,18 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .metadata import Metadata
+from .quantity import Quantity
 from .measurementtype import MeasurementType
 from .data import Data
+from .metadata import Metadata
 from .datatype import DataType
 from .unit import Unit
-from .quantity import Quantity
 
 
 @forge_signature
@@ -41,6 +41,13 @@ class Measurement(sdRDM.DataModel):
         default_factory=ListPlus,
         multiple=True,
         description="experimental data of a measurement.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="7dd708753549b0c2433a72463c1d653249635979"
     )
 
     def add_to_metadata(

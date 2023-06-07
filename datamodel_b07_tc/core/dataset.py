@@ -1,16 +1,16 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .experiment import Experiment
-from .measurement import Measurement
-from .plantsetup import PlantSetup
 from .generalinformation import GeneralInformation
+from .experiment import Experiment
+from .plantsetup import PlantSetup
 from .calculation import Calculation
+from .measurement import Measurement
 
 
 @forge_signature
@@ -33,6 +33,13 @@ class Dataset(sdRDM.DataModel):
         default_factory=ListPlus,
         multiple=True,
         description="information about the individual experiment.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="7dd708753549b0c2433a72463c1d653249635979"
     )
 
     def add_to_experiments(
