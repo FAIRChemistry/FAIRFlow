@@ -51,8 +51,8 @@ This is another object that represents the author of the dataset. Please note, t
   - Type: Measurement
   - Multiple: True
   - Description: different measurements that are made within the scope of one experiment.
-- calculations
-  - Type: Calculation
+- analysis
+  - Type: Analysis
   - Description: all the calculations that are done within the scope of one experiment.
 
 
@@ -291,7 +291,7 @@ Stoichiometric information about the compound.
   - Description: experimental data of a measurement.
 
 
-### Calculation
+### Analysis
 
 - calibrations
   - Type: Calibration

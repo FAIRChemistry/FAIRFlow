@@ -87,8 +87,8 @@ class Calculator:
         )
         for species, peak_area in peak_area_dict.items():
             volumetric_fractions_df.loc[species] = (
-                peak_area * calibration_df.loc[species][0]
-                + calibration_df.loc[species][1]
+                peak_area * calibration_df.loc[species][2]
+                + calibration_df.loc[species][3]
             )
         return volumetric_fractions_df
 
@@ -175,7 +175,7 @@ class Calculator:
             ) / (2 * faraday_constant)
         return theoretical_material_flow_df
 
-    def plot(self):
+    def plot_calibration(self):
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.regplot(
             x=self._p,

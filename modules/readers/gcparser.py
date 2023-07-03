@@ -5,8 +5,6 @@ from pathlib import Path
 from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.data import Quantity
-from datamodel_b07_tc.core.measurement import MeasurementType
-from datamodel_b07_tc.core.measurement import Measurement
 from datamodel_b07_tc.core.metadata import Metadata
 
 
@@ -124,13 +122,19 @@ class GCParser:
             self._available_files[filestem],
             sep=",",
             names=[
-                "Parameter",
-                "Value",
-                "Description",
+                "parameter",
+                "value",
+                "description",
             ],
             engine="python",
             encoding="utf-16_le",
         )
+        # rename = {
+        #     "Parameter": "parameter",
+        #     "Value": "value",
+        #     "Description": "description",
+        # }
+        # rename(rename).
         record = gc_metadata_df.to_dict(orient="records")
         gc_metadata = {}
         for i, entry in enumerate(record):

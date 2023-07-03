@@ -19,19 +19,17 @@ def get_volumetric_flow_mean(
         .experimental_data[0]
         .values
     )
-    volumetric_flow_rate = (
+    volumetric_flow = (
         experiment.get("measurements", "measurement_type", "MFM Measurement")[
             0
         ]
         .experimental_data[3]
         .values
     )
-    volumetric_flow_rates = []
+    volumetric_flows = []
     for i, datetime_ in enumerate(volumetric_flow_datetime_list):
         if datetime_ == inj_date_datetime:
             for j in range(i - averaging_radius, i + averaging_radius + 1):
-                volumetric_flow_rates.append(volumetric_flow_rate[j])
-    volumetric_flow_mean = sum(volumetric_flow_rates) / (
-        averaging_radius * 2 + 1
-    )
-    return volumetric_flow_mean
+                volumetric_flows.append(volumetric_flow[j])
+    volumetric_flows_mean = sum(volumetric_flows) / (averaging_radius * 2 + 1)
+    return volumetric_flows_mean
