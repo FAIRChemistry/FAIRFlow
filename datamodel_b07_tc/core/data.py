@@ -13,7 +13,6 @@ from .unit import Unit
 
 @forge_signature
 class Data(sdRDM.DataModel):
-
     """"""
 
     id: Optional[str] = Field(
@@ -42,5 +41,5 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="7dd708753549b0c2433a72463c1d653249635979"
+        default="61e6cfaa882d0de966004def67aeb9a10432acc5"
     )

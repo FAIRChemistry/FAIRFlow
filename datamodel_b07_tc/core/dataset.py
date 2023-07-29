@@ -7,15 +7,14 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .generalinformation import GeneralInformation
+from .analysis import Analysis
 from .experiment import Experiment
-from .plantsetup import PlantSetup
-from .calculation import Calculation
 from .measurement import Measurement
+from .plantsetup import PlantSetup
 
 
 @forge_signature
 class Dataset(sdRDM.DataModel):
-
     """"""
 
     id: Optional[str] = Field(
@@ -39,14 +38,14 @@ class Dataset(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="7dd708753549b0c2433a72463c1d653249635979"
+        default="61e6cfaa882d0de966004def67aeb9a10432acc5"
     )
 
     def add_to_experiments(
         self,
         plant_setup: Optional[PlantSetup] = None,
         measurements: List[Measurement] = ListPlus(),
-        calculations: Optional[Calculation] = None,
+        analysis: Optional[Analysis] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -56,13 +55,13 @@ class Dataset(sdRDM.DataModel):
             id (str): Unique identifier of the 'Experiment' object. Defaults to 'None'.
             plant_setup (): the individual plant setup that is used in this one experiment.. Defaults to None
             measurements (): different measurements that are made within the scope of one experiment.. Defaults to ListPlus()
-            calculations (): all the calculations that are done within the scope of one experiment.. Defaults to None
+            analysis (): all the calculations that are done within the scope of one experiment.. Defaults to None
         """
 
         params = {
             "plant_setup": plant_setup,
             "measurements": measurements,
-            "calculations": calculations,
+            "analysis": analysis,
         }
 
         if id is not None:

@@ -18,7 +18,7 @@ from .stoichiometry import Stoichiometry
 from .data import Data
 from .metadata import Metadata
 from .measurement import Measurement
-from .calculation import Calculation
+from .analysis import Analysis
 from .calibration import Calibration
 from .datatype import DataType
 from .thermocoupletype import ThermocoupleType
@@ -54,7 +54,7 @@ __all__ = [
     "Data",
     "Metadata",
     "Measurement",
-    "Calculation",
+    "Analysis",
     "Calibration",
     "DataType",
     "ThermocoupleType",

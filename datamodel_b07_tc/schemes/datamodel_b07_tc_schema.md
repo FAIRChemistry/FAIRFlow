@@ -9,7 +9,7 @@ classDiagram
     GeneralInformation *-- Author
     Experiment *-- PlantSetup
     Experiment *-- Measurement
-    Experiment *-- Calculation
+    Experiment *-- Analysis
     PlantSetup *-- Device
     PlantSetup *-- Tubing
     PlantSetup *-- Input
@@ -34,8 +34,8 @@ classDiagram
     Measurement *-- MeasurementType
     Measurement *-- Data
     Measurement *-- Metadata
-    Calculation *-- Data
-    Calculation *-- Calibration
+    Analysis *-- Data
+    Analysis *-- Calibration
     Calibration *-- Species
     Calibration *-- Data
     
@@ -58,7 +58,7 @@ classDiagram
     class Experiment {
         +PlantSetup plant_setup
         +Measurement[0..*] measurements
-        +Calculation calculations
+        +Analysis analysis
     }
     
     class PlantSetup {
@@ -162,7 +162,7 @@ classDiagram
         +Data[0..*] experimental_data
     }
     
-    class Calculation {
+    class Analysis {
         +Calibration[0..*] calibrations
         +Data[0..*] faraday_coefficients
     }
