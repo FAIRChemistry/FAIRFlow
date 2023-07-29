@@ -154,7 +154,7 @@ data/
 .vscode
 
 # images
-.png
+*.png
 
 # Pyre type checker
 .pyre/
