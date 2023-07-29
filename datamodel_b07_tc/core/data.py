@@ -7,8 +7,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .quantity import Quantity
 from .unit import Unit
+from .quantity import Quantity
 
 
 @forge_signature
@@ -41,5 +41,5 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="941a1c1d9c93cf7b4c0395591b1fd7eddbff7406"
+        default="7254f63156791e5ef9358a8ba5bab303aa319eed"
     )
