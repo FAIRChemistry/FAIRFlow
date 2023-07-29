@@ -1,17 +1,16 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .data import Data
 from .species import Species
+from .data import Data
 
 
 @forge_signature
 class Calibration(sdRDM.DataModel):
-
     """"""
 
     id: Optional[str] = Field(
@@ -48,4 +47,11 @@ class Calibration(sdRDM.DataModel):
     coefficient_of_determination: Optional[Data] = Field(
         default=None,
         description="coefficients of the (linear) calibration functions.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="a471134fc95f6210b145affe01f705a766fd9b50"
     )

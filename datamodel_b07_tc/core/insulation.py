@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -10,7 +10,6 @@ from .material import Material
 
 @forge_signature
 class Insulation(sdRDM.DataModel):
-
     """"""
 
     id: Optional[str] = Field(
@@ -27,4 +26,11 @@ class Insulation(sdRDM.DataModel):
     material: Optional[Material] = Field(
         default=None,
         description="insulating material",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="a471134fc95f6210b145affe01f705a766fd9b50"
     )

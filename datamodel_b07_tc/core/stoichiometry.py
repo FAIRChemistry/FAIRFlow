@@ -1,13 +1,12 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 @forge_signature
 class Stoichiometry(sdRDM.DataModel):
-
     """Stoichiometric information about the compound."""
 
     id: Optional[str] = Field(
@@ -54,4 +53,11 @@ class Stoichiometry(sdRDM.DataModel):
     molar_concentration: Optional[float] = Field(
         default=None,
         description="molar concentration in mol per l.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="a471134fc95f6210b145affe01f705a766fd9b50"
     )

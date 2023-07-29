@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -10,7 +10,6 @@ from .unit import Unit
 
 @forge_signature
 class Parameter(sdRDM.DataModel):
-
     """"""
 
     id: Optional[str] = Field(
@@ -27,4 +26,11 @@ class Parameter(sdRDM.DataModel):
     unit: Optional[Unit] = Field(
         default=None,
         description="unit of the values.",
+    )
+
+    __repo__: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    )
+    __commit__: Optional[str] = PrivateAttr(
+        default="a471134fc95f6210b145affe01f705a766fd9b50"
     )
