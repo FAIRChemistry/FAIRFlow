@@ -4,8 +4,8 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .pumptype import PumpType
 from .device import Device
+from .pumptype import PumpType
 
 
 @forge_signature
@@ -27,5 +27,5 @@ class Pump(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ba59313488153838f149ab297309648b97830175"
+        default="7e3914398063e40b30e031d411a1d5386ff3943e"
     )
