@@ -171,8 +171,8 @@ class Calculator:
         )
         for species, factor in factors.items():
             theoretical_material_flow_df.loc[species] = (
-                initial_time / 60 * current_density / 1000 * factor
-            ) / (2 * faraday_constant)
+                initial_time / 60 * current_density
+            ) / (factor * faraday_constant)
         return theoretical_material_flow_df
 
     def plot_calibration(self):
