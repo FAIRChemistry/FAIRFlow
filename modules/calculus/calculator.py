@@ -32,10 +32,11 @@ class Calculator:
             "Intercept",
             "Coefficient_of_determination",
         ]
-        calibration_df = pd.DataFrame(
+        self.calibration_df = pd.DataFrame(
             columns=column_names,
             index=[species for species in calibration_input_dict.keys()],
         )
+        self.models_dict = {}
         calibration_dict = {}
         for key, value in calibration_input_dict.items():
             calibration = Calibration(
@@ -67,7 +68,8 @@ class Calculator:
                 unit=Unit.NONE,
             )
             calibration_dict[key] = calibration
-            calibration_df.loc[calibration.species] = [
+            self.models_dict[key] = function
+            self.calibration_df.loc[calibration.species] = [
                 calibration.peak_area.values,
                 calibration.concentration.values,
                 calibration.slope.values[0],
@@ -75,7 +77,41 @@ class Calculator:
                 calibration.coefficient_of_determination.values[0],
             ]
 
-        return calibration_df, calibration_dict
+        return self.calibration_df, calibration_dict
+
+    # def plot_calibration(self):
+    #     i = 1
+    #     j = 0
+    #     for count, index, row in enumerate(self.calibration_df.iterrows()):
+    #         if count % 2 == 0:
+    #             j = 2
+    #         else:
+    #             j = 1
+    #         fig, ax = plt.subplots(i, j, figsize=(10, 6))
+    #         sns.regplot(
+    #             x=row["Concentrations"],
+    #             y=row["Peak_areas"],
+    #             ci=95,
+    #             order=1,
+    #             line_kws={
+    #                 "label": "Linear regression line: r'$f(x)=' f'{intercept} r'$x+$'f'{sclope}'",
+    #                 "color": "m",
+    #             },
+    #             seed=1,
+    #             truncate=False,
+    #             label="Original data",
+    #             ax=ax[i, j],
+    #         )
+    #         i += 1
+
+    #         ax.set_xlabel("Peak area")
+    #         ax.set_ylabel("Concentration")
+    #         # ax.set_xticks([1000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000])
+    #         # ax.set_yticks(np.arange(3.0, 10.5, 0.5))
+    #         ax.legend(loc="upper left")
+    #     file_name = f"calib_plot_{index}.png"
+    #     file_path = self._path_to_dataset / file_name
+    #     fig.savefig(file_path)
 
     def calculate_volumetric_fractions(
         self,
@@ -171,28 +207,30 @@ class Calculator:
         )
         for species, factor in factors.items():
             theoretical_material_flow_df.loc[species] = (
-                initial_time / 60 * current_density / 1000 * factor
-            ) / (2 * faraday_constant)
+                initial_time / 60 * current_density / 1000
+            ) / (factor * faraday_constant)
         return theoretical_material_flow_df
 
-    def plot_calibration(self):
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.regplot(
-            x=self._p,
-            y=self.c,
-            ci=95,
-            order=1,
-            line_kws={
-                "label": "Linear regression line: r'$f(x)=' f'{intercept} r'$x+$'f'{sclope}'",
-                "color": "m",
-            },
-            seed=1,
-            truncate=False,
-            label="Original data",
+    def calculate_theoretical_amount_of_substance(
+        self, initial_current, initial_time, electrode_surface_area
+    ):
+        positive_initial_current = abs(initial_current)
+        current_density = positive_initial_current / electrode_surface_area
+        faraday_constant = 96485.3321
+        factors = {
+            "H2": 2,
+            "CO": 2,
+            "CO2": 2,
+            "CH4": 8,
+            "C2H4": 12,
+            "C2H6": 16,
+        }
+        theoretical_theoretical_amount_of_substance_df = pd.DataFrame(
+            index=[species for species in factors.keys()],
+            columns=["Theoretical_theoretical_amount_of_substance"],
         )
-        ax.set_xlabel("Peak area")
-        ax.set_ylabel("Concentration")
-        # ax.set_xticks([1000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000])
-        # ax.set_yticks(np.arange(3.0, 10.5, 0.5))
-        ax.legend(loc="upper left")
-        fig.savefig(self.path_to_dataset + "/" + f"calib_plot_{self._n}.png")
+        for species, factor in factors.items():
+            theoretical_theoretical_amount_of_substance_df.loc[species] = (
+                initial_time * current_density / 1000 * factor
+            ) / (2 * faraday_constant)
+        return theoretical_theoretical_amount_of_substance_df
