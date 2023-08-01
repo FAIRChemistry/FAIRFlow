@@ -1,0 +1,11 @@
+# experimental data
+data/
+
+# GitHub
+.github/
+
+# VS Code
+.vscode
+
+# images
+*.png
