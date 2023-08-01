@@ -4,8 +4,8 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .device import Device
 from .parameter import Parameter
+from .device import Device
 
 
 @forge_signature
@@ -32,5 +32,5 @@ class MassFlowMeter(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e7fa7c7530bb346a7692be1c5baa472556377a9f"
+        default="e529d058ceedd6b8cce59fc62f90197cf09048d2"
     )
