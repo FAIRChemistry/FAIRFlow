@@ -6,13 +6,13 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .output import Output
 from .input import Input
-from .material import Material
-from .insulation import Insulation
 from .chemical import Chemical
+from .material import Material
 from .tubing import Tubing
 from .device import Device
+from .output import Output
+from .insulation import Insulation
 
 
 @forge_signature
@@ -53,7 +53,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
+        default="8e4370241518412c2367c002d43b1b3cd021ab9e"
     )
 
     def add_to_devices(

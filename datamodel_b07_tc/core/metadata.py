@@ -6,8 +6,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .datatype import DataType
 from .unit import Unit
+from .datatype import DataType
 
 
 @forge_signature
@@ -59,5 +59,5 @@ class Metadata(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
+        default="8e4370241518412c2367c002d43b1b3cd021ab9e"
     )
