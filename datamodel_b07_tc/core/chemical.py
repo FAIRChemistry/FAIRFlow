@@ -6,8 +6,8 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .stoichiometry import Stoichiometry
 from .reactantrole import ReactantRole
+from .stoichiometry import Stoichiometry
 
 
 @forge_signature
@@ -65,5 +65,5 @@ class Chemical(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e529d058ceedd6b8cce59fc62f90197cf09048d2"
+        default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )

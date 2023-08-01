@@ -7,12 +7,12 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .unit import Unit
-from .metadata import Metadata
-from .measurementtype import MeasurementType
 from .datatype import DataType
-from .quantity import Quantity
+from .unit import Unit
 from .data import Data
+from .quantity import Quantity
+from .measurementtype import MeasurementType
+from .metadata import Metadata
 
 
 @forge_signature
@@ -46,7 +46,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e529d058ceedd6b8cce59fc62f90197cf09048d2"
+        default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
 
     def add_to_metadata(
