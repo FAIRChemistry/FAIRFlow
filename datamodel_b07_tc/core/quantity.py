@@ -7,6 +7,7 @@ class Quantity(Enum):
     CURRENT = "Current"
     MASS = "Mass"
     MASSFLOWRATE = "Mass flow rate"
+    VOLUMETRICFLOWRATE = "Volumetric flow rate"
     DATETIME = "Date time"
     FRACTION = "Fraction"
     SIGNAL = "Signal"

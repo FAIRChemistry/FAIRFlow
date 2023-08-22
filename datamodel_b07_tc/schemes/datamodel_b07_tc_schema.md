@@ -258,6 +258,7 @@ classDiagram
         +CURRENT
         +MASS
         +MASSFLOWRATE
+        +VOLUMETRICFLOWRATE
         +DATETIME
         +FRACTION
         +SIGNAL
