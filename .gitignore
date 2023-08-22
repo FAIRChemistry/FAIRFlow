@@ -12,3 +12,4 @@ data/
 
 #compiled python files
 .pyc
+*.pyc
