@@ -269,7 +269,7 @@ Stoichiometric information about the compound.
   - Type: string
   - Description: mode of the parameter. E.g., on and off.
 - unit
-  - Type: Unit, string
+  - Type: Unit
   - Description: unit of the parameter.
 - description
     - Type: string
