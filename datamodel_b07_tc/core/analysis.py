@@ -7,11 +7,11 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime
 
-from .species import Species
-from .calibration import Calibration
 from .unit import Unit
-from .quantity import Quantity
 from .data import Data
+from .quantity import Quantity
+from .calibration import Calibration
+from .species import Species
 
 
 @forge_signature
@@ -40,7 +40,7 @@ class Analysis(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8e4370241518412c2367c002d43b1b3cd021ab9e"
+        default="376dc8d37ce5e20caeff2a1c72de213e0b6d280c"
     )
 
     def add_to_calibrations(
