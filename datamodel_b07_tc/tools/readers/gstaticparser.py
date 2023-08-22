@@ -1,17 +1,15 @@
-import regex as re
 import pandas as pd
 import os
+
 from pathlib import Path
-from datamodel_b07_tc.core import Unit
-from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.metadata import Metadata
-from datamodel_b07_tc.core.measurement import Measurement
 
 
 class GstaticParser:
     def __init__(
         self,
-        path_to_directory: str | bytes | os.PathLike,
+        path_to_directory: str | bytes | os.PathLike | Path,
+        file_suffix: str,
     ):
         """Pass the path to a directory containing CSV-type files of the GC to be
         read.
@@ -19,28 +17,20 @@ class GstaticParser:
         Args:
             path_to_directory (str | bytes | os.PathLike): Path to a directory containing CSV-type files.
         """
-        path = list(Path(path_to_directory).glob("*.DTA"))
+        file_search_pattern = "*." + file_suffix
+        path_list = list(Path(path_to_directory).glob(file_search_pattern))
         self._available_files = {
-            file.stem: file for file in path if file.is_file()
+            count: file
+            for count, file in enumerate(path_list)
+            if file.is_file()
         }
 
     def __repr__(self):
         return "Gstatic parser"
 
-    def enumerate_available_files(self) -> dict[int, str]:
-        """Enumerate the CSV files available in the given directory and
-        return a dictionary with their index and name.
-
-        Returns:
-            dict[int, str]: Indices and names of available files.
-        """
-        return {
-            count: value for count, value in enumerate(self.available_files)
-        }
-
-    def extract_metadata(self, filestem: str) -> dict:
+    def extract_metadata(self, file_index: int) -> dict:  # filestem: str
         metadata_df = pd.read_csv(
-            self._available_files[filestem],
+            self._available_files[file_index],
             sep="\t",
             names=[
                 "Parameter",
@@ -56,13 +46,13 @@ class GstaticParser:
             ],
         )
         metadata_list = []
-        for index, row in metadata_df.iterrows():
+        for index in metadata_df.index:
             metadata_list.append(
                 Metadata(
-                    parameter=row[0],
-                    data_type=row[1],
-                    value=row[2],
-                    description=row[3],
+                    parameter=metadata_df["Parameter"][index],
+                    data_type=metadata_df["Data_type"][index],
+                    value=metadata_df["Value"][index],
+                    description=metadata_df["Description"][index],
                 )
             )
         return metadata_df, metadata_list
@@ -112,3 +102,14 @@ class GstaticParser:
     #         datum[2], datum[1], datum[0], datum[3], datum[4], datum[5]
     #     )
     #     meta_data["DATEMEASURED"] = date
+
+    # def enumerate_available_files(self) -> dict[int, str]:
+    #     """Enumerate the CSV files available in the given directory and
+    #     return a dictionary with their index and name.
+
+    #     Returns:
+    #         dict[int, str]: Indices and names of available files.
+    #     """
+    #     return {
+    #         count: value for count, value in enumerate(self.available_files)
+    #     }
