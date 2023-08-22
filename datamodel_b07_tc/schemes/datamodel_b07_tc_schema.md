@@ -152,7 +152,7 @@ classDiagram
         +string abbreviation
         +DataType, string data_type
         +string mode
-        +Unit, string unit
+        +Unit unit
         +string description
     }
     
