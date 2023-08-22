@@ -405,29 +405,6 @@ CONTROLUNIT = "Control unit"
 ```
 
 
-### Unit
-
-List of units that are supported by the datamodel.
-
-```python
-NONE = "none"
-VOLFRACTION = "vol%"
-PERCENTAGE = "%"
-SECONDS = "s"
-MINUTES = "min"
-HOURS = "h"
-YEARSMONTHSDAYSHOURSMINUTESSECONDS = "YYYY-MM-DDTHH:MM:SS. mmmmmm"
-KILOGRAMS = "kg"
-GRAMS = "g"
-MILLIGRAMS = "mg"
-LITER = "L"
-MILLILITER = "mL"
-KILOGRAMPERHOUR = "kg/h"
-GRAMPERSECOND = "g/s"
-MILLILITERPERSECOND = "ml/s"
-```
-
-
 ### Quantity
 
 List of different quantities.
