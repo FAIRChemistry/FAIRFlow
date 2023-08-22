@@ -1,3 +1,3 @@
 
 __URL__ = "https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-__COMMIT__ = "354379ed83637a10a02aa5e04b8b67241191699f"
+__COMMIT__ = "b546e3e1ab46952707232fefcd53165aac50dc75"
