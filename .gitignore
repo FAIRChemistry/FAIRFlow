@@ -9,3 +9,6 @@ data/
 
 # images
 *.png
+
+#compiled python files
+.pyc
