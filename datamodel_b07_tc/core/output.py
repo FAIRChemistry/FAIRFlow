@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
@@ -13,6 +13,7 @@ from .chemical import Chemical
 
 @forge_signature
 class Output(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -27,6 +28,7 @@ class Output(sdRDM.DataModel):
         description="component of the output fluid.",
     )
 
+<<<<<<< Updated upstream
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -34,6 +36,8 @@ class Output(sdRDM.DataModel):
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
 
+=======
+>>>>>>> Stashed changes
     def add_to_component(
         self,
         name: List[str] = ListPlus(),
@@ -73,3 +77,5 @@ class Output(sdRDM.DataModel):
             params["id"] = id
 
         self.component.append(Chemical(**params))
+
+        return self.component[-1]

@@ -17,7 +17,6 @@ classDiagram
     Pump *-- PumpType
     Thermocouple *-- ThermocoupleType
     MassFlowMeter *-- Parameter
-    Parameter *-- Unit
     Potentiostat *-- Metadata
     Potentiostat *-- Measurement
     Tubing *-- Material
@@ -27,10 +26,8 @@ classDiagram
     Output *-- Chemical
     Chemical *-- ReactantRole
     Chemical *-- Stoichiometry
-    Data *-- Unit
     Data *-- Quantity
     Metadata *-- DataType
-    Metadata *-- Unit
     Measurement *-- MeasurementType
     Measurement *-- Data
     Measurement *-- Metadata
@@ -152,7 +149,7 @@ classDiagram
         +string abbreviation
         +DataType, string data_type
         +string mode
-        +Unit, string unit
+        +Unit unit
         +string description
     }
     
@@ -232,25 +229,6 @@ classDiagram
         +CONTROLUNIT
     }
     
-    class Unit {
-        << Enumeration >>
-        +NONE
-        +VOLFRACTION
-        +PERCENTAGE
-        +SECONDS
-        +MINUTES
-        +HOURS
-        +YEARSMONTHSDAYSHOURSMINUTESSECONDS
-        +KILOGRAMS
-        +GRAMS
-        +MILLIGRAMS
-        +LITER
-        +MILLILITER
-        +KILOGRAMPERHOUR
-        +GRAMPERSECOND
-        +MILLILITERPERSECOND
-    }
-    
     class Quantity {
         << Enumeration >>
         +TIME
@@ -258,6 +236,7 @@ classDiagram
         +CURRENT
         +MASS
         +MASSFLOWRATE
+        +VOLUMETRICFLOWRATE
         +DATETIME
         +FRACTION
         +SIGNAL

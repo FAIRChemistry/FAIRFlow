@@ -1,11 +1,12 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+<<<<<<< Updated upstream
 from .output import Output
 from .input import Input
 from .material import Material
@@ -13,10 +14,20 @@ from .insulation import Insulation
 from .chemical import Chemical
 from .tubing import Tubing
 from .device import Device
+=======
+from .tubing import Tubing
+from .insulation import Insulation
+from .device import Device
+from .input import Input
+from .output import Output
+from .material import Material
+from .chemical import Chemical
+>>>>>>> Stashed changes
 
 
 @forge_signature
 class PlantSetup(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -49,6 +60,7 @@ class PlantSetup(sdRDM.DataModel):
         description="bla",
     )
 
+<<<<<<< Updated upstream
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -56,6 +68,8 @@ class PlantSetup(sdRDM.DataModel):
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
 
+=======
+>>>>>>> Stashed changes
     def add_to_devices(
         self,
         manufacturer: Optional[str] = None,
@@ -86,6 +100,8 @@ class PlantSetup(sdRDM.DataModel):
             params["id"] = id
 
         self.devices.append(Device(**params))
+
+        return self.devices[-1]
 
     def add_to_tubing(
         self,
@@ -121,6 +137,8 @@ class PlantSetup(sdRDM.DataModel):
 
         self.tubing.append(Tubing(**params))
 
+        return self.tubing[-1]
+
     def add_to_input(
         self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
     ) -> None:
@@ -141,6 +159,8 @@ class PlantSetup(sdRDM.DataModel):
 
         self.input.append(Input(**params))
 
+        return self.input[-1]
+
     def add_to_output(
         self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
     ) -> None:
@@ -160,3 +180,5 @@ class PlantSetup(sdRDM.DataModel):
             params["id"] = id
 
         self.output.append(Output(**params))
+
+        return self.output[-1]

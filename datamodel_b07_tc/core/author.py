@@ -1,12 +1,13 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 @forge_signature
 class Author(sdRDM.DataModel):
+
     """This is another object that represents the author of the dataset. Please note, that the options here contain all required fields but also custom ones. In this example, the ```Dataverse``` option specifies where each field should be mapped, when exported to a Dataverse format. Hence, these options allow you to link your dataset towards any other data model without writing code by yourself."""
 
     id: Optional[str] = Field(
@@ -24,6 +25,7 @@ class Author(sdRDM.DataModel):
         default=None,
         description="organization the author is affiliated to.",
     )
+<<<<<<< Updated upstream
 
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
@@ -31,3 +33,5 @@ class Author(sdRDM.DataModel):
     __commit__: Optional[str] = PrivateAttr(
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
+=======
+>>>>>>> Stashed changes

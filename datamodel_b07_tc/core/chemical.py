@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
@@ -12,6 +12,7 @@ from .stoichiometry import Stoichiometry
 
 @forge_signature
 class Chemical(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -42,7 +43,7 @@ class Chemical(sdRDM.DataModel):
     )
 
     stoichiometry: Optional[Stoichiometry] = Field(
-        default=None,
+        default=Stoichiometry(),
         description=(
             "stoichiometric information like equivalents, mass, amount of substance,"
             " volume"
@@ -60,6 +61,7 @@ class Chemical(sdRDM.DataModel):
             "Role that a reactand plays in a chemical reaction or  in a process."
         ),
     )
+<<<<<<< Updated upstream
 
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
@@ -67,3 +69,5 @@ class Chemical(sdRDM.DataModel):
     __commit__: Optional[str] = PrivateAttr(
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
+=======
+>>>>>>> Stashed changes

@@ -1,10 +1,11 @@
 import sdRDM
 
 from typing import Optional, Union
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime
+from astropy.units import UnitBase
+from datetime import datetime as Datetime
 
 from .datatype import DataType
 from .unit import Unit
@@ -12,6 +13,7 @@ from .unit import Unit
 
 @forge_signature
 class Metadata(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -25,7 +27,7 @@ class Metadata(sdRDM.DataModel):
         description="Name of the parameter.",
     )
 
-    value: Union[str, float, datetime, None] = Field(
+    value: Union[str, float, Datetime, None] = Field(
         default=None,
         description="value of the parameter.",
     )
@@ -45,7 +47,7 @@ class Metadata(sdRDM.DataModel):
         description="mode of the parameter. E.g., on and off.",
     )
 
-    unit: Union[Unit, str, None] = Field(
+    unit: Optional[UnitBase] = Field(
         default=None,
         description="unit of the parameter.",
     )
@@ -54,6 +56,7 @@ class Metadata(sdRDM.DataModel):
         default=None,
         description="description of the parameter.",
     )
+<<<<<<< Updated upstream
 
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
@@ -61,3 +64,5 @@ class Metadata(sdRDM.DataModel):
     __commit__: Optional[str] = PrivateAttr(
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
+=======
+>>>>>>> Stashed changes

@@ -269,7 +269,7 @@ Stoichiometric information about the compound.
   - Type: string
   - Description: mode of the parameter. E.g., on and off.
 - unit
-  - Type: Unit, string
+  - Type: Unit
   - Description: unit of the parameter.
 - description
     - Type: string
@@ -404,30 +404,6 @@ PRESSURETRANSDUCER = "Pressure transducer"
 CONTROLUNIT = "Control unit"
 ```
 
-
-### Unit
-
-List of units that are supported by the datamodel.
-
-```python
-NONE = "none"
-VOLFRACTION = "vol%"
-PERCENTAGE = "%"
-SECONDS = "s"
-MINUTES = "min"
-HOURS = "h"
-YEARSMONTHSDAYSHOURSMINUTESSECONDS = "YYYY-MM-DDTHH:MM:SS. mmmmmm"
-KILOGRAMS = "kg"
-GRAMS = "g"
-MILLIGRAMS = "mg"
-LITER = "L"
-MILLILITER = "mL"
-KILOGRAMPERHOUR = "kg/h"
-GRAMPERSECOND = "g/s"
-MILLILITERPERSECOND = "ml/s"
-```
-
-
 ### Quantity
 
 List of different quantities.
@@ -438,6 +414,7 @@ VOLTAGE = "Voltage"
 CURRENT = "Current"
 MASS = "Mass"
 MASSFLOWRATE = "Mass flow rate"
+VOLUMETRICFLOWRATE = "Volumetric flow rate"
 DATETIME = "Date time"
 FRACTION = "Fraction"
 SIGNAL = "Signal"

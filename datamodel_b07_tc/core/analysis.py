@@ -1,21 +1,30 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime
+from astropy.units import UnitBase
+from datetime import datetime as Datetime
 
+<<<<<<< Updated upstream
 from .data import Data
 from .unit import Unit
 from .quantity import Quantity
 from .species import Species
 from .calibration import Calibration
+=======
+from .species import Species
+from .quantity import Quantity
+from .calibration import Calibration
+from .data import Data
+>>>>>>> Stashed changes
 
 
 @forge_signature
 class Analysis(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -36,6 +45,7 @@ class Analysis(sdRDM.DataModel):
         description="Faraday coefficients.",
     )
 
+<<<<<<< Updated upstream
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -43,6 +53,8 @@ class Analysis(sdRDM.DataModel):
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
 
+=======
+>>>>>>> Stashed changes
     def add_to_calibrations(
         self,
         species: Optional[Species] = None,
@@ -80,11 +92,13 @@ class Analysis(sdRDM.DataModel):
 
         self.calibrations.append(Calibration(**params))
 
+        return self.calibrations[-1]
+
     def add_to_faraday_coefficients(
         self,
         quantity: Optional[Quantity] = None,
-        values: List[Union[float, str, datetime]] = ListPlus(),
-        unit: Optional[Unit] = None,
+        values: List[Union[float, str, Datetime]] = ListPlus(),
+        unit: Optional[UnitBase] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -107,3 +121,5 @@ class Analysis(sdRDM.DataModel):
             params["id"] = id
 
         self.faraday_coefficients.append(Data(**params))
+
+        return self.faraday_coefficients[-1]

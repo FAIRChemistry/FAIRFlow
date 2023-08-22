@@ -8,33 +8,40 @@ from datamodel_b07_tc.core.unit import Unit
 
 
 class MFMParser:
-    def __init__(self, path_to_directory: str | bytes | os.PathLike):
-        """Pass the path to a directory containing CSV-type files of the GC to be
+    def __init__(
+        self,
+        path_to_directory: str | bytes | os.PathLike | Path,
+        file_suffix: str,
+    ):
+        """Pass the path to a directory containing CSV-type files of the MFM to be
         read.
 
         Args:
             path_to_directory (str | bytes | os.PathLike): Path to a directory containing CSV-type files.
         """
-        path = list(Path(path_to_directory).glob("*.csv"))
+        file_search_pattern = "*." + file_suffix
+        path_list = list(Path(path_to_directory).glob(file_search_pattern))
         self._available_files = {
-            file.stem: file for file in path if file.is_file()
+            count: file
+            for count, file in enumerate(path_list)
+            if file.is_file()
         }
 
     def __repr__(self):
         return "MFM parser"
 
-    def enumerate_available_files(self) -> dict[int, str]:
-        """Enumerate the CSV files available in the given directory and
-        return a dictionary with their index and name.
+    # def enumerate_available_files(self) -> dict[int, str]:
+    #     """Enumerate the CSV files available in the given directory and
+    #     return a dictionary with their index and name.
 
-        Returns:
-            dict[int, str]: Indices and names of available files.
-        """
-        return {
-            count: value for count, value in enumerate(self.available_files)
-        }
+    #     Returns:
+    #         dict[int, str]: Indices and names of available files.
+    #     """
+    #     return {
+    #         count: value for count, value in enumerate(self.available_files)
+    #     }
 
-    def extract_exp_data(self, filestem: str):
+    def extract_exp_data(self, file_index):
         names_column = [
             "Datetime",
             "Time",
@@ -42,7 +49,7 @@ class MFMParser:
             "Flow_rate",
         ]
         mfm_exp_data_df = pd.read_csv(
-            self._available_files[filestem],
+            self._available_files[file_index],
             sep=",",
             names=names_column,
             engine="python",
@@ -62,21 +69,18 @@ class MFMParser:
             {"values": "Flow_rate"},
         ]
         units_formulae = {
-            "datetime": {
-                "quantity": Quantity.DATETIME.value,
-                "unit": Unit.YEARSMONTHSDAYSHOURSMINUTESSECONDS.value,
-            },
+            "datetime": {"quantity": Quantity.DATETIME.value, "unit": None},
             "time": {
                 "quantity": Quantity.TIME.value,
-                "unit": Unit.SECONDS.value,
+                "unit": "s",
             },
             "signal": {
                 "quantity": Quantity.SIGNAL.value,
-                "unit": Unit.NONE.value,
+                "unit": None,
             },
             "flow_rate": {
-                "quantity": Quantity.MASSFLOWRATE.value,
-                "unit": Unit.MILLILITERPERSECOND.value,
+                "quantity": Quantity.VOLUMETRICFLOWRATE.value,
+                "unit": "ml / s",
             },
         }
         mfm_exp_data = {}

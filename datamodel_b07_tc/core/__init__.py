@@ -26,7 +26,6 @@ from .material import Material
 from .pumptype import PumpType
 from .reactantrole import ReactantRole
 from .devicelist import DeviceList
-from .unit import Unit
 from .quantity import Quantity
 from .measurementtype import MeasurementType
 from .species import Species
@@ -62,7 +61,6 @@ __all__ = [
     "PumpType",
     "ReactantRole",
     "DeviceList",
-    "Unit",
     "Quantity",
     "MeasurementType",
     "Species",

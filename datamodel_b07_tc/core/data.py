@@ -1,18 +1,19 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime
+from astropy.units import UnitBase
+from datetime import datetime as Datetime
 
-from .unit import Unit
 from .quantity import Quantity
 
 
 @forge_signature
 class Data(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -26,16 +27,17 @@ class Data(sdRDM.DataModel):
         description="quantity of a value.",
     )
 
-    values: List[Union[float, str, datetime]] = Field(
+    values: List[Union[float, str, Datetime]] = Field(
         default_factory=ListPlus,
         multiple=True,
         description="values.",
     )
 
-    unit: Optional[Unit] = Field(
+    unit: Optional[UnitBase] = Field(
         default=None,
         description="unit of the values.",
     )
+<<<<<<< Updated upstream
 
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
@@ -43,3 +45,5 @@ class Data(sdRDM.DataModel):
     __commit__: Optional[str] = PrivateAttr(
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
+=======
+>>>>>>> Stashed changes

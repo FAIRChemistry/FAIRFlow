@@ -1,21 +1,31 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+<<<<<<< Updated upstream
 from .plantsetup import PlantSetup
 from .measurement import Measurement
 from .data import Data
 from .analysis import Analysis
 from .measurementtype import MeasurementType
 from .metadata import Metadata
+=======
+from .analysis import Analysis
+from .measurementtype import MeasurementType
+from .data import Data
+from .metadata import Metadata
+from .measurement import Measurement
+from .plantsetup import PlantSetup
+>>>>>>> Stashed changes
 
 
 @forge_signature
 class Experiment(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -25,7 +35,7 @@ class Experiment(sdRDM.DataModel):
     )
 
     plant_setup: Optional[PlantSetup] = Field(
-        default=None,
+        default=PlantSetup(),
         description="the individual plant setup that is used in this one experiment.",
     )
 
@@ -38,12 +48,13 @@ class Experiment(sdRDM.DataModel):
     )
 
     analysis: Optional[Analysis] = Field(
-        default=None,
+        default=Analysis(),
         description=(
             "all the calculations that are done within the scope of one experiment."
         ),
     )
 
+<<<<<<< Updated upstream
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -51,6 +62,8 @@ class Experiment(sdRDM.DataModel):
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
 
+=======
+>>>>>>> Stashed changes
     def add_to_measurements(
         self,
         measurement_type: Optional[MeasurementType] = None,
@@ -78,3 +91,5 @@ class Experiment(sdRDM.DataModel):
             params["id"] = id
 
         self.measurements.append(Measurement(**params))
+
+        return self.measurements[-1]

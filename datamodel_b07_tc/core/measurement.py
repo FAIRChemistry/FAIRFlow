@@ -1,22 +1,32 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime
+from astropy.units import UnitBase
+from datetime import datetime as Datetime
 
+<<<<<<< Updated upstream
 from .datatype import DataType
 from .unit import Unit
 from .data import Data
 from .quantity import Quantity
 from .measurementtype import MeasurementType
 from .metadata import Metadata
+=======
+from .quantity import Quantity
+from .metadata import Metadata
+from .data import Data
+from .datatype import DataType
+from .measurementtype import MeasurementType
+>>>>>>> Stashed changes
 
 
 @forge_signature
 class Measurement(sdRDM.DataModel):
+
     """"""
 
     id: Optional[str] = Field(
@@ -42,6 +52,7 @@ class Measurement(sdRDM.DataModel):
         description="experimental data of a measurement.",
     )
 
+<<<<<<< Updated upstream
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -49,14 +60,16 @@ class Measurement(sdRDM.DataModel):
         default="8f3ba22c83330e0532dcb7cdb12b205c1f881980"
     )
 
+=======
+>>>>>>> Stashed changes
     def add_to_metadata(
         self,
         parameter: Optional[str] = None,
-        value: Union[str, float, datetime, None] = None,
+        value: Union[str, float, Datetime, None] = None,
         abbreviation: Optional[str] = None,
         data_type: Union[DataType, str, None] = None,
         mode: Optional[str] = None,
-        unit: Union[Unit, str, None] = None,
+        unit: Optional[UnitBase] = None,
         description: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -89,11 +102,13 @@ class Measurement(sdRDM.DataModel):
 
         self.metadata.append(Metadata(**params))
 
+        return self.metadata[-1]
+
     def add_to_experimental_data(
         self,
         quantity: Optional[Quantity] = None,
-        values: List[Union[float, str, datetime]] = ListPlus(),
-        unit: Optional[Unit] = None,
+        values: List[Union[float, str, Datetime]] = ListPlus(),
+        unit: Optional[UnitBase] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -116,3 +131,5 @@ class Measurement(sdRDM.DataModel):
             params["id"] = id
 
         self.experimental_data.append(Data(**params))
+
+        return self.experimental_data[-1]
