@@ -19,12 +19,12 @@ class MassFlowMeter(Device):
     )
 
     min_flow: Optional[Parameter] = Field(
-        default=None,
+        default=Parameter(),
         description="Minimum possible flow rate.",
     )
 
     max_flow: Optional[Parameter] = Field(
-        default=None,
+        default=Parameter(),
         description="Maximum possible flow rate.",
     )
 
@@ -32,5 +32,5 @@ class MassFlowMeter(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="6a28c05c7b083b9ad2b52323e96000b4075f6c52"
+        default="c74e880ad947ad85af07e386502a19026786a4b7"
     )

@@ -5,8 +5,8 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .data import Data
 from .species import Species
+from .data import Data
 
 
 @forge_signature
@@ -25,27 +25,27 @@ class Calibration(sdRDM.DataModel):
     )
 
     peak_area: Optional[Data] = Field(
-        default=None,
+        default=Data(),
         description="Recorded peak areas of the individual calibration solutions.",
     )
 
     concentration: Optional[Data] = Field(
-        default=None,
+        default=Data(),
         description="concentrations of the individual calibration solutions.",
     )
 
     slope: Optional[Data] = Field(
-        default=None,
+        default=Data(),
         description="slopes of the (linear) calibration functions.",
     )
 
     intercept: Optional[Data] = Field(
-        default=None,
+        default=Data(),
         description="intercept of the (linear) calibration functions.",
     )
 
     coefficient_of_determination: Optional[Data] = Field(
-        default=None,
+        default=Data(),
         description="coefficients of the (linear) calibration functions.",
     )
 
@@ -53,5 +53,5 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="6a28c05c7b083b9ad2b52323e96000b4075f6c52"
+        default="c74e880ad947ad85af07e386502a19026786a4b7"
     )

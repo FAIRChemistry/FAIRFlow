@@ -5,13 +5,13 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime
+from datetime import datetime as Datetime
+from astropy.units import UnitBase
 
-from .data import Data
-from .datatype import DataType
-from .unit import Unit
 from .metadata import Metadata
 from .quantity import Quantity
+from .datatype import DataType
+from .data import Data
 from .measurementtype import MeasurementType
 
 
@@ -46,17 +46,17 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="6a28c05c7b083b9ad2b52323e96000b4075f6c52"
+        default="c74e880ad947ad85af07e386502a19026786a4b7"
     )
 
     def add_to_metadata(
         self,
         parameter: Optional[str] = None,
-        value: Union[str, float, datetime, None] = None,
+        value: Union[str, float, Datetime, None] = None,
         abbreviation: Optional[str] = None,
         data_type: Union[DataType, str, None] = None,
         mode: Optional[str] = None,
-        unit: Optional[Unit] = None,
+        unit: Optional[UnitBase] = None,
         description: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -89,11 +89,13 @@ class Measurement(sdRDM.DataModel):
 
         self.metadata.append(Metadata(**params))
 
+        return self.metadata[-1]
+
     def add_to_experimental_data(
         self,
         quantity: Optional[Quantity] = None,
-        values: List[Union[float, str, datetime]] = ListPlus(),
-        unit: Optional[Unit] = None,
+        values: List[Union[float, str, Datetime]] = ListPlus(),
+        unit: Optional[UnitBase] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -116,3 +118,5 @@ class Measurement(sdRDM.DataModel):
             params["id"] = id
 
         self.experimental_data.append(Data(**params))
+
+        return self.experimental_data[-1]

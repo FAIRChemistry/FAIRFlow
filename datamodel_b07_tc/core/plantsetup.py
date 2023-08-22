@@ -6,13 +6,13 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .output import Output
-from .input import Input
-from .material import Material
-from .chemical import Chemical
 from .tubing import Tubing
-from .insulation import Insulation
+from .material import Material
 from .device import Device
+from .input import Input
+from .insulation import Insulation
+from .chemical import Chemical
+from .output import Output
 
 
 @forge_signature
@@ -53,7 +53,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="6a28c05c7b083b9ad2b52323e96000b4075f6c52"
+        default="c74e880ad947ad85af07e386502a19026786a4b7"
     )
 
     def add_to_devices(
@@ -86,6 +86,8 @@ class PlantSetup(sdRDM.DataModel):
             params["id"] = id
 
         self.devices.append(Device(**params))
+
+        return self.devices[-1]
 
     def add_to_tubing(
         self,
@@ -121,6 +123,8 @@ class PlantSetup(sdRDM.DataModel):
 
         self.tubing.append(Tubing(**params))
 
+        return self.tubing[-1]
+
     def add_to_input(
         self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
     ) -> None:
@@ -141,6 +145,8 @@ class PlantSetup(sdRDM.DataModel):
 
         self.input.append(Input(**params))
 
+        return self.input[-1]
+
     def add_to_output(
         self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
     ) -> None:
@@ -160,3 +166,5 @@ class PlantSetup(sdRDM.DataModel):
             params["id"] = id
 
         self.output.append(Output(**params))
+
+        return self.output[-1]

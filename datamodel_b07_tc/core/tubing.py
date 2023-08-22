@@ -40,7 +40,7 @@ class Tubing(sdRDM.DataModel):
     )
 
     insulation: Optional[Insulation] = Field(
-        default=None,
+        default=Insulation(),
         description="insulation of the tubing.",
     )
 
@@ -48,5 +48,5 @@ class Tubing(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="6a28c05c7b083b9ad2b52323e96000b4075f6c52"
+        default="c74e880ad947ad85af07e386502a19026786a4b7"
     )
