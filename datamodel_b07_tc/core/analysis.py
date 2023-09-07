@@ -1,5 +1,4 @@
 import sdRDM
-import numpy as np
 
 from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
@@ -8,12 +7,11 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 from datetime import datetime as Datetime
 from astropy.units import UnitBase
-from sklearn import linear_model
 
-from .quantity import Quantity
-from .calibration import Calibration
-from .species import Species
 from .data import Data
+from .species import Species
+from .calibration import Calibration
+from .quantity import Quantity
 
 
 @forge_signature
@@ -42,7 +40,7 @@ class Analysis(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="c74e880ad947ad85af07e386502a19026786a4b7"
+        default="856398256356d332d6f89d024af797f652a00a3f"
     )
 
     def add_to_calibrations(
@@ -113,35 +111,3 @@ class Analysis(sdRDM.DataModel):
         self.faraday_coefficients.append(Data(**params))
 
         return self.faraday_coefficients[-1]
-    
-    def calibrate(self):
-
-        for cali in self.calibrations:
-            peak_area = np.array(cali.peak_area.values).reshape(-1, 1)
-            concentration = np.array(cali.concentration.values)
-
-            function = linear_model.LinearRegression(fit_intercept=True)
-            function.fit(peak_area, concentration)
-            slope, intercept = function.coef_[0], function.intercept_
-            coefficient_of_determination = function.score(
-                peak_area,
-                concentration
-            )
-            cali.slope = Data(
-                quantity=Quantity.SLOPE.value, values=[slope], unit='%'
-            )
-            cali.intercept = Data(
-                quantity=Quantity.INTERCEPT.value,
-                values=[intercept],
-                unit='%',
-            )
-            cali.coefficient_of_determination = Data(
-                quantity=Quantity.COEFFDET.value,
-                values=[coefficient_of_determination],
-                unit=None,
-            )
-
-
-        # @property
-        # def calibration_parameters():
-        #     return 

@@ -87,7 +87,7 @@ classDiagram
     
     class Parameter {
         +float value
-        +Unit unit
+        +UnitClass unit
     }
     
     class Potentiostat {
@@ -140,7 +140,7 @@ classDiagram
     class Data {
         +Quantity quantity
         +float, string, datetime[0..*] values
-        +Unit unit
+        +UnitClass unit
     }
     
     class Metadata {
@@ -149,7 +149,7 @@ classDiagram
         +string abbreviation
         +DataType, string data_type
         +string mode
-        +Unit unit
+        +UnitClass unit
         +string description
     }
     
@@ -234,6 +234,7 @@ classDiagram
         +TIME
         +VOLTAGE
         +CURRENT
+        +CONCENTRATION
         +MASS
         +MASSFLOWRATE
         +VOLUMETRICFLOWRATE
