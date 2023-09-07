@@ -1,17 +1,17 @@
 {
-  "id": "dataset5",
+  "id": "dataset0",
   "general_information": {
-    "id": "generalinformation6",
+    "id": "generalinformation1",
     "title": "Electrocatalytic CO2-reduction on carbon",
     "description": "The aim of this project is to blablabla",
     "authors": [
       {
-        "id": "author10",
+        "id": "author0",
         "name": "Richard Sch\u00f6mig",
         "affiliation": "University of Stuttgart"
       },
       {
-        "id": "author11",
+        "id": "author1",
         "name": "Maximilian Schmidt",
         "affiliation": "University of Stuttgart"
       }
@@ -20,7 +20,7 @@
   "__source__": {
     "root": "Dataset",
     "repo": "https://github.com/FAIRChemistry/datamodel_b07_tc.git",
-    "commit": "1e256a58a0bcde0f96661ca414ee261084ffb348",
-    "url": "https://github.com/FAIRChemistry/datamodel_b07_tc/tree/1e256a58a0bcde0f96661ca414ee261084ffb348"
+    "commit": "1bd65143a3af09c450cd8d9a42e828bc869413d4",
+    "url": "https://github.com/FAIRChemistry/datamodel_b07_tc/tree/1bd65143a3af09c450cd8d9a42e828bc869413d4"
   }
 }

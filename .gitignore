@@ -11,5 +11,4 @@ data/
 *.png
 
 #compiled python files
-.pyc
 *.pyc

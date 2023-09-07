@@ -413,6 +413,7 @@ List of different quantities.
 TIME = "Time"
 VOLTAGE = "Voltage"
 CURRENT = "Current"
+CONCENTRATION = "Concentration"
 MASS = "Mass"
 MASSFLOWRATE = "Mass flow rate"
 VOLUMETRICFLOWRATE = "Volumetric flow rate"

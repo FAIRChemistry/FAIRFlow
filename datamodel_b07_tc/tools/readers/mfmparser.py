@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.quantity import Quantity
-from datamodel_b07_tc.core.unit import Unit
 
 
 class MFMParser:

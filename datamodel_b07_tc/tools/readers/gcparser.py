@@ -2,7 +2,6 @@ import pandas as pd
 import os
 
 from pathlib import Path
-from datamodel_b07_tc.core.unit import Unit
 from datamodel_b07_tc.core.data import Data
 from datamodel_b07_tc.core.data import Quantity
 from datamodel_b07_tc.core.metadata import Metadata
@@ -11,8 +10,9 @@ from datamodel_b07_tc.core.metadata import Metadata
 class GCParser:
     def __init__(
         self,
-        path_to_directory: str | bytes | os.PathLike | Path,
-        file_suffix: str,
+        directory_paths: str | bytes | os.PathLike | Path,
+        filename_meta: str,
+        filename_exp: str,
     ):
         """Pass the path to a directory containing CSV-type files of the MFM to be
         read.
@@ -20,13 +20,23 @@ class GCParser:
         Args:
             path_to_directory (str | bytes | os.PathLike): Path to a directory containing CSV-type files.
         """
-        file_search_pattern = "*." + file_suffix
-        path_list = list(Path(path_to_directory).glob(file_search_pattern))
-        self._available_files = {
+        path_list_meta = []
+        for path in directory_paths:
+            path_list_meta.extend(Path(path).glob(filename_meta))
+        self._available_files_meta = {
             count: file
-            for count, file in enumerate(path_list)
+            for count, file in enumerate(path_list_meta)
             if file.is_file()
         }
+        path_list_exp = []
+        for path in directory_paths:
+            path_list_exp.extend(Path(path).glob(filename_exp))
+        self._available_files_exp = {
+            count: file
+            for count, file in enumerate(path_list_exp)
+            if file.is_file()
+        }
+
 
     def __repr__(self):
         return "GC experimental data parser"
@@ -40,8 +50,8 @@ class GCParser:
         Returns:
             pandas.DataFrame: DataFrame containing only the data from the file.
         """
-        gc_exp_data_df = pd.read_csv(
-            self._available_files[file_index],
+        exp_data_df_gc = pd.read_csv(
+            self._available_files_exp[file_index],
             sep=",",
             names=[
                 "Peak_number",
@@ -56,7 +66,7 @@ class GCParser:
             encoding="utf-16_le",
         )
 
-        record = gc_exp_data_df.to_dict(orient="list")
+        record = exp_data_df_gc.to_dict(orient="list")
         mapping = [
             {"values": "Peak_number"},
             {"values": "Retention_time"},
@@ -69,31 +79,31 @@ class GCParser:
         units_formulae = {
             "peak_number": {
                 "quantity": Quantity.PEAKNUMBER.value,
-                "unit": Unit.NONE.value,
+                "unit": None,
             },
             "retention_time": {
                 "quantity": Quantity.RETENTIONTIME.value,
-                "unit": Unit.SECONDS.value,
+                "unit": 's',
             },
             "signal": {
                 "quantity": Quantity.SIGNAL.value,
-                "unit": Unit.NONE.value,
+                "unit": None,
             },
             "peak_type": {
                 "quantity": Quantity.PEAKTYPE.value,
-                "unit": Unit.NONE.value,
+                "unit": None,
             },
             "peak_area": {
                 "quantity": Quantity.PEAKAREA.value,
-                "unit": Unit.NONE.value,
+                "unit": None,
             },
             "peak_height": {
                 "quantity": Quantity.PEAKHEIGHT.value,
-                "unit": Unit.NONE.value,
+                "unit": None,
             },
             "peak_area_percentage": {
                 "quantity": Quantity.PEAKAREAPERCENTAGE.value,
-                "unit": Unit.PERCENTAGE.value,
+                "unit": '%',
             },
         }
 
@@ -103,9 +113,9 @@ class GCParser:
                 **{key: value for key, value in dict.items()},
                 **{key: record[value] for key, value in mapping[i].items()}
             )
-        return gc_exp_data_df, gc_exp_data
+        return exp_data_df_gc, gc_exp_data
 
-    def extract_metadata(self, filestem: str) -> pd.DataFrame:
+    def extract_metadata(self, file_index: int) -> pd.DataFrame:
         """Extract only data block as a `pandas.DataFrame`.
 
         Args:
@@ -115,7 +125,7 @@ class GCParser:
             pandas.DataFrame: DataFrame containing only the data from the file.
         """
         gc_metadata_df = pd.read_csv(
-            self._available_files[filestem],
+            self._available_files_meta[file_index],
             sep=",",
             names=[
                 "parameter",
@@ -138,9 +148,11 @@ class GCParser:
         return gc_metadata_df, gc_metadata
 
     @property
-    def available_files(self) -> list[str]:
-        return self._available_files
-
+    def available_meta_files(self) -> list[str]:
+        return self._available_files_meta
+    @property
+    def available_exp_files(self) -> list[str]:
+        return self._available_files_exp
     # def enumerate_available_files(self) -> dict[int, str]:
     #     """Enumerate the CSV files available in the given directory and
     #     return a dictionary with their index and name.
