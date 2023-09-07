@@ -9,9 +9,9 @@ from datetime import datetime as Datetime
 from astropy.units import UnitBase
 
 from .quantity import Quantity
-from .calibration import Calibration
 from .data import Data
 from .species import Species
+from .calibration import Calibration
 
 
 @forge_signature
@@ -40,13 +40,13 @@ class Analysis(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="33326e0c17427a065cc2a031d7889695d75800c3"
+        default="a4c50b26815a02cca2986380d5aeb8c023e877eb"
     )
 
     def add_to_calibrations(
         self,
         species: Optional[Species] = None,
-        peak_area: Optional[Data] = None,
+        peak_areas: Optional[Data] = None,
         concentrations: Optional[Data] = None,
         slope: Optional[Data] = None,
         intercept: Optional[Data] = None,
@@ -59,7 +59,7 @@ class Analysis(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Calibration' object. Defaults to 'None'.
             species (): Species for which the calibration was performed.. Defaults to None
-            peak_area (): Recorded peak areas of the individual calibration solutions.. Defaults to None
+            peak_areas (): Recorded peak areas of the individual calibration solutions.. Defaults to None
             concentrations (): concentrations of the individual calibration solutions.. Defaults to None
             slope (): slopes of the (linear) calibration functions.. Defaults to None
             intercept (): intercept of the (linear) calibration functions.. Defaults to None
@@ -68,7 +68,7 @@ class Analysis(sdRDM.DataModel):
 
         params = {
             "species": species,
-            "peak_area": peak_area,
+            "peak_areas": peak_areas,
             "concentrations": concentrations,
             "slope": slope,
             "intercept": intercept,

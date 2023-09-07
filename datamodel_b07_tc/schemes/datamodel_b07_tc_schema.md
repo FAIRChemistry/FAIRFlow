@@ -166,7 +166,7 @@ classDiagram
     
     class Calibration {
         +Species species
-        +Data peak_area
+        +Data peak_areas
         +Data concentrations
         +Data slope
         +Data intercept

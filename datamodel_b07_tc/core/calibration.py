@@ -24,7 +24,7 @@ class Calibration(sdRDM.DataModel):
         description="Species for which the calibration was performed.",
     )
 
-    peak_area: Optional[Data] = Field(
+    peak_areas: Optional[Data] = Field(
         default=Data(),
         description="Recorded peak areas of the individual calibration solutions.",
     )
@@ -53,5 +53,5 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="33326e0c17427a065cc2a031d7889695d75800c3"
+        default="a4c50b26815a02cca2986380d5aeb8c023e877eb"
     )
