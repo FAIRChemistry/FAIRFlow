@@ -310,7 +310,7 @@ Stoichiometric information about the compound.
 - peak_area
   - Type: Data
   - Description: Recorded peak areas of the individual calibration solutions.
-- concentration
+- concentrations
   - Type: Data
   - Description: concentrations of the individual calibration solutions. 
 - slope

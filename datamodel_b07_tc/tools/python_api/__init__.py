@@ -1,13 +1,15 @@
+from .data import Data
 from .analysis import Analysis
 from .calibration import Calibration
-from .data import Data
 from .quantity import Quantity
+from .species import Species
 
 __doc__ = ""
 
 __all__ = [
+    "Data",
     "Analysis",
     "Calibration",
-    "Data",
-    "Quantity"
+    "Quantity",
+    "Species"
 ]

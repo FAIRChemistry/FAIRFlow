@@ -111,3 +111,35 @@ class Analysis(sdRDM.DataModel):
         self.faraday_coefficients.append(Data(**params))
 
         return self.faraday_coefficients[-1]
+
+    def calibrate(self):
+
+        for cali in self.calibrations:
+            peak_area = np.array(cali.peak_area.values).reshape(-1, 1)
+            concentration = np.array(cali.concentration.values)
+
+            function = linear_model.LinearRegression(fit_intercept=True)
+            function.fit(peak_area, concentration)
+            slope, intercept = function.coef_[0], function.intercept_
+            coefficient_of_determination = function.score(
+                peak_area,
+                concentration
+            )
+            cali.slope = Data(
+                quantity=Quantity.SLOPE.value, values=[slope], unit='%'
+            )
+            cali.intercept = Data(
+                quantity=Quantity.INTERCEPT.value,
+                values=[intercept],
+                unit='%',
+            )
+            cali.coefficient_of_determination = Data(
+                quantity=Quantity.COEFFDET.value,
+                values=[coefficient_of_determination],
+                unit=None,
+            )
+
+
+        # @property
+        # def calibration_parameters():
+        #     return 
