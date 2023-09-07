@@ -247,7 +247,7 @@ Stoichiometric information about the compound.
   - Multiple: True
   - Description: values.
 - unit
-  - Type: Unit
+  - Type: UnitClass
   - Description: unit of the values.
 
 
