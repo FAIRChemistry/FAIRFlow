@@ -29,7 +29,7 @@ class Calibration(sdRDM.DataModel):
         description="Recorded peak areas of the individual calibration solutions.",
     )
 
-    concentration: Optional[Data] = Field(
+    concentrations: Optional[Data] = Field(
         default=Data(),
         description="concentrations of the individual calibration solutions.",
     )
@@ -53,5 +53,5 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="856398256356d332d6f89d024af797f652a00a3f"
+        default="33326e0c17427a065cc2a031d7889695d75800c3"
     )

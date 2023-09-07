@@ -307,7 +307,7 @@ Stoichiometric information about the compound.
 - species
   - Type: Species
   - Description: Species for which the calibration was performed.
-- peak_area
+- peak_areas
   - Type: Data
   - Description: Recorded peak areas of the individual calibration solutions.
 - concentrations

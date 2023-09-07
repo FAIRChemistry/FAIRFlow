@@ -4,6 +4,7 @@ from datamodel_b07_tc.tools.python_api.analysis import Analysis
 from datamodel_b07_tc.tools.python_api.calibration import Calibration
 from datamodel_b07_tc.tools.python_api.data import Data
 from datamodel_b07_tc.tools.python_api.quantity import Quantity
+
 from pathlib import Path
 
 class Calibrator(BaseModel):
@@ -39,8 +40,8 @@ class Calibrator(BaseModel):
             )
             calibrations.append(calibration)
         analysis = Analysis()
-        analysis.add_to_calibrations(calibrations)
-        return cls
+        analysis.calibrations=calibrations
+        return cls(analysis=analysis)
 
 
     def calibrate(self):

@@ -1,5 +1,9 @@
 import sdRDM
 
+import numpy as np
+
+from sklearn import linear_model
+
 from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
@@ -8,10 +12,10 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 from datetime import datetime as Datetime
 from astropy.units import UnitBase
 
+from .quantity import Quantity
+from .calibration import Calibration
 from .data import Data
 from .species import Species
-from .calibration import Calibration
-from .quantity import Quantity
 
 
 @forge_signature
@@ -36,18 +40,18 @@ class Analysis(sdRDM.DataModel):
         description="Faraday coefficients.",
     )
 
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
+    # __repo__: Optional[str] = PrivateAttr(
+    #     default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+    # )
     __commit__: Optional[str] = PrivateAttr(
-        default="856398256356d332d6f89d024af797f652a00a3f"
+        default="33326e0c17427a065cc2a031d7889695d75800c3"
     )
 
     def add_to_calibrations(
         self,
         species: Optional[Species] = None,
         peak_area: Optional[Data] = None,
-        concentration: Optional[Data] = None,
+        concentrations: Optional[Data] = None,
         slope: Optional[Data] = None,
         intercept: Optional[Data] = None,
         coefficient_of_determination: Optional[Data] = None,
@@ -60,7 +64,7 @@ class Analysis(sdRDM.DataModel):
             id (str): Unique identifier of the 'Calibration' object. Defaults to 'None'.
             species (): Species for which the calibration was performed.. Defaults to None
             peak_area (): Recorded peak areas of the individual calibration solutions.. Defaults to None
-            concentration (): concentrations of the individual calibration solutions.. Defaults to None
+            concentrations (): concentrations of the individual calibration solutions.. Defaults to None
             slope (): slopes of the (linear) calibration functions.. Defaults to None
             intercept (): intercept of the (linear) calibration functions.. Defaults to None
             coefficient_of_determination (): coefficients of the (linear) calibration functions.. Defaults to None
@@ -69,7 +73,7 @@ class Analysis(sdRDM.DataModel):
         params = {
             "species": species,
             "peak_area": peak_area,
-            "concentration": concentration,
+            "concentrations": concentrations,
             "slope": slope,
             "intercept": intercept,
             "coefficient_of_determination": coefficient_of_determination,
@@ -111,7 +115,7 @@ class Analysis(sdRDM.DataModel):
         self.faraday_coefficients.append(Data(**params))
 
         return self.faraday_coefficients[-1]
-
+    
     def calibrate(self):
 
         for cali in self.calibrations:
