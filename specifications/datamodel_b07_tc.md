@@ -122,7 +122,7 @@ This is another object that represents the author of the dataset. Please note, t
     - Type: float
     - Description: values.
   - unit
-    - Type: Unit
+    - Type: UnitClass
     - Description: unit of the values.
 
 
@@ -269,7 +269,7 @@ Stoichiometric information about the compound.
   - Type: string
   - Description: mode of the parameter. E.g., on and off.
 - unit
-  - Type: Unit
+  - Type: UnitClass
   - Description: unit of the parameter.
 - description
     - Type: string
