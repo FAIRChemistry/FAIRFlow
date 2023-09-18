@@ -56,7 +56,7 @@ classDiagram
     class Experiment {
         +PlantSetup plant_setup
         +Measurement[0..*] measurements
-        +SpeciesData species_data
+        +SpeciesData[0..*] species_data
     }
     
     class PlantSetup {

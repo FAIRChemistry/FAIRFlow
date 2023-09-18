@@ -7,8 +7,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .stoichiometry import Stoichiometry
-from .chemical import Chemical
 from .reactantrole import ReactantRole
+from .chemical import Chemical
 
 
 @forge_signature
@@ -31,7 +31,7 @@ class Input(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
+        default="0120803a8da7ad13c94e37b6f74dea33a9915fb8"
     )
 
     def add_to_component(

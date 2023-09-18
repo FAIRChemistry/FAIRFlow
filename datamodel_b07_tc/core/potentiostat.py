@@ -5,8 +5,8 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 from .metadata import Metadata
-from .measurement import Measurement
 from .device import Device
+from .measurement import Measurement
 
 
 @forge_signature
@@ -33,5 +33,5 @@ class Potentiostat(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
+        default="0120803a8da7ad13c94e37b6f74dea33a9915fb8"
     )
