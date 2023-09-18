@@ -1,5 +1,8 @@
-# experimental data
-data/
+# raw data
+data/Rohdaten
+
+# generated datasets
+datasets/*
 
 # GitHub
 .github/
@@ -10,9 +13,20 @@ data/
 # images
 *.png
 
+# log files
+*.log
+
 #compiled python files
 *.pyc
 
+# generated python objects
 .datamodel_b07_tc/core
+
+# compiled bython files
 .datamodel_b07_tc/__pycache__
+
+# to do list for this notebook
 todo.txt
+
+# test notebook to try new things
+test_notebook.ipynb
