@@ -53,6 +53,7 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: different measurements that are made within the scope of one experiment.
 - species_data
   - Type: SpeciesData
+  - Multiple: True
   - Description: all provided and calculated data about a specific species.
 
 

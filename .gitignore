@@ -14,5 +14,5 @@ data/
 *.pyc
 
 .datamodel_b07_tc/core
-
 .datamodel_b07_tc/__pycache__
+todo.txt

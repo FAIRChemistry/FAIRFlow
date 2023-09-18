@@ -1,5 +1,6 @@
 import json
 from pydantic import BaseModel
+from typing import List
 from datamodel_b07_tc.modified.speciesdata import SpeciesData
 from datamodel_b07_tc.modified.calibration import Calibration
 from datamodel_b07_tc.modified.data import Data
@@ -9,7 +10,7 @@ from pathlib import Path
 
 class Calibrator(BaseModel):
 
-    species_data_list : list(SpeciesData)
+    species_data_list : List[SpeciesData]
 
     @classmethod
     def from_json_file(cls, path_to_json_file: Path):
@@ -27,7 +28,7 @@ class Calibrator(BaseModel):
         for species, data in calibration_data.items():
             species_data = SpeciesData(
                 species = species,
-                chemical_formula = data['chemical_formula']
+                chemical_formula = data['chemical_formula'],
                 calibration = Calibration(
                     peak_areas=Data(
                         quantity='Peak area',
@@ -52,7 +53,7 @@ class Calibrator(BaseModel):
             analysis (Analysis): Analysis-type object tha contains the computed calibration data.
         """
         for species_data in self.species_data_list:
-            species_data.calibrate()
+            species_data.calibration.calibrate()
         return self.species_data_list
     
     @staticmethod
