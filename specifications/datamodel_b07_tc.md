@@ -51,9 +51,9 @@ This is another object that represents the author of the dataset. Please note, t
   - Type: Measurement
   - Multiple: True
   - Description: different measurements that are made within the scope of one experiment.
-- analysis
-  - Type: Analysis
-  - Description: all the calculations that are done within the scope of one experiment.
+- species_data
+  - Type: SpeciesData
+  - Description: all provided and calculated data about a specific species.
 
 
 ### PlantSetup
@@ -291,22 +291,30 @@ Stoichiometric information about the compound.
   - Description: experimental data of a measurement.
 
 
-### Analysis
+### SpeciesData
 
-- calibrations
+- species
+  - Type: Species
+  - Description: name of the species.
+- chemical_formula
+  - Type: ChemicalFormula
+  - Description: chemical formula of the species.
+- calibration
   - Type: Calibration
-  - Multiple: True
-  - Description: Calibration measurement.
-- faraday_coefficients
+  - Description: calibration measurement.
+- correction_factor
   - Type: Data
-  - Multiple: True
-  - Description: Faraday coefficients.
+  - Description: correction factors of the individual species.
+- faraday_coefficient
+  - Type: Data
+  - Description: Faraday coefficients of the individual species.
+- faraday_efficiency
+  - Type: Data
+  - Description: Faraday efficiencies of the individual species.
   
 
 ### Calibration
-- species
-  - Type: Species
-  - Description: Species for which the calibration was performed.
+
 - peak_areas
   - Type: Data
   - Description: Recorded peak areas of the individual calibration solutions.
@@ -437,19 +445,35 @@ COEFFDET = "Coefficient of determination"
 List of different measurements that do not need any further quantities to be defined.
 
 ```python
-POTENTIOSTATIC = "Potentiostatic Measurement"
-GC = "GC Measurement"
-MFM = "MFM Measurement"
+POTENTIOSTATIC = "Potentiostatic measurement"
+GC = "GC measurement"
+MFM = "MFM measurement"
 ``` 
+
+
 ### Species
 
 List of different species.
 
 ```python
-HYDROGEN = "H2"
-CARBONDIOXIDE = "CO2"
-CARBONMONOXIDE = "CO"
-METHANE = "CH4"
-ETHENE = "C2H6"
-ETHANE = "C2H4"
+HYDROGEN = "Hydrogen"
+CARBONDIOXIDE = "Carbon dioxide"
+CARBONMONOXIDE = "Carbon monoxide"
+METHANE = "Methane"
+ETHENE = "Ethene"
+ETHANE = "Ethane"
+```
+
+
+### ChemicalFormula
+
+List of different chemical formulas.
+
+```python
+H2 = "H2"
+CO2 = "CO2"
+CO = "CO"
+CH4 = "CH4"
+C2H4 = "C2H4"
+C2H6 = "C2H6"
 ```
