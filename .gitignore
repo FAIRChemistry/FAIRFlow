@@ -19,11 +19,16 @@ datasets/*
 #compiled python files
 *.pyc
 
+\datamodel_b07_tc
+
 # generated python objects
-.datamodel_b07_tc/core
+datamodel_b07_tc\core
 
 # compiled bython files
-.datamodel_b07_tc/__pycache__
+datamodel_b07_tc/__pycache__
+
+# generated schemes of the data model
+datamodel_b07_tc/schemes
 
 # to do list for this notebook
 todo.txt
