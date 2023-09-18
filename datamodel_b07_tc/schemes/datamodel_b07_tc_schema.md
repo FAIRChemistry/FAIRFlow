@@ -9,7 +9,7 @@ classDiagram
     GeneralInformation *-- Author
     Experiment *-- PlantSetup
     Experiment *-- Measurement
-    Experiment *-- Analysis
+    Experiment *-- SpeciesData
     PlantSetup *-- Device
     PlantSetup *-- Tubing
     PlantSetup *-- Input
@@ -31,9 +31,10 @@ classDiagram
     Measurement *-- MeasurementType
     Measurement *-- Data
     Measurement *-- Metadata
-    Analysis *-- Data
-    Analysis *-- Calibration
-    Calibration *-- Species
+    SpeciesData *-- Species
+    SpeciesData *-- ChemicalFormula
+    SpeciesData *-- Data
+    SpeciesData *-- Calibration
     Calibration *-- Data
     
     class Dataset {
@@ -55,7 +56,7 @@ classDiagram
     class Experiment {
         +PlantSetup plant_setup
         +Measurement[0..*] measurements
-        +Analysis analysis
+        +SpeciesData species_data
     }
     
     class PlantSetup {
@@ -159,13 +160,16 @@ classDiagram
         +Data[0..*] experimental_data
     }
     
-    class Analysis {
-        +Calibration[0..*] calibrations
-        +Data[0..*] faraday_coefficients
+    class SpeciesData {
+        +Species species
+        +ChemicalFormula chemical_formula
+        +Calibration calibration
+        +Data correction_factor
+        +Data faraday_coefficient
+        +Data faraday_efficiency
     }
     
     class Calibration {
-        +Species species
         +Data peak_areas
         +Data concentrations
         +Data slope
@@ -267,6 +271,16 @@ classDiagram
         +METHANE
         +ETHENE
         +ETHANE
+    }
+    
+    class ChemicalFormula {
+        << Enumeration >>
+        +H2
+        +CO2
+        +CO
+        +CH4
+        +C2H4
+        +C2H6
     }
     
 ```

@@ -32,5 +32,5 @@ class Insulation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="a4c50b26815a02cca2986380d5aeb8c023e877eb"
+        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
     )
