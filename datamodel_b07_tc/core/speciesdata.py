@@ -5,10 +5,10 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .calibration import Calibration
-from .chemicalformula import ChemicalFormula
 from .data import Data
 from .species import Species
+from .calibration import Calibration
+from .chemicalformula import ChemicalFormula
 
 
 @forge_signature
@@ -36,13 +36,13 @@ class SpeciesData(sdRDM.DataModel):
         description="calibration measurement.",
     )
 
-    correction_factor: Optional[Data] = Field(
-        default=Data(),
+    correction_factor: Optional[float] = Field(
+        default=None,
         description="correction factors of the individual species.",
     )
 
-    faraday_coefficient: Optional[Data] = Field(
-        default=Data(),
+    faraday_coefficient: Optional[float] = Field(
+        default=None,
         description="Faraday coefficients of the individual species.",
     )
 
@@ -55,5 +55,5 @@ class SpeciesData(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
+        default="8779bd04afaf3dcb5dc3c90e093cafb9beb5e306"
     )

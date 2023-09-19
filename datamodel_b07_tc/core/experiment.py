@@ -6,12 +6,15 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .speciesdata import SpeciesData
-from .metadata import Metadata
+from .calibration import Calibration
+from .chemicalformula import ChemicalFormula
 from .measurement import Measurement
-from .measurementtype import MeasurementType
+from .metadata import Metadata
 from .data import Data
 from .plantsetup import PlantSetup
+from .measurementtype import MeasurementType
+from .speciesdata import SpeciesData
+from .species import Species
 
 
 @forge_signature
@@ -37,8 +40,9 @@ class Experiment(sdRDM.DataModel):
         ),
     )
 
-    species_data: Optional[SpeciesData] = Field(
-        default=SpeciesData(),
+    species_data: List[SpeciesData] = Field(
+        default_factory=ListPlus,
+        multiple=True,
         description="all provided and calculated data about a specific species.",
     )
 
@@ -46,7 +50,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
+        default="8779bd04afaf3dcb5dc3c90e093cafb9beb5e306"
     )
 
     def add_to_measurements(
@@ -78,3 +82,42 @@ class Experiment(sdRDM.DataModel):
         self.measurements.append(Measurement(**params))
 
         return self.measurements[-1]
+
+    def add_to_species_data(
+        self,
+        species: Optional[Species] = None,
+        chemical_formula: Optional[ChemicalFormula] = None,
+        calibration: Optional[Calibration] = None,
+        correction_factor: Optional[float] = None,
+        faraday_coefficient: Optional[float] = None,
+        faraday_efficiency: Optional[Data] = None,
+        id: Optional[str] = None,
+    ) -> None:
+        """
+        This method adds an object of type 'SpeciesData' to attribute species_data
+
+        Args:
+            id (str): Unique identifier of the 'SpeciesData' object. Defaults to 'None'.
+            species (): name of the species.. Defaults to None
+            chemical_formula (): chemical formula of the species.. Defaults to None
+            calibration (): calibration measurement.. Defaults to None
+            correction_factor (): correction factors of the individual species.. Defaults to None
+            faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
+            faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
+        """
+
+        params = {
+            "species": species,
+            "chemical_formula": chemical_formula,
+            "calibration": calibration,
+            "correction_factor": correction_factor,
+            "faraday_coefficient": faraday_coefficient,
+            "faraday_efficiency": faraday_efficiency,
+        }
+
+        if id is not None:
+            params["id"] = id
+
+        self.species_data.append(SpeciesData(**params))
+
+        return self.species_data[-1]

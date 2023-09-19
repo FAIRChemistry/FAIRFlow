@@ -29,5 +29,5 @@ class Author(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
+        default="8779bd04afaf3dcb5dc3c90e093cafb9beb5e306"
     )

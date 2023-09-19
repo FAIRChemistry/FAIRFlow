@@ -4,8 +4,8 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .metadata import Metadata
 from .measurement import Measurement
+from .metadata import Metadata
 from .device import Device
 
 
@@ -33,5 +33,5 @@ class Potentiostat(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e5e1710ac1f9b36c9f229d0f0d69a96a081365ba"
+        default="8779bd04afaf3dcb5dc3c90e093cafb9beb5e306"
     )

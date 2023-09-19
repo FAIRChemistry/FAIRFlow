@@ -53,6 +53,7 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: different measurements that are made within the scope of one experiment.
 - species_data
   - Type: SpeciesData
+  - Multiple: True
   - Description: all provided and calculated data about a specific species.
 
 
@@ -303,10 +304,10 @@ Stoichiometric information about the compound.
   - Type: Calibration
   - Description: calibration measurement.
 - correction_factor
-  - Type: Data
+  - Type: float
   - Description: correction factors of the individual species.
 - faraday_coefficient
-  - Type: Data
+  - Type: float
   - Description: Faraday coefficients of the individual species.
 - faraday_efficiency
   - Type: Data

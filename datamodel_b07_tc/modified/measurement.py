@@ -123,7 +123,7 @@ class Measurement(sdRDM.DataModel):
     
     @property
     def injection_date(self):
-        if self.measurement_type == 'GC Measurement':
+        if self.measurement_type == 'GC measurement':
             return self.get('metadata', 'parameter', 'Injection Date' )[0][0].value
         else:
             raise ValueError('Lak, du Hund! Das ist keine GC Messung')
