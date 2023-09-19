@@ -6,15 +6,15 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
+from .calibration import Calibration
+from .chemicalformula import ChemicalFormula
+from .measurement import Measurement
+from .metadata import Metadata
+from .data import Data
+from .plantsetup import PlantSetup
+from .measurementtype import MeasurementType
 from .speciesdata import SpeciesData
 from .species import Species
-from .chemicalformula import ChemicalFormula
-from .metadata import Metadata
-from .calibration import Calibration
-from .data import Data
-from .measurementtype import MeasurementType
-from .measurement import Measurement
-from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -50,7 +50,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="84c47e3b42d9bd24447f9f5668612ba7a70e39c3"
+        default="8779bd04afaf3dcb5dc3c90e093cafb9beb5e306"
     )
 
     def add_to_measurements(
@@ -88,8 +88,8 @@ class Experiment(sdRDM.DataModel):
         species: Optional[Species] = None,
         chemical_formula: Optional[ChemicalFormula] = None,
         calibration: Optional[Calibration] = None,
-        correction_factor: Optional[Data] = None,
-        faraday_coefficient: Optional[Data] = None,
+        correction_factor: Optional[float] = None,
+        faraday_coefficient: Optional[float] = None,
         faraday_efficiency: Optional[Data] = None,
         id: Optional[str] = None,
     ) -> None:
