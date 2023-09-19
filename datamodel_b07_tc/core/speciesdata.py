@@ -5,9 +5,9 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
-from .data import Data
-from .species import Species
 from .calibration import Calibration
+from .species import Species
+from .data import Data
 from .chemicalformula import ChemicalFormula
 
 
@@ -55,5 +55,5 @@ class SpeciesData(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8779bd04afaf3dcb5dc3c90e093cafb9beb5e306"
+        default="c7407c28baaf7f0667ca7e50953202a7c1ae7ff5"
     )
