@@ -20,7 +20,7 @@ datasets/*
 *.pyc
 
 # generated python objects
-datamodel_b07_tc/core
+# datamodel_b07_tc/core
 
 # compiled bython files
 datamodel_b07_tc/__pycache__
