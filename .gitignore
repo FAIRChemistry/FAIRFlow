@@ -5,7 +5,7 @@ data/Rohdaten
 datasets/*
 
 # GitHub
-.github/
+# .github/
 
 # VS Code
 .vscode
