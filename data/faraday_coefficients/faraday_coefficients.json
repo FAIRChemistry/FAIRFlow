@@ -1,8 +1,8 @@
 {
-    "H2": 2,
-    "CO": 2,
-    "CO2": 2,
-    "CH4": 8,
-    "C2H4": 12,
-    "C2H6": 16
+    "Hydrogen": 2,
+    "Carbon monoxide": 2,
+    "Carbon dioxide": 2,
+    "Methane": 8,
+    "Ethene": 12,
+    "Ethane": 16
 }

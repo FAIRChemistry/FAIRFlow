@@ -3,16 +3,15 @@ import numpy as np
 
 from pydantic import BaseModel
 from pydantic import PrivateAttr
-from datetime import datetime
+from datetime import datetime, timedelta
 from datamodel_b07_tc.modified import Experiment
 from datamodel_b07_tc.modified import Measurement
 
 import scipy.constants as const
 
-class Calculator(BaseModel):
+class FaradayEfficiencyCalculator(BaseModel):
 
     experiment : Experiment
-    correction_factors_dict: dict
     electrode_surface_area: float
     _volumetric_flow_mean: float = PrivateAttr()
     _volumetric_fractions_df: pd.DataFrame = PrivateAttr()
@@ -30,7 +29,8 @@ class Calculator(BaseModel):
         inj_date_datetime = datetime.strptime(
             gc_measurement.injection_date, "%d-%b-%y, %H:%M:%S"
         )
-        match_datetime = min(volumetric_flow_datetime_list, key=lambda dt: abs(dt - inj_date_datetime))
+        print(volumetric_flow_datetime_list[0])
+        match_datetime = min(volumetric_flow_datetime_list, key=lambda dt: abs(datetime.strptime(dt, "%Y-%m-%d %H:%M:%S") - inj_date_datetime))
         index_match = volumetric_flow_datetime_list.index(match_datetime)
         mean_indices_list = [i for i in range(index_match-mean_radius, index_match + mean_radius + 1)]
         self._volumetric_flow_mean = np.average([volumetric_flow_values_list[i] for i in mean_indices_list])
@@ -42,9 +42,15 @@ class Calculator(BaseModel):
         )
         for species, peak_areas in assigned_peak_areas_dict.items():
             self._volumetric_fractions_df.loc[species] = (
-                peak_areas * self.experiment.analysis.get("calibrations", "species", species)[0][0].slope.values[0]
-                + self.experiment.analysis.get("calibrations", "species", species)[0][0].intercept.values[0]
+                peak_areas * self.experiment.get("species_data", "species", species)[0][0].calibration.slope.values[0]
+                + self.experiment.get("species_data", "species", species)[0][0].calibration.intercept.values[0]
             )
+
+
+    def _get_correction_factor(self, species):
+
+        species_data_object = self.experiment.get('species_data', 'species', species)[0][0]
+        return species_data_object.correction_factor
 
 
     def _calculate_conversion_factor(self):
@@ -52,18 +58,18 @@ class Calculator(BaseModel):
         self._conversion_factor = (
             1
             / (
-                (self._volumetric_fractions_df.loc["H2"][0] / 100)
-                / self.correction_factors_dict["H2"]
+                (self._volumetric_fractions_df.loc["Hydrogen"][0] / 100)
+                / self._get_correction_factor("Hydrogen")
                 + (
                     1
-                    - (self._volumetric_fractions_df.loc["H2"][0] / 100)
-                    + (self._volumetric_fractions_df.loc["CO"][0]) / 100
+                    - (self._volumetric_fractions_df.loc["Hydrogen"][0] / 100)
+                    + (self._volumetric_fractions_df.loc["Carbon monoxide"][0]) / 100
                 )
-                / self.correction_factors_dict["CO2"]
-                + (self._volumetric_fractions_df.loc["CO"][0] / 100)
-                / self.correction_factors_dict["CO"]
+                / self._get_correction_factor("Carbon dioxide")
+                + (self._volumetric_fractions_df.loc["Carbon monoxide"][0] / 100)
+                / self._get_correction_factor("Carbon monoxide")
             )
-            / self.correction_factors_dict["CO2"]
+            / self._get_correction_factor("Carbon dioxide")
         )
 
     def _calculate_real_volumetric_flow(self):
@@ -94,12 +100,12 @@ class Calculator(BaseModel):
         absolute_initial_current = abs(self.experiment.initial_current)
         current_density = absolute_initial_current / self.electrode_surface_area
         factors = {
-            "H2": 2,
-            "CO": 2,
-            "CO2": 2,
-            "CH4": 8,
-            "C2H4": 12,
-            "C2H6": 16,
+            "Hydrogen": 2,
+            "Carbon monoxide": 2,
+            "Carbon dioxide": 2,
+            "Methane": 8,
+            "Ethene": 12,
+            "Ethane": 16,
         }
         self._theoretical_material_flow_df = pd.DataFrame(
             index=[species for species in factors.keys()],
@@ -127,7 +133,10 @@ class Calculator(BaseModel):
         self._calculate_volumetric_flow_fractions()
         self._calculate_material_flow()
         self._calculate_theoretical_material_flow()
-        return self._material_flow_df.divide(self._theoretical_material_flow_df['Theoretical_material_flow'], axis='index')
+        rename = {"Material_flow": "Faraday_efficiency"}
+        faraday_efficiency_df = self._material_flow_df.divide(self._theoretical_material_flow_df['Theoretical_material_flow'], axis='index').rename(columns=rename)
+
+        return faraday_efficiency_df
     
     @property
     def volumetric_fractions(self):
