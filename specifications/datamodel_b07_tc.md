@@ -304,10 +304,10 @@ Stoichiometric information about the compound.
   - Type: Calibration
   - Description: calibration measurement.
 - correction_factor
-  - Type: Data
+  - Type: float
   - Description: correction factors of the individual species.
 - faraday_coefficient
-  - Type: Data
+  - Type: float
   - Description: Faraday coefficients of the individual species.
 - faraday_efficiency
   - Type: Data
