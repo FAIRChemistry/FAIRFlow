@@ -263,8 +263,8 @@ Stoichiometric information about the compound.
 - abbreviation
   - Type: string
   - Description: abbreviation for the parameter.
-- data_type
-  - Type: DataType, string
+- type
+  - Type: DataType
   - Description: type of the parameter.
 - mode
   - Type: string

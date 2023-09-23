@@ -1,40 +1,18 @@
 import pandas as pd
-import os
 
 from pathlib import Path
+from pydantic import BaseModel
 from datamodel_b07_tc.core.metadata import Metadata
 
+class GstaticParser(BaseModel):
 
-class GstaticParser:
-    def __init__(
-        self,
-        path_to_directory: str | bytes | os.PathLike | Path,
-        file_suffix: str,
-    ):
-        """Pass the path to a directory containing CSV-type files of the GC to be
-        read.
-
-        Args:
-            path_to_directory (str | bytes | os.PathLike): Path to a directory containing CSV-type files.
-        """
-        file_search_pattern = "*." + file_suffix
-        path_list = list(Path(path_to_directory).glob(file_search_pattern))
-        self._available_files = {
-            count: file
-            for count, file in enumerate(path_list)
-            if file.is_file()
-        }
-
-    def __repr__(self):
-        return "Gstatic parser"
-
-    def extract_metadata(self, file_index: int) -> dict:  # filestem: str
+    def extract_metadata(self, metadata: Path) -> dict:
         metadata_df = pd.read_csv(
-            self._available_files[file_index],
+            metadata,
             sep="\t",
             names=[
                 "Parameter",
-                "Data_type",
+                "Type",
                 "Value",
                 "Description",
             ],
@@ -56,10 +34,15 @@ class GstaticParser:
                 )
             )
         return metadata_df, metadata_list
+    
 
-    @property
-    def available_files(self) -> list[str]:
-        return self._available_files
+
+
+
+
+
+
+
         # for line in open(self.file, 'r'):
         #     line = line.strip()
         #     if '=' in line:
