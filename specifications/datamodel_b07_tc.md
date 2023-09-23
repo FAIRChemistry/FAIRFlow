@@ -264,8 +264,11 @@ Stoichiometric information about the compound.
   - Type: string
   - Description: abbreviation for the parameter.
 - type
+  - Type: string
+  - Description: type of the parameter, e.g. a quantity, a toggle, a label.
+- data_type
   - Type: DataType
-  - Description: type of the parameter.
+  - Description: type of the data, e.g. string, float, bool.
 - mode
   - Type: string
   - Description: mode of the parameter. E.g., on and off.

@@ -28,7 +28,7 @@ class GstaticParser(BaseModel):
             metadata_list.append(
                 Metadata(
                     parameter=metadata_df["Parameter"][index],
-                    data_type=metadata_df["Data_type"][index],
+                    type=metadata_df["Type"][index],
                     value=metadata_df["Value"][index],
                     description=metadata_df["Description"][index],
                 )
