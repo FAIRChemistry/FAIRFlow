@@ -5,14 +5,14 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from datetime import datetime as Datetime
 from astropy.units import UnitBase
+from datetime import datetime as Datetime
 
 from .quantity import Quantity
-from .data import Data
-from .measurementtype import MeasurementType
-from .metadata import Metadata
 from .datatype import DataType
+from .measurementtype import MeasurementType
+from .data import Data
+from .metadata import Metadata
 
 
 @forge_signature
@@ -46,7 +46,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ac55b72bed16a0027ba585ed1fa2168c71f58708"
+        default="bbb668ee02d61b804e0aaa03c0a40b01dd45cfd3"
     )
 
     def add_to_metadata(
@@ -54,7 +54,8 @@ class Measurement(sdRDM.DataModel):
         parameter: Optional[str] = None,
         value: Union[str, float, Datetime, None] = None,
         abbreviation: Optional[str] = None,
-        type: Optional[DataType] = None,
+        type: Optional[str] = None,
+        data_type: Optional[DataType] = None,
         mode: Optional[str] = None,
         unit: Optional[UnitBase] = None,
         description: Optional[str] = None,
@@ -68,7 +69,8 @@ class Measurement(sdRDM.DataModel):
             parameter (): Name of the parameter.. Defaults to None
             value (): value of the parameter.. Defaults to None
             abbreviation (): abbreviation for the parameter.. Defaults to None
-            type (): type of the parameter.. Defaults to None
+            type (): type of the parameter, e.g. a quantity, a toggle, a label.. Defaults to None
+            data_type (): type of the data, e.g. string, float, bool.. Defaults to None
             mode (): mode of the parameter. E.g., on and off.. Defaults to None
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
@@ -79,6 +81,7 @@ class Measurement(sdRDM.DataModel):
             "value": value,
             "abbreviation": abbreviation,
             "type": type,
+            "data_type": data_type,
             "mode": mode,
             "unit": unit,
             "description": description,
