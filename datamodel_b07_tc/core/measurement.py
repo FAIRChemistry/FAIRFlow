@@ -5,14 +5,14 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from astropy.units import UnitBase
 from datetime import datetime as Datetime
+from astropy.units import UnitBase
 
 from .quantity import Quantity
 from .data import Data
-from .datatype import DataType
-from .metadata import Metadata
 from .measurementtype import MeasurementType
+from .metadata import Metadata
+from .datatype import DataType
 
 
 @forge_signature
@@ -46,7 +46,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="c7407c28baaf7f0667ca7e50953202a7c1ae7ff5"
+        default="ac55b72bed16a0027ba585ed1fa2168c71f58708"
     )
 
     def add_to_metadata(
@@ -54,7 +54,7 @@ class Measurement(sdRDM.DataModel):
         parameter: Optional[str] = None,
         value: Union[str, float, Datetime, None] = None,
         abbreviation: Optional[str] = None,
-        data_type: Union[DataType, str, None] = None,
+        type: Optional[DataType] = None,
         mode: Optional[str] = None,
         unit: Optional[UnitBase] = None,
         description: Optional[str] = None,
@@ -68,7 +68,7 @@ class Measurement(sdRDM.DataModel):
             parameter (): Name of the parameter.. Defaults to None
             value (): value of the parameter.. Defaults to None
             abbreviation (): abbreviation for the parameter.. Defaults to None
-            data_type (): type of the parameter.. Defaults to None
+            type (): type of the parameter.. Defaults to None
             mode (): mode of the parameter. E.g., on and off.. Defaults to None
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
@@ -78,7 +78,7 @@ class Measurement(sdRDM.DataModel):
             "parameter": parameter,
             "value": value,
             "abbreviation": abbreviation,
-            "data_type": data_type,
+            "type": type,
             "mode": mode,
             "unit": unit,
             "description": description,

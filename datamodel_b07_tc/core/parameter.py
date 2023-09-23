@@ -31,5 +31,5 @@ class Parameter(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="c7407c28baaf7f0667ca7e50953202a7c1ae7ff5"
+        default="ac55b72bed16a0027ba585ed1fa2168c71f58708"
     )

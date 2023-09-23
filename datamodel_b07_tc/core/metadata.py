@@ -4,8 +4,8 @@ from typing import Optional, Union
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
-from astropy.units import UnitBase
 from datetime import datetime as Datetime
+from astropy.units import UnitBase
 
 from .datatype import DataType
 
@@ -35,7 +35,7 @@ class Metadata(sdRDM.DataModel):
         description="abbreviation for the parameter.",
     )
 
-    data_type: Union[DataType, str, None] = Field(
+    type: Optional[DataType] = Field(
         default=None,
         description="type of the parameter.",
     )
@@ -59,5 +59,5 @@ class Metadata(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="c7407c28baaf7f0667ca7e50953202a7c1ae7ff5"
+        default="ac55b72bed16a0027ba585ed1fa2168c71f58708"
     )
