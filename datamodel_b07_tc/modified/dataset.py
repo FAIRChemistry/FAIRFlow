@@ -12,6 +12,10 @@ from .measurement import Measurement
 from .plantsetup import PlantSetup
 from .generalinformation import GeneralInformation
 
+# from datamodel_b07_tc.tools.auxiliary.enumerate_objects import (
+#     enumerate_objects,
+# )
+
 
 @forge_signature
 class Dataset(sdRDM.DataModel):
@@ -70,3 +74,12 @@ class Dataset(sdRDM.DataModel):
         self.experiments.append(Experiment(**params))
 
         return self.experiments[-1]
+
+    def enumerate(self, object):
+        object_list = getattr(self, object)
+        object_dict = {
+            index: object for index, object in enumerate(object_list)
+        }
+        for index, object in object_dict.items():
+            print(f"{index}: {object.id}")
+        return object_dict

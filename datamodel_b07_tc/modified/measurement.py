@@ -1,6 +1,7 @@
 import sdRDM
 
-from typing import Optional, Union, List
+from pathlib import Path
+from typing import Callable, Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
@@ -120,10 +121,16 @@ class Measurement(sdRDM.DataModel):
         self.experimental_data.append(Data(**params))
 
         return self.experimental_data[-1]
-    
+
+    @classmethod
+    def from_parser(cls, parser: Callable, **kwargs: Path):
+        return parser(cls, **kwargs)
+
     @property
     def injection_date(self):
-        if self.measurement_type == 'GC measurement':
-            return self.get('metadata', 'parameter', 'Injection Date' )[0][0].value
+        if self.measurement_type == "GC measurement":
+            return self.get("metadata", "parameter", "Injection Date")[0][
+                0
+            ].value
         else:
-            raise ValueError('Lak, du Hund! Das ist keine GC Messung')
+            raise ValueError("Not a GC measurement!")

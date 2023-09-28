@@ -441,6 +441,7 @@ PEAKAREAPERCENTAGE = "Peak area percentage"
 SLOPE = "Slope"
 INTERCEPT = "Intercept"
 COEFFDET = "Coefficient of determination"
+FARADAYEFFICIENCY = "Faraday efficiency"
 ```
 
 

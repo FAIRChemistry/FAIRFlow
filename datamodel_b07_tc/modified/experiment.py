@@ -123,7 +123,57 @@ class Experiment(sdRDM.DataModel):
         self.species_data.append(SpeciesData(**params))
 
         return self.species_data[-1]
-    
+
+    def read_correction_factors(self, path: Path):
+        with open(path, "r") as f:
+            correction_factors_dict = json.load(f)
+            for species, correction_factor in correction_factors_dict.items():
+                for species_data_object in self.species_data:
+                    if species_data_object.species == species:
+                        species_data_object.correction_factor = (
+                            correction_factor
+                        )
+
+    def read_faraday_coefficients(self, path: Path):
+        with open(path, "r") as f:
+            faraday_coefficients_dict = json.load(f)
+            for (
+                species,
+                faraday_coefficient,
+            ) in faraday_coefficients_dict.items():
+                for species_data_object in self.species_data:
+                    if species_data_object.species == species:
+                        species_data_object.faraday_coefficient = (
+                            faraday_coefficient
+                        )
+
+    @property
+    def volumetric_flow_time_course(self) -> list:
+        mfm_measurement = self.get(
+            "measurements", "measurement_type", "MFM measurement"
+        )[0][0]
+        volumetric_flow_datetime_list = mfm_measurement.get(
+            "experimental_data", "quantity", "Date time"
+        )[0][0].values
+        volumetric_flow_values_list = mfm_measurement.get(
+            "experimental_data", "quantity", "Volumetric flow rate"
+        )[0][0].values
+        return [volumetric_flow_datetime_list, volumetric_flow_values_list]
+
+    @property
+    def initial_time(self) -> float:
+        initial_time = float(
+            self.get("measurements/metadata", "parameter", "TINIT")[0][0].value
+        )
+        return initial_time
+
+    @property
+    def initial_current(self) -> float:
+        initial_current = float(
+            self.get("measurements/metadata", "parameter", "IINIT")[0][0].value
+        )
+        return initial_current
+
     # def get_injection_date(self) -> datetime:
 
     #     injection_date_string = self.gc_measurements.get(
@@ -133,50 +183,3 @@ class Experiment(sdRDM.DataModel):
     #         injection_date_string, "%d-%b-%y, %H:%M:%S"
     #     )
     #     return injection_date_string
-
-    @property
-    def volumetric_flow_time_course(self) ->list:
-
-        mfm_measurement = (
-            self.get("measurements", "measurement_type", "MFM measurement")
-            [0][0]
-        )
-        volumetric_flow_datetime_list = mfm_measurement.get("experimental_data", "quantity", "Date time")[0][0].values
-        volumetric_flow_values_list = mfm_measurement.get("experimental_data", "quantity", "Volumetric flow rate")[0][0].values
-        return [volumetric_flow_datetime_list, volumetric_flow_values_list]
-    
-    @property
-    def initial_time(self) -> float:
-
-        initial_time = float(
-            self.get("measurements/metadata", "parameter", "TINIT")[0][0].value
-        )
-        return initial_time
-    
-    @property
-    def initial_current(self) -> float:
-
-        initial_current = float(
-            self.get("measurements/metadata", "parameter", "IINIT")[0][0].value
-        )
-        return initial_current
-
-
-    def read_correction_factors(self, path: Path):
-
-        with open(path, 'r') as f:
-            correction_factors_dict = json.load(f)
-            for species, correction_factor in correction_factors_dict.items():
-                for species_data_object in self.species_data: 
-                    if species_data_object.species == species:
-                        species_data_object.correction_factor = correction_factor  
-
-
-    def read_faraday_coefficients(self, path: Path):
-
-        with open(path, 'r') as f:
-            faraday_coefficients_dict = json.load(f)
-            for species, faraday_coefficient in faraday_coefficients_dict.items():
-                for species_data_object in self.species_data: 
-                    if species_data_object.species == species:
-                        species_data_object.faraday_coefficient = faraday_coefficient  
