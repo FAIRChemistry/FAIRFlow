@@ -60,7 +60,7 @@ This is another object that represents the author of the dataset. Please note, t
 ### PlantSetup
 
 - equipment
-  - Type: Device
+  - Type: Equipment
   - Multiple: True
   - Description: bla
 - piping_network_system
@@ -81,13 +81,13 @@ This is another object that represents the author of the dataset. Please note, t
 
 - manufacturer
   - Type: string
-  - Description: name of the manufacturer of the device.
+  - Description: name of the manufacturer of the equipment.
 - equipment_type
   - Type: string
-  - Description: type given by the manufacturer of the device.
+  - Description: type given by the manufacturer of the equipment.
 - series
   - Type: string
-  - Description: the series of the device.
+  - Description: the series of the equipment.
 - on_off
   - Type: boolean
   - Description: operational mode of the flow module. True is on and False is off.
@@ -164,13 +164,13 @@ This is another object that represents the author of the dataset. Please note, t
 
 - manufacturer
   - Type: string
-  - Description: name of the manufacturer of the device.
+  - Description: name of the manufacturer of the Piping component.
 - equipment_type
   - Type: string
-  - Description: type given by the manufacturer of the device.
+  - Description: type given by the manufacturer of the Piping component.
 - series
   - Type: string
-  - Description: the series of the device.
+  - Description: the series of the Piping component.
 - on_off
   - Type: boolean
   - Description: operational mode of the flow module. True is on and False is off.
@@ -448,9 +448,9 @@ INERTGAS = "Inert Gas"
 ```
 
 
-### DeviceList
+### EquipmentList
 
-List of devices that are part of a plant.
+List of equipment that are part of a plant.
 
 ```python
 MASSFLOWCONTROLLER = "Mass flow controller"
