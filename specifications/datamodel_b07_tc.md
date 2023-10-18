@@ -65,7 +65,6 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: bla
 - piping_network_system
   - Type: PipingNetworkSystem
-  - Multiple: True
   - Description: bla
 - input
   - Type: Input
