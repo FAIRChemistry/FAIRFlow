@@ -1,6 +1,5 @@
 import logging
 
-from datamodel_b07_tc.modified.measurement import Measurement
 from time import sleep
 from pydantic import BaseModel
 from typing import List, Dict
@@ -12,33 +11,41 @@ from ipywidgets import (
     Label,  # Simple string label widget, useful for displaying text
     Dropdown,  # Classic dropdown menu
     Button,  # Classic button
-    Layout,
+    Layout,  # Layout specification object
 )
 
 logger = logging.getLogger(__name__)
 
 
 class PeakAssigner(BaseModel):
-    peak_areas_dict: Dict[str, List[float]]
+    peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]]
     species: List[str]
     _assignment_dicts = []  # List[Dict[str, List[float]]]
     _selection_output = Output()
-    # _assignments_dicts_of_measurements = List[getattr(_assignment_dicts, "type")]
     _VBox_list = []
 
     @classmethod
     def from_gc_measurement(cls, gc_measurements, species):
-        peak_areas_dict = {}
+        peak_areas_retention_time_dict = {}
         for i, gc_measurement in enumerate(gc_measurements):
             if gc_measurement.measurement_type == "GC measurement":
                 peak_areas = gc_measurement.get(
                     "experimental_data", "quantity", "Peak area"
                 )[0][0].values
                 peak_areas = [float(peak_area) for peak_area in peak_areas]
+                retention_time = gc_measurement.get(
+                    "experimental_data", "quantity", "Retention time"
+                )[0][0].values
             else:
                 raise TypeError(f"{gc_measurement} is not a GC measurement")
-            peak_areas_dict[f"Measurement number {i}"] = peak_areas
-        return cls(peak_areas_dict=peak_areas_dict, species=species)
+            peak_areas_retention_time_dict[f"Measurement number {i}"] = {
+                "peak_areas": peak_areas,
+                "retention_time": retention_time,
+            }
+        return cls(
+            peak_areas_retention_time_dict=peak_areas_retention_time_dict,
+            species=species,
+        )
 
     def save_assignments(self, button):
         _assignment_dict = {}
@@ -47,8 +54,8 @@ class PeakAssigner(BaseModel):
             hbox_list = _VBox.children
             _assignment_dict.clear()
             for widget in hbox_list[2:]:
-                species = widget.children[1].value
-                peak_area = float(widget.children[0].value)
+                species = widget.children[2].value
+                peak_area = float(widget.children[1].value)
                 if species != "":
                     if species in _assignment_dict:
                         _assignment_dict[species].append(peak_area)
@@ -63,26 +70,24 @@ class PeakAssigner(BaseModel):
 
     def assign_peaks(self):
         layout_button = Layout(
-            # display="flex",
-            # flex_flow="column",
             align_items="center",
             width="30%",
         )
         layout_hbox = Layout(
-            # display="flex",
-            # flex_flow="column",
             align_items="stretch",
             width="100%",
             justify_content="center",
         )
         layout_vbox = Layout(
-            # display="flex",
-            # flex_flow="column",
-            # align_items="stretch",
             width="100%",
         )
         self._VBox_list.clear()
-        for measurement_number, peak_areas in self.peak_areas_dict.items():
+        for (
+            measurement_number,
+            peak_areas_retention_time,
+        ) in self.peak_areas_retention_time_dict.items():
+            peak_areas = peak_areas_retention_time["peak_areas"]
+            retention_time = peak_areas_retention_time["retention_time"]
             hbox_list = [
                 Label(
                     value=measurement_number,
@@ -95,6 +100,10 @@ class PeakAssigner(BaseModel):
                 HBox(
                     [
                         Label(
+                            value="Retention time",
+                            layout=Layout(width="30%", height="30px"),
+                        ),
+                        Label(
                             value="Peak area",
                             layout=Layout(width="20%", height="30px"),
                         ),
@@ -105,17 +114,22 @@ class PeakAssigner(BaseModel):
                     ]
                 )
             )
-            for peak_area in peak_areas:
+            for peak_area, retention_time in zip(peak_areas, retention_time):
                 dropdown = Dropdown(
                     options=[""] + self.species,
                     layout=Layout(width="40%", height="30px"),
                     style={"description_width": "initial"},
                 )
-                label = Label(
+                retention_time_label = Label(
+                    value=f"{retention_time:.2f}",
+                    layout=Layout(width="30%", height="30px"),
+                )
+
+                peak_area_label = Label(
                     value=f"{peak_area:.2f}",
                     layout=Layout(width="20%", height="30px"),
                 )
-                hbox = HBox([label, dropdown])
+                hbox = HBox([retention_time_label, peak_area_label, dropdown])
                 hbox_list.append(hbox)
             self._VBox_list.append(
                 VBox(children=hbox_list, layout=layout_vbox)
@@ -125,7 +139,6 @@ class PeakAssigner(BaseModel):
             )
             display_button.on_click(self.save_assignments)
 
-        # display(HBox(children=VBox_list, layout=layout_hbox))
         display(HBox(children=self._VBox_list, layout=layout_hbox))
         display(
             HBox(
@@ -135,39 +148,6 @@ class PeakAssigner(BaseModel):
         )
         display(self._selection_output)
 
-    # def assign_peaks(self):
-    #     VBox_list = []
-    #     for peak_areas in self.peak_areas_dict.values():
-    #         # hbox_list.clear()
-    #         hbox_list.append(
-    #             HBox(
-    #                 [
-    #                     Label(
-    #                         value="Peak area",
-    #                         layout=Layout(width="10%", height="20px"),
-    #                     ),
-    #                     Label(
-    #                         value="Species", layout={"width": "max-content"}
-    #                     ),
-    #                 ]
-    #             )
-    #         )
-    #         for peak_area in peak_areas:
-    #             dropdown = Dropdown(
-    #                 options=[""] + self.species,
-    #                 layout={"width": "max-content"},
-    #                 style={"description_width": "initial"},
-    #             )
-    #             label = Label(
-    #                 value=f"{peak_area:.2f}",
-    #                 layout=Layout(width="5%", height="20px"),
-    #             )
-    #             hbox = HBox([label, dropdown])
-    #             hbox_list.append(hbox)
-    #     VBox_list.append(VBox(hbox_list))
-    #     display_button = Button(description="Save Assignments")
-    #     display_button.on_click(self.save_assignments)
-
-    #     display(HBox(VBox_list))
-    #     # display(display_button)
-    #     # display(self._selection_output)
+    @property
+    def get_assignment_dicts(self):
+        return self._assignment_dicts

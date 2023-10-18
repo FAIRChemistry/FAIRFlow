@@ -28,7 +28,6 @@ def gc_parser(
             encoding="utf-16_le",
         )
         metadata_df.dropna(how="all", inplace=True)
-        # records = metadata_df.to_dict(orient="records")
         records = [
             row.dropna().to_dict() for index, row in metadata_df.iterrows()
         ]

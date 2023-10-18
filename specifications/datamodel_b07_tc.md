@@ -59,12 +59,12 @@ This is another object that represents the author of the dataset. Please note, t
 
 ### PlantSetup
 
-- devices
+- equipment
   - Type: Device
   - Multiple: True
   - Description: bla
-- tubing
-  - Type: Tubing
+- piping_network_system
+  - Type: PipingNetworkSystem
   - Multiple: True
   - Description: bla
 - input
@@ -77,12 +77,12 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: bla
 
 
-### Device
+### Equipment
 
 - manufacturer
   - Type: string
   - Description: name of the manufacturer of the device.
-- device_type
+- equipment_type
   - Type: string
   - Description: type given by the manufacturer of the device.
 - series
@@ -92,22 +92,33 @@ This is another object that represents the author of the dataset. Please note, t
   - Type: boolean
   - Description: operational mode of the flow module. True is on and False is off.
 
+### GasCylinder[_Equipment_]
 
-### Pump[_Device_]
+- volume
+  - Type: UnitClass
+  - Description: Volume of the Gas cylinder.
+- pressure
+  - Type: UnitClass
+  - Description: Maximum operating pressure of the gas cylinder.
+- Content
+  - Type: Chemical
+  - Description: Content of the Gas cylinder.
+
+### Pump[_Equipment_]
 
 - pump_type
   - Type: PumpType
   - Description: type of the pump.
 
 
-### Thermocouple[_Device_]
+### Thermocouple[_Equipment_]
 
 - thermocouple_type
   - Type: ThermocoupleType
   - Description: type of thermocouple like J, K and so on.  
 
 
-### MassFlowMeter[_Device_]
+### MassFlowMeter[_Equipment_]
 
 - min_flow
   - Type: Parameter
@@ -127,7 +138,7 @@ This is another object that represents the author of the dataset. Please note, t
     - Description: unit of the values.
 
 
-### Potentiostat[_Device_]
+### Potentiostat[_Equipment_]
 
 - measurement
   - Type: Measurement
@@ -137,7 +148,38 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: Metadata of the Potentiostat.
 
 
-### Tubing
+### PipingNetworkSystem
+
+- piping_component
+  - Type: PipingComponent
+  - Multiple: True
+  - Description: Component of a piping network system that is not a pipe, e.g. a valve.
+- piping_network_segment
+  - Type: PipingNetworkSegment
+  - Multiple: True
+  - Description: A piping segment being part of a piping network system.
+
+
+### PipingComponent
+
+- manufacturer
+  - Type: string
+  - Description: name of the manufacturer of the device.
+- equipment_type
+  - Type: string
+  - Description: type given by the manufacturer of the device.
+- series
+  - Type: string
+  - Description: the series of the device.
+- on_off
+  - Type: boolean
+  - Description: operational mode of the flow module. True is on and False is off.
+
+
+### Valve[_PipingComponent_]
+
+
+### PipingNetworkSegment
 
 - material
   - Type: Material
@@ -467,6 +509,7 @@ CARBONMONOXIDE = "Carbon monoxide"
 METHANE = "Methane"
 ETHENE = "Ethene"
 ETHANE = "Ethane"
+ARGON = "Argon"
 ```
 
 

@@ -3,7 +3,7 @@ import numpy as np
 
 from pydantic import BaseModel
 from pydantic import PrivateAttr
-from datetime import datetime, timedelta
+from datetime import datetime
 from datamodel_b07_tc.modified import Experiment
 from datamodel_b07_tc.modified import Measurement
 
@@ -13,6 +13,7 @@ import scipy.constants as const
 class FaradayEfficiencyCalculator(BaseModel):
     experiment: Experiment
     electrode_surface_area: float
+    mean_radius: int = 10
     _volumetric_flow_mean: float = PrivateAttr()
     _volumetric_fractions_df: pd.DataFrame = PrivateAttr()
     _conversion_factor: float = PrivateAttr()
@@ -144,7 +145,7 @@ class FaradayEfficiencyCalculator(BaseModel):
 
     # def calculate_theoretical_amount_of_substance(self):
 
-    def calculate_faraday_efficiency(
+    def calculate_faraday_efficiencies(
         self,
         gc_measurement: Measurement,
         mean_radius: int,
@@ -166,7 +167,7 @@ class FaradayEfficiencyCalculator(BaseModel):
             self._theoretical_material_flow_df["Theoretical_material_flow"],
             axis="index",
         ).rename(columns=rename)
-
+        faraday_efficiency_df.dropna(inplace=True)
         return faraday_efficiency_df
 
     @property
@@ -192,7 +193,3 @@ class FaradayEfficiencyCalculator(BaseModel):
     @property
     def theoretical_material_flow(self):
         return self._theoretical_material_flow_df
-
-    # @property
-    # def theoretical_amount_of_substance(self):
-    #     self.theoretical_amount_of_substance

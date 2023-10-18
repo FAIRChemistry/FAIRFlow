@@ -4,6 +4,8 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from pathlib import Path
+from typing import Callable
 
 
 from .device import Device
@@ -168,3 +170,7 @@ class PlantSetup(sdRDM.DataModel):
         self.output.append(Output(**params))
 
         return self.output[-1]
+
+    @classmethod
+    def from_parser(cls, parser: Callable, **kwargs: Path):
+        return parser(cls, **kwargs)
