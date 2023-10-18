@@ -178,6 +178,9 @@ This is another object that represents the author of the dataset. Please note, t
 
 ### Valve[_PipingComponent_]
 
+- valve_type
+  - Type: string
+  - Description: Type of valve, e.g. 3-way ball valve.
 
 ### PipingNetworkSegment
 
