@@ -8,3 +8,4 @@ class Species(Enum):
     METHANE = "Methane"
     ETHENE = "Ethene"
     ETHANE = "Ethane"
+    ARGON = "Argon"

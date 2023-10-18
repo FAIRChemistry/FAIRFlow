@@ -3,13 +3,17 @@ from .generalinformation import GeneralInformation
 from .author import Author
 from .experiment import Experiment
 from .plantsetup import PlantSetup
-from .device import Device
+from .equipment import Equipment
+from .gascylinder import GasCylinder
 from .pump import Pump
 from .thermocouple import Thermocouple
 from .massflowmeter import MassFlowMeter
 from .parameter import Parameter
 from .potentiostat import Potentiostat
-from .tubing import Tubing
+from .pipingnetworksystem import PipingNetworkSystem
+from .pipingcomponent import PipingComponent
+from .valve import Valve
+from .pipingnetworksegment import PipingNetworkSegment
 from .insulation import Insulation
 from .input import Input
 from .output import Output
@@ -25,27 +29,30 @@ from .thermocoupletype import ThermocoupleType
 from .material import Material
 from .pumptype import PumpType
 from .reactantrole import ReactantRole
-from .devicelist import DeviceList
+from .equipmentlist import EquipmentList
 from .quantity import Quantity
 from .measurementtype import MeasurementType
 from .species import Species
 from .chemicalformula import ChemicalFormula
 
 __doc__ = ""
-
 __all__ = [
     "Dataset",
     "GeneralInformation",
     "Author",
     "Experiment",
     "PlantSetup",
-    "Device",
+    "Equipment",
+    "GasCylinder",
     "Pump",
     "Thermocouple",
     "MassFlowMeter",
     "Parameter",
     "Potentiostat",
-    "Tubing",
+    "PipingNetworkSystem",
+    "PipingComponent",
+    "Valve",
+    "PipingNetworkSegment",
     "Insulation",
     "Input",
     "Output",
@@ -61,7 +68,7 @@ __all__ = [
     "Material",
     "PumpType",
     "ReactantRole",
-    "DeviceList",
+    "EquipmentList",
     "Quantity",
     "MeasurementType",
     "Species",

@@ -4,15 +4,13 @@ from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-from astropy.units import UnitBase
 from datetime import datetime as Datetime
-
-from .data import Data
+from astropy.units import UnitBase
+from .datatype import DataType
 from .measurementtype import MeasurementType
 from .quantity import Quantity
+from .data import Data
 from .metadata import Metadata
-from .datatype import DataType
 
 
 @forge_signature
@@ -41,12 +39,11 @@ class Measurement(sdRDM.DataModel):
         multiple=True,
         description="experimental data of a measurement.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="0aef243b0f9c746d2a8af6cb9d17aece87a464b3"
+        default="3155c0b011acb68ca77bec7fc9616c770158e2a9"
     )
 
     def add_to_metadata(
@@ -75,7 +72,6 @@ class Measurement(sdRDM.DataModel):
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
         """
-
         params = {
             "parameter": parameter,
             "value": value,
@@ -86,12 +82,9 @@ class Measurement(sdRDM.DataModel):
             "unit": unit,
             "description": description,
         }
-
         if id is not None:
             params["id"] = id
-
         self.metadata.append(Metadata(**params))
-
         return self.metadata[-1]
 
     def add_to_experimental_data(
@@ -110,16 +103,8 @@ class Measurement(sdRDM.DataModel):
             values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
-
-        params = {
-            "quantity": quantity,
-            "values": values,
-            "unit": unit,
-        }
-
+        params = {"quantity": quantity, "values": values, "unit": unit}
         if id is not None:
             params["id"] = id
-
         self.experimental_data.append(Data(**params))
-
         return self.experimental_data[-1]

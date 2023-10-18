@@ -2,30 +2,26 @@
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .equipment import Equipment
-from .metadata import Metadata
-from .measurement import Measurement
+
+
+from .pipingcomponent import PipingComponent
 
 
 @forge_signature
-class Potentiostat(Equipment):
+class Valve(PipingComponent):
     """"""
 
     id: Optional[str] = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("potentiostatINDEX"),
+        default_factory=IDGenerator("valveINDEX"),
         xml="@id",
     )
 
-    measurement: Optional[Measurement] = Field(
-        default=Measurement(),
-        description="Measuring Data.",
+    valve_type: Optional[str] = Field(
+        default=None,
+        description="Type of valve, e.g. 3-way ball valve.",
     )
 
-    metadata: Optional[Metadata] = Field(
-        default=Metadata(),
-        description="Metadata of the Potentiostat.",
-    )
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
