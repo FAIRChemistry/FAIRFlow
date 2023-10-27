@@ -3,10 +3,10 @@ import sdRDM
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .calibration import Calibration
-from .data import Data
 from .chemicalformula import ChemicalFormula
+from .calibration import Calibration
 from .species import Species
+from .data import Data
 
 
 @forge_signature
@@ -52,5 +52,5 @@ class SpeciesData(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
+        default="3129721bd4454ea1e6f306bdb004f71807633086"
     )
