@@ -12,7 +12,7 @@
             "class": "logging.FileHandler",
             "level": "DEBUG",
             "formatter": "simple",
-            "filename": "logging/log_exp_2_1.log",
+            "filename": "datamodel_b07_tc/tools/logging/log_exp_2_1.log",
             "mode": "a"
         },
         "console": {
