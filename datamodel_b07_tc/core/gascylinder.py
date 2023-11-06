@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 from astropy.units import UnitBase
-from .equipment import Equipment
 from .chemical import Chemical
+from .equipment import Equipment
 
 
 @forge_signature
@@ -35,5 +35,5 @@ class GasCylinder(Equipment):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="07c15acdec1591bdb9141fd4b99f97b3fb251642"
+        default="fd444c89fd9fce83ca479db505e8166974c90459"
     )
