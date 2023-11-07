@@ -15,16 +15,17 @@ class DirectoryNotFoundError(Exception):
 class Librarian(BaseModel):
     root_directory: Path
 
-    def enumerate_subdirectories(self, directory: Path):
+    def enumerate_subdirectories(self, directory: Path, verbose: bool = None):
         dir_dict = {
             index: dir
             for index, dir in enumerate(
                 [x for x in directory.iterdir() if x.is_dir()]
             )
         }
-        print(f"Parent directory: \n {directory} \nAvailable subdirectories:")
-        for index, dir in dir_dict.items():
-            print(f"{index}: .../{dir.name}")
+        if verbose:
+            print(f"Parent directory: \n {directory} \nAvailable subdirectories:")
+            for index, dir in dir_dict.items():
+                print(f"{index}: .../{dir.name}")
 
         # directory = self.root_directory
         # if directory:
@@ -41,6 +42,7 @@ class Librarian(BaseModel):
         directory: Path | List[Path],
         indices: List[int] = None,
         filter: str = None,
+        verbose: bool = None
     ):
         """
         Directory is set to the root directory.
@@ -71,9 +73,11 @@ class Librarian(BaseModel):
             for index, file in enumerate(directory.glob(suffix))
             if file.is_file()
         }
-        print(f"Directory: \n {directory} \nAvailable files:")
-        for index, file in file_dict.items():
-            print(f"{index}: {file.name}")
+        if verbose: 
+            print(f"Directory: \n {directory} \nAvailable files:")
+            for index, file in file_dict.items():
+                print(f"{index}: {file.name}")
+
         return file_dict
 
     def visualize_directory_tree(
