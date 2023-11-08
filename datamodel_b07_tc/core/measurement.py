@@ -4,13 +4,13 @@ from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from datetime import datetime as Datetime
 from astropy.units import UnitBase
-from .measurementtype import MeasurementType
-from .datatype import DataType
-from .data import Data
-from .metadata import Metadata
+from datetime import datetime as Datetime
 from .quantity import Quantity
+from .data import Data
+from .measurementtype import MeasurementType
+from .metadata import Metadata
+from .datatype import DataType
 
 
 @forge_signature
@@ -43,7 +43,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="3c0e9bd164d52b8d92a984e6beffe5a7bc1472ef"
+        default="868350ad1ed65946188178331de3c7b18b125d71"
     )
 
     def add_to_metadata(
