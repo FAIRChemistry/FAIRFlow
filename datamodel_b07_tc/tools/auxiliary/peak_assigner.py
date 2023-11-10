@@ -3,7 +3,7 @@ import logging
 from time import sleep
 from pydantic import BaseModel
 from typing import List, Dict
-
+from IPython.display import display
 from ipywidgets import (
     VBox,  # Vertical container for widgets (called its children)
     HBox,  # Horizontal container for widgets
@@ -23,6 +23,7 @@ class PeakAssigner(BaseModel):
     _assignment_dicts = []  # List[Dict[str, List[float]]]
     _selection_output = Output()
     _VBox_list = []
+    _full_layout = VBox([])
 
     @classmethod
     def from_gc_measurement(cls, gc_measurements, species):
@@ -138,15 +139,26 @@ class PeakAssigner(BaseModel):
                 description="Save Assignments", layout=layout_button
             )
             display_button.on_click(self.save_assignments)
+        
 
-        display(HBox(children=self._VBox_list, layout=layout_hbox))
-        display(
-            HBox(
-                children=[display_button],
-                layout=Layout(justify_content="center"),
-            )
-        )
-        display(self._selection_output)
+        widget0 = HBox(children=self._VBox_list, layout=layout_hbox)
+        widget1 = HBox(children=[display_button],layout=Layout(justify_content="center"))
+        widget2 = self._selection_output
+
+        full_layout = VBox([widget0,widget1,widget2])
+
+        display(full_layout)
+
+    def modify_dropdown_options(self, new_options):
+
+            for vbox in self._VBox_list:
+                for hbox in vbox.children[2:]:
+                    dropdown = hbox.children[2]
+                    # Assuming the Dropdown is always at index 2, modify its options
+                    dropdown.options = new_options
+                    # Preventing value to be first entry of new options
+                    dropdown.value = None
+
 
     @property
     def get_assignment_dicts(self):

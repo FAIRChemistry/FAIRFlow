@@ -75,11 +75,12 @@ class Dataset(sdRDM.DataModel):
 
         return self.experiments[-1]
 
-    def enumerate(self, object):
+    def enumerate(self, object, verbose=False):
         object_list = getattr(self, object)
         object_dict = {
             index: object for index, object in enumerate(object_list)
         }
-        for index, object in object_dict.items():
-            print(f"{index}: {object.id}")
+        if verbose:
+            for index, object in object_dict.items():
+                print(f"{index}: {object.id}")
         return object_dict
