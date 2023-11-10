@@ -4,8 +4,8 @@ from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase
 from datetime import datetime as Datetime
+from astropy.units import UnitBase
 from .quantity import Quantity
 
 
@@ -38,5 +38,5 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="868350ad1ed65946188178331de3c7b18b125d71"
+        default="b33747e8292297d73d6fe56d3d49a006d78221ac"
     )
