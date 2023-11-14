@@ -4,10 +4,10 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .pipingnetworksegment import PipingNetworkSegment
 from .insulation import Insulation
-from .pipingcomponent import PipingComponent
 from .material import Material
+from .pipingcomponent import PipingComponent
+from .pipingnetworksegment import PipingNetworkSegment
 
 
 @forge_signature
@@ -37,7 +37,7 @@ class PipingNetworkSystem(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="b33747e8292297d73d6fe56d3d49a006d78221ac"
+        default="c0a1e74b1a379f3104c1869fc55c4df3a4bb81f5"
     )
 
     def add_to_piping_component(
