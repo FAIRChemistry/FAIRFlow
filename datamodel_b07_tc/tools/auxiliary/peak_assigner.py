@@ -16,6 +16,8 @@ from ipywidgets import (
 
 logger = logging.getLogger(__name__)
 
+typical_retention_time = {"Hydrogen": 1.7, "Carbon dioxide": 2.9, "Carbon monoxide": 3.4, "Methane": 3.6, "Ethene": 6.0, "Ethane": 14.0}
+
 
 class PeakAssigner(BaseModel):
     peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]]
@@ -116,10 +118,16 @@ class PeakAssigner(BaseModel):
                 )
             )
             for peak_area, retention_time in zip(peak_areas, retention_time):
+
+                default_value = [trt[0] for trt in typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.2) and (trt[0] in self.species) ]
+                
+                default_value = default_value[0] if bool(default_value) else ""
+
                 dropdown = Dropdown(
                     options=[""] + self.species,
                     layout=Layout(width="40%", height="30px"),
                     style={"description_width": "initial"},
+                    value=default_value
                 )
                 retention_time_label = Label(
                     value=f"{retention_time:.2f}",
