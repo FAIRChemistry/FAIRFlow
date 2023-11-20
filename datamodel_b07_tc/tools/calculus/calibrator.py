@@ -1,10 +1,10 @@
 import json
 from pydantic import BaseModel
 from typing import List
-from datamodel_b07_tc.core.speciesdata import SpeciesData
-from datamodel_b07_tc.core.calibration import Calibration
-from datamodel_b07_tc.core.data import Data
-from datamodel_b07_tc.core.quantity import Quantity
+from datamodel_b07_tc.test.speciesdata import SpeciesData
+from datamodel_b07_tc.test.calibration import Calibration
+from datamodel_b07_tc.test.data import Data
+from datamodel_b07_tc.test.quantity import Quantity
 
 from pathlib import Path
 

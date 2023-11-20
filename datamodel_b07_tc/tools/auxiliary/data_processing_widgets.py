@@ -10,8 +10,8 @@ from sdRDM import DataModel
 # Import general tools and objects of this datamodel #
 
 # Objects #
-from datamodel_b07_tc.core.experiment import Experiment
-from datamodel_b07_tc.core.measurement import Measurement
+from datamodel_b07_tc.test.experiment import Experiment
+from datamodel_b07_tc.test.measurement import Measurement
 #from datamodel_b07_tc.core.plantsetup import PlantSetup
 
 # Tools #

@@ -4,8 +4,8 @@ import numpy as np
 from pydantic import BaseModel
 from pydantic import PrivateAttr
 from datetime import datetime
-from datamodel_b07_tc.core import Experiment
-from datamodel_b07_tc.core import Measurement
+from datamodel_b07_tc.test import Experiment
+from datamodel_b07_tc.test import Measurement
 
 import scipy.constants as const
 

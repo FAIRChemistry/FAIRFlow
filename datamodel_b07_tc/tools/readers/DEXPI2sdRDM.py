@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 import pandas as pd
-from datamodel_b07_tc.core.plantsetup import PlantSetup
+from datamodel_b07_tc.test.plantsetup import PlantSetup
 from sdRDM import DataModel
 from pathlib import Path
 

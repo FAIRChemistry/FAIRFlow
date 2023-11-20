@@ -2,8 +2,8 @@ import pandas as pd
 
 from pathlib import Path
 from pydantic import BaseModel
-from datamodel_b07_tc.core.metadata import Metadata
-from datamodel_b07_tc.core.measurement import Measurement
+from datamodel_b07_tc.test.metadata import Metadata
+from datamodel_b07_tc.test.measurement import Measurement
 
 
 def gstatic_parser(cls: Measurement, metadata_path: Path):

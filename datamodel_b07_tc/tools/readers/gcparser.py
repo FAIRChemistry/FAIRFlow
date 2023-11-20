@@ -1,9 +1,9 @@
 import pandas as pd
 from pathlib import Path
 
-from datamodel_b07_tc.core.measurement import Measurement
-from datamodel_b07_tc.core.data import Data
-from datamodel_b07_tc.core.metadata import Metadata
+from datamodel_b07_tc.test.measurement import Measurement
+from datamodel_b07_tc.test.data import Data
+from datamodel_b07_tc.test.metadata import Metadata
 
 
 def gc_parser(
