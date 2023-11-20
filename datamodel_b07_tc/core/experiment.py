@@ -1,14 +1,10 @@
 import sdRDM
 
-<<<<<<< HEAD
 import json
-=======
->>>>>>> 5e18871 (updated core)
 from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-<<<<<<< HEAD
 from pathlib import Path
 from .chemicalformula import ChemicalFormula
 from .metadata import Metadata
@@ -18,18 +14,6 @@ from .data import Data
 from .speciesdata import SpeciesData
 from .species import Species
 from .measurement import Measurement
-=======
-
-
-from .data import Data
-from .chemicalformula import ChemicalFormula
-from .speciesdata import SpeciesData
-from .species import Species
-from .measurement import Measurement
-from .measurementtype import MeasurementType
-from .metadata import Metadata
-from .calibration import Calibration
->>>>>>> 5e18871 (updated core)
 from .plantsetup import PlantSetup
 
 
@@ -65,11 +49,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-<<<<<<< HEAD
         default="01b5fdc2e92add8386e9d335f576018888635f17"
-=======
-        default="466366e7b75450efb6b154eca033fc469f36e2a4"
->>>>>>> 5e18871 (updated core)
     )
 
     def add_to_measurements(
@@ -132,7 +112,6 @@ class Experiment(sdRDM.DataModel):
             params["id"] = id
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
-<<<<<<< HEAD
 
     def read_correction_factors(self, path: Path):
         with open(path, "r") as f:
@@ -189,5 +168,3 @@ class Experiment(sdRDM.DataModel):
     #         injection_date_string, "%d-%b-%y, %H:%M:%S"
     #     )
     #     return injection_date_string
-=======
->>>>>>> 5e18871 (updated core)

@@ -1,19 +1,11 @@
 import sdRDM
 
-<<<<<<< HEAD
 import numpy as np
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 from sklearn import linear_model
 from .quantity import Quantity
-=======
-from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
-
-
->>>>>>> 5e18871 (updated core)
 from .data import Data
 
 
@@ -55,7 +47,6 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-<<<<<<< HEAD
         default="01b5fdc2e92add8386e9d335f576018888635f17"
     )
 
@@ -79,7 +70,3 @@ class Calibration(sdRDM.DataModel):
         )
         # def calibration_parameters():
         #     return
-=======
-        default="466366e7b75450efb6b154eca033fc469f36e2a4"
-    )
->>>>>>> 5e18871 (updated core)

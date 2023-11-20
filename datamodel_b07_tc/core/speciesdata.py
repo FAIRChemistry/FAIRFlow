@@ -1,6 +1,5 @@
 import sdRDM
 
-<<<<<<< HEAD
 import numpy as np
 from typing import Optional
 from pydantic import Field, PrivateAttr
@@ -11,17 +10,6 @@ from .calibration import Calibration
 from .quantity import Quantity
 from .chemicalformula import ChemicalFormula
 from .data import Data
-=======
-from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
-
-
-from .species import Species
-from .calibration import Calibration
-from .data import Data
-from .chemicalformula import ChemicalFormula
->>>>>>> 5e18871 (updated core)
 
 
 @forge_signature
@@ -67,7 +55,6 @@ class SpeciesData(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-<<<<<<< HEAD
         default="01b5fdc2e92add8386e9d335f576018888635f17"
     )
 
@@ -91,7 +78,3 @@ class SpeciesData(sdRDM.DataModel):
             values=[coefficient_of_determination],
             unit=None,
         )
-=======
-        default="466366e7b75450efb6b154eca033fc469f36e2a4"
-    )
->>>>>>> 5e18871 (updated core)
