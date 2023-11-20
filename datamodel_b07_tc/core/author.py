@@ -24,10 +24,9 @@ class Author(sdRDM.DataModel):
         default=None,
         description="organization the author is affiliated to.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="1acc70cc802e268e3f749491b735d3b53a462c96"
+        default="01b5fdc2e92add8386e9d335f576018888635f17"
     )

@@ -1,16 +1,16 @@
 import sdRDM
 
-from pathlib import Path
-from typing import Callable, Optional, Union, List
+from typing import Optional, Union, List, Callable
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase
 from datetime import datetime as Datetime
+from astropy.units import UnitBase
+from pathlib import Path
+from .quantity import Quantity
 from .metadata import Metadata
 from .data import Data
 from .measurementtype import MeasurementType
-from .quantity import Quantity
 from .datatype import DataType
 
 
@@ -40,12 +40,11 @@ class Measurement(sdRDM.DataModel):
         multiple=True,
         description="experimental data of a measurement.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="1acc70cc802e268e3f749491b735d3b53a462c96"
+        default="01b5fdc2e92add8386e9d335f576018888635f17"
     )
 
     def add_to_metadata(
@@ -72,7 +71,6 @@ class Measurement(sdRDM.DataModel):
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
         """
-
         params = {
             "parameter": parameter,
             "value": value,
@@ -82,12 +80,9 @@ class Measurement(sdRDM.DataModel):
             "unit": unit,
             "description": description,
         }
-
         if id is not None:
             params["id"] = id
-
         self.metadata.append(Metadata(**params))
-
         return self.metadata[-1]
 
     def add_to_experimental_data(
@@ -106,18 +101,10 @@ class Measurement(sdRDM.DataModel):
             values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
-
-        params = {
-            "quantity": quantity,
-            "values": values,
-            "unit": unit,
-        }
-
+        params = {"quantity": quantity, "values": values, "unit": unit}
         if id is not None:
             params["id"] = id
-
         self.experimental_data.append(Data(**params))
-
         return self.experimental_data[-1]
 
     @classmethod
@@ -127,8 +114,6 @@ class Measurement(sdRDM.DataModel):
     @property
     def injection_date(self):
         if self.measurement_type == "GC measurement":
-            return self.get("metadata", "parameter", "Injection Date")[0][
-                0
-            ].value
+            return self.get("metadata", "parameter", "Injection Date")[0][0].value
         else:
             raise ValueError("Not a GC measurement!")

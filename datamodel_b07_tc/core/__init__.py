@@ -18,7 +18,7 @@ from .stoichiometry import Stoichiometry
 from .data import Data
 from .metadata import Metadata
 from .measurement import Measurement
-from .analysis import Analysis
+from .speciesdata import SpeciesData
 from .calibration import Calibration
 from .datatype import DataType
 from .thermocoupletype import ThermocoupleType
@@ -29,9 +29,9 @@ from .devicelist import DeviceList
 from .quantity import Quantity
 from .measurementtype import MeasurementType
 from .species import Species
+from .chemicalformula import ChemicalFormula
 
 __doc__ = ""
-
 __all__ = [
     "Dataset",
     "GeneralInformation",
@@ -53,7 +53,7 @@ __all__ = [
     "Data",
     "Metadata",
     "Measurement",
-    "Analysis",
+    "SpeciesData",
     "Calibration",
     "DataType",
     "ThermocoupleType",
@@ -64,4 +64,5 @@ __all__ = [
     "Quantity",
     "MeasurementType",
     "Species",
+    "ChemicalFormula",
 ]

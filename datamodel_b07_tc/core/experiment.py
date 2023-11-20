@@ -1,20 +1,20 @@
 import sdRDM
-import json
 
-from pathlib import Path
+import json
 from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .metadata import Metadata
-from .plantsetup import PlantSetup
-from .measurement import Measurement
-from .measurementtype import MeasurementType
+from pathlib import Path
 from .chemicalformula import ChemicalFormula
-from .data import Data
-from .species import Species
-from .speciesdata import SpeciesData
+from .metadata import Metadata
+from .measurementtype import MeasurementType
 from .calibration import Calibration
+from .data import Data
+from .speciesdata import SpeciesData
+from .species import Species
+from .measurement import Measurement
+from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -45,12 +45,11 @@ class Experiment(sdRDM.DataModel):
         multiple=True,
         description="all provided and calculated data about a specific species.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="1acc70cc802e268e3f749491b735d3b53a462c96"
+        default="01b5fdc2e92add8386e9d335f576018888635f17"
     )
 
     def add_to_measurements(
@@ -69,18 +68,14 @@ class Experiment(sdRDM.DataModel):
             metadata (): metadata of a measurement.. Defaults to ListPlus()
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
         """
-
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
         }
-
         if id is not None:
             params["id"] = id
-
         self.measurements.append(Measurement(**params))
-
         return self.measurements[-1]
 
     def add_to_species_data(
@@ -105,7 +100,6 @@ class Experiment(sdRDM.DataModel):
             faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
-
         params = {
             "species": species,
             "chemical_formula": chemical_formula,
@@ -114,12 +108,9 @@ class Experiment(sdRDM.DataModel):
             "faraday_coefficient": faraday_coefficient,
             "faraday_efficiency": faraday_efficiency,
         }
-
         if id is not None:
             params["id"] = id
-
         self.species_data.append(SpeciesData(**params))
-
         return self.species_data[-1]
 
     def read_correction_factors(self, path: Path):
@@ -128,9 +119,7 @@ class Experiment(sdRDM.DataModel):
             for species, correction_factor in correction_factors_dict.items():
                 for species_data_object in self.species_data:
                     if species_data_object.species == species:
-                        species_data_object.correction_factor = (
-                            correction_factor
-                        )
+                        species_data_object.correction_factor = correction_factor
 
     def read_faraday_coefficients(self, path: Path):
         with open(path, "r") as f:
@@ -141,9 +130,7 @@ class Experiment(sdRDM.DataModel):
             ) in faraday_coefficients_dict.items():
                 for species_data_object in self.species_data:
                     if species_data_object.species == species:
-                        species_data_object.faraday_coefficient = (
-                            faraday_coefficient
-                        )
+                        species_data_object.faraday_coefficient = faraday_coefficient
 
     @property
     def volumetric_flow_time_course(self) -> list:

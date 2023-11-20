@@ -1,14 +1,12 @@
 import sdRDM
-import numpy as np
 
-from sklearn import linear_model
+import numpy as np
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
-from .data import Data
+from sklearn import linear_model
 from .quantity import Quantity
+from .data import Data
 
 
 @forge_signature
@@ -45,38 +43,30 @@ class Calibration(sdRDM.DataModel):
         default=Data(),
         description="coefficients of the (linear) calibration functions.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="1acc70cc802e268e3f749491b735d3b53a462c96"
+        default="01b5fdc2e92add8386e9d335f576018888635f17"
     )
 
     def calibrate(self):
-
         peak_areas = np.array(self.peak_areas.values).reshape(-1, 1)
         concentration = np.array(self.concentrations.values)
         function = linear_model.LinearRegression(fit_intercept=True)
         function.fit(peak_areas, concentration)
         slope, intercept = function.coef_[0], function.intercept_
-        coefficient_of_determination = function.score(
-            peak_areas,
-            concentration
-        )
-        self.slope = Data(
-            quantity=Quantity.SLOPE.value, values=[slope], unit='%'
-        )
+        coefficient_of_determination = function.score(peak_areas, concentration)
+        self.slope = Data(quantity=Quantity.SLOPE.value, values=[slope], unit="%")
         self.intercept = Data(
             quantity=Quantity.INTERCEPT.value,
             values=[intercept],
-            unit='%',
+            unit="%",
         )
         self.coefficient_of_determination = Data(
             quantity=Quantity.COEFFDET.value,
             values=[coefficient_of_determination],
             unit=None,
         )
-        # @property
         # def calibration_parameters():
-        #     return 
+        #     return
