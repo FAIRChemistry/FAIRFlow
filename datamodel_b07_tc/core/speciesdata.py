@@ -1,5 +1,7 @@
 import sdRDM
+import numpy as np
 
+from sklearn import linear_model
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
@@ -48,9 +50,35 @@ class SpeciesData(sdRDM.DataModel):
         default=Data(),
         description="Faraday efficiencies of the individual species.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
         default="1acc70cc802e268e3f749491b735d3b53a462c96"
     )
+
+    def calibrate(self):
+
+        peak_areas = np.array(self.calibration.peak_areas.values).reshape(-1, 1)
+        concentration = np.array(self.calibration.concentrations.values)
+        function = linear_model.LinearRegression(fit_intercept=True)
+        function.fit(peak_areas, concentration)
+        slope, intercept = function.coef_[0], function.intercept_
+        coefficient_of_determination = function.score(
+            peak_areas,
+            concentration
+        )
+        self.calibration.slope = Data(
+            quantity=Quantity.SLOPE.value, values=[slope], unit='%'
+        )
+        self.calibration.intercept = Data(
+            quantity=Quantity.INTERCEPT.value,
+            values=[intercept],
+            unit='%',
+        )
+        self.calibration.coefficient_of_determination = Data(
+            quantity=Quantity.COEFFDET.value,
+            values=[coefficient_of_determination],
+            unit=None,
+        )

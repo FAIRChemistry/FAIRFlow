@@ -1,5 +1,7 @@
 import sdRDM
+import json
 
+from pathlib import Path
 from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
@@ -43,6 +45,7 @@ class Experiment(sdRDM.DataModel):
         multiple=True,
         description="all provided and calculated data about a specific species.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -66,14 +69,18 @@ class Experiment(sdRDM.DataModel):
             metadata (): metadata of a measurement.. Defaults to ListPlus()
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
         """
+
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
         }
+
         if id is not None:
             params["id"] = id
+
         self.measurements.append(Measurement(**params))
+
         return self.measurements[-1]
 
     def add_to_species_data(
@@ -98,6 +105,7 @@ class Experiment(sdRDM.DataModel):
             faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
+
         params = {
             "species": species,
             "chemical_formula": chemical_formula,
@@ -106,7 +114,70 @@ class Experiment(sdRDM.DataModel):
             "faraday_coefficient": faraday_coefficient,
             "faraday_efficiency": faraday_efficiency,
         }
+
         if id is not None:
             params["id"] = id
+
         self.species_data.append(SpeciesData(**params))
+
         return self.species_data[-1]
+
+    def read_correction_factors(self, path: Path):
+        with open(path, "r") as f:
+            correction_factors_dict = json.load(f)
+            for species, correction_factor in correction_factors_dict.items():
+                for species_data_object in self.species_data:
+                    if species_data_object.species == species:
+                        species_data_object.correction_factor = (
+                            correction_factor
+                        )
+
+    def read_faraday_coefficients(self, path: Path):
+        with open(path, "r") as f:
+            faraday_coefficients_dict = json.load(f)
+            for (
+                species,
+                faraday_coefficient,
+            ) in faraday_coefficients_dict.items():
+                for species_data_object in self.species_data:
+                    if species_data_object.species == species:
+                        species_data_object.faraday_coefficient = (
+                            faraday_coefficient
+                        )
+
+    @property
+    def volumetric_flow_time_course(self) -> list:
+        mfm_measurement = self.get(
+            "measurements", "measurement_type", "MFM measurement"
+        )[0][0]
+        volumetric_flow_datetime_list = mfm_measurement.get(
+            "experimental_data", "quantity", "Date time"
+        )[0][0].values
+        volumetric_flow_values_list = mfm_measurement.get(
+            "experimental_data", "quantity", "Volumetric flow rate"
+        )[0][0].values
+        return [volumetric_flow_datetime_list, volumetric_flow_values_list]
+
+    @property
+    def initial_time(self) -> float:
+        initial_time = float(
+            self.get("measurements/metadata", "parameter", "TINIT")[0][0].value
+        )
+        return initial_time
+
+    @property
+    def initial_current(self) -> float:
+        initial_current = float(
+            self.get("measurements/metadata", "parameter", "IINIT")[0][0].value
+        )
+        return initial_current
+
+    # def get_injection_date(self) -> datetime:
+
+    #     injection_date_string = self.gc_measurements.get(
+    #         "metadata", "parameter", "Injection Date"
+    #     )[0][0].value
+    #     inj_date_datetime = datetime.strptime(
+    #         injection_date_string, "%d-%b-%y, %H:%M:%S"
+    #     )
+    #     return injection_date_string

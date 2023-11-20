@@ -10,9 +10,9 @@ from sdRDM import DataModel
 # Import general tools and objects of this datamodel #
 
 # Objects #
-from datamodel_b07_tc.modified.experiment import Experiment
-from datamodel_b07_tc.modified.measurement import Measurement
-#from datamodel_b07_tc.modified.plantsetup import PlantSetup
+from datamodel_b07_tc.core.experiment import Experiment
+from datamodel_b07_tc.core.measurement import Measurement
+#from datamodel_b07_tc.core.plantsetup import PlantSetup
 
 # Tools #
 from datamodel_b07_tc.tools.auxiliary.librarian import Librarian
@@ -66,7 +66,7 @@ class initialize_dataset:
         self.librarian           = Librarian(root_directory=root)
         self.datamodels          = self.librarian.search_files_in_subdirectory(root_directory=root, directory_keys=["specifications"], file_filter="md", verbose=False)
                          
-        self.datamodels_dropdown = widgets.Dropdown(options=[("git",git_path)] + [(path.parts[-1],path) for _,path in self.datamodels.items()],
+        self.datamodels_dropdown = widgets.Dropdown(options=[(path.parts[-1],path) for _,path in self.datamodels.items()]+[("git",git_path)],
                                                     description="Choose datamodel",
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})

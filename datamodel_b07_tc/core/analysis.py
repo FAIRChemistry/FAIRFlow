@@ -1,5 +1,7 @@
 import sdRDM
+import numpy as np
 
+from sklearn import linear_model
 from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
@@ -111,3 +113,30 @@ class Analysis(sdRDM.DataModel):
         self.faraday_coefficients.append(Data(**params))
 
         return self.faraday_coefficients[-1]
+
+    def calibrate(self):
+
+        for cali in self.calibrations:
+            peak_areas = np.array(cali.peak_areas.values).reshape(-1, 1)
+            concentration = np.array(cali.concentrations.values)
+
+            function = linear_model.LinearRegression(fit_intercept=True)
+            function.fit(peak_areas, concentration)
+            slope, intercept = function.coef_[0], function.intercept_
+            coefficient_of_determination = function.score(
+                peak_areas,
+                concentration
+            )
+            cali.slope = Data(
+                quantity=Quantity.SLOPE.value, values=[slope], unit='%'
+            )
+            cali.intercept = Data(
+                quantity=Quantity.INTERCEPT.value,
+                values=[intercept],
+                unit='%',
+            )
+            cali.coefficient_of_determination = Data(
+                quantity=Quantity.COEFFDET.value,
+                values=[coefficient_of_determination],
+                unit=None,
+            )

@@ -54,6 +54,7 @@ class Stoichiometry(sdRDM.DataModel):
         default=None,
         description="molar concentration in mol per l.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )

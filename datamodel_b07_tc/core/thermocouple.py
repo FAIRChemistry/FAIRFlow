@@ -7,7 +7,7 @@ from .equipment import Equipment
 
 
 @forge_signature
-class Thermocouple(Equipment):
+class Thermocouple(Device):
     """"""
 
     id: Optional[str] = Field(
@@ -20,6 +20,7 @@ class Thermocouple(Equipment):
         default=None,
         description="type of thermocouple like J, K and so on.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )

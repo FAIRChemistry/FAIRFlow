@@ -1,8 +1,8 @@
 import pandas as pd
 
 from pathlib import Path
-from datamodel_b07_tc.modified.data import Data
-from datamodel_b07_tc.modified.measurement import Measurement
+from datamodel_b07_tc.core.data import Data
+from datamodel_b07_tc.core.measurement import Measurement
 
 
 def mfm_parser(cls: Measurement, experimental_data_path: Path):

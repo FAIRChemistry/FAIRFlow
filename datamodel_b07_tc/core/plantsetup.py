@@ -21,14 +21,15 @@ class PlantSetup(sdRDM.DataModel):
         xml="@id",
     )
 
-    equipment: List[Equipment] = Field(
+    devices: List[Device] = Field(
         default_factory=ListPlus,
         multiple=True,
         description="bla",
     )
 
-    piping_network_system: Optional[PipingNetworkSystem] = Field(
-        default=PipingNetworkSystem(),
+    tubing: List[Tubing] = Field(
+        default_factory=ListPlus,
+        multiple=True,
         description="bla",
     )
 
@@ -43,6 +44,7 @@ class PlantSetup(sdRDM.DataModel):
         multiple=True,
         description="bla",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -50,34 +52,74 @@ class PlantSetup(sdRDM.DataModel):
         default="1acc70cc802e268e3f749491b735d3b53a462c96"
     )
 
-    def add_to_equipment(
+    def add_to_devices(
         self,
         manufacturer: Optional[str] = None,
-        equipment_type: Optional[str] = None,
+        device_type: Optional[str] = None,
         series: Optional[str] = None,
         on_off: Optional[bool] = None,
         id: Optional[str] = None,
     ) -> None:
         """
-        This method adds an object of type 'Equipment' to attribute equipment
+        This method adds an object of type 'Device' to attribute devices
 
         Args:
-            id (str): Unique identifier of the 'Equipment' object. Defaults to 'None'.
-            manufacturer (): name of the manufacturer of the equipment.. Defaults to None
-            equipment_type (): type given by the manufacturer of the equipment.. Defaults to None
-            series (): the series of the equipment.. Defaults to None
+            id (str): Unique identifier of the 'Device' object. Defaults to 'None'.
+            manufacturer (): name of the manufacturer of the device.. Defaults to None
+            device_type (): type given by the manufacturer of the device.. Defaults to None
+            series (): the series of the device.. Defaults to None
             on_off (): operational mode of the flow module. True is on and False is off.. Defaults to None
         """
+
         params = {
             "manufacturer": manufacturer,
-            "equipment_type": equipment_type,
+            "device_type": device_type,
             "series": series,
             "on_off": on_off,
         }
+
         if id is not None:
             params["id"] = id
-        self.equipment.append(Equipment(**params))
-        return self.equipment[-1]
+
+        self.devices.append(Device(**params))
+
+        return self.devices[-1]
+
+    def add_to_tubing(
+        self,
+        material: Optional[Material] = None,
+        inner_diameter: Optional[float] = None,
+        outer_diameter: Optional[float] = None,
+        length: Optional[int] = None,
+        insulation: Optional[Insulation] = None,
+        id: Optional[str] = None,
+    ) -> None:
+        """
+        This method adds an object of type 'Tubing' to attribute tubing
+
+        Args:
+            id (str): Unique identifier of the 'Tubing' object. Defaults to 'None'.
+            material (): material with which the fluid flowing through comes into contact.. Defaults to None
+            inner_diameter (): inner diameter of the tubing in mm.. Defaults to None
+            outer_diameter (): outer diameter of the tubing in mm.. Defaults to None
+            length (): length of the tubing in mm.. Defaults to None
+            insulation (): insulation of the tubing.. Defaults to None
+        """
+
+        params = {
+            "material": material,
+            "inner_diameter": inner_diameter,
+            "outer_diameter": outer_diameter,
+            "length": length,
+            "insulation": insulation,
+        }
+
+        if id is not None:
+            params["id"] = id
+
+        self.tubing.append(Tubing(**params))
+
+        return self.tubing[-1]
 
     def add_to_input(
         self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
@@ -89,10 +131,16 @@ class PlantSetup(sdRDM.DataModel):
             id (str): Unique identifier of the 'Input' object. Defaults to 'None'.
             component (): component of the output fluid.. Defaults to ListPlus()
         """
-        params = {"component": component}
+
+        params = {
+            "component": component,
+        }
+
         if id is not None:
             params["id"] = id
+
         self.input.append(Input(**params))
+
         return self.input[-1]
 
     def add_to_output(
@@ -105,8 +153,18 @@ class PlantSetup(sdRDM.DataModel):
             id (str): Unique identifier of the 'Output' object. Defaults to 'None'.
             component (): component of the output fluid.. Defaults to ListPlus()
         """
-        params = {"component": component}
+
+        params = {
+            "component": component,
+        }
+
         if id is not None:
             params["id"] = id
+
         self.output.append(Output(**params))
+
         return self.output[-1]
+
+    @classmethod
+    def from_parser(cls, parser: Callable, **kwargs: Path):
+        return parser(cls, **kwargs)

@@ -59,12 +59,13 @@ This is another object that represents the author of the dataset. Please note, t
 
 ### PlantSetup
 
-- equipment
-  - Type: Equipment
+- devices
+  - Type: Device
   - Multiple: True
   - Description: bla
-- piping_network_system
-  - Type: PipingNetworkSystem
+- tubing
+  - Type: Tubing
+  - Multiple: True
   - Description: bla
 - input
   - Type: Input
@@ -76,48 +77,37 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: bla
 
 
-### Equipment
+### Device
 
 - manufacturer
   - Type: string
-  - Description: name of the manufacturer of the equipment.
-- equipment_type
+  - Description: name of the manufacturer of the device.
+- device_type
   - Type: string
-  - Description: type given by the manufacturer of the equipment.
+  - Description: type given by the manufacturer of the device.
 - series
   - Type: string
-  - Description: the series of the equipment.
+  - Description: the series of the device.
 - on_off
   - Type: boolean
   - Description: operational mode of the flow module. True is on and False is off.
 
-### GasCylinder[_Equipment_]
 
-- volume
-  - Type: UnitClass
-  - Description: Volume of the Gas cylinder.
-- pressure
-  - Type: UnitClass
-  - Description: Maximum operating pressure of the gas cylinder.
-- Content
-  - Type: Chemical
-  - Description: Content of the Gas cylinder.
-
-### Pump[_Equipment_]
+### Pump[_Device_]
 
 - pump_type
   - Type: PumpType
   - Description: type of the pump.
 
 
-### Thermocouple[_Equipment_]
+### Thermocouple[_Device_]
 
 - thermocouple_type
   - Type: ThermocoupleType
   - Description: type of thermocouple like J, K and so on.  
 
 
-### MassFlowMeter[_Equipment_]
+### MassFlowMeter[_Device_]
 
 - min_flow
   - Type: Parameter
@@ -137,7 +127,7 @@ This is another object that represents the author of the dataset. Please note, t
     - Description: unit of the values.
 
 
-### Potentiostat[_Equipment_]
+### Potentiostat[_Device_]
 
 - measurement
   - Type: Measurement
@@ -147,41 +137,7 @@ This is another object that represents the author of the dataset. Please note, t
   - Description: Metadata of the Potentiostat.
 
 
-### PipingNetworkSystem
-
-- piping_component
-  - Type: PipingComponent
-  - Multiple: True
-  - Description: Component of a piping network system that is not a pipe, e.g. a valve.
-- piping_network_segment
-  - Type: PipingNetworkSegment
-  - Multiple: True
-  - Description: A piping segment being part of a piping network system.
-
-
-### PipingComponent
-
-- manufacturer
-  - Type: string
-  - Description: name of the manufacturer of the Piping component.
-- equipment_type
-  - Type: string
-  - Description: type given by the manufacturer of the Piping component.
-- series
-  - Type: string
-  - Description: the series of the Piping component.
-- on_off
-  - Type: boolean
-  - Description: operational mode of the flow module. True is on and False is off.
-
-
-### Valve[_PipingComponent_]
-
-- valve_type
-  - Type: string
-  - Description: Type of valve, e.g. 3-way ball valve.
-
-### PipingNetworkSegment
+### Tubing
 
 - material
   - Type: Material
@@ -307,12 +263,9 @@ Stoichiometric information about the compound.
 - abbreviation
   - Type: string
   - Description: abbreviation for the parameter.
-- type
-  - Type: string
-  - Description: type of the parameter, e.g. a quantity, a toggle, a label.
 - data_type
-  - Type: DataType
-  - Description: type of the data, e.g. string, float, bool.
+  - Type: DataType, string
+  - Description: type of the parameter.
 - mode
   - Type: string
   - Description: mode of the parameter. E.g., on and off.
@@ -447,9 +400,9 @@ INERTGAS = "Inert Gas"
 ```
 
 
-### EquipmentList
+### DeviceList
 
-List of equipment that are part of a plant.
+List of devices that are part of a plant.
 
 ```python
 MASSFLOWCONTROLLER = "Mass flow controller"
@@ -485,7 +438,6 @@ PEAKAREAPERCENTAGE = "Peak area percentage"
 SLOPE = "Slope"
 INTERCEPT = "Intercept"
 COEFFDET = "Coefficient of determination"
-FARADAYEFFICIENCY = "Faraday efficiency"
 ```
 
 
@@ -511,7 +463,6 @@ CARBONMONOXIDE = "Carbon monoxide"
 METHANE = "Methane"
 ETHENE = "Ethene"
 ETHANE = "Ethane"
-ARGON = "Argon"
 ```
 
 

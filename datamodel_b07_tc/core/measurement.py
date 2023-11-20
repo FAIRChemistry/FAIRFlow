@@ -1,6 +1,7 @@
 import sdRDM
 
-from typing import Optional, Union, List
+from pathlib import Path
+from typing import Callable, Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
@@ -39,6 +40,7 @@ class Measurement(sdRDM.DataModel):
         multiple=True,
         description="experimental data of a measurement.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -51,8 +53,7 @@ class Measurement(sdRDM.DataModel):
         parameter: Optional[str] = None,
         value: Union[str, float, Datetime, None] = None,
         abbreviation: Optional[str] = None,
-        type: Optional[str] = None,
-        data_type: Optional[DataType] = None,
+        data_type: Union[DataType, str, None] = None,
         mode: Optional[str] = None,
         unit: Optional[UnitBase] = None,
         description: Optional[str] = None,
@@ -66,25 +67,27 @@ class Measurement(sdRDM.DataModel):
             parameter (): Name of the parameter.. Defaults to None
             value (): value of the parameter.. Defaults to None
             abbreviation (): abbreviation for the parameter.. Defaults to None
-            type (): type of the parameter, e.g. a quantity, a toggle, a label.. Defaults to None
-            data_type (): type of the data, e.g. string, float, bool.. Defaults to None
+            data_type (): type of the parameter.. Defaults to None
             mode (): mode of the parameter. E.g., on and off.. Defaults to None
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
         """
+
         params = {
             "parameter": parameter,
             "value": value,
             "abbreviation": abbreviation,
-            "type": type,
             "data_type": data_type,
             "mode": mode,
             "unit": unit,
             "description": description,
         }
+
         if id is not None:
             params["id"] = id
+
         self.metadata.append(Metadata(**params))
+
         return self.metadata[-1]
 
     def add_to_experimental_data(
@@ -103,8 +106,29 @@ class Measurement(sdRDM.DataModel):
             values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
-        params = {"quantity": quantity, "values": values, "unit": unit}
+
+        params = {
+            "quantity": quantity,
+            "values": values,
+            "unit": unit,
+        }
+
         if id is not None:
             params["id"] = id
+
         self.experimental_data.append(Data(**params))
+
         return self.experimental_data[-1]
+
+    @classmethod
+    def from_parser(cls, parser: Callable, **kwargs: Path):
+        return parser(cls, **kwargs)
+
+    @property
+    def injection_date(self):
+        if self.measurement_type == "GC measurement":
+            return self.get("metadata", "parameter", "Injection Date")[0][
+                0
+            ].value
+        else:
+            raise ValueError("Not a GC measurement!")

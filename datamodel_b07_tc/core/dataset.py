@@ -11,6 +11,7 @@ from .speciesdata import SpeciesData
 from .experiment import Experiment
 
 
+
 @forge_signature
 class Dataset(sdRDM.DataModel):
     """"""
@@ -31,6 +32,7 @@ class Dataset(sdRDM.DataModel):
         multiple=True,
         description="information about the individual experiment.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
@@ -42,7 +44,7 @@ class Dataset(sdRDM.DataModel):
         self,
         plant_setup: Optional[PlantSetup] = None,
         measurements: List[Measurement] = ListPlus(),
-        species_data: List[SpeciesData] = ListPlus(),
+        analysis: Optional[Analysis] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -52,14 +54,28 @@ class Dataset(sdRDM.DataModel):
             id (str): Unique identifier of the 'Experiment' object. Defaults to 'None'.
             plant_setup (): the individual plant setup that is used in this one experiment.. Defaults to None
             measurements (): different measurements that are made within the scope of one experiment.. Defaults to ListPlus()
-            species_data (): all provided and calculated data about a specific species.. Defaults to ListPlus()
+            analysis (): all the calculations that are done within the scope of one experiment.. Defaults to None
         """
+
         params = {
             "plant_setup": plant_setup,
             "measurements": measurements,
-            "species_data": species_data,
+            "analysis": analysis,
         }
+
         if id is not None:
             params["id"] = id
+
         self.experiments.append(Experiment(**params))
+
         return self.experiments[-1]
+
+    def enumerate(self, object, verbose=False):
+        object_list = getattr(self, object)
+        object_dict = {
+            index: object for index, object in enumerate(object_list)
+        }
+        if verbose:
+            for index, object in object_dict.items():
+                print(f"{index}: {object.id}")
+        return object_dict

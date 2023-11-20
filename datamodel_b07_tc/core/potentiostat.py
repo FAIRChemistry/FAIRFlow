@@ -8,7 +8,7 @@ from .equipment import Equipment
 
 
 @forge_signature
-class Potentiostat(Equipment):
+class Potentiostat(Device):
     """"""
 
     id: Optional[str] = Field(
@@ -26,6 +26,7 @@ class Potentiostat(Equipment):
         default=Metadata(),
         description="Metadata of the Potentiostat.",
     )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
