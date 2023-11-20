@@ -1,54 +1,40 @@
 import sdRDM
 
 import numpy as np
-from typing import Optional
-from pydantic import Field, PrivateAttr
+from typing import Optional, Union, List
+from pydantic import PrivateAttr, Field, validator
+from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from datetime import datetime as Datetime
+from astropy.units import UnitBase
 from sklearn import linear_model
-from .quantity import Quantity
 from .data import Data
-
+from .quantity import Quantity
 
 @forge_signature
 class Calibration(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
-        description="Unique identifier of the given object.",
-        default_factory=IDGenerator("calibrationINDEX"),
-        xml="@id",
-    )
 
-    peak_areas: Optional[Data] = Field(
-        default=Data(),
-        description="Recorded peak areas of the individual calibration solutions.",
-    )
+    id: Optional[str] = Field(description='Unique identifier of the given object.', default_factory=IDGenerator('calibrationINDEX'), xml='@id',)
 
-    concentrations: Optional[Data] = Field(
-        default=Data(),
-        description="concentrations of the individual calibration solutions.",
-    )
 
-    slope: Optional[Data] = Field(
-        default=Data(),
-        description="slopes of the (linear) calibration functions.",
-    )
+    peak_areas: Optional[Data] = Field(default=Data(), description='Recorded peak areas of the individual calibration solutions.',)
 
-    intercept: Optional[Data] = Field(
-        default=Data(),
-        description="intercept of the (linear) calibration functions.",
-    )
 
-    coefficient_of_determination: Optional[Data] = Field(
-        default=Data(),
-        description="coefficients of the (linear) calibration functions.",
-    )
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="01b5fdc2e92add8386e9d335f576018888635f17"
-    )
+    concentrations: Optional[Data] = Field(default=Data(), description='concentrations of the individual calibration solutions.',)
+
+
+    slope: Optional[Data] = Field(default=Data(), description='slopes of the (linear) calibration functions.',)
+
+
+    intercept: Optional[Data] = Field(default=Data(), description='intercept of the (linear) calibration functions.',)
+
+
+    coefficient_of_determination: Optional[Data] = Field(default=Data(), description='coefficients of the (linear) calibration functions.',)
+    __repo__: Optional[str] = PrivateAttr(default='https://github.com/FAIRChemistry/datamodel_b07_tc.git')
+    __commit__: Optional[str] = PrivateAttr(default='b85d0314fec4cf3ed24720facf3bb92a91badc0b')
+
 
     def calibrate(self):
         peak_areas = np.array(self.peak_areas.values).reshape(-1, 1)
@@ -67,6 +53,5 @@ class Calibration(sdRDM.DataModel):
             quantity=Quantity.COEFFDET.value,
             values=[coefficient_of_determination],
             unit=None,
-        )
         # def calibration_parameters():
         #     return

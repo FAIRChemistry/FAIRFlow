@@ -38,5 +38,5 @@ class Device(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="466366e7b75450efb6b154eca033fc469f36e2a4"
+        default="b85d0314fec4cf3ed24720facf3bb92a91badc0b"
     )

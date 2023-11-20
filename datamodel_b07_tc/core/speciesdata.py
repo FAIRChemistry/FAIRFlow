@@ -6,10 +6,10 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 from sklearn import linear_model
 from .species import Species
-from .calibration import Calibration
-from .quantity import Quantity
 from .chemicalformula import ChemicalFormula
 from .data import Data
+from .quantity import Quantity
+from .calibration import Calibration
 
 
 @forge_signature
@@ -55,7 +55,7 @@ class SpeciesData(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="01b5fdc2e92add8386e9d335f576018888635f17"
+        default="b85d0314fec4cf3ed24720facf3bb92a91badc0b"
     )
 
     def calibrate(self):
