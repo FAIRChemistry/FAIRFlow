@@ -1,5 +1,6 @@
 import sdRDM
 
+<<<<<<< HEAD
 from typing import Optional, Union, List, Callable
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
@@ -12,6 +13,21 @@ from .metadata import Metadata
 from .data import Data
 from .measurementtype import MeasurementType
 from .datatype import DataType
+=======
+from typing import Optional, Union, List
+from pydantic import Field, PrivateAttr
+from sdRDM.base.listplus import ListPlus
+from sdRDM.base.utils import forge_signature, IDGenerator
+
+from datetime import datetime as Datetime
+from astropy.units import UnitBase
+
+from .datatype import DataType
+from .metadata import Metadata
+from .data import Data
+from .quantity import Quantity
+from .measurementtype import MeasurementType
+>>>>>>> 5e18871 (updated core)
 
 
 @forge_signature
@@ -44,7 +60,11 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
+<<<<<<< HEAD
         default="01b5fdc2e92add8386e9d335f576018888635f17"
+=======
+        default="466366e7b75450efb6b154eca033fc469f36e2a4"
+>>>>>>> 5e18871 (updated core)
     )
 
     def add_to_metadata(
@@ -106,6 +126,7 @@ class Measurement(sdRDM.DataModel):
             params["id"] = id
         self.experimental_data.append(Data(**params))
         return self.experimental_data[-1]
+<<<<<<< HEAD
 
     @classmethod
     def from_parser(cls, parser: Callable, **kwargs: Path):
@@ -117,3 +138,5 @@ class Measurement(sdRDM.DataModel):
             return self.get("metadata", "parameter", "Injection Date")[0][0].value
         else:
             raise ValueError("Not a GC measurement!")
+=======
+>>>>>>> 5e18871 (updated core)

@@ -4,6 +4,7 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+<<<<<<< HEAD
 from .material import Material
 from .chemical import Chemical
 from .input import Input
@@ -11,6 +12,17 @@ from .tubing import Tubing
 from .output import Output
 from .device import Device
 from .insulation import Insulation
+=======
+
+
+from .input import Input
+from .material import Material
+from .tubing import Tubing
+from .device import Device
+from .chemical import Chemical
+from .insulation import Insulation
+from .output import Output
+>>>>>>> 5e18871 (updated core)
 
 
 @forge_signature
@@ -50,7 +62,11 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
+<<<<<<< HEAD
         default="01b5fdc2e92add8386e9d335f576018888635f17"
+=======
+        default="466366e7b75450efb6b154eca033fc469f36e2a4"
+>>>>>>> 5e18871 (updated core)
     )
 
     def add_to_devices(
@@ -145,7 +161,3 @@ class PlantSetup(sdRDM.DataModel):
             params["id"] = id
         self.output.append(Output(**params))
         return self.output[-1]
-
-    @classmethod
-    def from_parser(cls, parser: Callable, **kwargs: Path):
-        return parser(cls, **kwargs)
