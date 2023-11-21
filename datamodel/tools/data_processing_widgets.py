@@ -19,8 +19,8 @@ from datamodel.tools.readers.gcparser import gc_parser
 from datamodel.tools.readers.gstaticparser import gstatic_parser
 from datamodel.tools.readers.mfmparser import mfm_parser
 #from datamodel.tools.readers.DEXPI2sdRDM import DEXPI2sdRDM
-#from datamodel.tools.auxiliary.peak_assigner import PeakAssigner
-#from datamodel.tools.calculus.faraday_efficiency_calculator import FaradayEfficiencyCalculator
+from datamodel.tools.auxiliary.peak_assigner import PeakAssigner
+from datamodel.tools.calculus.faraday_efficiency_calculator import FaradayEfficiencyCalculator
 
 class initialize_dataset:
 
@@ -384,7 +384,6 @@ class analyzing_raw_data_widget:
         print("\nStarting the postprocessing\n")
 
         fe_calculator = FaradayEfficiencyCalculator(experiment=self.dataset.experiments[self.experiments_dropdown.value],
-                                                    electrode_surface_area=self.elec_surf_area.value,
                                                     mean_radius=self.mean_radius.value)
 
         faraday_efficiencies = []

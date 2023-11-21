@@ -120,8 +120,8 @@ class Experiment(sdRDM.DataModel):
         for species, data in calibration_data.items():
 
             # Create Calibration object and fit it to the given data
-            calibration = Calibration( peak_areas = Data(quantity="Peak area", unit=None, values=data["peak_areas"] ),
-                                    concentrations = Data( quantity=Quantity.CONCENTRATION.value, unit="%", values=data["concentrations"] ) )
+            calibration = Calibration( peak_areas     = Data( quantity="Peak area", unit=None, values=data["peak_areas"] ),
+                                       concentrations = Data( quantity=Quantity.CONCENTRATION.value, unit="%", values=data["concentrations"] ) )
             calibration.calibrate()
 
             self.add_to_species_data( species = species,
@@ -130,6 +130,12 @@ class Experiment(sdRDM.DataModel):
                                       )
             
     def read_correction_factors(self, path: Path):
+        """
+        Load correction factors for (existing) each species and add them in the species data object.
+
+        Args:
+            path (Path): Path to json-type file.
+        """
 
         with open(path, 'r') as f: correction_factors_dict = json.load(f)
             
@@ -139,9 +145,32 @@ class Experiment(sdRDM.DataModel):
 
 
     def read_faraday_coefficients(self, path: Path):
+        """
+        Load Faraday coefficients for (existing) each species and add them in the species data object.
+
+        Args:
+            path (Path): Path to json-type file.
+        """
 
         with open(path, 'r') as f: faraday_coefficients_dict = json.load(f)
 
         for species, faraday_coefficient in faraday_coefficients_dict.items():
             for species_data_object in self.species_data: 
-                if species_data_object.species == species: species_data_object.faraday_coefficient = faraday_coefficient  
+                if species_data_object.species == species: species_data_object.faraday_coefficient = faraday_coefficient 
+
+    
+    @property
+    def volumetric_flow_time_course(self) -> list:
+        """This property extracts the volumetric flow time as well as the flow it self from the experiment class
+
+        Returns:
+            list: Datetime list and flow value list
+        """
+        mfm_measurement               = self.get( "measurements", "measurement_type", "MFM measurement" )[0][0]
+
+        volumetric_flow_datetime_list = mfm_measurement.get( "experimental_data", "quantity", Quantity.DATETIME.value )[0][0].values
+        volumetric_flow_values_list   = mfm_measurement.get( "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value )[0][0].values
+
+        return [volumetric_flow_datetime_list, volumetric_flow_values_list]
+    
+    
