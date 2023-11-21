@@ -1,10 +1,10 @@
 import sdRDM
-
+import json
 from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
+from pathlib import Path
 
 from .measurementtype import MeasurementType
 from .calibration import Calibration
@@ -121,3 +121,24 @@ class Experiment(sdRDM.DataModel):
         self.species_data.append(SpeciesData(**params))
 
         return self.species_data[-1]
+    
+    def calibrate_from_json(path_to_json_file: Path):
+        """
+        Load calibration data (and with it chemical formula) from a JSON file and store them in the species data object.
+
+        Args:
+            path_to_json_file (Path): Path to json-type file.
+
+        """
+        with open(path_to_json_file, "r") as file: calibration_data = json.load(file)
+
+        species_data_list = []
+
+        for species, data in calibration_data.items():
+            species_data = SpeciesData(species = species,
+                                       chemical_formula = data["chemical_formula"],
+                                       calibration = Calibration( peak_areas = Data(quantity="Peak area",unit=None,values=data["peak_areas"]),
+                                       concentrations = Data(quantity="Concentration",unit="%",values=data["concentrations"])),
+            )
+            species_data_list.append(species_data)
+        return cls(species_data_list=species_data_list)

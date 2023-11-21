@@ -322,15 +322,9 @@ Stoichiometric information about the compound.
 - concentrations
   - Type: Data
   - Description: concentrations of the individual calibration solutions. 
-- slope
-  - Type: Data
-  - Description: slopes of the (linear) calibration functions.
-- intercept
-  - Type: Data
-  - Description: intercept of the (linear) calibration functions.
-- coefficient_of_determination
-  - Type: Data
-  - Description: coefficients of the (linear) calibration functions.
+- regression_model
+  - Type: LinearRegression
+  - Description: Linear regression model.
 
 
 ## Enumerations
@@ -422,6 +416,7 @@ List of different quantities.
 TIME = "Time"
 VOLTAGE = "Voltage"
 CURRENT = "Current"
+SURFACEAREA = "Electrode surface area"
 CONCENTRATION = "Concentration"
 MASS = "Mass"
 MASSFLOWRATE = "Mass flow rate"

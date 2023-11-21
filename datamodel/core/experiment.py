@@ -1,5 +1,7 @@
 import sdRDM
+import json
 
+from pathlib import Path
 from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
@@ -13,7 +15,7 @@ from .metadata import Metadata
 from .measurement import Measurement
 from .calibration import Calibration
 from .speciesdata import SpeciesData
-
+from .quantity import Quantity
 
 @forge_signature
 class Experiment(sdRDM.DataModel):
@@ -104,3 +106,42 @@ class Experiment(sdRDM.DataModel):
             params["id"] = id
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
+
+    def calibrate_from_json(self, path_to_json_file: Path):
+        """
+        Load calibration data (and with it chemical formula) from a JSON file and add them in the species data object.
+
+        Args:
+            path_to_json_file (Path): Path to json-type file.
+
+        """
+        with open(path_to_json_file, "r") as file: calibration_data = json.load(file)
+
+        for species, data in calibration_data.items():
+
+            # Create Calibration object and fit it to the given data
+            calibration = Calibration( peak_areas = Data(quantity="Peak area", unit=None, values=data["peak_areas"] ),
+                                    concentrations = Data( quantity=Quantity.CONCENTRATION.value, unit="%", values=data["concentrations"] ) )
+            calibration.calibrate()
+
+            self.add_to_species_data( species = species,
+                                      chemical_formula = data["chemical_formula"],
+                                      calibration = calibration,
+                                      )
+            
+    def read_correction_factors(self, path: Path):
+
+        with open(path, 'r') as f: correction_factors_dict = json.load(f)
+            
+        for species, correction_factor in correction_factors_dict.items():
+            for species_data_object in self.species_data: 
+                if species_data_object.species == species: species_data_object.correction_factor = correction_factor  
+
+
+    def read_faraday_coefficients(self, path: Path):
+
+        with open(path, 'r') as f: faraday_coefficients_dict = json.load(f)
+
+        for species, faraday_coefficient in faraday_coefficients_dict.items():
+            for species_data_object in self.species_data: 
+                if species_data_object.species == species: species_data_object.faraday_coefficient = faraday_coefficient  

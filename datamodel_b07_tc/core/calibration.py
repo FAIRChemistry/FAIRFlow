@@ -1,9 +1,10 @@
+import numpy as np
 import sdRDM
 
+from sklearn.linear_model import LinearRegression
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-
 
 from .data import Data
 
@@ -28,19 +29,9 @@ class Calibration(sdRDM.DataModel):
         description="concentrations of the individual calibration solutions.",
     )
 
-    slope: Optional[Data] = Field(
-        default=Data(),
-        description="slopes of the (linear) calibration functions.",
-    )
-
-    intercept: Optional[Data] = Field(
-        default=Data(),
-        description="intercept of the (linear) calibration functions.",
-    )
-
-    coefficient_of_determination: Optional[Data] = Field(
-        default=Data(),
-        description="coefficients of the (linear) calibration functions.",
+    regression_model: Optional[LinearRegression] = Field(
+        default=LinearRegression(fit_intercept=True).fit( np.array(peak_areas.values).reshape(-1, 1), np.array(concentrations.values) ),
+        description="Linear regression model.",
     )
 
     __repo__: Optional[str] = PrivateAttr(
@@ -49,3 +40,15 @@ class Calibration(sdRDM.DataModel):
     __commit__: Optional[str] = PrivateAttr(
         default="48482b81b482e9464bf050b2490e5f461bbf3497"
     )
+
+    #def calibrate(self):
+    #    """
+    #    Function that uses the given calibration data and perform linear regression. The corresponding linear regression object is saved. 
+    #    This can be used to predict volumetric concentrations at different peak areas
+    #    """
+
+        #peak_areas            = 
+        #concentration         = 
+
+        #self.regression_model.fit(np.array(self.peak_areas.values).reshape(-1, 1), np.array(self.concentrations.values))
+        # = LinearRegression(fit_intercept=True).

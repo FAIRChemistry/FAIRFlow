@@ -1,9 +1,10 @@
 import pandas as pd
+import numpy as np
+import Levenshtein
 
 from pathlib import Path
-from datamodel_b07_tc.test.data import Data
-from datamodel.core.measurement import Measurement
-
+from datamodel.core import Measurement
+from datamodel.core import Quantity
 
 def mfm_parser(experimental_data_path: Path):
     """
@@ -27,22 +28,25 @@ def mfm_parser(experimental_data_path: Path):
         engine="python",
         encoding="utf-8",
         skiprows=1,
-    ).dropna()
+    )
+    experimental_data_df = experimental_data_df.dropna()
 
     # Extract important data
-    mfm_measurement = Measurement()
+    mfm_measurement = Measurement( measurement_type = "MFM measurement" )
     key_list        = [ "Date time", "Volumetric flow rate" ]
 
-    for quantity in key_list:
+    for key in key_list:
+
+        quantity = list(Quantity)[ np.argmax([ Levenshtein.ratio(quantity_type.value, key.replace("%","percentage") if "%" in key else key ) for quantity_type in Quantity ]) ].value
 
         values = [ pd.to_datetime(timestamp, format="%d.%m.%Y ; %H:%M:%S").to_pydatetime()
-                   for timestamp in experimental_data_df[quantity] ] if quantity == "Date time" \
-                   else experimental_data_df[quantity].to_list()
+                   for timestamp in experimental_data_df[key] ] if key == "Date time" \
+                   else np.round( experimental_data_df[key], 4 ).to_list()
 
         mfm_measurement.add_to_experimental_data( 
-                                                quantity=quantity,
-                                                values=values,
-                                                unit=quantity_unit_dict[quantity]
+                                                quantity = quantity,
+                                                values = values,
+                                                unit = quantity_unit_dict[key]
         )
   
     return mfm_measurement

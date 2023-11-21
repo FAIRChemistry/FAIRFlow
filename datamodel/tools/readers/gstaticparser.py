@@ -1,9 +1,12 @@
 import pandas as pd
+import numpy as np
+import Levenshtein
 import re
 
 from pathlib import Path
-from datamodel.core.measurement import Measurement
-
+from datamodel.core import Measurement
+from datamodel.core import Quantity
+from datamodel.core import DataType
 
 def gstatic_parser(metadata_path: Path):
     """
@@ -35,14 +38,18 @@ def gstatic_parser(metadata_path: Path):
     )
 
     # Extract important meta data
-    potentiostatic_measurement = Measurement()
+    potentiostatic_measurement = Measurement( measurement_type = "Potentiostatic measurement")
     key_list                   = [ "IINIT", "TINIT", "AREA" ]
+    Quantity_list              = {"IINIT": Quantity.CURRENT.value, "TINIT": Quantity.TIME.value, "AREA": Quantity.SURFACEAREA.value}
 
     for key in key_list:
+
+        quantity = Quantity_list[key]
+
         potentiostatic_measurement.add_to_metadata( 
-                                parameter = key,
+                                parameter = quantity,
                                 value = float(metadata_df.loc[metadata_df['Parameter'] == key, 'Value'].values[0]) ,
-                                data_type = float,
+                                data_type = DataType.FLOAT.value,
                                 unit = re.search(r'\((.*?)\)', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1),
                                 description = re.match(r'(.*?)\(', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1).strip()
     )
