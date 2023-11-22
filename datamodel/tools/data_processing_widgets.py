@@ -187,7 +187,7 @@ class reading_raw_data_widget():
         self.dataset.experiments.append( experiment )
         
         # Update experiment list #
-        self.experiments.value = [ exp.id for exp in self.dataset.experiments if hasattr(exp,"id") ]
+        self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
 
         # Empty files widget #
         self.Echem_files.value      = []
@@ -199,7 +199,7 @@ class reading_raw_data_widget():
 
     def folder_dropdown_option_handler(self,_):
         # If no subdirectories exist, then the parent folder is simply the first parent, otherwise it is the 2nd parent
-        # (because the current dropdown value is already )
+        # (because the current dropdown value is already one deeper than the actual directory )
         if str(self.folder_dropdown.value.parent) == self.current_dir.value:
             self.parent                  = self.folder_dropdown.value.parent.parent
             self.file_folder             = self.folder_dropdown.value.parent
@@ -233,7 +233,7 @@ class reading_raw_data_widget():
             self.flag              = True
             self.datamodel         = DataModel.parse( self.dataset_dropdown.value )
             self.dataset, self.lib = self.datamodel
-            self.experiments.value = [ exp.id for exp in self.dataset.experiments if hasattr(exp,"id")]
+            self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
     
@@ -242,7 +242,7 @@ class reading_raw_data_widget():
         if len(change["old"]) > len(change["new"]) and not self.flag:
             dummy = [ idx for idx,val in enumerate(change["old"]) if val not in change["new"]][0]
             self.dataset.experiments.pop(dummy)
-            self.experiments.value = [exp.id for exp in self.dataset.experiments]
+            self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
         else:
             pass
         self.flag = False

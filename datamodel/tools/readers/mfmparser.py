@@ -41,7 +41,7 @@ def mfm_parser(experimental_data_path: Path):
 
         values = [ pd.to_datetime(timestamp, format="%d.%m.%Y ; %H:%M:%S").to_pydatetime()
                    for timestamp in experimental_data_df[key] ] if key == "Date time" \
-                   else np.round( experimental_data_df[key], 4 ).to_list()
+                   else np.round( experimental_data_df[key] / 60, 6 ).to_list()
 
         mfm_measurement.add_to_experimental_data( 
                                                 quantity = quantity,

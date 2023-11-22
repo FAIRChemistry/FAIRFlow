@@ -39,8 +39,8 @@ def gstatic_parser(metadata_path: Path):
 
     # Extract important meta data
     potentiostatic_measurement = Measurement( measurement_type = "Potentiostatic measurement")
-    key_list                   = [ "IINIT", "TINIT", "AREA" ]
-    Quantity_list              = {"IINIT": Quantity.CURRENT.value, "TINIT": Quantity.TIME.value, "AREA": Quantity.SURFACEAREA.value}
+    key_list                   = [ "IINIT", "AREA" ]
+    Quantity_list              = {"IINIT": Quantity.CURRENT.value, "AREA": Quantity.SURFACEAREA.value}
 
     for key in key_list:
 
