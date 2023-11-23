@@ -145,10 +145,6 @@ class Librarian(BaseModel):
         return self.root_directory
 
 
-typical_retention_time = {"Hydrogen": 1.7, "Carbon dioxide": 3.0, "Carbon monoxide": 13.6, 
-                          "Methane": 3.6, "Ethene": 6.0, "Ethane": 7.1}
-
-
 class PeakAssigner(BaseModel):
     """
     Class that assign peaks of given GC measurements within a given experiment object
@@ -161,6 +157,7 @@ class PeakAssigner(BaseModel):
     species: List[str]
     gc_measurements: ListPlus[Measurement] = Field(default_factory=ListPlus)
     peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]] = Field(default_factory=dict)
+    typical_retention_time: Dict = Field(default_factory=dict)
     _assignment_dicts = []
     _selection_output = Output()
     _VBox_list = []
@@ -267,7 +264,7 @@ class PeakAssigner(BaseModel):
             for peak_area, retention_time in zip(peak_areas_retention_time["peak_areas"], peak_areas_retention_time["retention_time"]):
                 
                 # Set default values with a given dict
-                default_value = [trt[0] for trt in typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.6) and (trt[0] in self.species) ]
+                default_value = [trt[0] for trt in self.typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.6) and (trt[0] in self.species) ]
                 default_value = default_value[0] if bool(default_value) else ""
 
                 dropdown             = Dropdown( options = [""] + self.species,
@@ -319,7 +316,7 @@ class PeakAssigner(BaseModel):
 
                 # Set default values with a given dict
                 retention_time           = float( hbox.children[0].value )
-                default_value            = [trt[0] for trt in typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.6) and (trt[0] in new_options) ]
+                default_value            = [trt[0] for trt in self.typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.6) and (trt[0] in new_options) ]
                 default_value            = default_value[0] if bool(default_value) else ""
 
                 hbox.children[2].value   = default_value

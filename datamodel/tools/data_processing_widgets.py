@@ -372,7 +372,9 @@ class analyzing_raw_data_widget:
         display(self.full_layout)
 
         # Also display the peak assignment again (input is the choosen experiment and the current species)
-        self.peak_assignment = PeakAssigner( experiment = self.dataset.experiments[self.experiments_dropdown.value], species = self.species_tags.value)
+        self.peak_assignment = PeakAssigner( experiment             = self.dataset.experiments[self.experiments_dropdown.value], 
+                                             species                = self.species_tags.value,
+                                             typical_retention_time = self.typical_retention_time )
         self.peak_assignment.assign_peaks()
     
     def species_tags_input_handler(self,_):
@@ -408,11 +410,12 @@ class analyzing_raw_data_widget:
                 species_data.faraday_efficiency = self.lib.Data(quantity= Quantity.FARADAYEFFIECENCY.value, values = faraday_efficiency.tolist(), unit = '%')
 
 
-    def choose_experiment(self,datamodel,dataset_path) -> None:
+    def choose_experiment(self,datamodel,dataset_path,typical_retention_time={}) -> None:
         
         # Common variables
-        self.dataset_path      = dataset_path
-        self.dataset, self.lib = datamodel
+        self.typical_retention_time = typical_retention_time 
+        self.dataset_path           = dataset_path
+        self.dataset, self.lib      = datamodel
 
         self.experiments_dropdown = widgets.Dropdown(options=[(str(exp.id),idx) for idx,exp in enumerate( self.dataset.experiments) ],
                                                     description="Choose experiment:",
