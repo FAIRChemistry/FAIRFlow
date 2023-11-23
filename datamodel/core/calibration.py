@@ -4,9 +4,10 @@ import sdRDM
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
-from typing import Optional
+from typing import Optional, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
+from sdRDM.base.listplus import ListPlus
 
 from .data import Data
 
@@ -31,13 +32,14 @@ class Calibration(sdRDM.DataModel):
         description="concentrations of the individual calibration solutions.",
     )
 
-    regression_model: Optional[LinearRegression] = Field(
-        default=LinearRegression(),
-        description="(Linear) Regression model.",
+    regression_coefficients: List[float] = Field(
+        default_factory=ListPlus,
+        multiple=True,
+        description="Polynomial coefficients in order of increasing degree.",
     )
 
     degree: Optional[int] = Field(
-        default=2,
+        default=1,
         description="Degree of regression model.",
     )
 
@@ -48,18 +50,14 @@ class Calibration(sdRDM.DataModel):
         default="48482b81b482e9464bf050b2490e5f461bbf3497"
     )
 
-    class Config:
-        # allow LinearRegression
-        arbitrary_types_allowed = True
-
     def calibrate(self):
         """
         Calibrate the regression model on seen data
         """
-  
-        x_train     = PolynomialFeatures(degree=self.degree).fit_transform( np.array(self.peak_areas.values).reshape(-1, 1) )
-        y_train     = np.array( self.concentrations.values )
-        self.regression_model.fit( x_train, y_train )
+
+        self.regression_coefficients = np.polynomial.polynomial.polyfit( self.peak_areas.values, 
+                                                                         self.concentrations.values, 
+                                                                         self.degree ).tolist()
     
     def predict(self, x: list) -> np.ndarray:
         """
@@ -72,6 +70,4 @@ class Calibration(sdRDM.DataModel):
            (1D numpy array): Predicted data at new locations
         """
 
-        x_predict = PolynomialFeatures(degree=self.degree).fit_transform( np.array(x).reshape(-1,1) )
-
-        return self.regression_model.predict( x_predict )
+        return np.polynomial.Polynomial( self.regression_coefficients )( np.array( x ) )

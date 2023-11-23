@@ -322,9 +322,14 @@ Stoichiometric information about the compound.
 - concentrations
   - Type: Data
   - Description: concentrations of the individual calibration solutions. 
-- regression_model
-  - Type: LinearRegression
-  - Description: Linear regression model.
+- regression_coefficients
+  - Type: float
+  - Multiple: True
+  - Description: Polynomial coefficients in order of increasing degree.
+- degree
+  - Type: int
+  - Default: 1
+  - Description: Degree of regression model.
 
 
 ## Enumerations

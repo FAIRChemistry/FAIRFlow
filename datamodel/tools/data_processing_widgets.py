@@ -11,16 +11,11 @@ from sdRDM import DataModel
 
 # Objects #
 from datamodel.core.experiment import Experiment
-#from datamodel.core.plantsetup import PlantSetup
 
 # Tools #
-from datamodel.tools.auxiliary.librarian import Librarian
-from datamodel.tools.readers.gcparser import gc_parser
-from datamodel.tools.readers.gstaticparser import gstatic_parser
-from datamodel.tools.readers.mfmparser import mfm_parser
-#from datamodel.tools.readers.DEXPI2sdRDM import DEXPI2sdRDM
-from datamodel.tools.auxiliary.peak_assigner import PeakAssigner
-from datamodel.tools.calculus.faraday_efficiency_calculator import FaradayEfficiencyCalculator
+from datamodel.tools.auxiliary import Librarian, PeakAssigner
+from datamodel.tools.reader import gc_parser, gstatic_parser, mfm_parser
+from datamodel.tools.calculator import FaradayEfficiencyCalculator
 
 class initialize_dataset:
 
