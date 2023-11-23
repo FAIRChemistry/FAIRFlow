@@ -64,15 +64,16 @@ def gc_parser( metadata_path: Path, experimental_data_path: Path ):
             encoding="utf-16_le",
         )
     
-    key_list     = [ "Retention Time", "Area", "Area   %" ]
+    key_list     = [ "Retention Time", "Peak Type", "Area", "Area   %" ]
 
     for key in key_list:
         
         quantity = list(Quantity)[ np.argmax([ Levenshtein.ratio(quantity_type.value, key.replace("%","percentage") if "%" in key else key ) for quantity_type in Quantity ]) ].value
+        values   = np.round( experimental_data_df[key], 4 ).to_list() if key != "Peak Type" else experimental_data_df[key].to_list()
 
         gc_measurement.add_to_experimental_data( 
                                                 quantity = quantity,
-                                                values = np.round( experimental_data_df[key], 4 ).to_list(),
+                                                values = values,
                                                 unit = quantity_unit_dict[key]
         )
 
@@ -116,10 +117,11 @@ def gstatic_parser(metadata_path: Path):
     for key in key_list:
 
         quantity = Quantity_list[key]
-
+        value    = float(metadata_df.loc[metadata_df['Parameter'] == key, 'Value'].values[0]) 
+        
         potentiostatic_measurement.add_to_metadata( 
                                 parameter = quantity,
-                                value = float(metadata_df.loc[metadata_df['Parameter'] == key, 'Value'].values[0]) ,
+                                value = value ,
                                 data_type = DataType.FLOAT.value,
                                 unit = re.search(r'\((.*?)\)', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1),
                                 description = re.match(r'(.*?)\(', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1).strip()

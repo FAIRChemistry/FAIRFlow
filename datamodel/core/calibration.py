@@ -43,13 +43,6 @@ class Calibration(sdRDM.DataModel):
         description="Degree of regression model.",
     )
 
-    __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
-    )
-    __commit__: Optional[str] = PrivateAttr(
-        default="48482b81b482e9464bf050b2490e5f461bbf3497"
-    )
-
     def calibrate(self):
         """
         Calibrate the regression model on seen data

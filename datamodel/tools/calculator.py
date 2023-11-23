@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from datamodel.core import Experiment
 from datamodel.core import Measurement
 from datamodel.core import Species
+from datamodel.core import Quantity
 
 import scipy.constants as const
 
@@ -47,7 +48,8 @@ class FaradayEfficiencyCalculator(BaseModel):
     def _calculate_volumetric_fractions(self, assigned_peak_areas_dict: dict):
         """
         Function that uses the on calibration data fited linear regresion model to compute the volume fraction given the assigned peak area
-        If several peak areas are specified for a component, these are added together
+        If several peak areas are specified for a component, these are added together. 
+        The GC measurement object inheritets the peak areas as well as the matched species
 
         Args:
             assigned_peak_areas_dict (dict): Dictionary containing the species and the associated peak area.
@@ -103,27 +105,45 @@ class FaradayEfficiencyCalculator(BaseModel):
             self.theoretical_material_flow_df.loc[species] = self.initial_current / 1000 / ( factor * faraday_constant )
 
 
-    def calculate_faraday_efficiencies(self, inj_date_datetime: datetime, assigned_peak_areas_dict: dict):
+    def calculate_faraday_efficiencies(self, gc_measurement: Measurement):
         """
-        This function uses the injection time of the assigned GC measurement, and matches it to the provided mass flow meter measurements to obtain the mass flow.
+        This function uses the injection time  as well as the assinged peak areas of the given GC measurement to compute the Faraday effiency.
+        This is done by matching the injection to the provided mass flow meter measurements to obtain the mass flow.
         This is further used to compute the measured material flow (mol/s) and compare it with the expected material flow 
         under ideal conditions. The ratio between the measured and the theoretical material flow is the Faraday efficency.
 
         Args:
-            gc_measurement (Measurement): _description_
-            assigned_peak_areas_dict (dict): _description_
+            gc_measurement (Measurement): GC measurement, containing the assigned peak areas and the injection time
 
         Returns:
-            _type_: _description_
+            DataFrame: Faraday effiency for each species
         """
-        self._calculate_volumetric_flow_mean( inj_date_datetime = inj_date_datetime  )
-        self._calculate_volumetric_fractions( assigned_peak_areas_dict = assigned_peak_areas_dict )
+
+        # Extract the injection time out of the given GC measurement
+        inj_date_datetime = gc_measurement.get("metadata", "parameter", "Injection Date")[0][0].value 
+
+        # Extract the peak areas dict out of the given gc_measurement
+        assigned_peak_areas_dict = {}
+
+        peak_assignments = gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values
+        peak_areas       = gc_measurement.get("experimental_data","quantity",Quantity.PEAKAREA.value)[0][0].values
+
+        for species,peak_area in zip( peak_assignments, peak_areas):
+            if species in assigned_peak_areas_dict.keys():
+                assigned_peak_areas_dict[species].append(peak_area)
+            else:
+                assigned_peak_areas_dict[species] = [peak_area]
+
+        # Compute the theoretical material flow (several substeps are performed to do so)
+        self._calculate_volumetric_flow_mean( inj_date_datetime = inj_date_datetime )
+        self._calculate_volumetric_fractions( assigned_peak_areas_dict = assigned_peak_areas_dict)
         self._calculate_real_volumetric_flow()
         self._calculate_material_flow()
         self._calculate_theoretical_material_flow()
 
         rename = {"Material_flow": "Faraday_efficiency"}
 
+        # Compute the Faraday efficency by diving the real by the theoretical material flow
         faraday_efficiency_df = self.material_flow_df.divide( self.theoretical_material_flow_df["Theoretical_material_flow"], axis="index", ).rename(columns=rename)
         faraday_efficiency_df.dropna(inplace=True)
 

@@ -10,19 +10,21 @@ from sdRDM import DataModel
 # Import general tools and objects of this datamodel #
 
 # Objects #
-from datamodel.core.experiment import Experiment
+from datamodel.core import Experiment
+from datamodel.core import MeasurementType
+from datamodel.core import Quantity
 
 # Tools #
-from datamodel.tools.auxiliary import Librarian, PeakAssigner
-from datamodel.tools.reader import gc_parser, gstatic_parser, mfm_parser
-from datamodel.tools.calculator import FaradayEfficiencyCalculator
+from .auxiliary import Librarian, PeakAssigner
+from .reader import gc_parser, gstatic_parser, mfm_parser
+from .calculator import FaradayEfficiencyCalculator
 
 class initialize_dataset:
 
     def init_datamodel(self,_):
         # Initialize the dataset #
         if Path(self.datamodels_dropdown.value).suffix == '.git':
-            lib = DataModel.from_git( url=self.datamodels_dropdown.value )
+            lib = DataModel.from_git( url=self.datamodels_dropdown.value, tag=self.git_branch )
         else:
             lib = DataModel.from_markdown( self.datamodels_dropdown.value )
             
@@ -53,13 +55,14 @@ class initialize_dataset:
     def add_description(self,_):
         self.dataset.general_information.description = self.description.value        
 
-    def write_dataset(self,root: Path, git_path: str) -> None:
+    def write_dataset(self,root: Path, git_path: str, git_branch: str) -> None:
         
+        self.git_branch          = git_branch    
         self.root                = root
         self.librarian           = Librarian(root_directory=root)
         self.datamodels          = self.librarian.search_files_in_subdirectory(root_directory=root, directory_keys=["specifications"], file_filter="md", verbose=False)
                          
-        self.datamodels_dropdown = widgets.Dropdown(options=[(path.parts[-1],path) for _,path in self.datamodels.items()]+[("git",git_path)],
+        self.datamodels_dropdown = widgets.Dropdown(options= [("git",git_path)] + [(path.parts[-1],path) for _,path in self.datamodels.items()],
                                                     description="Choose datamodel",
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})
@@ -95,7 +98,7 @@ class initialize_dataset:
         
         # Initialize the dataset #
         if Path(self.datamodels_dropdown.value).suffix == '.git':
-            lib = DataModel.from_git( url=self.datamodels_dropdown.value )
+            lib = DataModel.from_git( url=self.datamodels_dropdown.value, tag=self.git_branch )
         else:
             lib = DataModel.from_markdown( self.datamodels_dropdown.value )
 
@@ -174,7 +177,7 @@ class reading_raw_data_widget():
         experiment.measurements    = [ potentiostatic_measurement, mfm_measurement, *gc_measurements_list ]
 
         # Read in parameters such as calibration, correction factors and farraday coefficients and save it in Experiment class #
-        experiment.calibrate_from_json( self.calib_files.value[0] )
+        experiment.calibrate_from_json( self.calib_files.value[0], degree=1 )
         experiment.read_correction_factors( self.correction_files.value[0] )
         experiment.read_faraday_coefficients( self.faraday_files.value[0] )
 
@@ -358,6 +361,9 @@ class analyzing_raw_data_widget:
         print("Dataset saved.")
 
     def choose_experiment_input_handler(self,_):
+        """
+        This function provides the peaks of the GC measurement inheritend in the choosen experiment
+        """
 
         # Clear existing widgets
         clear_output(wait=True)
@@ -365,9 +371,8 @@ class analyzing_raw_data_widget:
         # Display the layout for experiment and species
         display(self.full_layout)
 
-        # Also display the peak assignment again
-        self.gc_measurements = [gc for gc in self.dataset.experiments[self.experiments_dropdown.value].measurements if gc.measurement_type == 'GC measurement']
-        self.peak_assignment = PeakAssigner.from_gc_measurement(self.gc_measurements, self.species_tags.value)
+        # Also display the peak assignment again (input is the choosen experiment and the current species)
+        self.peak_assignment = PeakAssigner( experiment = self.dataset.experiments[self.experiments_dropdown.value], species = self.species_tags.value)
         self.peak_assignment.assign_peaks()
     
     def species_tags_input_handler(self,_):
@@ -378,13 +383,16 @@ class analyzing_raw_data_widget:
 
         print("\nStarting the postprocessing\n")
 
-        fe_calculator = FaradayEfficiencyCalculator(experiment=self.dataset.experiments[self.experiments_dropdown.value],
-                                                    mean_radius=self.mean_radius.value)
+        fe_calculator = FaradayEfficiencyCalculator(experiment  = self.dataset.experiments[self.experiments_dropdown.value],
+                                                    mean_radius = self.mean_radius.value)
 
         faraday_efficiencies = []
 
-        for i, (gc_measurement, assigned_peak_areas_dict) in enumerate(zip(self.gc_measurements, self.peak_assignment._assignment_dicts)):
-            tmp = fe_calculator.calculate_faraday_efficiencies( gc_measurement=gc_measurement, assigned_peak_areas_dict=assigned_peak_areas_dict )
+        # Extract the GC measurements from the choosen experiment
+        gc_measurements      = self.dataset.experiments[self.experiments_dropdown.value].get("measurements", "measurement_type", MeasurementType.GC.value)[0]
+
+        for i, gc_measurement in enumerate( gc_measurements ):
+            tmp = fe_calculator.calculate_faraday_efficiencies( gc_measurement = gc_measurement )
             faraday_efficiencies.append( tmp )
             print("Faraday effiencies of GC measurement n°%d"%i)
             print(tmp,"\n")
@@ -397,7 +405,7 @@ class analyzing_raw_data_widget:
         for species_data in self.dataset.experiments[self.experiments_dropdown.value].species_data:
             if species_data.species in mean_faraday_efficiency.index:
                 faraday_efficiency              = mean_faraday_efficiency.loc[species_data.species].values
-                species_data.faraday_efficiency = self.lib.Data(quantity= 'Faraday efficiency', values = faraday_efficiency.tolist(), unit = '%')
+                species_data.faraday_efficiency = self.lib.Data(quantity= Quantity.FARADAYEFFIECENCY.value, values = faraday_efficiency.tolist(), unit = '%')
 
 
     def choose_experiment(self,datamodel,dataset_path) -> None:

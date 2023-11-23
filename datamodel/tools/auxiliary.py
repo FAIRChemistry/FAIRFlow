@@ -1,7 +1,15 @@
 import logging
-from pathlib import Path
-from pydantic import BaseModel, PrivateAttr
+import numpy as np
+
+from datamodel.core import Experiment
+from datamodel.core import Measurement
+from datamodel.core import Quantity
+from datamodel.core import MeasurementType
+from sdRDM.base.listplus import ListPlus
+
+from pydantic import BaseModel, Field, validator
 from typing import List, Dict
+from pathlib import Path
 from time import sleep
 from IPython.display import display
 from ipywidgets import (
@@ -14,18 +22,27 @@ from ipywidgets import (
     Layout,  # Layout specification object
 )
 
-
-
 logger = logging.getLogger(__name__)
 logger.propagate = True
-
 
 class DirectoryNotFoundError(Exception):
     def __init__(self, directory):
         super().__init__(f"Directory not found: {directory}")
 
-
 class Librarian(BaseModel):
+    """
+    Class that manages directoy and file browsing
+
+    Args:
+        BaseModel (_type_): _description_
+
+    Raises:
+        KeyError: _description_
+        KeyError: _description_
+
+    Returns:
+        _type_: _description_
+    """
     root_directory: Path
 
     def enumerate_subdirectories(self, directory: Path, verbose: bool = None):
@@ -44,8 +61,7 @@ class Librarian(BaseModel):
 
     def enumerate_files(
         self,
-        directory: Path | List[Path],
-        indices: List[int] = None,
+        directory: Path,
         filter: str = None,
         verbose: bool = None
     ):
@@ -56,11 +72,8 @@ class Librarian(BaseModel):
 
         suffix = "*." + filter if filter != None else "*"
 
-        file_dict = {
-            index: file
-            for index, file in enumerate(directory.glob(suffix))
-            if file.is_file()
-        }
+        file_dict = { index: file for index, file in enumerate(directory.glob(suffix)) if file.is_file() }
+
         if verbose: 
             print(f"Directory: \n {directory} \nAvailable files:")
             for index, file in file_dict.items():
@@ -137,13 +150,45 @@ typical_retention_time = {"Hydrogen": 1.7, "Carbon dioxide": 3.0, "Carbon monoxi
 
 
 class PeakAssigner(BaseModel):
-    peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]]
+    """
+    Class that assign peaks of given GC measurements within a given experiment object
+
+    Args:
+        experiment (Experiment): Experiment object contain the GC measurements
+        species (List): List with possible species that should be matched to the GC results
+    """
+    experiment: Experiment
     species: List[str]
+    gc_measurements: ListPlus[Measurement] = Field(default_factory=ListPlus)
+    peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]] = Field(default_factory=dict)
     _assignment_dicts = []
     _selection_output = Output()
     _VBox_list = []
     _full_layout = VBox([])
 
+    # The validator objects are used to give the variables during the initialisation a value.
+    # This is normaly done in __init__, but this conflicts with Pydantic
+
+    @validator("gc_measurements", pre=True, always=True)
+    def validate_gc_measurements(cls,value, values):
+        experiment = values.get("experiment")
+        if experiment:
+            return experiment.get("measurements", "measurement_type", MeasurementType.GC.value)[0]
+        else:
+            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
+            return None
+    
+    @validator("peak_areas_retention_time_dict", pre=True, always=True)
+    def valdiate_peak_areas_retention_time_dict(cls,value, values):
+        tmp = {}
+        for i, gc_measurement in enumerate(values.get("gc_measurements")):
+            peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
+            retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
+            
+            tmp[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
+
+        return tmp
+    
     def save_assignments(self, _):
         """
         This functions create the assignment dict, after the button is clicked.
@@ -152,13 +197,15 @@ class PeakAssigner(BaseModel):
         
         self._assignment_dicts.clear()
 
-        for VBox in self._VBox_list:
+        # Iterate through every GC measurement
+        for i,VBox in enumerate(self._VBox_list):
             _assignment_dict = {}
-            # Iterate through the dropdown menus and extract the species per peak area
-            # Start from index 2 and following, as the first two entries are the measurement label 
-            # and retention time, peak area and species label
 
+            # Iterate through the dropdown menus and extract the species per peak area
+            # Start from index 2 and following, as the first two entries are labels
             for widget in VBox.children[2:]:
+
+                # Dropdown in the last entry in each children
                 species   = widget.children[2].value
                 peak_area = float( widget.children[1].value )
                 if species != "":
@@ -166,6 +213,25 @@ class PeakAssigner(BaseModel):
                         _assignment_dict[species].append( peak_area )
                     else:
                         _assignment_dict[species] = [ peak_area ]
+
+            ## Add the assigned peaks as experimental data to the GC measurement ##
+
+            # Add the species in the order the peak areas are saved
+            tmp2 = np.round( self.gc_measurements[i].get("experimental_data","quantity",Quantity.PEAKAREA.value)[0][0].values, 2 ).tolist()
+
+            # Sort the tuples based on peak values
+            sorted_species_peak_tuples = sorted([(key, value) for key, values in _assignment_dict.items() for value in values], key=lambda x: tmp2.index(x[1]))
+
+            # check if there is already an exisiting entry, if yes overwrite
+            if bool(self.gc_measurements[i].get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)):
+                # Extract the species names in the sorted order
+                self.gc_measurements[i].get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values = [ item[0] for item in sorted_species_peak_tuples ]
+
+            # if not then add
+            else:
+                self.gc_measurements[i].add_to_experimental_data( quantity= Quantity.PEAKASSIGNMENT.value,
+                                                             values= [ item[0] for item in sorted_species_peak_tuples ]
+                                                            )                   
 
             self._assignment_dicts.append( _assignment_dict.copy() )
 
@@ -249,7 +315,7 @@ class PeakAssigner(BaseModel):
                 # For each Hbox, the retention time is children 0, the peak area children 1 and the dropdown is the 2nd
 
                 # Overwrite the dropdown the new options
-                hbox.children[2].options = new_options
+                hbox.children[2].options = [""]+new_options
 
                 # Set default values with a given dict
                 retention_time           = float( hbox.children[0].value )

@@ -107,14 +107,13 @@ class Experiment(sdRDM.DataModel):
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
 
-    def calibrate_from_json(self, path_to_json_file: Path, degree: int=2 ):
+    def calibrate_from_json(self, path_to_json_file: Path, degree: int=1 ):
         """
         Load calibration data (and with it chemical formula) from a JSON file and add them in the species data object.
 
         Args:
             path_to_json_file (Path): Path to json-type file.
-            degree (int): Degree of polynomial regression
-
+            degree (int): Degree of polynomial regression on calibration data
         """
         with open(path_to_json_file, "r") as file: calibration_data = json.load(file)
 
