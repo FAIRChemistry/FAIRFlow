@@ -36,7 +36,7 @@ class GeneralInformation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="55de05ca00ba802b7ce368449e41d268fadf30a9"
+        default="7504f503d8e4455500cbff7d193b9d959161556a"
     )
 
     def add_to_authors(

@@ -4,9 +4,9 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from .reactantrole import ReactantRole
 from .stoichiometry import Stoichiometry
 from .chemical import Chemical
-from .reactantrole import ReactantRole
 
 
 @forge_signature
@@ -28,7 +28,7 @@ class Input(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="55de05ca00ba802b7ce368449e41d268fadf30a9"
+        default="7504f503d8e4455500cbff7d193b9d959161556a"
     )
 
     def add_to_component(
