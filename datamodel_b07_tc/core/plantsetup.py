@@ -4,15 +4,13 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
+from .device import Device
 from .insulation import Insulation
 from .output import Output
-from .tubing import Tubing
-from .input import Input
-from .device import Device
 from .material import Material
+from .tubing import Tubing
 from .chemical import Chemical
+from .input import Input
 
 
 @forge_signature
@@ -48,12 +46,11 @@ class PlantSetup(sdRDM.DataModel):
         multiple=True,
         description="bla",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="48482b81b482e9464bf050b2490e5f461bbf3497"
+        default="1012173e88c85450e85ce39a3e24d9eb2aafbfc5"
     )
 
     def add_to_devices(
@@ -74,19 +71,15 @@ class PlantSetup(sdRDM.DataModel):
             series (): the series of the device.. Defaults to None
             on_off (): operational mode of the flow module. True is on and False is off.. Defaults to None
         """
-
         params = {
             "manufacturer": manufacturer,
             "device_type": device_type,
             "series": series,
             "on_off": on_off,
         }
-
         if id is not None:
             params["id"] = id
-
         self.devices.append(Device(**params))
-
         return self.devices[-1]
 
     def add_to_tubing(
@@ -109,7 +102,6 @@ class PlantSetup(sdRDM.DataModel):
             length (): length of the tubing in mm.. Defaults to None
             insulation (): insulation of the tubing.. Defaults to None
         """
-
         params = {
             "material": material,
             "inner_diameter": inner_diameter,
@@ -117,12 +109,9 @@ class PlantSetup(sdRDM.DataModel):
             "length": length,
             "insulation": insulation,
         }
-
         if id is not None:
             params["id"] = id
-
         self.tubing.append(Tubing(**params))
-
         return self.tubing[-1]
 
     def add_to_input(
@@ -135,16 +124,10 @@ class PlantSetup(sdRDM.DataModel):
             id (str): Unique identifier of the 'Input' object. Defaults to 'None'.
             component (): component of the output fluid.. Defaults to ListPlus()
         """
-
-        params = {
-            "component": component,
-        }
-
+        params = {"component": component}
         if id is not None:
             params["id"] = id
-
         self.input.append(Input(**params))
-
         return self.input[-1]
 
     def add_to_output(
@@ -157,14 +140,8 @@ class PlantSetup(sdRDM.DataModel):
             id (str): Unique identifier of the 'Output' object. Defaults to 'None'.
             component (): component of the output fluid.. Defaults to ListPlus()
         """
-
-        params = {
-            "component": component,
-        }
-
+        params = {"component": component}
         if id is not None:
             params["id"] = id
-
         self.output.append(Output(**params))
-
         return self.output[-1]

@@ -3,10 +3,8 @@ import sdRDM
 from typing import Optional, Union
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-from datetime import datetime as Datetime
 from astropy.units import UnitBase
-
+from datetime import datetime as Datetime
 from .datatype import DataType
 
 
@@ -54,10 +52,9 @@ class Metadata(sdRDM.DataModel):
         default=None,
         description="description of the parameter.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="48482b81b482e9464bf050b2490e5f461bbf3497"
+        default="1012173e88c85450e85ce39a3e24d9eb2aafbfc5"
     )

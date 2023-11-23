@@ -1,11 +1,9 @@
-import numpy as np
 import sdRDM
 
-from sklearn.linear_model import LinearRegression
-from typing import Optional
+from typing import List, Optional
 from pydantic import Field, PrivateAttr
+from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
 from .data import Data
 
 
@@ -29,26 +27,31 @@ class Calibration(sdRDM.DataModel):
         description="concentrations of the individual calibration solutions.",
     )
 
-    regression_model: Optional[LinearRegression] = Field(
-        default=LinearRegression(fit_intercept=True).fit( np.array(peak_areas.values).reshape(-1, 1), np.array(concentrations.values) ),
-        description="Linear regression model.",
+    regression_coefficients: List[float] = Field(
+        default_factory=ListPlus,
+        multiple=True,
+        description="Polynomial coefficients in order of increasing degree.",
     )
 
+    degree: Optional[int] = Field(
+        default=1,
+        description="Degree of regression model.",
+    )
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="48482b81b482e9464bf050b2490e5f461bbf3497"
+        default="1012173e88c85450e85ce39a3e24d9eb2aafbfc5"
     )
 
-    #def calibrate(self):
+    # def calibrate(self):
     #    """
-    #    Function that uses the given calibration data and perform linear regression. The corresponding linear regression object is saved. 
+    #    Function that uses the given calibration data and perform linear regression. The corresponding linear regression object is saved.
     #    This can be used to predict volumetric concentrations at different peak areas
     #    """
 
-        #peak_areas            = 
-        #concentration         = 
+    # peak_areas            =
+    # concentration         =
 
-        #self.regression_model.fit(np.array(self.peak_areas.values).reshape(-1, 1), np.array(self.concentrations.values))
-        # = LinearRegression(fit_intercept=True).
+    # self.regression_model.fit(np.array(self.peak_areas.values).reshape(-1, 1), np.array(self.concentrations.values))
+    # = LinearRegression(fit_intercept=True).

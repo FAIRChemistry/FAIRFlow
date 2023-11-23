@@ -5,6 +5,7 @@ class Quantity(Enum):
     TIME = "Time"
     VOLTAGE = "Voltage"
     CURRENT = "Current"
+    SURFACEAREA = "Electrode surface area"
     CONCENTRATION = "Concentration"
     MASS = "Mass"
     MASSFLOWRATE = "Mass flow rate"

@@ -1,20 +1,20 @@
 import sdRDM
+
 import json
 from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 from pathlib import Path
-
-from .measurementtype import MeasurementType
-from .calibration import Calibration
-from .speciesdata import SpeciesData
+from .metadata import Metadata
 from .data import Data
+from .chemicalformula import ChemicalFormula
 from .plantsetup import PlantSetup
 from .measurement import Measurement
+from .calibration import Calibration
+from .measurementtype import MeasurementType
+from .speciesdata import SpeciesData
 from .species import Species
-from .chemicalformula import ChemicalFormula
-from .metadata import Metadata
 
 
 @forge_signature
@@ -45,12 +45,11 @@ class Experiment(sdRDM.DataModel):
         multiple=True,
         description="all provided and calculated data about a specific species.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="48482b81b482e9464bf050b2490e5f461bbf3497"
+        default="1012173e88c85450e85ce39a3e24d9eb2aafbfc5"
     )
 
     def add_to_measurements(
@@ -69,18 +68,14 @@ class Experiment(sdRDM.DataModel):
             metadata (): metadata of a measurement.. Defaults to ListPlus()
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
         """
-
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
         }
-
         if id is not None:
             params["id"] = id
-
         self.measurements.append(Measurement(**params))
-
         return self.measurements[-1]
 
     def add_to_species_data(
@@ -105,7 +100,6 @@ class Experiment(sdRDM.DataModel):
             faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
-
         params = {
             "species": species,
             "chemical_formula": chemical_formula,
@@ -114,14 +108,11 @@ class Experiment(sdRDM.DataModel):
             "faraday_coefficient": faraday_coefficient,
             "faraday_efficiency": faraday_efficiency,
         }
-
         if id is not None:
             params["id"] = id
-
         self.species_data.append(SpeciesData(**params))
-
         return self.species_data[-1]
-    
+
     def calibrate_from_json(path_to_json_file: Path):
         """
         Load calibration data (and with it chemical formula) from a JSON file and store them in the species data object.
@@ -130,15 +121,25 @@ class Experiment(sdRDM.DataModel):
             path_to_json_file (Path): Path to json-type file.
 
         """
-        with open(path_to_json_file, "r") as file: calibration_data = json.load(file)
+        with open(path_to_json_file, "r") as file:
+            calibration_data = json.load(file)
 
         species_data_list = []
 
         for species, data in calibration_data.items():
-            species_data = SpeciesData(species = species,
-                                       chemical_formula = data["chemical_formula"],
-                                       calibration = Calibration( peak_areas = Data(quantity="Peak area",unit=None,values=data["peak_areas"]),
-                                       concentrations = Data(quantity="Concentration",unit="%",values=data["concentrations"])),
+            species_data = SpeciesData(
+                species=species,
+                chemical_formula=data["chemical_formula"],
+                calibration=Calibration(
+                    peak_areas=Data(
+                        quantity="Peak area", unit=None, values=data["peak_areas"]
+                    ),
+                    concentrations=Data(
+                        quantity="Concentration",
+                        unit="%",
+                        values=data["concentrations"],
+                    ),
+                ),
             )
             species_data_list.append(species_data)
         return cls(species_data_list=species_data_list)
