@@ -172,9 +172,8 @@ classDiagram
     class Calibration {
         +Data peak_areas
         +Data concentrations
-        +Data slope
-        +Data intercept
-        +Data coefficient_of_determination
+        +float[0..*] regression_coefficients
+        +int degree
     }
     
     class DataType {
@@ -238,6 +237,7 @@ classDiagram
         +TIME
         +VOLTAGE
         +CURRENT
+        +SURFACEAREA
         +CONCENTRATION
         +MASS
         +MASSFLOWRATE
