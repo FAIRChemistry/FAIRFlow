@@ -4,17 +4,15 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
-from .speciesdata import SpeciesData
+from .data import Data
+from .species import Species
+from .plantsetup import PlantSetup
+from .measurement import Measurement
 from .metadata import Metadata
 from .measurementtype import MeasurementType
-from .species import Species
 from .calibration import Calibration
-from .measurement import Measurement
+from .speciesdata import SpeciesData
 from .chemicalformula import ChemicalFormula
-from .data import Data
-from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -45,12 +43,11 @@ class Experiment(sdRDM.DataModel):
         multiple=True,
         description="all provided and calculated data about a specific species.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="070599e978c8238372001dca8e14ed973e5f44bb"
+        default="ffe104723303b575fa3a1516be3ea46c3f369c41"
     )
 
     def add_to_measurements(
@@ -69,18 +66,14 @@ class Experiment(sdRDM.DataModel):
             metadata (): metadata of a measurement.. Defaults to ListPlus()
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
         """
-
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
         }
-
         if id is not None:
             params["id"] = id
-
         self.measurements.append(Measurement(**params))
-
         return self.measurements[-1]
 
     def add_to_species_data(
@@ -105,7 +98,6 @@ class Experiment(sdRDM.DataModel):
             faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
-
         params = {
             "species": species,
             "chemical_formula": chemical_formula,
@@ -114,10 +106,7 @@ class Experiment(sdRDM.DataModel):
             "faraday_coefficient": faraday_coefficient,
             "faraday_efficiency": faraday_efficiency,
         }
-
         if id is not None:
             params["id"] = id
-
         self.species_data.append(SpeciesData(**params))
-
         return self.species_data[-1]

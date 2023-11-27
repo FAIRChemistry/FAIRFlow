@@ -3,28 +3,33 @@ import sdRDM
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .material import Material
 
 
 @forge_signature
-class Insulation(sdRDM.DataModel):
+class Contact(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("insulationINDEX"),
+        default_factory=IDGenerator("contactINDEX"),
         xml="@id",
     )
 
-    thickness: Optional[float] = Field(
+    name: Optional[str] = Field(
         default=None,
-        description="diameter of the insulating layer in mm.",
+        description="full name including given and family name.",
     )
 
-    material: Optional[Material] = Field(
+    affiliation: Optional[str] = Field(
         default=None,
-        description="insulating material",
+        description="organization the author is affiliated to.",
     )
+
+    email: Optional[str] = Field(
+        default=None,
+        description="The e-mail address of the contact for the Dataset",
+    )
+
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )

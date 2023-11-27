@@ -1,6 +1,10 @@
 from .dataset import Dataset
 from .generalinformation import GeneralInformation
 from .author import Author
+from .contact import Contact
+from .relatedpublication import RelatedPublication
+from .keyword import Keyword
+from .topicclassification import TopicClassification
 from .experiment import Experiment
 from .plantsetup import PlantSetup
 from .device import Device
@@ -32,11 +36,14 @@ from .species import Species
 from .chemicalformula import ChemicalFormula
 
 __doc__ = ""
-
 __all__ = [
     "Dataset",
     "GeneralInformation",
     "Author",
+    "Contact",
+    "RelatedPublication",
+    "Keyword",
+    "TopicClassification",
     "Experiment",
     "PlantSetup",
     "Device",
