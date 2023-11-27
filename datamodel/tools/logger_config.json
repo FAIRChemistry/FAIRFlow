@@ -10,9 +10,9 @@
     "handlers": {
         "file": {
             "class": "logging.FileHandler",
-            "level": "DEBUG",
+            "level": "INFO",
             "formatter": "simple",
-            "filename": "datamodel_b07_tc/tools/logging/log_faraday.log",
+            "filename": "log_faraday_efficency.log",
             "mode": "a"
         },
         "console": {

@@ -263,9 +263,9 @@ class PeakAssigner(BaseModel):
         
             for peak_area, retention_time in zip(peak_areas_retention_time["peak_areas"], peak_areas_retention_time["retention_time"]):
                 
-                # Set default values with a given dict
-                default_value = [trt[0] for trt in self.typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.6) and (trt[0] in self.species) ]
-                default_value = default_value[0] if bool(default_value) else ""
+                # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
+                idx           = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in self.species ] )
+                default_value = list( self.typical_retention_time.items() )[idx][0]
 
                 dropdown             = Dropdown( options = [""] + self.species,
                                                  layout  = Layout(width="40%", height="30px"),
@@ -316,7 +316,8 @@ class PeakAssigner(BaseModel):
 
                 # Set default values with a given dict
                 retention_time           = float( hbox.children[0].value )
-                default_value            = [trt[0] for trt in self.typical_retention_time.items() if (abs( trt[1] - retention_time ) < 0.6) and (trt[0] in new_options) ]
-                default_value            = default_value[0] if bool(default_value) else ""
+                # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
+                idx                      = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in new_options ] )
+                default_value            = list( self.typical_retention_time.items() )[idx][0]
 
                 hbox.children[2].value   = default_value

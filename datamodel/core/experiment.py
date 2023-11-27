@@ -1,6 +1,9 @@
 import sdRDM
 import json
+import numpy as np
+import pandas as pd
 
+from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 from pydantic import Field
@@ -171,6 +174,11 @@ class Experiment(sdRDM.DataModel):
 
         volumetric_flow_datetime_list = mfm_measurement.get( "experimental_data", "quantity", Quantity.DATETIME.value )[0][0].values
         volumetric_flow_values_list   = mfm_measurement.get( "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value )[0][0].values
+
+        # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
+        if not type( volumetric_flow_datetime_list[0] ) == datetime:
+            volumetric_flow_datetime_list = [ pd.to_datetime(timestamp, format="%Y-%m-%d %H:%M:%S").to_pydatetime() for timestamp in volumetric_flow_datetime_list ]
+        
 
         return [volumetric_flow_datetime_list, volumetric_flow_values_list]
     

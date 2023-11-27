@@ -309,10 +309,12 @@ class reading_raw_data_widget():
         try:
             self.datamodel         = DataModel.parse( self.dataset_dropdown.value )
             self.dataset, self.lib = self.datamodel
-            self.experiments.value = [exp.id for exp in self.dataset.experiments]
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
         
+        # List of experiments
+        self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
+
         # Functions for the buttons #
         self.button_go_for.on_click(self.go_to_subfolder)
         self.button_go_back.on_click(self.go_to_parentfolder)
@@ -365,7 +367,7 @@ class analyzing_raw_data_widget:
         This function provides the peaks of the GC measurement inheritend in the choosen experiment
         """
 
-        # Clear existing widgets
+        # Clear existing output
         clear_output(wait=True)
 
         # Display the layout for experiment and species
@@ -382,6 +384,13 @@ class analyzing_raw_data_widget:
         self.peak_assignment.modify_dropdown_options( self.species_tags.value )
 
     def do_postprocessing(self,_):
+
+        # Clear existing output (in case several post processing are done, remove the print output )
+        clear_output(wait=True)
+
+        # Reexecute the widget
+        self.choose_experiment_input_handler(None)
+        display(self.full_layout2)
 
         print("\nStarting the postprocessing\n")
 
@@ -417,7 +426,9 @@ class analyzing_raw_data_widget:
         self.dataset_path           = dataset_path
         self.dataset, self.lib      = datamodel
 
-        self.experiments_dropdown = widgets.Dropdown(options=[(str(exp.id),idx) for idx,exp in enumerate( self.dataset.experiments) ],
+        if not bool( self.dataset.experiments  ): raise ValueError("Dataset contains no experiments!\n")
+
+        self.experiments_dropdown = widgets.Dropdown(options=[(str(exp.id),idx) for idx,exp in enumerate( self.dataset.experiments ) ],
                                                     description="Choose experiment:",
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})
@@ -430,7 +441,6 @@ class analyzing_raw_data_widget:
                                                       max=20,   # Maximum value
                                                       step=1,   # Step size
                                                       description='Mean radius:')
-
 
         self.display_button       = widgets.Button(description="Start posprocessing", 
                                                    layout=widgets.Layout(width="30%"),
@@ -445,9 +455,6 @@ class analyzing_raw_data_widget:
                                                         are minimized by calculating the mean by averaging over a certain number (=radius) of measuring points before and\
                                                         after the time of the GC measurement. The radius has to be specified in accordance with the strength of fluctuations.')
 
-        self.elec_surf_area   = widgets.FloatText(value=1.0,
-                                                  description='Electrode surface area [cm^2]:',
-                                                  style={'description_width': 'auto'})
 
         # Handle switch of experiment
         self.experiments_dropdown.observe(self.choose_experiment_input_handler,names="value")
@@ -462,7 +469,7 @@ class analyzing_raw_data_widget:
 
         widgets0  = widgets.HBox([self.experiments_dropdown])
         widgets1  = widgets.VBox([widgets.Label(value='Species in GC analysis:'), self.species_tags])
-        widgets2  = widgets.VBox([self.explanation_label,v_space,widgets.HBox([self.mean_radius,self.elec_surf_area])])
+        widgets2  = widgets.VBox([self.explanation_label,v_space,widgets.HBox([self.mean_radius])])
         widgets3  = self.display_button
         widgets4  = self.button_save
 
@@ -477,9 +484,9 @@ class analyzing_raw_data_widget:
         self.choose_experiment_input_handler(None)
 
         # Do postprocessing and save dataset
-        layout = widgets.VBox([widgets.VBox([widgets2,v_space]),
-                               widgets.VBox([widgets3,v_space,widgets4],
-                               layout=widgets.Layout(align_items = 'center'))])
+        self.full_layout2 = widgets.VBox([widgets.VBox([widgets2,v_space]),
+                            widgets.VBox([widgets3,v_space,widgets4],
+                            layout=widgets.Layout(align_items = 'center'))])
         
-        display(layout)
+        display(self.full_layout2)
 
