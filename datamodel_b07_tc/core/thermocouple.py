@@ -2,8 +2,8 @@
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .thermocoupletype import ThermocoupleType
 from .device import Device
+from .thermocoupletype import ThermocoupleType
 
 
 @forge_signature
@@ -24,5 +24,5 @@ class Thermocouple(Device):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="3f31ca86cc05189f7448e32d083d139b40480a4c"
+        default="aaa02c13eb4aa0bc5b011edd3375aa60ea3c8955"
     )
