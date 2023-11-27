@@ -28,11 +28,27 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: Author
   - Multiple: True
   - Description: authors of this dataset.
+- contact
+  - Type: Contact
+  - Description: point of contact for this projecet
+- subject
+  - Type: string
+  - Multiple: True
+  - Description: Domain-specific Subject Categories that are topically relevant to the Dataset.
+- related_publication
+  - Type: RelatedPublication
+  - Description: Related publication to the dataset.
+- keywords
+  - Type: Keyword
+  - Multiple: True
+  - Description: Keywords and url related to the project.
+- topic_classification
+  - Type: TopicClassification
+  - Multiple: True
+  - Description: Topic classification.
 
 
 ### Author
-
-This is another object that represents the author of the dataset. Please note, that the options here contain all required fields but also custom ones. In this example, the ```Dataverse``` option specifies where each field should be mapped, when exported to a Dataverse format. Hence, these options allow you to link your dataset towards any other data model without writing code by yourself.
 
 - name
   - Type: string
@@ -40,7 +56,63 @@ This is another object that represents the author of the dataset. Please note, t
 - affiliation
   - Type: string
   - Description: organization the author is affiliated to.
+- identifier_scheme
+  - Type: string
+  - Description: Name of the identifier scheme (ORCID, ISNI).
+- identifier
+  - Type: string
+  - Description: Uniquely identifies an individual author or organization, according to various schemes.
 
+### Contact
+
+- name
+  - Type: string
+  - Description: full name including given and family name.
+- affiliation
+  - Type: string
+  - Description: organization the author is affiliated to.
+- email
+  - Type: string
+  - Description: The e-mail address of the contact for the Dataset
+
+### RelatedPublication
+
+- citation
+  - Type: string
+  - Description: The full bibliographic citation for this related publication.
+- id_type
+  - Type: string
+  - Description: The type of digital identifier used for this publication (e.g., Digital Object Identifier (DOI)).
+- id_number
+  - Type: string
+  - Description: 'The identifier for the selected ID type.'
+- url
+  - Type: string
+  - Description: 'Link to the publication web page (e.g., journal article page, archive record page, or other).
+
+### Keyword
+
+- term
+  - Type: string
+  - Description: Key terms that describe important aspects of the Dataset. 
+- vocabulary
+  - Type: string
+  - Description: For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.
+- vocabulary_url
+  - Type: string
+  - Description: Keyword vocabulary URL points to the web presence that describes the keyword vocabulary, if appropriate.
+
+### TopicClassification
+
+- term
+  - Type: string
+  - Description: Topic or Subject term that is relevant to this Dataset.
+- vocabulary
+  - Type: string
+  - Description: Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.
+- vocabulary_url
+  - Type: string
+  - Description: Specifies the URL location for the full controlled vocabulary.
 
 ### Experiment
 

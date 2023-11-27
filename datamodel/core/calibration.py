@@ -1,14 +1,10 @@
-import numpy as np
 import sdRDM
 
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
-
-from typing import Optional, List
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
+import numpy as np
+from typing import List, Optional
+from pydantic import Field
 from sdRDM.base.listplus import ListPlus
-
+from sdRDM.base.utils import forge_signature, IDGenerator
 from .data import Data
 
 
@@ -48,10 +44,10 @@ class Calibration(sdRDM.DataModel):
         Calibrate the regression model on seen data
         """
 
-        self.regression_coefficients = np.polynomial.polynomial.polyfit( self.peak_areas.values, 
-                                                                         self.concentrations.values, 
-                                                                         self.degree ).tolist()
-    
+        self.regression_coefficients = np.polynomial.polynomial.polyfit(
+            self.peak_areas.values, self.concentrations.values, self.degree
+        ).tolist()
+
     def predict(self, x: list) -> np.ndarray:
         """
         Predict with regression model
@@ -63,4 +59,4 @@ class Calibration(sdRDM.DataModel):
            (1D numpy array): Predicted data at new locations
         """
 
-        return np.polynomial.Polynomial( self.regression_coefficients )( np.array( x ) )
+        return np.polynomial.Polynomial(self.regression_coefficients)(np.array(x))

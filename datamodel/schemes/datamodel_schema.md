@@ -7,6 +7,10 @@ classDiagram
     Dataset *-- GeneralInformation
     Dataset *-- Experiment
     GeneralInformation *-- Author
+    GeneralInformation *-- Contact
+    GeneralInformation *-- RelatedPublication
+    GeneralInformation *-- Keyword
+    GeneralInformation *-- TopicClassification
     Experiment *-- PlantSetup
     Experiment *-- Measurement
     Experiment *-- SpeciesData
@@ -46,11 +50,43 @@ classDiagram
         +string title
         +string description
         +Author[0..*] authors
+        +Contact contact
+        +string[0..*] subject
+        +RelatedPublication related_publication
+        +Keyword[0..*] keywords
+        +TopicClassification[0..*] topic_classification
     }
     
     class Author {
         +string name
         +string affiliation
+        +string identifier_scheme
+        +string identifier
+    }
+    
+    class Contact {
+        +string name
+        +string affiliation
+        +string email
+    }
+    
+    class RelatedPublication {
+        +string citation
+        +string id_type
+        +string id_number
+        +string url
+    }
+    
+    class Keyword {
+        +string term
+        +string vocabulary
+        +string vocabulary_url
+    }
+    
+    class TopicClassification {
+        +string term
+        +string vocabulary
+        +string vocabulary_url
     }
     
     class Experiment {
@@ -244,16 +280,13 @@ classDiagram
         +VOLUMETRICFLOWRATE
         +DATETIME
         +FRACTION
-        +SIGNAL
-        +PEAKNUMBER
         +RETENTIONTIME
         +PEAKTYPE
         +PEAKAREA
         +PEAKHEIGHT
         +PEAKAREAPERCENTAGE
-        +SLOPE
-        +INTERCEPT
-        +COEFFDET
+        +PEAKASSIGNMENT
+        +FARADAYEFFIECENCY
     }
     
     class MeasurementType {

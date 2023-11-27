@@ -1,24 +1,25 @@
 import sdRDM
+
 import json
-import numpy as np
 import pandas as pd
 
 from datetime import datetime
-from pathlib import Path
 from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .chemicalformula import ChemicalFormula
-from .data import Data
-from .measurementtype import MeasurementType
+from pathlib import Path
 from .plantsetup import PlantSetup
+from .measurementtype import MeasurementType
+from .data import Data
+from .measurement import Measurement
+from .chemicalformula import ChemicalFormula
+from .calibration import Calibration
+from .quantity import Quantity
+from .speciesdata import SpeciesData
 from .species import Species
 from .metadata import Metadata
-from .measurement import Measurement
-from .calibration import Calibration
-from .speciesdata import SpeciesData
-from .quantity import Quantity
+
 
 @forge_signature
 class Experiment(sdRDM.DataModel):
@@ -110,7 +111,7 @@ class Experiment(sdRDM.DataModel):
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
 
-    def calibrate_from_json(self, path_to_json_file: Path, degree: int=1 ):
+    def calibrate_from_json(self, path_to_json_file: Path, degree: int = 1):
         """
         Load calibration data (and with it chemical formula) from a JSON file and add them in the species data object.
 
@@ -118,21 +119,31 @@ class Experiment(sdRDM.DataModel):
             path_to_json_file (Path): Path to json-type file.
             degree (int): Degree of polynomial regression on calibration data
         """
-        with open(path_to_json_file, "r") as file: calibration_data = json.load(file)
+        with open(path_to_json_file, "r") as file:
+            calibration_data = json.load(file)
 
         for species, data in calibration_data.items():
 
             # Create Calibration object and fit it to the given data
-            calibration = Calibration( peak_areas     = Data( quantity="Peak area", unit=None, values=data["peak_areas"] ),
-                                       concentrations = Data( quantity=Quantity.CONCENTRATION.value, unit="%", values=data["concentrations"] ),
-                                       degree         = degree )
-            calibration.calibrate( )
+            calibration = Calibration(
+                peak_areas=Data(
+                    quantity="Peak area", unit=None, values=data["peak_areas"]
+                ),
+                concentrations=Data(
+                    quantity=Quantity.CONCENTRATION.value,
+                    unit="%",
+                    values=data["concentrations"],
+                ),
+                degree=degree,
+            )
+            calibration.calibrate()
 
-            self.add_to_species_data( species = species,
-                                      chemical_formula = data["chemical_formula"],
-                                      calibration = calibration,
-                                      )
-            
+            self.add_to_species_data(
+                species=species,
+                chemical_formula=data["chemical_formula"],
+                calibration=calibration,
+            )
+
     def read_correction_factors(self, path: Path):
         """
         Load correction factors for (existing) each species and add them in the species data object.
@@ -141,12 +152,13 @@ class Experiment(sdRDM.DataModel):
             path (Path): Path to json-type file.
         """
 
-        with open(path, 'r') as f: correction_factors_dict = json.load(f)
-            
-        for species, correction_factor in correction_factors_dict.items():
-            for species_data_object in self.species_data: 
-                if species_data_object.species == species: species_data_object.correction_factor = correction_factor  
+        with open(path, "r") as f:
+            correction_factors_dict = json.load(f)
 
+        for species, correction_factor in correction_factors_dict.items():
+            for species_data_object in self.species_data:
+                if species_data_object.species == species:
+                    species_data_object.correction_factor = correction_factor
 
     def read_faraday_coefficients(self, path: Path):
         """
@@ -156,13 +168,14 @@ class Experiment(sdRDM.DataModel):
             path (Path): Path to json-type file.
         """
 
-        with open(path, 'r') as f: faraday_coefficients_dict = json.load(f)
+        with open(path, "r") as f:
+            faraday_coefficients_dict = json.load(f)
 
         for species, faraday_coefficient in faraday_coefficients_dict.items():
-            for species_data_object in self.species_data: 
-                if species_data_object.species == species: species_data_object.faraday_coefficient = faraday_coefficient 
+            for species_data_object in self.species_data:
+                if species_data_object.species == species:
+                    species_data_object.faraday_coefficient = faraday_coefficient
 
-    
     @property
     def volumetric_flow_time_course(self) -> list:
         """This property extracts the volumetric flow time as well as the flow it self from the experiment class
@@ -170,16 +183,22 @@ class Experiment(sdRDM.DataModel):
         Returns:
             list: Datetime list and flow value list
         """
-        mfm_measurement               = self.get( "measurements", "measurement_type", "MFM measurement" )[0][0]
+        mfm_measurement = self.get(
+            "measurements", "measurement_type", "MFM measurement"
+        )[0][0]
 
-        volumetric_flow_datetime_list = mfm_measurement.get( "experimental_data", "quantity", Quantity.DATETIME.value )[0][0].values
-        volumetric_flow_values_list   = mfm_measurement.get( "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value )[0][0].values
+        volumetric_flow_datetime_list = mfm_measurement.get(
+            "experimental_data", "quantity", Quantity.DATETIME.value
+        )[0][0].values
+        volumetric_flow_values_list = mfm_measurement.get(
+            "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value
+        )[0][0].values
 
         # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
-        if not type( volumetric_flow_datetime_list[0] ) == datetime:
-            volumetric_flow_datetime_list = [ pd.to_datetime(timestamp, format="%Y-%m-%d %H:%M:%S").to_pydatetime() for timestamp in volumetric_flow_datetime_list ]
-        
+        if not type(volumetric_flow_datetime_list[0]) == datetime:
+            volumetric_flow_datetime_list = [
+                pd.to_datetime(timestamp, format="%Y-%m-%d %H:%M:%S").to_pydatetime()
+                for timestamp in volumetric_flow_datetime_list
+            ]
 
         return [volumetric_flow_datetime_list, volumetric_flow_values_list]
-    
-    

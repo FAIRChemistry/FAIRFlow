@@ -3,8 +3,8 @@ import sdRDM
 from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .material import Material
 from .insulation import Insulation
+from .material import Material
 
 
 @forge_signature

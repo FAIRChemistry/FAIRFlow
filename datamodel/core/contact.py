@@ -6,12 +6,12 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 
 
 @forge_signature
-class Author(sdRDM.DataModel):
+class Contact(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = Field(
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("authorINDEX"),
+        default_factory=IDGenerator("contactINDEX"),
         xml="@id",
     )
 
@@ -25,15 +25,7 @@ class Author(sdRDM.DataModel):
         description="organization the author is affiliated to.",
     )
 
-    identifier_scheme: Optional[str] = Field(
+    email: Optional[str] = Field(
         default=None,
-        description="Name of the identifier scheme (ORCID, ISNI).",
-    )
-
-    identifier: Optional[str] = Field(
-        default=None,
-        description=(
-            "Uniquely identifies an individual author or organization, according to"
-            " various schemes."
-        ),
+        description="The e-mail address of the contact for the Dataset",
     )

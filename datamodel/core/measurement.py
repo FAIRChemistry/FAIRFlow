@@ -4,13 +4,13 @@ from typing import Optional, Union, List
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase
 from datetime import datetime as Datetime
-from .quantity import Quantity
+from astropy.units import UnitBase
 from .datatype import DataType
-from .data import Data
 from .measurementtype import MeasurementType
+from .quantity import Quantity
 from .metadata import Metadata
+from .data import Data
 
 
 @forge_signature

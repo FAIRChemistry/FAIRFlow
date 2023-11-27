@@ -2,8 +2,8 @@
 from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .thermocoupletype import ThermocoupleType
 from .device import Device
+from .thermocoupletype import ThermocoupleType
 
 
 @forge_signature

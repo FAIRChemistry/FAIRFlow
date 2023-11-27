@@ -5,8 +5,8 @@ from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 from .chemicalformula import ChemicalFormula
 from .calibration import Calibration
-from .data import Data
 from .species import Species
+from .data import Data
 
 
 @forge_signature
