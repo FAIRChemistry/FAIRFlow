@@ -40,10 +40,9 @@ class RelatedPublication(sdRDM.DataModel):
             " record page, or other)."
         ),
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ffe104723303b575fa3a1516be3ea46c3f369c41"
+        default="0730e4039ae52cfaf41cc2b4bea63a848f91ced6"
     )

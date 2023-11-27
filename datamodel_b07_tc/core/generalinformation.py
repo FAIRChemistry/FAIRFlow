@@ -5,10 +5,10 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 from .relatedpublication import RelatedPublication
-from .contact import Contact
 from .keyword import Keyword
-from .topicclassification import TopicClassification
 from .author import Author
+from .topicclassification import TopicClassification
+from .contact import Contact
 
 
 @forge_signature
@@ -24,6 +24,11 @@ class GeneralInformation(sdRDM.DataModel):
     title: Optional[str] = Field(
         default=None,
         description="title of the work.",
+    )
+
+    project: Optional[str] = Field(
+        default=None,
+        description="Name of the project this work is related to.",
     )
 
     description: Optional[str] = Field(
@@ -71,7 +76,7 @@ class GeneralInformation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ffe104723303b575fa3a1516be3ea46c3f369c41"
+        default="0730e4039ae52cfaf41cc2b4bea63a848f91ced6"
     )
 
     def add_to_authors(
