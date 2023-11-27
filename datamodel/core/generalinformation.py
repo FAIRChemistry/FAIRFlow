@@ -4,10 +4,10 @@ from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .relatedpublication import RelatedPublication
-from .topicclassification import TopicClassification
 from .contact import Contact
+from .topicclassification import TopicClassification
 from .author import Author
+from .relatedpublication import RelatedPublication
 from .keyword import Keyword
 
 
@@ -24,6 +24,11 @@ class GeneralInformation(sdRDM.DataModel):
     title: Optional[str] = Field(
         default=None,
         description="title of the work.",
+    )
+
+    project: Optional[str] = Field(
+        default=None,
+        description="Name of the project this work is related to.",
     )
 
     description: Optional[str] = Field(

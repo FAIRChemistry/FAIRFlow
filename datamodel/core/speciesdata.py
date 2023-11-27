@@ -3,10 +3,10 @@ import sdRDM
 from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .chemicalformula import ChemicalFormula
-from .calibration import Calibration
 from .species import Species
 from .data import Data
+from .calibration import Calibration
+from .chemicalformula import ChemicalFormula
 
 
 @forge_signature

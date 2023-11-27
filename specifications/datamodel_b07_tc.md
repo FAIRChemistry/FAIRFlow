@@ -21,6 +21,9 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 - title
   - Type: string
   - Description: title of the work.
+- project
+  - Type: string
+  - Description: Name of the project this work is related to.
 - description
   - Type: string
   - Description: describes the content of the dataset.

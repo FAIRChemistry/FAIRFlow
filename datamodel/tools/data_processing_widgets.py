@@ -2,6 +2,7 @@ import os
 import ipywidgets as widgets
 import pandas as pd
 from pathlib import Path
+from datetime import datetime
 from IPython.display import display, clear_output
 
 # Import modified sdRDM objects #
@@ -13,6 +14,9 @@ from sdRDM import DataModel
 from datamodel.core import Experiment
 from datamodel.core import MeasurementType
 from datamodel.core import Quantity
+from datamodel.core import Contact
+from datamodel.core import RelatedPublication
+from pyDaRUS.metadatablocks.citation import SubjectEnum
 
 # Tools #
 from .auxiliary import Librarian, PeakAssigner
@@ -34,27 +38,54 @@ class initialize_dataset:
 
         print("Saving dataset!")
         
-        # Add authors to the dataset #
-        if self.authors.value and self.affiliations.value:
-            authors      = [ s.strip() for s in self.authors.value.split(",") ]
-            affiliations = [ s.strip() for s in self.affiliations.value.split(",") ]
+        # Add title
+        self.dataset.general_information.title       = self.title.value
+        
+        # Add description
+        self.dataset.general_information.description = self.description.value 
 
-        for aut,aff in zip(authors,affiliations):
-            self.dataset.general_information.add_to_authors( name=aut, affiliation=aff )
+        # Add project group
+        self.dataset.genera_information.project      = self.project.value
 
+        # Add authors to the dataset 
+        for aut,aff,ident in zip( self.authors.value.split(","), self.affiliations.value.split(","), self.identifier.value.split(",") ):
+            self.dataset.general_information.add_to_authors( name = aut.strip(), 
+                                                             affiliation = aff.strip(), 
+                                                             identifier_scheme = self.identifier_scheme.value,
+                                                             identifier = ident.strip() )
+
+        # Add contact (search contact in provided authors)
+        affili = [ aff for aut,aff in zip(self.authors.value.split(","), self.affiliations.value.split(",")) if aut.strip() == self.contact_text.value.split(",")[0].sprip() ]
+        affili = affili if bool(affili) else None
+
+        self.dataset.general_information.contact = Contact( name = self.contact_text.value.split(",")[0].strip(), 
+                                                            email = self.contact_text.value.split(",")[1].strip(), 
+                                                            affiliation = affili )
+
+        # Add subject
+        self.dataset.general_information.subject = list( self.subject_selection.value )
+
+        # Add related publication
+        self.dataset.general_information.related_publication  = RelatedPublication( citation = self.related_publication.value.split(",")[0].strip(),
+                                                                                    url      = self.related_publication.value.split(",")[1].strip() )
+
+        # Add topic classifications
+        for i in range(0, len(self.topic_classification.value.split(",")), 2):
+            self.dataset.general_information.add_to_topic_classification( term           = self.topic_classification.value.split(",")[i].strip() , 
+                                                                          vocabulary_url = self.topic_classification.value.split(",")[i + 1].strip() )
+
+        # Add keywords
+        for i in range(0, len(self.keywords.value.split(",")), 2):
+            self.dataset.general_information.add_to_keywords( term           = self.keywords.value.split(",")[i].strip() , 
+                                                              vocabulary_url = self.keywords.value.split(",")[i + 1].strip() )
+            
         # Write dataset #
         os.makedirs( self.root / "datasets", exist_ok=True )
         with open( str(self.root) + "/datasets/%s.json"%self.dataset_text.value, "w") as f: f.write(self.dataset.json())
 
     def change_dataset(self,_):
         self.button_save.description = 'Save dataset as:  %s.json'%self.dataset_text.value
-    
-    def add_title(self,_):
-        self.dataset.general_information.title       = self.title.value
-
-    def add_description(self,_):
-        self.dataset.general_information.description = self.description.value        
-
+               
     def write_dataset(self,root: Path, git_path: str, git_branch: str) -> None:
         
         self.git_branch          = git_branch    
@@ -72,8 +103,13 @@ class initialize_dataset:
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
 
-        self.description         = widgets.Textarea(description="Description of the project:",
-                                                placeholder="Descripte the project",
+        self.description         = widgets.Text(description="Description of the project:",
+                                                placeholder="Describe the project",
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+
+        self.project             = widgets.Text(description="Project:",
+                                                placeholder="Name of the project group (e.g.: Project B07)",
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
 
@@ -86,6 +122,44 @@ class initialize_dataset:
                                                 placeholder="Name the affiliation fo each author (e.g.: University of Stuttgart, TUM, ...)",
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
+
+
+        self.identifier_scheme   = widgets.Dropdown(options= ["ORCID"],
+                                                    description="Choose unique identifier scheme:",
+                                                    layout=widgets.Layout(width='auto'),
+                                                    style={'description_width': 'auto'})
+        
+        self.identifier          = widgets.Text(description="Unique identifier:",
+                                                placeholder="Provide identifier according to choosen identifier scheme (e.g. for ORCID: xxxx-xxxx-xxxx-xxxx)",
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+
+        self.contact_text      = widgets.Text(description="Contact:",
+                                                placeholder="Name the contact of the project (e.g.: Max Mustermann, max.mustermann@universityofstuttgart.de)",
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+
+        self.subject_selection   = widgets.SelectMultiple( options=[ subject.value for subject in SubjectEnum ],
+                                                          description="Choose subjects (press and hold 'strg' to select several):",
+                                                          layout=widgets.Layout(width='auto'),
+                                                           style={'description_width': 'auto'} )
+        
+        self.related_publication  = widgets.Text (description="Related publication:",
+                                                    placeholder="The full bibliographic citation for this related publication and link to the publication web page, separated by a comma (e.g.: M. Mustermann Publication: Test. J. Chem. Phys. xxx, xxx (xxx), https://doi.org/xxx )",
+                                                    layout=widgets.Layout(width='auto'),
+                                                    style={'description_width': 'auto'})
+        
+
+        self.topic_classification = widgets.Text (description="Topic classification:",
+                                                    placeholder="The classification and the url, seperated by a comma (e.g.: homogeneous catalysis (LCSH), https://xxx, polyethers (LCSH), https://xxx, ... )",
+                                                    layout=widgets.Layout(width='auto'),
+                                                    style={'description_width': 'auto'})
+
+        self.keywords             = widgets.Text (description="Keywords:",
+                                                    placeholder="The keywords and the url, seperated by a comma (e.g.: polymer chemistry (Loterre Chemistry Vocabulary), https://xxx )",
+                                                    layout=widgets.Layout(width='auto'),
+                                                    style={'description_width': 'auto'})
+
 
         self.dataset_text        = widgets.Text(description="Dataset:",
                                                 placeholder="Name the dataset for this project (will be saved as json file)",
@@ -106,8 +180,6 @@ class initialize_dataset:
         
         # Handle on observing
         self.datamodels_dropdown.observe(self.init_datamodel,names="value")
-        self.title.observe(self.add_title,names="value")
-        self.description.observe(self.add_description,names="value")
         self.dataset_text.observe(self.change_dataset,names="value")
         
         # Handle button
@@ -115,18 +187,23 @@ class initialize_dataset:
 
         # Widgets
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
+        h_space   = widgets.HBox([widgets.Label(value='')], layout=widgets.Layout(width='30px'))
 
-        widgets0  = self.datamodels_dropdown
-        widgets1  = widgets.VBox([self.title, self.description, self.authors, self.affiliations])
-        widgets2  = widgets.VBox([self.dataset_text, v_space, self.button_save])
+        widgets0  = widgets.HBox([self.datamodels_dropdown, h_space, self.identifier_scheme])
+        widgets1  = widgets.VBox([v_space, self.title, self.description, self.project,v_space])
+        widgets2  = widgets.VBox([self.authors, self.affiliations, self.identifier, self.contact_text, v_space])
+        widgets3  = widgets.VBox([self.subject_selection, self.related_publication, self.topic_classification, self.keywords, v_space])
+        widgets4  = widgets.VBox([self.dataset_text, v_space, self.button_save])
 
         # Combine the layout
-        full_layout = widgets.VBox([widgets0, widgets1, widgets2])
+        full_layout = widgets.VBox([widgets0, widgets1, widgets2, widgets3, widgets4])
 
         # Display the layout
         display(full_layout)
 
         return
+
+
 
 
 class reading_raw_data_widget():

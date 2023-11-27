@@ -48,6 +48,7 @@ classDiagram
     
     class GeneralInformation {
         +string title
+        +string project
         +string description
         +Author[0..*] authors
         +Contact contact
