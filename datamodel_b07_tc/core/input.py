@@ -4,8 +4,6 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
 from .reactantrole import ReactantRole
 from .chemical import Chemical
 from .stoichiometry import Stoichiometry
@@ -26,12 +24,11 @@ class Input(sdRDM.DataModel):
         multiple=True,
         description="component of the output fluid.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8872c248623884be3e946849d19313d400c3d949"
+        default="3f31ca86cc05189f7448e32d083d139b40480a4c"
     )
 
     def add_to_component(
@@ -58,7 +55,6 @@ class Input(sdRDM.DataModel):
             state_of_matter (): s for solid, l for liquid and g for gaseous. Defaults to None
             reactant_role (): Role that a reactand plays in a chemical reaction or  in a process.. Defaults to None
         """
-
         params = {
             "name": name,
             "formula": formula,
@@ -68,10 +64,7 @@ class Input(sdRDM.DataModel):
             "state_of_matter": state_of_matter,
             "reactant_role": reactant_role,
         }
-
         if id is not None:
             params["id"] = id
-
         self.component.append(Chemical(**params))
-
         return self.component[-1]

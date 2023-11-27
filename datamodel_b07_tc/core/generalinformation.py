@@ -4,11 +4,9 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
+from .author import Author
 from .keyword import Keyword
 from .relatedpublication import RelatedPublication
-from .author import Author
 from .contact import Contact
 from .topicclassification import TopicClassification
 
@@ -74,12 +72,11 @@ class GeneralInformation(sdRDM.DataModel):
         multiple=True,
         description="Topic classification.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8872c248623884be3e946849d19313d400c3d949"
+        default="3f31ca86cc05189f7448e32d083d139b40480a4c"
     )
 
     def add_to_authors(
@@ -100,19 +97,15 @@ class GeneralInformation(sdRDM.DataModel):
             identifier_scheme (): Name of the identifier scheme (ORCID, ISNI).. Defaults to None
             identifier (): Uniquely identifies an individual author or organization, according to various schemes.. Defaults to None
         """
-
         params = {
             "name": name,
             "affiliation": affiliation,
             "identifier_scheme": identifier_scheme,
             "identifier": identifier,
         }
-
         if id is not None:
             params["id"] = id
-
         self.authors.append(Author(**params))
-
         return self.authors[-1]
 
     def add_to_keywords(
@@ -131,18 +124,14 @@ class GeneralInformation(sdRDM.DataModel):
             vocabulary (): For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.. Defaults to None
             vocabulary_url (): Keyword vocabulary URL points to the web presence that describes the keyword vocabulary, if appropriate.. Defaults to None
         """
-
         params = {
             "term": term,
             "vocabulary": vocabulary,
             "vocabulary_url": vocabulary_url,
         }
-
         if id is not None:
             params["id"] = id
-
         self.keywords.append(Keyword(**params))
-
         return self.keywords[-1]
 
     def add_to_topic_classification(
@@ -161,16 +150,12 @@ class GeneralInformation(sdRDM.DataModel):
             vocabulary (): Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.. Defaults to None
             vocabulary_url (): Specifies the URL location for the full controlled vocabulary.. Defaults to None
         """
-
         params = {
             "term": term,
             "vocabulary": vocabulary,
             "vocabulary_url": vocabulary_url,
         }
-
         if id is not None:
             params["id"] = id
-
         self.topic_classification.append(TopicClassification(**params))
-
         return self.topic_classification[-1]
