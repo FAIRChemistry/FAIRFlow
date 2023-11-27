@@ -3,7 +3,6 @@ import sdRDM
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-
 from astropy.units import UnitBase
 
 
@@ -26,10 +25,9 @@ class Parameter(sdRDM.DataModel):
         default=None,
         description="unit of the values.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="070599e978c8238372001dca8e14ed973e5f44bb"
+        default="ffe104723303b575fa3a1516be3ea46c3f369c41"
     )

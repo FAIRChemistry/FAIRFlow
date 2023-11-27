@@ -4,8 +4,6 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
 from .data import Data
 
 
@@ -39,10 +37,9 @@ class Calibration(sdRDM.DataModel):
         default=1,
         description="Degree of regression model.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="070599e978c8238372001dca8e14ed973e5f44bb"
+        default="ffe104723303b575fa3a1516be3ea46c3f369c41"
     )
