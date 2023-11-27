@@ -35,10 +35,9 @@ class Keyword(sdRDM.DataModel):
             " keyword vocabulary, if appropriate."
         ),
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="8872c248623884be3e946849d19313d400c3d949"
+        default="3f31ca86cc05189f7448e32d083d139b40480a4c"
     )
