@@ -45,7 +45,7 @@ class initialize_dataset:
         self.dataset.general_information.description = self.description.value 
 
         # Add project group
-        self.dataset.genera_information.project      = self.project.value
+        self.dataset.general_information.project     = self.project.value
 
         # Add authors to the dataset 
         for aut,aff,ident in zip( self.authors.value.split(","), self.affiliations.value.split(","), self.identifier.value.split(",") ):
@@ -55,8 +55,8 @@ class initialize_dataset:
                                                              identifier = ident.strip() )
 
         # Add contact (search contact in provided authors)
-        affili = [ aff for aut,aff in zip(self.authors.value.split(","), self.affiliations.value.split(",")) if aut.strip() == self.contact_text.value.split(",")[0].sprip() ]
-        affili = affili if bool(affili) else None
+        affili = [ aff for aut,aff in zip(self.authors.value.split(","), self.affiliations.value.split(",")) if aut.strip() == self.contact_text.value.split(",")[0].strip() ]
+        affili = affili[0] if bool(affili) else None
 
         self.dataset.general_information.contact = Contact( name = self.contact_text.value.split(",")[0].strip(), 
                                                             email = self.contact_text.value.split(",")[1].strip(), 
@@ -141,6 +141,7 @@ class initialize_dataset:
 
         self.subject_selection   = widgets.SelectMultiple( options=[ subject.value for subject in SubjectEnum ],
                                                           description="Choose subjects (press and hold 'strg' to select several):",
+                                                          value=["Chemistry"],
                                                           layout=widgets.Layout(width='auto'),
                                                            style={'description_width': 'auto'} )
         
@@ -193,10 +194,11 @@ class initialize_dataset:
         widgets1  = widgets.VBox([v_space, self.title, self.description, self.project,v_space])
         widgets2  = widgets.VBox([self.authors, self.affiliations, self.identifier, self.contact_text, v_space])
         widgets3  = widgets.VBox([self.subject_selection, self.related_publication, self.topic_classification, self.keywords, v_space])
-        widgets4  = widgets.VBox([self.dataset_text, v_space, self.button_save])
+        widgets4  = widgets.VBox([self.dataset_text, v_space])
+        widgets5  = widgets.VBox([self.button_save], layout=widgets.Layout(align_items = 'center') )
 
         # Combine the layout
-        full_layout = widgets.VBox([widgets0, widgets1, widgets2, widgets3, widgets4])
+        full_layout = widgets.VBox([widgets0, widgets1, widgets2, widgets3, widgets4, widgets5])
 
         # Display the layout
         display(full_layout)
