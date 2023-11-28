@@ -5,9 +5,9 @@ import re
 
 from pathlib import Path
 from datetime import datetime
-from datamodel.core import DataType
-from datamodel.core import Quantity
-from datamodel.core import Measurement
+from FAIRFlowChemistry.core import DataType
+from FAIRFlowChemistry.core import Quantity
+from FAIRFlowChemistry.core import Measurement
 
 
 def gc_parser( metadata_path: Path, experimental_data_path: Path ):

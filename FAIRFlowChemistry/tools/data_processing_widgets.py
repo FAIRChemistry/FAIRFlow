@@ -12,11 +12,11 @@ from sdRDM import DataModel
 # Import general tools and objects of this datamodel #
 
 # Objects #
-from datamodel.core import Experiment
-from datamodel.core import MeasurementType
-from datamodel.core import Quantity
-from datamodel.core import Contact
-from datamodel.core import RelatedPublication
+from FAIRFlowChemistry.core import Experiment
+from FAIRFlowChemistry.core import MeasurementType
+from FAIRFlowChemistry.core import Quantity
+from FAIRFlowChemistry.core import Contact
+from FAIRFlowChemistry.core import RelatedPublication
 from pyDaRUS import Citation
 from pyDaRUS import Dataset as DaRUS_dataset
 from pyDaRUS.metadatablocks.citation import SubjectEnum, Language

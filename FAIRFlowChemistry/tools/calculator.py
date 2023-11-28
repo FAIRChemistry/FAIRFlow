@@ -4,10 +4,10 @@ import numpy as np
 from datetime import datetime
 from pydantic import BaseModel
 
-from datamodel.core import Experiment
-from datamodel.core import Measurement
-from datamodel.core import Species
-from datamodel.core import Quantity
+from FAIRFlowChemistry.core import Experiment
+from FAIRFlowChemistry.core import Measurement
+from FAIRFlowChemistry.core import Species
+from FAIRFlowChemistry.core import Quantity
 
 import scipy.constants as const
 

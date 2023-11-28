@@ -1,10 +1,10 @@
 import logging
 import numpy as np
 
-from datamodel.core import Experiment
-from datamodel.core import Measurement
-from datamodel.core import Quantity
-from datamodel.core import MeasurementType
+from FAIRFlowChemistry.core import Experiment
+from FAIRFlowChemistry.core import Measurement
+from FAIRFlowChemistry.core import Quantity
+from FAIRFlowChemistry.core import MeasurementType
 from sdRDM.base.listplus import ListPlus
 
 from pydantic import BaseModel, Field, validator
