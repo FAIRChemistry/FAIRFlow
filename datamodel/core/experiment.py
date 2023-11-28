@@ -7,16 +7,17 @@ from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 from pathlib import Path
-from .calibration import Calibration
-from .metadata import Metadata
-from .data import Data
+from .datatype import DataType
+from .chemicalformula import ChemicalFormula
 from .quantity import Quantity
+from .data import Data
+from .speciesdata import SpeciesData
+from .measurementtype import MeasurementType
+from .calibration import Calibration
 from .measurement import Measurement
 from .plantsetup import PlantSetup
-from .speciesdata import SpeciesData
 from .species import Species
-from .chemicalformula import ChemicalFormula
-from .measurementtype import MeasurementType
+from .metadata import Metadata
 
 
 @forge_signature
@@ -193,7 +194,7 @@ class Experiment(sdRDM.DataModel):
         )[0][0].values
 
         # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
-        if not type(volumetric_flow_datetime_list[0]) == datetime:
+        if not type(volumetric_flow_datetime_list[0]) == DataType.DATETIME.value:
             volumetric_flow_datetime_list = [
                 pd.to_datetime(timestamp, format="%Y-%m-%d %H:%M:%S").to_pydatetime()
                 for timestamp in volumetric_flow_datetime_list

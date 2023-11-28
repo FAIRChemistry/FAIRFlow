@@ -2,9 +2,9 @@
 from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .metadata import Metadata
 from .device import Device
 from .measurement import Measurement
+from .metadata import Metadata
 
 
 @forge_signature

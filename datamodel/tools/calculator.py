@@ -138,8 +138,11 @@ class FaradayEfficiencyCalculator(BaseModel):
         # Extract the peak areas dict out of the given gc_measurement
         assigned_peak_areas_dict = {}
 
-        peak_assignments = gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values
-        peak_areas       = gc_measurement.get("experimental_data","quantity",Quantity.PEAKAREA.value)[0][0].values
+        try:
+            peak_assignments = gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values
+            peak_areas       = gc_measurement.get("experimental_data","quantity",Quantity.PEAKAREA.value)[0][0].values
+        except:
+            raise KeyError("No peak assignment found in the GC measurement !")
 
         for species,peak_area in zip( peak_assignments, peak_areas):
             if species in assigned_peak_areas_dict.keys():

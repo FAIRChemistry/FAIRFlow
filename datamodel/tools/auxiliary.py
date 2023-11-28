@@ -10,7 +10,6 @@ from sdRDM.base.listplus import ListPlus
 from pydantic import BaseModel, Field, validator
 from typing import List, Dict
 from pathlib import Path
-from time import sleep
 from IPython.display import display
 from ipywidgets import (
     VBox,  # Vertical container for widgets (called its children)
@@ -234,13 +233,13 @@ class PeakAssigner(BaseModel):
 
         with self._selection_output:
             self._selection_output.clear_output(wait=False)
-            sleep(1)
             print("Assignments saved.")
 
     def assign_peaks(self):
         """
         Function that displays a widget with the GC measurements: Retention time, peak area, and one need to choose a corresponding species
         """
+
         # Set layout of widgets
         layout_button = Layout( align_items="center", width="30%" )
         layout_hbox   = Layout( align_items="stretch", width="100%", justify_content="center" )
