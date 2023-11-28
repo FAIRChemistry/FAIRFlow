@@ -658,8 +658,8 @@ class DaRUS_upload:
         ## Upload ##
 
         self.DaRUS_data.upload( dataverse_name = self.dataverse_dropdown.value,
-                           DATAVERSE_URL  = "https://darus.uni-stuttgart.de",
-                           API_TOKEN      = self.api_token_text.value)
+                                DATAVERSE_URL  = "https://darus.uni-stuttgart.de",
+                                API_TOKEN      = self.api_token_text.value)
 
 
     def update_to_DaRUS(self,_):
@@ -682,11 +682,10 @@ class DaRUS_upload:
                                 api_token     = self.api_token_text.value )
 
     def download_from_DaRUS(self,_):
-        #self.DaRUS_data = DaRUS_dataset.from_dataverse_doi( doi           = self.doi_text.value, 
-        #                                                    dataverse_url = 'https://darus.uni-stuttgart.de',
-        #                                                    api_token     = self.api_token_text.value )
         
-        self.DaRUS_data = DaRUS_dataset()
+        self.DaRUS_data = DaRUS_dataset.from_dataverse_doi( doi           = self.doi_text.value, 
+                                                            dataverse_url = 'https://darus.uni-stuttgart.de',
+                                                            api_token     = self.api_token_text.value )
 
         # Initialize  
         self.file_directoy.value = self.DaRUS_data.files
