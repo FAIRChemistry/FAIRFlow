@@ -4,13 +4,11 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
-from .speciesdata import SpeciesData
 from .experiment import Experiment
-from .plantsetup import PlantSetup
 from .measurement import Measurement
+from .speciesdata import SpeciesData
 from .generalinformation import GeneralInformation
+from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -33,12 +31,11 @@ class Dataset(sdRDM.DataModel):
         multiple=True,
         description="information about the individual experiment.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e71182674108fd2e5c98cc34924822982a11ad53"
+        default="6b0b3acd5369750be57859b9eea7d22a6f4a02e5"
     )
 
     def add_to_experiments(
@@ -57,16 +54,12 @@ class Dataset(sdRDM.DataModel):
             measurements (): different measurements that are made within the scope of one experiment.. Defaults to ListPlus()
             species_data (): all provided and calculated data about a specific species.. Defaults to ListPlus()
         """
-
         params = {
             "plant_setup": plant_setup,
             "measurements": measurements,
             "species_data": species_data,
         }
-
         if id is not None:
             params["id"] = id
-
         self.experiments.append(Experiment(**params))
-
         return self.experiments[-1]
