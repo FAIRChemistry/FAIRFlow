@@ -36,7 +36,6 @@ from .species import Species
 from .chemicalformula import ChemicalFormula
 
 __doc__ = ""
-
 __all__ = [
     "Dataset",
     "GeneralInformation",

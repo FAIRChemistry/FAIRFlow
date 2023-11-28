@@ -4,15 +4,13 @@ from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
 from astropy.units import UnitBase
 from datetime import datetime as Datetime
-
-from .data import Data
 from .measurementtype import MeasurementType
-from .metadata import Metadata
 from .datatype import DataType
+from .data import Data
 from .quantity import Quantity
+from .metadata import Metadata
 
 
 @forge_signature
@@ -41,12 +39,11 @@ class Measurement(sdRDM.DataModel):
         multiple=True,
         description="experimental data of a measurement.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="e71182674108fd2e5c98cc34924822982a11ad53"
+        default="6b0b3acd5369750be57859b9eea7d22a6f4a02e5"
     )
 
     def add_to_metadata(
@@ -73,7 +70,6 @@ class Measurement(sdRDM.DataModel):
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
         """
-
         params = {
             "parameter": parameter,
             "value": value,
@@ -83,12 +79,9 @@ class Measurement(sdRDM.DataModel):
             "unit": unit,
             "description": description,
         }
-
         if id is not None:
             params["id"] = id
-
         self.metadata.append(Metadata(**params))
-
         return self.metadata[-1]
 
     def add_to_experimental_data(
@@ -107,16 +100,8 @@ class Measurement(sdRDM.DataModel):
             values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
-
-        params = {
-            "quantity": quantity,
-            "values": values,
-            "unit": unit,
-        }
-
+        params = {"quantity": quantity, "values": values, "unit": unit}
         if id is not None:
             params["id"] = id
-
         self.experimental_data.append(Data(**params))
-
         return self.experimental_data[-1]
