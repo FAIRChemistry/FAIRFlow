@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 from astropy.units import UnitBase
-from .chemical import Chemical
 from .equipment import Equipment
+from .chemical import Chemical
 
 
 @forge_signature
@@ -28,12 +28,12 @@ class GasCylinder(Equipment):
     )
 
     Content: Optional[Chemical] = Field(
-        default=Chemical(),
         description="Content of the Gas cylinder.",
+        default_factory=Chemical,
     )
     __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
+        default="fd42a62a670931da22ba364492bd185f7673ef73"
     )

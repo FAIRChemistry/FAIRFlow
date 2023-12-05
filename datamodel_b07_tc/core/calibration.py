@@ -17,32 +17,32 @@ class Calibration(sdRDM.DataModel):
     )
 
     peak_areas: Optional[Data] = Field(
-        default=Data(),
         description="Recorded peak areas of the individual calibration solutions.",
+        default_factory=Data,
     )
 
     concentrations: Optional[Data] = Field(
-        default=Data(),
         description="concentrations of the individual calibration solutions.",
+        default_factory=Data,
     )
 
     slope: Optional[Data] = Field(
-        default=Data(),
         description="slopes of the (linear) calibration functions.",
+        default_factory=Data,
     )
 
     intercept: Optional[Data] = Field(
-        default=Data(),
         description="intercept of the (linear) calibration functions.",
+        default_factory=Data,
     )
 
     coefficient_of_determination: Optional[Data] = Field(
-        default=Data(),
         description="coefficients of the (linear) calibration functions.",
+        default_factory=Data,
     )
     __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
+        default="fd42a62a670931da22ba364492bd185f7673ef73"
     )

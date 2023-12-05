@@ -3,8 +3,8 @@ import sdRDM
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .material import Material
 from .insulation import Insulation
+from .material import Material
 
 
 @forge_signature
@@ -38,12 +38,12 @@ class PipingNetworkSegment(sdRDM.DataModel):
     )
 
     insulation: Optional[Insulation] = Field(
-        default=Insulation(),
         description="insulation of the tubing.",
+        default_factory=Insulation,
     )
     __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
+        default="fd42a62a670931da22ba364492bd185f7673ef73"
     )

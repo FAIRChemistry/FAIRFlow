@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 from .equipment import Equipment
-from .measurement import Measurement
 from .metadata import Metadata
+from .measurement import Measurement
 
 
 @forge_signature
@@ -18,17 +18,17 @@ class Potentiostat(Equipment):
     )
 
     measurement: Optional[Measurement] = Field(
-        default=Measurement(),
         description="Measuring Data.",
+        default_factory=Measurement,
     )
 
     metadata: Optional[Metadata] = Field(
-        default=Metadata(),
         description="Metadata of the Potentiostat.",
+        default_factory=Metadata,
     )
     __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
+        default="fd42a62a670931da22ba364492bd185f7673ef73"
     )

@@ -4,10 +4,10 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from .insulation import Insulation
 from .material import Material
 from .pipingnetworksegment import PipingNetworkSegment
 from .pipingcomponent import PipingComponent
-from .insulation import Insulation
 
 
 @forge_signature
@@ -34,10 +34,10 @@ class PipingNetworkSystem(sdRDM.DataModel):
         description="A piping segment being part of a piping network system.",
     )
     __repo__: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
+        default="fd42a62a670931da22ba364492bd185f7673ef73"
     )
 
     def add_to_piping_component(
