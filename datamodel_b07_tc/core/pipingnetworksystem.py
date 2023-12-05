@@ -4,12 +4,10 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-
-
-from .pipingnetworksegment import PipingNetworkSegment
-from .insulation import Insulation
-from .pipingcomponent import PipingComponent
 from .material import Material
+from .pipingnetworksegment import PipingNetworkSegment
+from .pipingcomponent import PipingComponent
+from .insulation import Insulation
 
 
 @forge_signature
@@ -35,12 +33,11 @@ class PipingNetworkSystem(sdRDM.DataModel):
         multiple=True,
         description="A piping segment being part of a piping network system.",
     )
-
     __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/datamodel_b07_tc.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="3155c0b011acb68ca77bec7fc9616c770158e2a9"
+        default="753f0527c5fbcbed77c29fa79bfd166eb495c1d8"
     )
 
     def add_to_piping_component(
@@ -61,19 +58,15 @@ class PipingNetworkSystem(sdRDM.DataModel):
             series (): the series of the Piping component.. Defaults to None
             on_off (): operational mode of the flow module. True is on and False is off.. Defaults to None
         """
-
         params = {
             "manufacturer": manufacturer,
             "equipment_type": equipment_type,
             "series": series,
             "on_off": on_off,
         }
-
         if id is not None:
             params["id"] = id
-
         self.piping_component.append(PipingComponent(**params))
-
         return self.piping_component[-1]
 
     def add_to_piping_network_segment(
@@ -96,7 +89,6 @@ class PipingNetworkSystem(sdRDM.DataModel):
             length (): length of the tubing in mm.. Defaults to None
             insulation (): insulation of the tubing.. Defaults to None
         """
-
         params = {
             "material": material,
             "inner_diameter": inner_diameter,
@@ -104,10 +96,7 @@ class PipingNetworkSystem(sdRDM.DataModel):
             "length": length,
             "insulation": insulation,
         }
-
         if id is not None:
             params["id"] = id
-
         self.piping_network_segment.append(PipingNetworkSegment(**params))
-
         return self.piping_network_segment[-1]
