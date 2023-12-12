@@ -80,12 +80,12 @@ class initialize_dataset:
 
         # Add topic classifications
         for i in range(0, len(self.topic_classification.value.split(",")), 2):
-            self.dataset.general_information.add_to_topic_classification( term           = self.topic_classification.value.split(",")[i].strip() , 
-                                                                          vocabulary_url = self.topic_classification.value.split(",")[i + 1].strip() )
+            self.dataset.general_information.add_to_topic_classification( value     = self.topic_classification.value.split(",")[i].strip() , 
+                                                                          vocab_url = self.topic_classification.value.split(",")[i + 1].strip() )
 
         # Add keywords
         for i in range(0, len(self.keywords.value.split(",")), 2):
-            self.dataset.general_information.add_to_keywords( term           = self.keywords.value.split(",")[i].strip() , 
+            self.dataset.general_information.add_to_keywords( value          = self.keywords.value.split(",")[i].strip() , 
                                                               vocabulary_url = self.keywords.value.split(",")[i + 1].strip() )
             
         # Write dataset #

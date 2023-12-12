@@ -15,7 +15,7 @@ class Keyword(sdRDM.DataModel):
         xml="@id",
     )
 
-    term: Optional[str] = Field(
+    value: Optional[str] = Field(
         default=None,
         description="Key terms that describe important aspects of the Dataset.",
     )

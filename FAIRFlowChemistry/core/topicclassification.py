@@ -15,12 +15,12 @@ class TopicClassification(sdRDM.DataModel):
         xml="@id",
     )
 
-    term: Optional[str] = Field(
+    value: Optional[str] = Field(
         default=None,
         description="Topic or Subject term that is relevant to this Dataset.",
     )
 
-    vocabulary: Optional[str] = Field(
+    vocab: Optional[str] = Field(
         default=None,
         description=(
             "Provided for specification of the controlled vocabulary in use, e.g.,"
@@ -28,7 +28,7 @@ class TopicClassification(sdRDM.DataModel):
         ),
     )
 
-    vocabulary_url: Optional[str] = Field(
+    vocab_uri: Optional[str] = Field(
         default=None,
         description="Specifies the URL location for the full controlled vocabulary.",
     )

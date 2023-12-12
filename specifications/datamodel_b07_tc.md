@@ -95,7 +95,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 ### Keyword
 
-- term
+- value
   - Type: string
   - Description: Key terms that describe important aspects of the Dataset. 
 - vocabulary
@@ -107,13 +107,13 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 ### TopicClassification
 
-- term
+- value
   - Type: string
   - Description: Topic or Subject term that is relevant to this Dataset.
-- vocabulary
+- vocab
   - Type: string
   - Description: Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.
-- vocabulary_url
+- vocab_uri
   - Type: string
   - Description: Specifies the URL location for the full controlled vocabulary.
 
