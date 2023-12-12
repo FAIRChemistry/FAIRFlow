@@ -1,6 +1,6 @@
 import logging
 import numpy as np
-
+from FAIRFlowChemistry.core import Data
 from FAIRFlowChemistry.core import Experiment
 from FAIRFlowChemistry.core import Measurement
 from FAIRFlowChemistry.core import Quantity
@@ -154,9 +154,8 @@ class PeakAssigner(BaseModel):
     """
     experiment: Experiment
     species: List[str]
-    gc_measurements: ListPlus[Measurement] = Field(default_factory=ListPlus)
-    peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]] = Field(default_factory=dict)
-    typical_retention_time: Dict = Field(default_factory=dict)
+    peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]] = {}
+    typical_retention_time: Dict = {}
     _assignment_dicts = []
     _selection_output = Output()
     _VBox_list = []
@@ -164,27 +163,50 @@ class PeakAssigner(BaseModel):
 
     # The validator objects are used to give the variables during the initialisation a value.
     # This is normaly done in __init__, but this conflicts with Pydantic
-
-    @validator("gc_measurements", pre=True, always=True)
-    def validate_gc_measurements(cls,value, values):
-        experiment = values.get("experiment")
-        if experiment:
-            return experiment.get("measurements", "measurement_type", MeasurementType.GC.value)[0]
-        else:
-            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
-            return None
     
     @validator("peak_areas_retention_time_dict", pre=True, always=True)
-    def valdiate_peak_areas_retention_time_dict(cls,value, values):
-        tmp = {}
-        for i, gc_measurement in enumerate(values.get("gc_measurements")):
-            peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
-            retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
-            
-            tmp[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
+    def valdiate_peak_areas_retention_time_dict(cls, value, values):
+        """Validator function that pre assigns values to the peak area dictionary from the parsed experiment object.
 
-        return tmp
+        Args:
+            value (dict): Value of the current peak_areas_retention_time_dict. If not specified its empty.
+            values (dict): Dictionary containing all other objects of the PeakAssigner class.
+
+        Returns:
+            dict: The initial peak assigment dictionary.
+        """
+        
+        gc_measurements = values.get("experiment").get("measurements", "measurement_type", MeasurementType.GC.value)
+
+        if len(gc_measurements) > 0:
+            for i, gc_measurement in enumerate(gc_measurements[0]):
+                peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
+                retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
+                
+                value[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
+        else:
+            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
+        
+        return value
     
+    def test(self):
+
+        #print(  )
+        test_measurements = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)[0]
+        test_measurements = [measurement for measurement in self.experiment.measurements if measurement.measurement_type == MeasurementType.GC.value]
+
+        for gc_measurement in test_measurements:
+            print("Object ID outside test method:", id(gc_measurement))
+
+        for gc_measurement in test_measurements:
+            print("Before Modification:", gc_measurement.experimental_data)
+            gc_measurement.experimental_data.append(Data(id='data58', quantity='Peak assignment', values=[1.0, 2.0, 3.0], unit=None))
+            print("After Modification:", gc_measurement.experimental_data)
+
+        print("Experiment After Test:", [t.experimental_data for t in test_measurements])
+
+
+
     def save_assignments(self, _):
         """
         This functions create the assignment dict, after the button is clicked.
@@ -204,30 +226,33 @@ class PeakAssigner(BaseModel):
                 # Dropdown in the last entry in each children
                 species   = widget.children[2].value
                 peak_area = float( widget.children[1].value )
-                if species != "":
-                    if species in _assignment_dict:
-                        _assignment_dict[species].append( peak_area )
-                    else:
-                        _assignment_dict[species] = [ peak_area ]
+
+                if species in _assignment_dict:
+                    _assignment_dict[species].append( peak_area )
+                else:
+                    _assignment_dict[species] = [ peak_area ]
 
             ## Add the assigned peaks as experimental data to the GC measurement ##
 
+            gc_measurement = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)[0][i]
+
             # Add the species in the order the peak areas are saved
-            tmp2 = np.round( self.gc_measurements[i].get("experimental_data","quantity",Quantity.PEAKAREA.value)[0][0].values, 2 ).tolist()
+            tmp2 = np.round( gc_measurement.get("experimental_data","quantity",Quantity.PEAKAREA.value)[0][0].values, 2 ).tolist()
 
             # Sort the tuples based on peak values
-            sorted_species_peak_tuples = sorted([(key, value) for key, values in _assignment_dict.items() for value in values], key=lambda x: tmp2.index(x[1]))
+            sorted_species_peak_tuples = sorted( [(key, value) for key, values in _assignment_dict.items() for value in values], key=lambda x: tmp2.index(x[1]) )
 
             # check if there is already an exisiting entry, if yes overwrite
-            if bool(self.gc_measurements[i].get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)):
-                # Extract the species names in the sorted order
-                self.gc_measurements[i].get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values = [ item[0] for item in sorted_species_peak_tuples ]
+            if bool( gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value) ):
+                
+                # Extract the species names in the sorted order --> if a peak has no species assignment its saved as: ""
+                gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values = [ item[0] for item in sorted_species_peak_tuples ]
 
             # if not then add
             else:
-                self.gc_measurements[i].add_to_experimental_data( quantity= Quantity.PEAKASSIGNMENT.value,
-                                                             values= [ item[0] for item in sorted_species_peak_tuples ]
-                                                            )                   
+                gc_measurement.add_to_experimental_data( quantity = Quantity.PEAKASSIGNMENT.value,
+                                                         values   = [ item[0] for item in sorted_species_peak_tuples ]
+                                                        )                   
 
             self._assignment_dicts.append( _assignment_dict.copy() )
 
@@ -262,9 +287,12 @@ class PeakAssigner(BaseModel):
         
             for peak_area, retention_time in zip(peak_areas_retention_time["peak_areas"], peak_areas_retention_time["retention_time"]):
                 
-                # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
-                idx           = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in self.species ] )
-                default_value = list( self.typical_retention_time.items() )[idx][0]
+                try:
+                    # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
+                    idx           = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in self.species ] )
+                    default_value = list( self.typical_retention_time.items() )[idx][0]
+                except:
+                    default_value = ""
 
                 dropdown             = Dropdown( options = [""] + self.species,
                                                  layout  = Layout(width="40%", height="30px"),
@@ -315,8 +343,12 @@ class PeakAssigner(BaseModel):
 
                 # Set default values with a given dict
                 retention_time           = float( hbox.children[0].value )
-                # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
-                idx                      = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in new_options ] )
-                default_value            = list( self.typical_retention_time.items() )[idx][0]
+
+                try:
+                    # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
+                    idx           = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in new_options ] )
+                    default_value = list( self.typical_retention_time.items() )[idx][0]
+                except:
+                    default_value = ""
 
                 hbox.children[2].value   = default_value

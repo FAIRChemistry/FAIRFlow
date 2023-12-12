@@ -4,10 +4,10 @@ from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .topicclassification import TopicClassification
-from .contact import Contact
 from .keyword import Keyword
 from .relatedpublication import RelatedPublication
+from .topicclassification import TopicClassification
+from .contact import Contact
 from .author import Author
 
 

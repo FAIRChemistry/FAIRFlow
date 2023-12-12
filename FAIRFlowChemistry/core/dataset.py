@@ -4,11 +4,11 @@ from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .speciesdata import SpeciesData
-from .measurement import Measurement
 from .plantsetup import PlantSetup
 from .generalinformation import GeneralInformation
 from .experiment import Experiment
+from .speciesdata import SpeciesData
+from .measurement import Measurement
 
 
 @forge_signature

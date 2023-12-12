@@ -12,6 +12,8 @@ from sdRDM import DataModel
 # Import general tools and objects of this datamodel #
 
 # Objects #
+from FAIRFlowChemistry.core import Data
+from FAIRFlowChemistry.core import Dataset
 from FAIRFlowChemistry.core import Experiment
 from FAIRFlowChemistry.core import MeasurementType
 from FAIRFlowChemistry.core import Quantity
@@ -309,8 +311,7 @@ class reading_raw_data_widget():
     def dataset_input_handler(self,_):
         try:
             self.flag              = True
-            self.datamodel         = DataModel.parse( self.dataset_dropdown.value )
-            self.dataset, self.lib = self.datamodel
+            self.dataset, self.lib = DataModel.parse( self.dataset_dropdown.value )
             self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
@@ -351,10 +352,10 @@ class reading_raw_data_widget():
                                                 description='for category:',
                                                 style={'description_width': 'auto'})
 
-        self.button_go_for    = widgets.Button(description='Move into directory',
+        self.button_go_for    = widgets.Button(description='Change into directory',
                                               layout=widgets.Layout(width='auto'))
         
-        self.button_go_back   = widgets.Button(description='Move one diretory back',
+        self.button_go_back   = widgets.Button(description='Change one diretory back',
                                               layout=widgets.Layout(width='auto'))
         
         self.button_select    = widgets.Button(description='Add file to %s'%(self.file_category.value),
@@ -386,14 +387,7 @@ class reading_raw_data_widget():
         self.flag             = False
 
         # Initial value for datamodel
-        try:
-            self.datamodel         = DataModel.parse( self.dataset_dropdown.value )
-            self.dataset, self.lib = self.datamodel
-        except:
-            raise KeyError("\nChoosen dataset cannot be interpreted!\n")
-        
-        # List of experiments
-        self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
+        self.dataset_input_handler(None)
 
         # Functions for the buttons #
         self.button_go_for.on_click(self.go_to_subfolder)
@@ -495,15 +489,24 @@ class analyzing_raw_data_widget:
             for species_data in self.dataset.experiments[self.experiments_dropdown.value].species_data:
                 if species_data.species in mean_faraday_efficiency.index:
                     faraday_efficiency              = mean_faraday_efficiency.loc[species_data.species].values
-                    species_data.faraday_efficiency = self.lib.Data(quantity= Quantity.FARADAYEFFIECENCY.value, values = faraday_efficiency.tolist(), unit = '%')
+                    species_data.faraday_efficiency = Data( quantity = Quantity.FARADAYEFFIECENCY.value, values = faraday_efficiency.tolist(), unit = '%')
 
 
-    def choose_experiment(self,datamodel,dataset_path,typical_retention_time={}) -> None:
+    def choose_experiment(self, dataset: Dataset, dataset_path: str, typical_retention_time: dict={}) -> None:
+        """
+        Function that shows widgets to analyse faraday effiencies using GC measurements.
+
+        Args:
+            dataset (Dataset): Dataset containing all the necessary information.
+            dataset_path (str): Path where the dataset should be saved to.
+            typical_retention_time (dict, optional): If wanted, a dictionary containing species and typical retention times to do the pre assigment of the GC measurement peaks. Defaults to {}.
+
+        """
         
         # Common variables
         self.typical_retention_time = typical_retention_time 
         self.dataset_path           = dataset_path
-        self.dataset, self.lib      = datamodel
+        self.dataset                = Dataset(**dataset.__dict__)
 
         if not bool( self.dataset.experiments  ): raise ValueError("Dataset contains no experiments!\n")
 
@@ -683,10 +686,14 @@ class DaRUS_upload:
 
     def download_from_DaRUS(self,_):
         
+        # This is a buf from pyDarus for downloading, it need to be defiend in the environment
+        os.environ["DATAVERSE_URL"] = "https://darus.uni-stuttgart.de" 
+        os.environ["DATAVERSE_API_TOKEN"] = self.api_token_text.value
+
         self.DaRUS_data = DaRUS_dataset.from_dataverse_doi( doi           = self.doi_text.value, 
                                                             dataverse_url = 'https://darus.uni-stuttgart.de',
                                                             api_token     = self.api_token_text.value )
-
+        
         # Initialize  
         self.file_directoy.value = self.DaRUS_data.files
 
@@ -772,10 +779,10 @@ class DaRUS_upload:
         # Display the layout
         display(full_layout)
 
-    def upload(self,datamodel: DataModel, dataset_path: Path | str, dataverse_list: List):
+    def DaRUS(self, dataset: Dataset, dataset_path: Path | str, dataverse_list: List):
         
         # Common variables
-        self.dataset, self.lib      = datamodel
+        self.dataset                = Dataset(**dataset.__dict__)
         self.dataverse_list         = dataverse_list
         self.dataset_path           = dataset_path
 

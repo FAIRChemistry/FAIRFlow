@@ -145,6 +145,9 @@ class FaradayEfficiencyCalculator(BaseModel):
             raise KeyError("No peak assignment found in the GC measurement !")
 
         for species,peak_area in zip( peak_assignments, peak_areas):
+            # Prevent that not assigned peak will be used for analysis
+            if species == "": continue
+
             if species in assigned_peak_areas_dict.keys():
                 assigned_peak_areas_dict[species].append(peak_area)
             else:

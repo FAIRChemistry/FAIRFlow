@@ -3,8 +3,8 @@ import sdRDM
 from typing import Optional, Union
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from datetime import datetime as Datetime
 from astropy.units import UnitBase
+from datetime import datetime as Datetime
 from .datatype import DataType
 
 

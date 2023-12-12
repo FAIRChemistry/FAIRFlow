@@ -82,14 +82,14 @@ def gc_parser( metadata_path: Path, experimental_data_path: Path ):
 
 def gstatic_parser(metadata_path: Path):
     """
-    Function that reads in a file from a potentiostat. Important information that is extracted is the 
+    Function that reads in a file from a potentiostat/galvanostat. Important information that is extracted is the 
     inital current and time, as well as the electrode surface area
 
     Args:
-        metadata_path (Path): Path to metadata path of potentiostat
+        metadata_path (Path): Path to metadata path of potentiostat/galvanostat
 
     Returns:
-        _type_: _description_
+        Measurement: Measurement data object, containing the important meta data (in this case the electrode surface area and the initial current.)
     """
 
     metadata_df = pd.read_csv(
@@ -110,7 +110,7 @@ def gstatic_parser(metadata_path: Path):
     )
 
     # Extract important meta data
-    potentiostatic_measurement = Measurement( measurement_type = "Potentiostatic measurement")
+    echem_measurement = Measurement( measurement_type = "Galvanostatic measurement")
     key_list                   = [ "IINIT", "AREA" ]
     Quantity_list              = {"IINIT": Quantity.CURRENT.value, "AREA": Quantity.SURFACEAREA.value}
 
@@ -119,7 +119,7 @@ def gstatic_parser(metadata_path: Path):
         quantity = Quantity_list[key]
         value    = float(metadata_df.loc[metadata_df['Parameter'] == key, 'Value'].values[0]) 
         
-        potentiostatic_measurement.add_to_metadata( 
+        echem_measurement.add_to_metadata( 
                                 parameter = quantity,
                                 value = value ,
                                 data_type = DataType.FLOAT.value,
@@ -127,7 +127,7 @@ def gstatic_parser(metadata_path: Path):
                                 description = re.match(r'(.*?)\(', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1).strip()
     )
         
-    return potentiostatic_measurement
+    return echem_measurement
 
 
 def mfm_parser(experimental_data_path: Path):

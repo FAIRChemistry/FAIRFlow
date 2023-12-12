@@ -483,6 +483,7 @@ MASSFLOWCONTROLLER = "Mass flow controller"
 HPLC = "HPLC"
 GC = "GC"
 POTENTIOSTAT = "Potentiostat"
+GALVANOSTAT  = "Galvanostat"
 PRESSURETRANSDUCER = "Pressure transducer"
 CONTROLUNIT = "Control unit"
 ```
@@ -519,6 +520,7 @@ List of different measurements that do not need any further quantities to be def
 
 ```python
 POTENTIOSTATIC = "Potentiostatic measurement"
+GALVANOSTATIC  = "Galvanostatic measurement"
 GC = "GC measurement"
 MFM = "MFM measurement"
 ``` 

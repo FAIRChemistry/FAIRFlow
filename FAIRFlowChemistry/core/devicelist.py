@@ -6,5 +6,6 @@ class DeviceList(Enum):
     HPLC = "HPLC"
     GC = "GC"
     POTENTIOSTAT = "Potentiostat"
+    GALVANOSTAT = "Galvanostat"
     PRESSURETRANSDUCER = "Pressure transducer"
     CONTROLUNIT = "Control unit"
