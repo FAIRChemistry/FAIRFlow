@@ -8,9 +8,9 @@ from datetime import datetime as Datetime
 from astropy.units import UnitBase
 from .metadata import Metadata
 from .datatype import DataType
-from .data import Data
 from .measurementtype import MeasurementType
 from .quantity import Quantity
+from .data import Data
 
 
 @forge_signature
@@ -43,7 +43,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="7f29fc8764e0e695a81a89093770933495d474da"
+        default="5629d19c35e3d97374afbc13e4dc18c39879eba5"
     )
 
     def add_to_metadata(

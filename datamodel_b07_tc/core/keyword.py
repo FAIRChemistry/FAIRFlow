@@ -39,5 +39,5 @@ class Keyword(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="7f29fc8764e0e695a81a89093770933495d474da"
+        default="5629d19c35e3d97374afbc13e4dc18c39879eba5"
     )
