@@ -65,7 +65,8 @@ class FaradayEfficiencyCalculator(BaseModel):
         for species, peak_areas in assigned_peak_areas_dict.items():
             self.volumetric_fractions_df.loc[species] = self.experiment.get("species_data", "species", species)[0][0].calibration.predict( [ np.sum(peak_areas) ] ) / 100
 
-        if self.volumetric_fractions_df["Volumetric_fraction [-]"].sum() < 0.99: print("\n!!! Warning: Volume fractions doesn't add up to 1.0 !!!\n")
+        if self.volumetric_fractions_df["Volumetric_fraction [-]"].sum() < 0.99:
+            print(f"\nWarning: Volume fractions doesn't add up to 1.0: {round(self.volumetric_fractions_df['Volumetric_fraction [-]'].sum(),2)}! Check if any component is missing in the analysis.\n")
 
     def _calculate_real_volumetric_flow(self):
         """
