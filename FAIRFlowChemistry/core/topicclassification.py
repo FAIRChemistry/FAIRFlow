@@ -28,7 +28,7 @@ class TopicClassification(sdRDM.DataModel):
         ),
     )
 
-    vocab_uri: Optional[str] = Field(
+    vocab_url: Optional[str] = Field(
         default=None,
         description="Specifies the URL location for the full controlled vocabulary.",
     )

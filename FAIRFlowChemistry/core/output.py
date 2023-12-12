@@ -4,8 +4,8 @@ from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .stoichiometry import Stoichiometry
 from .chemical import Chemical
+from .stoichiometry import Stoichiometry
 from .reactantrole import ReactantRole
 
 

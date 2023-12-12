@@ -4,10 +4,10 @@ from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .keyword import Keyword
 from .relatedpublication import RelatedPublication
-from .topicclassification import TopicClassification
+from .keyword import Keyword
 from .contact import Contact
+from .topicclassification import TopicClassification
 from .author import Author
 
 
@@ -104,7 +104,7 @@ class GeneralInformation(sdRDM.DataModel):
 
     def add_to_keywords(
         self,
-        term: Optional[str] = None,
+        value: Optional[str] = None,
         vocabulary: Optional[str] = None,
         vocabulary_url: Optional[str] = None,
         id: Optional[str] = None,
@@ -114,12 +114,12 @@ class GeneralInformation(sdRDM.DataModel):
 
         Args:
             id (str): Unique identifier of the 'Keyword' object. Defaults to 'None'.
-            term (): Key terms that describe important aspects of the Dataset.. Defaults to None
+            value (): Key terms that describe important aspects of the Dataset.. Defaults to None
             vocabulary (): For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.. Defaults to None
             vocabulary_url (): Keyword vocabulary URL points to the web presence that describes the keyword vocabulary, if appropriate.. Defaults to None
         """
         params = {
-            "term": term,
+            "value": value,
             "vocabulary": vocabulary,
             "vocabulary_url": vocabulary_url,
         }
@@ -130,9 +130,9 @@ class GeneralInformation(sdRDM.DataModel):
 
     def add_to_topic_classification(
         self,
-        term: Optional[str] = None,
-        vocabulary: Optional[str] = None,
-        vocabulary_url: Optional[str] = None,
+        value: Optional[str] = None,
+        vocab: Optional[str] = None,
+        vocab_url: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -140,15 +140,11 @@ class GeneralInformation(sdRDM.DataModel):
 
         Args:
             id (str): Unique identifier of the 'TopicClassification' object. Defaults to 'None'.
-            term (): Topic or Subject term that is relevant to this Dataset.. Defaults to None
-            vocabulary (): Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.. Defaults to None
-            vocabulary_url (): Specifies the URL location for the full controlled vocabulary.. Defaults to None
+            value (): Topic or Subject term that is relevant to this Dataset.. Defaults to None
+            vocab (): Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.. Defaults to None
+            vocab_url (): Specifies the URL location for the full controlled vocabulary.. Defaults to None
         """
-        params = {
-            "term": term,
-            "vocabulary": vocabulary,
-            "vocabulary_url": vocabulary_url,
-        }
+        params = {"value": value, "vocab": vocab, "vocab_url": vocab_url}
         if id is not None:
             params["id"] = id
         self.topic_classification.append(TopicClassification(**params))

@@ -79,15 +79,15 @@ classDiagram
     }
     
     class Keyword {
-        +string term
+        +string value
         +string vocabulary
         +string vocabulary_url
     }
     
     class TopicClassification {
-        +string term
-        +string vocabulary
-        +string vocabulary_url
+        +string value
+        +string vocab
+        +string vocab_url
     }
     
     class Experiment {

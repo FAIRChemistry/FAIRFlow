@@ -113,7 +113,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 - vocab
   - Type: string
   - Description: Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.
-- vocab_uri
+- vocab_url
   - Type: string
   - Description: Specifies the URL location for the full controlled vocabulary.
 
