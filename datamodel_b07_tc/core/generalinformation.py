@@ -4,11 +4,11 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .author import Author
-from .topicclassification import TopicClassification
-from .contact import Contact
-from .relatedpublication import RelatedPublication
 from .keyword import Keyword
+from .relatedpublication import RelatedPublication
+from .topicclassification import TopicClassification
+from .author import Author
+from .contact import Contact
 
 
 @forge_signature
@@ -76,7 +76,7 @@ class GeneralInformation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="f6d457c7eaf77f37a7f265c435a434ea1741edc2"
+        default="a5c45be8f4f6032b87c9208d1accc55140d9fcd5"
     )
 
     def add_to_authors(
@@ -138,7 +138,7 @@ class GeneralInformation(sdRDM.DataModel):
         self,
         value: Optional[str] = None,
         vocab: Optional[str] = None,
-        vocab_uri: Optional[str] = None,
+        vocab_url: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -148,9 +148,9 @@ class GeneralInformation(sdRDM.DataModel):
             id (str): Unique identifier of the 'TopicClassification' object. Defaults to 'None'.
             value (): Topic or Subject term that is relevant to this Dataset.. Defaults to None
             vocab (): Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.. Defaults to None
-            vocab_uri (): Specifies the URL location for the full controlled vocabulary.. Defaults to None
+            vocab_url (): Specifies the URL location for the full controlled vocabulary.. Defaults to None
         """
-        params = {"value": value, "vocab": vocab, "vocab_uri": vocab_uri}
+        params = {"value": value, "vocab": vocab, "vocab_url": vocab_url}
         if id is not None:
             params["id"] = id
         self.topic_classification.append(TopicClassification(**params))

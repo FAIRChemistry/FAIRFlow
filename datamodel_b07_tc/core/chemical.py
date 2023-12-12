@@ -4,8 +4,8 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .reactantrole import ReactantRole
 from .stoichiometry import Stoichiometry
+from .reactantrole import ReactantRole
 
 
 @forge_signature
@@ -62,5 +62,5 @@ class Chemical(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="f6d457c7eaf77f37a7f265c435a434ea1741edc2"
+        default="a5c45be8f4f6032b87c9208d1accc55140d9fcd5"
     )
