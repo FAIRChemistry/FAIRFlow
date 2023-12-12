@@ -180,13 +180,8 @@ class initialize_dataset:
                                                   layout=widgets.Layout(width="30%"),
                                                   style={"button_color": 'lightblue'})
         
-        # Initialize the dataset #
-        if Path(self.datamodels_dropdown.value).suffix == '.git':
-            lib = DataModel.from_git( url=self.datamodels_dropdown.value, tag=self.git_branch )
-        else:
-            lib = DataModel.from_markdown( self.datamodels_dropdown.value )
-
-        self.dataset = lib.Dataset()
+        # Initialize the datamodel
+        self.init_datamodel(None)
         
         # Handle on observing
         self.datamodels_dropdown.observe(self.init_datamodel,names="value")
@@ -651,12 +646,12 @@ class DaRUS_upload:
         # Add topic classification
         self.DaRUS_data.citation.topic_classification = []
         for classification in self.dataset.general_information.topic_classification: 
-            self.DaRUS_data.citation.add_topic_classification( **{k:classification.__dict__[k] for k in classification.__dict__.keys() if k!="id"} )
+            self.DaRUS_data.citation.add_topic_classification( **{"vocab_uri" if k=="vocab_url" else k:classification.__dict__[k] for k in classification.__dict__.keys() if k!="id"} )
 
         # Add keywords
         self.DaRUS_data.citation.keyword = []
         for keyword in self.dataset.general_information.keywords:
-            self.DaRUS_data.citation.add_keyword( **{k:keyword.__dict__[k] for k in keyword.__dict__.keys() if k!="id"} ) 
+            self.DaRUS_data.citation.add_keyword( **{"vocabulary_uri" if k=="vocabulary_url" else k:keyword.__dict__[k] for k in keyword.__dict__.keys() if k!="id"} ) 
     
     def create_new(self):
     
