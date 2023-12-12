@@ -24,5 +24,5 @@ class Thermocouple(Device):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="b727132f31c1b647b6d61afb3ebd125fd2d0ce8c"
+        default="f6d457c7eaf77f37a7f265c435a434ea1741edc2"
     )
