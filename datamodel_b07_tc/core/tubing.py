@@ -3,8 +3,8 @@ import sdRDM
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .material import Material
 from .insulation import Insulation
+from .material import Material
 
 
 @forge_signature
@@ -45,5 +45,5 @@ class Tubing(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ed10fc6e603fb8f740a021c26dca5f02dcdc1043"
+        default="1bfa14eeb39e4bc915f2ec015be812f5dd1b4bb7"
     )

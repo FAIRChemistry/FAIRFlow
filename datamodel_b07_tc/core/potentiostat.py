@@ -2,9 +2,9 @@
 from typing import Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .metadata import Metadata
-from .device import Device
 from .measurement import Measurement
+from .device import Device
+from .metadata import Metadata
 
 
 @forge_signature
@@ -30,5 +30,5 @@ class Potentiostat(Device):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ed10fc6e603fb8f740a021c26dca5f02dcdc1043"
+        default="1bfa14eeb39e4bc915f2ec015be812f5dd1b4bb7"
     )

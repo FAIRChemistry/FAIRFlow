@@ -4,11 +4,11 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from .measurement import Measurement
+from .generalinformation import GeneralInformation
+from .speciesdata import SpeciesData
 from .experiment import Experiment
 from .plantsetup import PlantSetup
-from .speciesdata import SpeciesData
-from .generalinformation import GeneralInformation
-from .measurement import Measurement
 
 
 @forge_signature
@@ -35,7 +35,7 @@ class Dataset(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry.git"
     )
     __commit__: Optional[str] = PrivateAttr(
-        default="ed10fc6e603fb8f740a021c26dca5f02dcdc1043"
+        default="1bfa14eeb39e4bc915f2ec015be812f5dd1b4bb7"
     )
 
     def add_to_experiments(
