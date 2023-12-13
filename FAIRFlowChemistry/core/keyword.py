@@ -28,10 +28,10 @@ class Keyword(sdRDM.DataModel):
         ),
     )
 
-    vocabulary_url: Optional[str] = Field(
+    vocabulary_uri: Optional[str] = Field(
         default=None,
         description=(
-            "Keyword vocabulary URL points to the web presence that describes the"
+            "Keyword vocabulary URI points to the web presence that describes the"
             " keyword vocabulary, if appropriate."
         ),
     )

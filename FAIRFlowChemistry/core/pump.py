@@ -2,8 +2,8 @@
 from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .pumptype import PumpType
 from .device import Device
+from .pumptype import PumpType
 
 
 @forge_signature

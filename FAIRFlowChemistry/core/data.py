@@ -4,7 +4,8 @@ from typing import Optional, Union, List
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase
+from astropy.units import UnitBase, Unit
+from sdRDM.base.datatypes import UnitType
 from datetime import datetime as Datetime
 from .quantity import Quantity
 
@@ -30,7 +31,7 @@ class Data(sdRDM.DataModel):
         description="values.",
     )
 
-    unit: Optional[UnitBase] = Field(
+    unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
         default=None,
         description="unit of the values.",
     )

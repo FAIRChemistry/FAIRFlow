@@ -40,11 +40,11 @@ class Chemical(sdRDM.DataModel):
     )
 
     stoichiometry: Optional[Stoichiometry] = Field(
-        default=Stoichiometry(),
         description=(
             "stoichiometric information like equivalents, mass, amount of substance,"
             " volume"
         ),
+        default_factory=Stoichiometry,
     )
 
     state_of_matter: Optional[str] = Field(

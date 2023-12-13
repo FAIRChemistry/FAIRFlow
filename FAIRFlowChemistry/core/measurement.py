@@ -4,13 +4,14 @@ from typing import Optional, Union, List
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase
+from astropy.units import UnitBase, Unit
+from sdRDM.base.datatypes import UnitType
 from datetime import datetime as Datetime
-from .measurementtype import MeasurementType
-from .datatype import DataType
-from .metadata import Metadata
 from .quantity import Quantity
+from .datatype import DataType
 from .data import Data
+from .measurementtype import MeasurementType
+from .metadata import Metadata
 
 
 @forge_signature
@@ -47,7 +48,7 @@ class Measurement(sdRDM.DataModel):
         abbreviation: Optional[str] = None,
         data_type: Union[DataType, str, None] = None,
         mode: Optional[str] = None,
-        unit: Optional[UnitBase] = None,
+        unit: Optional[Union[UnitBase, str, UnitType, Unit]] = None,
         description: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -82,7 +83,7 @@ class Measurement(sdRDM.DataModel):
         self,
         quantity: Optional[Quantity] = None,
         values: List[Union[float, str, Datetime]] = ListPlus(),
-        unit: Optional[UnitBase] = None,
+        unit: Optional[Union[UnitBase, str, UnitType, Unit]] = None,
         id: Optional[str] = None,
     ) -> None:
         """

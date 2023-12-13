@@ -1,9 +1,10 @@
 import sdRDM
 
-from typing import Optional
+from typing import Optional, Union
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase
+from astropy.units import UnitBase, Unit
+from sdRDM.base.datatypes import UnitType
 
 
 @forge_signature
@@ -21,7 +22,7 @@ class Parameter(sdRDM.DataModel):
         description="values.",
     )
 
-    unit: Optional[UnitBase] = Field(
+    unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
         default=None,
         description="unit of the values.",
     )

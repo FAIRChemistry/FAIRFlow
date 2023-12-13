@@ -101,9 +101,9 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 - vocabulary
   - Type: string
   - Description: For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.
-- vocabulary_url
+- vocabulary_uri
   - Type: string
-  - Description: Keyword vocabulary URL points to the web presence that describes the keyword vocabulary, if appropriate.
+  - Description: Keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.
 
 ### TopicClassification
 
@@ -113,9 +113,9 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 - vocab
   - Type: string
   - Description: Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.
-- vocab_url
+- vocab_uri
   - Type: string
-  - Description: Specifies the URL location for the full controlled vocabulary.
+  - Description: Specifies the URI location for the full controlled vocabulary.
 
 ### Experiment
 

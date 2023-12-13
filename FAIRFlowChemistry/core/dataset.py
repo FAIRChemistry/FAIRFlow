@@ -4,11 +4,11 @@ from typing import List, Optional
 from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .experiment import Experiment
-from .speciesdata import SpeciesData
-from .plantsetup import PlantSetup
-from .generalinformation import GeneralInformation
 from .measurement import Measurement
+from .generalinformation import GeneralInformation
+from .experiment import Experiment
+from .plantsetup import PlantSetup
+from .speciesdata import SpeciesData
 
 
 @forge_signature
@@ -22,8 +22,8 @@ class Dataset(sdRDM.DataModel):
     )
 
     general_information: Optional[GeneralInformation] = Field(
-        default=GeneralInformation(),
         description="general data about the data model.",
+        default_factory=GeneralInformation,
     )
 
     experiments: List[Experiment] = Field(

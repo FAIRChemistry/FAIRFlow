@@ -1,3 +1,5 @@
+#!~/miniconda3/bin/python
+
 import os
 import ipywidgets as widgets
 import pandas as pd
@@ -12,7 +14,7 @@ from sdRDM import DataModel
 # Import general tools and objects of this datamodel #
 
 # Objects #
-from easyDataverse import Dataverse
+#from easyDataverse import Dataverse
 from FAIRFlowChemistry.core import Data
 from FAIRFlowChemistry.core import Dataset
 from FAIRFlowChemistry.core import Experiment
@@ -20,7 +22,6 @@ from FAIRFlowChemistry.core import MeasurementType
 from FAIRFlowChemistry.core import Quantity
 from FAIRFlowChemistry.core import Contact
 from FAIRFlowChemistry.core import RelatedPublication
-from pyDaRUS.metadatablocks.citation import SubjectEnum
 
 # Tools #
 from .auxiliary import Librarian, PeakAssigner
@@ -38,9 +39,11 @@ class initialize_dataset:
         # Initialize the dataset #
         if Path(self.datamodels_dropdown.value).suffix == '.git':
             lib = DataModel.from_git( url=self.datamodels_dropdown.value, tag=self.git_branch )
-        else:
+        elif Path(self.datamodels_dropdown.value).suffix == '.md':
             lib = DataModel.from_markdown( self.datamodels_dropdown.value )
-            
+        else:
+            pass
+        
         self.dataset = lib.Dataset()
 
     def save_dataset(self,_):
@@ -81,12 +84,12 @@ class initialize_dataset:
         # Add topic classifications
         for i in range(0, len(self.topic_classification.value.split(",")), 2):
             self.dataset.general_information.add_to_topic_classification( value     = self.topic_classification.value.split(",")[i].strip() , 
-                                                                          vocab_url = self.topic_classification.value.split(",")[i + 1].strip() )
+                                                                          vocab_uri = self.topic_classification.value.split(",")[i + 1].strip() )
 
         # Add keywords
         for i in range(0, len(self.keywords.value.split(",")), 2):
             self.dataset.general_information.add_to_keywords( value          = self.keywords.value.split(",")[i].strip() , 
-                                                              vocabulary_url = self.keywords.value.split(",")[i + 1].strip() )
+                                                              vocabulary_uri = self.keywords.value.split(",")[i + 1].strip() )
             
         # Write dataset #
         os.makedirs( self.root / "datasets", exist_ok=True )
@@ -95,7 +98,7 @@ class initialize_dataset:
     def change_dataset(self,_):
         self.button_save.description = 'Save dataset as:  %s.json'%self.dataset_text.value
                
-    def write_dataset(self,root: Path, git_path: str, git_branch: str) -> None:
+    def write_dataset(self,root: Path, git_path: str, git_branch: str, subjects: List=[]) -> None:
         
         self.git_branch          = git_branch    
         self.root                = root
@@ -148,7 +151,7 @@ class initialize_dataset:
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
 
-        self.subject_selection   = widgets.SelectMultiple( options=[ subject.value for subject in SubjectEnum ],
+        self.subject_selection   = widgets.SelectMultiple( options=subjects,
                                                           description="Choose subjects (press and hold 'strg' to select several):",
                                                           value=["Chemistry"],
                                                           layout=widgets.Layout(width='auto'),
@@ -646,12 +649,12 @@ class DaRUS_upload:
         # Add topic classification
         self.DaRUS_data.citation.topic_classification = []
         for classification in self.dataset.general_information.topic_classification: 
-            self.DaRUS_data.citation.add_topic_classification( **{"vocab_uri" if k=="vocab_url" else k:classification.__dict__[k] for k in classification.__dict__.keys() if k!="id"} )
+            self.DaRUS_data.citation.add_topic_classification( **{k:classification.__dict__[k] for k in classification.__dict__.keys() if k!="id"} )
 
         # Add keywords
         self.DaRUS_data.citation.keyword = []
         for keyword in self.dataset.general_information.keywords:
-            self.DaRUS_data.citation.add_keyword( **{"vocabulary_uri" if k=="vocabulary_url" else k:keyword.__dict__[k] for k in keyword.__dict__.keys() if k!="id"} ) 
+            self.DaRUS_data.citation.add_keyword( **{k:keyword.__dict__[k] for k in keyword.__dict__.keys() if k!="id"} ) 
     
     def create_new(self):
     

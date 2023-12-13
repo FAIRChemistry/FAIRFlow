@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
 from .device import Device
-from .metadata import Metadata
 from .measurement import Measurement
+from .metadata import Metadata
 
 
 @forge_signature
@@ -18,11 +18,11 @@ class Potentiostat(Device):
     )
 
     measurement: Optional[Measurement] = Field(
-        default=Measurement(),
         description="Measuring Data.",
+        default_factory=Measurement,
     )
 
     metadata: Optional[Metadata] = Field(
-        default=Metadata(),
         description="Metadata of the Potentiostat.",
+        default_factory=Metadata,
     )

@@ -17,11 +17,11 @@ class MassFlowMeter(Device):
     )
 
     min_flow: Optional[Parameter] = Field(
-        default=Parameter(),
         description="Minimum possible flow rate.",
+        default_factory=Parameter,
     )
 
     max_flow: Optional[Parameter] = Field(
-        default=Parameter(),
         description="Maximum possible flow rate.",
+        default_factory=Parameter,
     )

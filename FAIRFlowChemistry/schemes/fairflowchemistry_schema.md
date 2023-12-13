@@ -81,13 +81,13 @@ classDiagram
     class Keyword {
         +string value
         +string vocabulary
-        +string vocabulary_url
+        +string vocabulary_uri
     }
     
     class TopicClassification {
         +string value
         +string vocab
-        +string vocab_url
+        +string vocab_uri
     }
     
     class Experiment {

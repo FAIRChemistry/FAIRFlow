@@ -43,8 +43,8 @@ class GeneralInformation(sdRDM.DataModel):
     )
 
     contact: Optional[Contact] = Field(
-        default=Contact(),
         description="point of contact for this projecet",
+        default_factory=Contact,
     )
 
     subject: List[str] = Field(
@@ -57,8 +57,8 @@ class GeneralInformation(sdRDM.DataModel):
     )
 
     related_publication: Optional[RelatedPublication] = Field(
-        default=RelatedPublication(),
         description="Related publication to the dataset.",
+        default_factory=RelatedPublication,
     )
 
     keywords: List[Keyword] = Field(
@@ -106,7 +106,7 @@ class GeneralInformation(sdRDM.DataModel):
         self,
         value: Optional[str] = None,
         vocabulary: Optional[str] = None,
-        vocabulary_url: Optional[str] = None,
+        vocabulary_uri: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -116,12 +116,12 @@ class GeneralInformation(sdRDM.DataModel):
             id (str): Unique identifier of the 'Keyword' object. Defaults to 'None'.
             value (): Key terms that describe important aspects of the Dataset.. Defaults to None
             vocabulary (): For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.. Defaults to None
-            vocabulary_url (): Keyword vocabulary URL points to the web presence that describes the keyword vocabulary, if appropriate.. Defaults to None
+            vocabulary_uri (): Keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.. Defaults to None
         """
         params = {
             "value": value,
             "vocabulary": vocabulary,
-            "vocabulary_url": vocabulary_url,
+            "vocabulary_uri": vocabulary_uri,
         }
         if id is not None:
             params["id"] = id
@@ -132,7 +132,7 @@ class GeneralInformation(sdRDM.DataModel):
         self,
         value: Optional[str] = None,
         vocab: Optional[str] = None,
-        vocab_url: Optional[str] = None,
+        vocab_uri: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -142,9 +142,9 @@ class GeneralInformation(sdRDM.DataModel):
             id (str): Unique identifier of the 'TopicClassification' object. Defaults to 'None'.
             value (): Topic or Subject term that is relevant to this Dataset.. Defaults to None
             vocab (): Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.. Defaults to None
-            vocab_url (): Specifies the URL location for the full controlled vocabulary.. Defaults to None
+            vocab_uri (): Specifies the URI location for the full controlled vocabulary.. Defaults to None
         """
-        params = {"value": value, "vocab": vocab, "vocab_url": vocab_url}
+        params = {"value": value, "vocab": vocab, "vocab_uri": vocab_uri}
         if id is not None:
             params["id"] = id
         self.topic_classification.append(TopicClassification(**params))

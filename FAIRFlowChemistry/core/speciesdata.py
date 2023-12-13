@@ -3,10 +3,10 @@ import sdRDM
 from typing import Optional
 from pydantic import Field
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .calibration import Calibration
 from .species import Species
-from .chemicalformula import ChemicalFormula
 from .data import Data
+from .chemicalformula import ChemicalFormula
+from .calibration import Calibration
 
 
 @forge_signature
@@ -30,8 +30,8 @@ class SpeciesData(sdRDM.DataModel):
     )
 
     calibration: Optional[Calibration] = Field(
-        default=Calibration(),
         description="calibration measurement.",
+        default_factory=Calibration,
     )
 
     correction_factor: Optional[float] = Field(
@@ -45,6 +45,6 @@ class SpeciesData(sdRDM.DataModel):
     )
 
     faraday_efficiency: Optional[Data] = Field(
-        default=Data(),
         description="Faraday efficiencies of the individual species.",
+        default_factory=Data,
     )

@@ -19,13 +19,13 @@ class Calibration(sdRDM.DataModel):
     )
 
     peak_areas: Optional[Data] = Field(
-        default=Data(),
         description="Recorded peak areas of the individual calibration solutions.",
+        default_factory=Data,
     )
 
     concentrations: Optional[Data] = Field(
-        default=Data(),
         description="concentrations of the individual calibration solutions.",
+        default_factory=Data,
     )
 
     regression_coefficients: List[float] = Field(

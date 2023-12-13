@@ -7,17 +7,17 @@ from pydantic import Field
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 from pathlib import Path
-from .calibration import Calibration
-from .metadata import Metadata
-from .speciesdata import SpeciesData
-from .species import Species
-from .chemicalformula import ChemicalFormula
-from .measurementtype import MeasurementType
-from .plantsetup import PlantSetup
-from .quantity import Quantity
-from .data import Data
 from .datatype import DataType
 from .measurement import Measurement
+from .chemicalformula import ChemicalFormula
+from .calibration import Calibration
+from .quantity import Quantity
+from .data import Data
+from .measurementtype import MeasurementType
+from .plantsetup import PlantSetup
+from .species import Species
+from .speciesdata import SpeciesData
+from .metadata import Metadata
 
 
 @forge_signature
@@ -31,8 +31,8 @@ class Experiment(sdRDM.DataModel):
     )
 
     plant_setup: Optional[PlantSetup] = Field(
-        default=PlantSetup(),
         description="the individual plant setup that is used in this one experiment.",
+        default_factory=PlantSetup,
     )
 
     measurements: List[Measurement] = Field(
@@ -122,7 +122,6 @@ class Experiment(sdRDM.DataModel):
             calibration_data = json.load(file)
 
         for species, data in calibration_data.items():
-
             # Create Calibration object and fit it to the given data
             calibration = Calibration(
                 peak_areas=Data(

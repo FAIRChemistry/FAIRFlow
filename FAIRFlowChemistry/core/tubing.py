@@ -38,6 +38,6 @@ class Tubing(sdRDM.DataModel):
     )
 
     insulation: Optional[Insulation] = Field(
-        default=Insulation(),
         description="insulation of the tubing.",
+        default_factory=Insulation,
     )
