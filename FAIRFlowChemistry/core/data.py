@@ -1,12 +1,12 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from datetime import datetime as Datetime
 from astropy.units import UnitBase, Unit
 from sdRDM.base.datatypes import UnitType
-from datetime import datetime as Datetime
 from .quantity import Quantity
 
 
@@ -34,4 +34,10 @@ class Data(sdRDM.DataModel):
     unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
         default=None,
         description="unit of the values.",
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="9d5388aebe9c91e4babc159076b8b137651e2b53"
     )

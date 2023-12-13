@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -33,4 +33,10 @@ class Device(sdRDM.DataModel):
     on_off: Optional[bool] = Field(
         default=None,
         description="operational mode of the flow module. True is on and False is off.",
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="9d5388aebe9c91e4babc159076b8b137651e2b53"
     )

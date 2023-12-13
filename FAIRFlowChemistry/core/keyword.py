@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 
 
@@ -34,4 +34,10 @@ class Keyword(sdRDM.DataModel):
             "Keyword vocabulary URI points to the web presence that describes the"
             " keyword vocabulary, if appropriate."
         ),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="9d5388aebe9c91e4babc159076b8b137651e2b53"
     )
