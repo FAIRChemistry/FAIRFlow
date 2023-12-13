@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 import Levenshtein
 import re
-
 from pathlib import Path
 from datetime import datetime
+from astropy.units import Unit
 from FAIRFlowChemistry.core import DataType
 from FAIRFlowChemistry.core import Quantity
 from FAIRFlowChemistry.core import Measurement
@@ -46,12 +46,13 @@ def gc_parser( metadata_path: Path, experimental_data_path: Path ):
                                         value = datetime.strptime( metadata_df.loc[metadata_df['Parameter'] == key, 'Value'].values[0], "%d-%b-%y, %H:%M:%S" ) if key == "Injection Date" \
                                                                    else metadata_df.loc[metadata_df['Parameter'] == key, 'Value'].values[0],
                                         data_type = DataType.DATETIME.value if key == "Injection Date" else DataType.STRING.value,
-                                        description = "Injection date of the GC measurement"  if key == "Injection Date" else None
+                                        description = "Injection date of the GC measurement"  if key == "Injection Date" else None,
+                                        unit=Unit()
                                        )
 
     # Filter out the header description of the measurement csv file (contaning description and units)
     filtered_columns   = metadata_df[metadata_df['Parameter'].str.match(r'^Column \d+$')]
-    quantity_unit_dict = { row["Value"].strip(): row["Description"] if not pd.isna(row["Description"]) and bool(row["Description"].split()) else None for _, row in filtered_columns.iterrows()}
+    quantity_unit_dict = { row["Value"].strip(): row["Description"] if not pd.isna(row["Description"]) and bool(row["Description"].split()) else "" for _, row in filtered_columns.iterrows()}
 
 
     ## Read in the measurement file  ##
@@ -74,7 +75,7 @@ def gc_parser( metadata_path: Path, experimental_data_path: Path ):
         gc_measurement.add_to_experimental_data( 
                                                 quantity = quantity,
                                                 values = values,
-                                                unit = quantity_unit_dict[key]
+                                                unit = Unit( quantity_unit_dict[key] )
         )
 
     return gc_measurement
@@ -123,7 +124,7 @@ def gstatic_parser(metadata_path: Path):
                                 parameter = quantity,
                                 value = value ,
                                 data_type = DataType.FLOAT.value,
-                                unit = re.search(r'\((.*?)\)', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1),
+                                unit = Unit( re.search(r'\((.*?)\)', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1) ),
                                 description = re.match(r'(.*?)\(', metadata_df.loc[metadata_df['Parameter'] == key, 'Description'].values[0]).group(1).strip()
     )
         
@@ -139,9 +140,9 @@ def mfm_parser(experimental_data_path: Path):
     """
 
     quantity_unit_dict = {
-        "Date time": None,
+        "Date time": "",
         "Time": "s",
-        "Signal": None,
+        "Signal": "",
         "Volumetric flow rate": "ml / s",
     }
 
@@ -170,7 +171,7 @@ def mfm_parser(experimental_data_path: Path):
         mfm_measurement.add_to_experimental_data( 
                                                 quantity = quantity,
                                                 values = values,
-                                                unit = quantity_unit_dict[key]
+                                                unit = Unit(quantity_unit_dict[key])
         )
   
     return mfm_measurement

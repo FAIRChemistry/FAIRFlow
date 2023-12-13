@@ -131,7 +131,7 @@ class Experiment(sdRDM.DataModel):
             # Create Calibration object and fit it to the given data
             calibration = Calibration(
                 peak_areas=Data(
-                    quantity="Peak area", unit=None, values=data["peak_areas"]
+                    quantity="Peak area", unit="", values=data["peak_areas"]
                 ),
                 concentrations=Data(
                     quantity=Quantity.CONCENTRATION.value,

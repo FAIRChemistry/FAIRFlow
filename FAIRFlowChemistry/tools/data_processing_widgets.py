@@ -20,8 +20,6 @@ from FAIRFlowChemistry.core import Dataset
 from FAIRFlowChemistry.core import Experiment
 from FAIRFlowChemistry.core import MeasurementType
 from FAIRFlowChemistry.core import Quantity
-from FAIRFlowChemistry.core import Contact
-from FAIRFlowChemistry.core import RelatedPublication
 
 # Tools #
 from .auxiliary import Librarian, PeakAssigner
@@ -48,38 +46,41 @@ class initialize_dataset:
 
     def save_dataset(self,_):
 
-        print("Saving dataset!")
-        
-        # Add title
-        self.dataset.general_information.title       = self.title.value
-        
-        # Add description
-        self.dataset.general_information.description = self.description.value 
+        with self.button_output:
+            clear_output(wait=True)
 
-        # Add project group
-        self.dataset.general_information.project     = self.project.value
+            print("Saving dataset!")
+            
+            # Add title
+            self.dataset.general_information.title       = self.title.value
+            
+            # Add description
+            self.dataset.general_information.description = self.description.value 
 
-        # Add authors to the dataset 
-        for aut,aff,ident in zip( self.authors.value.split(","), self.affiliations.value.split(","), self.identifier.value.split(",") ):
-            self.dataset.general_information.add_to_authors( name = aut.strip(), 
-                                                             affiliation = aff.strip(), 
-                                                             identifier_scheme = self.identifier_scheme.value,
-                                                             identifier = ident.strip() )
+            # Add project group
+            self.dataset.general_information.project     = self.project.value
+
+            # Add authors to the dataset 
+            for aut,aff,ident in zip( self.authors.value.split(","), self.affiliations.value.split(","), self.identifier.value.split(",") ):
+                self.dataset.general_information.add_to_authors( name = aut.strip(), 
+                                                                affiliation = aff.strip(), 
+                                                                identifier_scheme = self.identifier_scheme.value,
+                                                                identifier = ident.strip() )
 
         # Add contact (search contact in provided authors)
         affili = [ aff for aut,aff in zip(self.authors.value.split(","), self.affiliations.value.split(",")) if aut.strip() == self.contact_text.value.split(",")[0].strip() ]
         affili = affili[0] if bool(affili) else None
 
-        self.dataset.general_information.contact = Contact( name = self.contact_text.value.split(",")[0].strip(), 
-                                                            email = self.contact_text.value.split(",")[1].strip(), 
-                                                            affiliation = affili )
+        self.dataset.general_information.contact = dict( name = self.contact_text.value.split(",")[0].strip(), 
+                                                         email = self.contact_text.value.split(",")[1].strip(), 
+                                                         affiliation = affili )
 
         # Add subject
         self.dataset.general_information.subject = list( self.subject_selection.value )
 
         # Add related publication
-        self.dataset.general_information.related_publication  = RelatedPublication( citation = self.related_publication.value.split(",")[0].strip(),
-                                                                                    url      = self.related_publication.value.split(",")[1].strip() )
+        self.dataset.general_information.related_publication  = dict( citation = self.related_publication.value.split(",")[0].strip(),
+                                                                      url      = self.related_publication.value.split(",")[1].strip() )
 
         # Add topic classifications
         for i in range(0, len(self.topic_classification.value.split(",")), 2):
@@ -193,6 +194,9 @@ class initialize_dataset:
         # Handle button
         self.button_save.on_click(self.save_dataset)
 
+        # Output spaces
+        self.button_output = widgets.Output()
+
         # Widgets
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
         h_space   = widgets.HBox([widgets.Label(value='')], layout=widgets.Layout(width='30px'))
@@ -202,7 +206,7 @@ class initialize_dataset:
         widgets2  = widgets.VBox([self.authors, self.affiliations, self.identifier, self.contact_text, v_space])
         widgets3  = widgets.VBox([self.subject_selection, self.related_publication, self.topic_classification, self.keywords, v_space])
         widgets4  = widgets.VBox([self.dataset_text, v_space])
-        widgets5  = widgets.VBox([self.button_save], layout=widgets.Layout(align_items = 'center') )
+        widgets5  = widgets.VBox([self.button_save, self.button_output], layout=widgets.Layout(align_items = 'center') )
 
         # Combine the layout
         full_layout = widgets.VBox([widgets0, widgets1, widgets2, widgets3, widgets4, widgets5])
@@ -450,7 +454,7 @@ class analyzing_raw_data_widget:
         display(self.full_layout)
         
         # Also display the peak assignment again (input is the choosen experiment and the current species)
-        self.peak_assignment = PeakAssigner( experiment             = self.dataset.experiments[self.experiments_dropdown.value], 
+        self.peak_assignment = PeakAssigner( experiment             = Experiment( **self.dataset.experiments[self.experiments_dropdown.value].__dict__ ), 
                                              species                = self.species_tags.value,
                                              typical_retention_time = self.typical_retention_time )
         self.peak_assignment.assign_peaks()
@@ -508,7 +512,7 @@ class analyzing_raw_data_widget:
         # Common variables
         self.typical_retention_time = typical_retention_time 
         self.dataset_path           = dataset_path
-        self.dataset                = Dataset(**dataset.__dict__)
+        self.dataset                = dataset #Dataset(**dataset.__dict__)
 
         if not bool( self.dataset.experiments  ): raise ValueError("Dataset contains no experiments!\n")
 

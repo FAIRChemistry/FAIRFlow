@@ -151,61 +151,15 @@ class PeakAssigner(BaseModel):
     Args:
         experiment (Experiment): Experiment object contain the GC measurements
         species (List): List with possible species that should be matched to the GC results
+        typical_retention_time (dict): Dictionary with typical retenion times to pre assign peak values
     """
     experiment: Experiment
     species: List[str]
-    peak_areas_retention_time_dict: Dict[str, Dict[str, List[float]]] = {}
     typical_retention_time: Dict = {}
     _assignment_dicts = []
     _selection_output = Output()
     _VBox_list = []
     _full_layout = VBox([])
-
-    # The validator objects are used to give the variables during the initialisation a value.
-    # This is normaly done in __init__, but this conflicts with Pydantic
-    
-    @validator("peak_areas_retention_time_dict", pre=True, always=True)
-    def valdiate_peak_areas_retention_time_dict(cls, value, values):
-        """Validator function that pre assigns values to the peak area dictionary from the parsed experiment object.
-
-        Args:
-            value (dict): Value of the current peak_areas_retention_time_dict. If not specified its empty.
-            values (dict): Dictionary containing all other objects of the PeakAssigner class.
-
-        Returns:
-            dict: The initial peak assigment dictionary.
-        """
-        
-        gc_measurements = values.get("experiment").get("measurements", "measurement_type", MeasurementType.GC.value)
-
-        if len(gc_measurements) > 0:
-            for i, gc_measurement in enumerate(gc_measurements[0]):
-                peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
-                retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
-                
-                value[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
-        else:
-            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
-        
-        return value
-    
-    def test(self):
-
-        #print(  )
-        test_measurements = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)[0]
-        test_measurements = [measurement for measurement in self.experiment.measurements if measurement.measurement_type == MeasurementType.GC.value]
-
-        for gc_measurement in test_measurements:
-            print("Object ID outside test method:", id(gc_measurement))
-
-        for gc_measurement in test_measurements:
-            print("Before Modification:", gc_measurement.experimental_data)
-            gc_measurement.experimental_data.append(Data(id='data58', quantity='Peak assignment', values=[1.0, 2.0, 3.0], unit=None))
-            print("After Modification:", gc_measurement.experimental_data)
-
-        print("Experiment After Test:", [t.experimental_data for t in test_measurements])
-
-
 
     def save_assignments(self, _):
         """
@@ -251,7 +205,8 @@ class PeakAssigner(BaseModel):
             # if not then add
             else:
                 gc_measurement.add_to_experimental_data( quantity = Quantity.PEAKASSIGNMENT.value,
-                                                         values   = [ item[0] for item in sorted_species_peak_tuples ]
+                                                         values   = [ item[0] for item in sorted_species_peak_tuples ],
+                                                         unit     = ""
                                                         )                   
 
             self._assignment_dicts.append( _assignment_dict.copy() )
@@ -265,6 +220,21 @@ class PeakAssigner(BaseModel):
         Function that displays a widget with the GC measurements: Retention time, peak area, and one need to choose a corresponding species
         """
 
+        peak_areas_retention_time_dict = {}
+
+        # Get the GC measurements and make a dictionary for each measurement
+        gc_measurements = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)
+
+        if len(gc_measurements) > 0:
+            for i, gc_measurement in enumerate(gc_measurements[0]):
+                peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
+                retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
+                
+                peak_areas_retention_time_dict[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
+        else:
+            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
+
+
         # Set layout of widgets
         layout_button = Layout( align_items="center", width="30%" )
         layout_hbox   = Layout( align_items="stretch", width="100%", justify_content="center" )
@@ -272,7 +242,7 @@ class PeakAssigner(BaseModel):
 
         self._VBox_list.clear()
 
-        for measurement_number, peak_areas_retention_time in self.peak_areas_retention_time_dict.items():
+        for measurement_number, peak_areas_retention_time in peak_areas_retention_time_dict.items():
             
             # For each measurement create a horizontal box containing the retention time, peak area and species
             hbox_list = [ Label( value  = measurement_number, 
