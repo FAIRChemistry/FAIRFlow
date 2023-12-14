@@ -7,17 +7,17 @@ from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
 from pathlib import Path
-from .data import Data
-from .chemicalformula import ChemicalFormula
-from .quantity import Quantity
-from .plantsetup import PlantSetup
+from .metadata import Metadata
+from .datatype import DataType
 from .measurement import Measurement
-from .measurementtype import MeasurementType
-from .species import Species
 from .calibration import Calibration
 from .speciesdata import SpeciesData
-from .datatype import DataType
-from .metadata import Metadata
+from .quantity import Quantity
+from .chemicalformula import ChemicalFormula
+from .measurementtype import MeasurementType
+from .plantsetup import PlantSetup
+from .species import Species
+from .data import Data
 
 
 @forge_signature
@@ -48,11 +48,11 @@ class Experiment(sdRDM.DataModel):
         multiple=True,
         description="all provided and calculated data about a specific species.",
     )
-    _repo: Optional[str] = PrivateAttr(
+    __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
-    _commit: Optional[str] = PrivateAttr(
-        default="bf557ce8e1909bacc11454021c872d74be597f4f"
+    __commit__: Optional[str] = PrivateAttr(
+        default="b280844bc9acb4b64bd3d16d0996bffcd6087e9e"
     )
 
     def add_to_measurements(

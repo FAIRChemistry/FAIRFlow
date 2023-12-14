@@ -32,9 +32,9 @@ class TopicClassification(sdRDM.DataModel):
         default=None,
         description="Specifies the URI location for the full controlled vocabulary.",
     )
-    _repo: Optional[str] = PrivateAttr(
+    __repo__: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
-    _commit: Optional[str] = PrivateAttr(
-        default="bf557ce8e1909bacc11454021c872d74be597f4f"
+    __commit__: Optional[str] = PrivateAttr(
+        default="b280844bc9acb4b64bd3d16d0996bffcd6087e9e"
     )
