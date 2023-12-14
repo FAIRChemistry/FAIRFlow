@@ -13,4 +13,4 @@ jobs:
         library_name: "FAIRFlowChemistry"
         schema_path: "./specifications/datamodel_b07_tc.md"
         schema: "true"
-        branch: "pydantic-v2-migration"
+        branch: "linking-refactor"
