@@ -4,13 +4,14 @@ from typing import Optional, Union, List
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
+from astropy.units import UnitBase, Unit
+from sdRDM.base.datatypes import UnitType
 from datetime import datetime as Datetime
-from astropy.units import UnitBase
+from .datatype import DataType
+from .quantity import Quantity
+from .metadata import Metadata
 from .data import Data
 from .measurementtype import MeasurementType
-from .quantity import Quantity
-from .datatype import DataType
-from .metadata import Metadata
 
 
 @forge_signature
@@ -39,11 +40,11 @@ class Measurement(sdRDM.DataModel):
         multiple=True,
         description="experimental data of a measurement.",
     )
-    __repo__: Optional[str] = PrivateAttr(
+    _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
-    __commit__: Optional[str] = PrivateAttr(
-        default="ddc41b4baadaf8dd1dec5234b201c6f1b4ca8902"
+    _commit: Optional[str] = PrivateAttr(
+        default="b43287a9337e1abbe0f20892f8911c112fccc4f3"
     )
 
     def add_to_metadata(
@@ -53,7 +54,7 @@ class Measurement(sdRDM.DataModel):
         abbreviation: Optional[str] = None,
         data_type: Union[DataType, str, None] = None,
         mode: Optional[str] = None,
-        unit: Optional[UnitBase] = None,
+        unit: Optional[Union[UnitBase, str, UnitType, Unit]] = None,
         description: Optional[str] = None,
         id: Optional[str] = None,
     ) -> None:
@@ -88,7 +89,7 @@ class Measurement(sdRDM.DataModel):
         self,
         quantity: Optional[Quantity] = None,
         values: List[Union[float, str, Datetime]] = ListPlus(),
-        unit: Optional[UnitBase] = None,
+        unit: Optional[Union[UnitBase, str, UnitType, Unit]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
