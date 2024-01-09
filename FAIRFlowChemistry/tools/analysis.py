@@ -94,7 +94,7 @@ class analyzing_raw_data_widget:
         # Common variables
         self.typical_retention_time = typical_retention_time 
         self.dataset_path           = dataset_path
-        self.dataset                = dataset #Dataset(**dataset.__dict__)
+        self.dataset                = Dataset(**dataset.__dict__)
 
         if not bool( self.dataset.experiments  ): raise ValueError("Dataset contains no experiments!\n")
 

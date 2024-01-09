@@ -4,13 +4,10 @@ import ipywidgets as widgets
 from pathlib import Path
 from IPython.display import display
 
-# Import modified sdRDM objects #
-from sdRDM import DataModel
-
 # Import general tools and objects of this datamodel #
 
 # Objects #
-#from easyDataverse import Dataverse
+from FAIRFlowChemistry.core import Dataset
 from FAIRFlowChemistry.core import Experiment
 
 # Tools #
@@ -118,7 +115,8 @@ class reading_raw_data_widget():
     def dataset_input_handler(self,_):
         try:
             self.flag              = True
-            self.dataset, self.lib = DataModel.parse( self.dataset_dropdown.value )
+            with open(self.dataset_dropdown.value) as f:
+                self.dataset = Dataset.from_json(f)
             self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
@@ -134,7 +132,7 @@ class reading_raw_data_widget():
         self.flag = False
     
 
-    def choose_data(self,root: Path) -> None:
+    def choose_data(self, root: Path) -> None:
         
         self.librarian        = Librarian(root_directory=root)
         datasets              = self.librarian.search_files_in_subdirectory(root_directory=root, directory_keys=["datasets"], file_filter="json", verbose=False)

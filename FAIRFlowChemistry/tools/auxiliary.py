@@ -24,10 +24,6 @@ from ipywidgets import (
 logger = logging.getLogger(__name__)
 logger.propagate = True
 
-class DirectoryNotFoundError(Exception):
-    def __init__(self, directory):
-        super().__init__(f"Directory not found: {directory}")
-
 class Librarian(BaseModel):
     """
     Class that manages directoy and file browsing
@@ -143,8 +139,7 @@ class Librarian(BaseModel):
     def get_root_directory(self):
         return self.root_directory
 
-
-class PeakAssigner(BaseModel):
+class PeakAssigner:
     """
     Class that assign peaks of given GC measurements within a given experiment object
 
@@ -153,13 +148,29 @@ class PeakAssigner(BaseModel):
         species (List): List with possible species that should be matched to the GC results
         typical_retention_time (dict): Dictionary with typical retenion times to pre assign peak values
     """
-    experiment: Experiment
-    species: List[str]
-    typical_retention_time: Dict = {}
-    _assignment_dicts = []
-    _selection_output = Output()
-    _VBox_list = []
-    _full_layout = VBox([])
+
+    def __init__(self, experiment: Experiment, species: List[str], typical_retention_time: Dict = {} ):
+        self.experiment = experiment
+        self.species    = species
+        self.typical_retention_time = typical_retention_time
+        self._assignment_dicts = []
+        self._selection_output = Output()
+        self._VBox_list = []
+        self._full_layout = VBox([])
+
+        self.peak_areas_retention_time_dict = {}
+
+        # Get the GC measurements and make a dictionary for each measurement
+        gc_measurements = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)
+
+        if len(gc_measurements) > 0:
+            for i, gc_measurement in enumerate(gc_measurements[0]):
+                peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
+                retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
+                
+                self.peak_areas_retention_time_dict[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
+        else:
+            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
 
     def save_assignments(self, _):
         """
@@ -219,22 +230,7 @@ class PeakAssigner(BaseModel):
         """
         Function that displays a widget with the GC measurements: Retention time, peak area, and one need to choose a corresponding species
         """
-
-        peak_areas_retention_time_dict = {}
-
-        # Get the GC measurements and make a dictionary for each measurement
-        gc_measurements = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)
-
-        if len(gc_measurements) > 0:
-            for i, gc_measurement in enumerate(gc_measurements[0]):
-                peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
-                retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
-                
-                peak_areas_retention_time_dict[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
-        else:
-            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
-
-
+        
         # Set layout of widgets
         layout_button = Layout( align_items="center", width="30%" )
         layout_hbox   = Layout( align_items="stretch", width="100%", justify_content="center" )
@@ -242,7 +238,7 @@ class PeakAssigner(BaseModel):
 
         self._VBox_list.clear()
 
-        for measurement_number, peak_areas_retention_time in peak_areas_retention_time_dict.items():
+        for measurement_number, peak_areas_retention_time in self.peak_areas_retention_time_dict.items():
             
             # For each measurement create a horizontal box containing the retention time, peak area and species
             hbox_list = [ Label( value  = measurement_number, 

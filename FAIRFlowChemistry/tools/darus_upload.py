@@ -118,11 +118,6 @@ class DaRUS_upload:
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})
         
-        self.depositor_text     = widgets.Text( description="Depositor:",
-                                                placeholder="Name of the person uploading this dataset (e.g.: Max Mustermann)",
-                                                layout=widgets.Layout(width='auto'),
-                                                style={'description_width': 'auto'})
-        
         # Initialize  
         self.file_directoy.value = [ str(self.dataset_path) ]
 
@@ -133,14 +128,13 @@ class DaRUS_upload:
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
 
         widgets0  = widgets.VBox([self.dataverse_dropdown, v_space])
-        widgets1  = widgets.VBox([self.depositor_text,v_space])
-        widgets2  = self.file_directoy_input
-        widgets3  = widgets.VBox([self.button_add_file_dir, self.button_output], layout=widgets.Layout(align_items = 'center'))
-        widgets4  = widgets.VBox([v_space,widgets.Label(value='Files / directories in DaRUS dataset:'), self.file_directoy])
-        widgets5  = widgets.VBox([self.button_upload],layout=widgets.Layout(align_items = 'center'))
+        widgets1  = self.file_directoy_input
+        widgets2  = widgets.VBox([self.button_add_file_dir, self.button_output], layout=widgets.Layout(align_items = 'center'))
+        widgets3  = widgets.VBox([v_space,widgets.Label(value='Files / directories in DaRUS dataset:'), self.file_directoy])
+        widgets4  = widgets.VBox([self.button_upload],layout=widgets.Layout(align_items = 'center'))
 
         # Combine the layout
-        full_layout = widgets.VBox([widgets0, widgets1, widgets2, widgets3, widgets4, widgets5])
+        full_layout = widgets.VBox([widgets0, widgets1, widgets2, widgets3, widgets4])
 
         # Display the layout
         display(full_layout)
@@ -156,21 +150,28 @@ class DaRUS_upload:
                                                      layout=widgets.Layout(width="30%"),
                                                      style={"button_color": 'lightblue'})
 
+        self.file_directoy_text     = widgets.Text( description="Destination directory",
+                                                    placeholder="Destination directory for DaRUS download. E.g: current directory with '.' ",
+                                                    layout=widgets.Layout(width='auto'),
+                                                    style={'description_width': 'auto'} )
+        
         # Handle button
         self.button_download.on_click( self.download_from_DaRUS )
 
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
-        widgets0  = widgets.VBox([self.contact_text,self.doi_text,v_space])
-        widgets1  = widgets.VBox([self.button_download],layout=widgets.Layout(align_items = 'center'))
+        widgets0  = widgets.VBox([self.doi_text, self.file_directoy_text, v_space, self.button_download],layout=widgets.Layout(align_items = 'center'))
 
         # Combine the layout
-        full_layout = widgets.VBox([widgets0, widgets1,v_space,self.download_output])
+        full_layout = widgets.VBox([widgets0, v_space,self.download_output])
 
         # Display the layout
         display(full_layout)
 
     def download_from_DaRUS(self,_):
         
+        # Create folder where DaRUS data is saved
+        os.makedirs( os.path.dirname(self.file_directoy_text), exist_ok=True )
+
         # Load existing DaRUS dataset
         self.DaRUS_data = self.dataverse.load_dataset( self.doi_text.value )
         
@@ -264,6 +265,11 @@ class DaRUS_upload:
                                                        layout=widgets.Layout(width='auto'),
                                                        style={'description_width': 'auto'})
         
+        self.depositor_text         = widgets.Text( description="Depositor:",
+                                                placeholder="Name of the person uploading this dataset (e.g.: Max Mustermann)",
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+
         self.api_token_text         = widgets.Text( description="API token:",
                                                     placeholder="Provide personal API token for DaRUS (e.g.: xxx-xxx-xxx-xxx-xxx)",
                                                     layout=widgets.Layout(width='auto'),
@@ -274,4 +280,4 @@ class DaRUS_upload:
 
         # Display general widgets
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
-        display( widgets.VBox([self.action_dropdown, self.api_token_text, v_space, self.action_output]) )
+        display( widgets.VBox([self.action_dropdown, self.depositor_text, self.api_token_text, v_space, self.action_output]) )
