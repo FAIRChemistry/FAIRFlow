@@ -42,7 +42,7 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="d3517c29138cd9ea80b6c4eb1ceab8a4277254ef"
+        default="e456339bee79514bdb0b05626b283e99762b3e06"
     )
 
     def calibrate(self):

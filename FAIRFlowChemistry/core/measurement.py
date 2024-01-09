@@ -7,11 +7,11 @@ from sdRDM.base.utils import forge_signature, IDGenerator
 from datetime import datetime as Datetime
 from astropy.units import UnitBase, Unit
 from sdRDM.base.datatypes import UnitType
-from .datatype import DataType
-from .metadata import Metadata
 from .data import Data
-from .measurementtype import MeasurementType
+from .metadata import Metadata
 from .quantity import Quantity
+from .measurementtype import MeasurementType
+from .datatype import DataType
 
 
 @forge_signature
@@ -44,7 +44,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="d3517c29138cd9ea80b6c4eb1ceab8a4277254ef"
+        default="e456339bee79514bdb0b05626b283e99762b3e06"
     )
 
     def add_to_metadata(
