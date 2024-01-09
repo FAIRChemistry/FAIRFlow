@@ -4,7 +4,8 @@ from typing import Optional, Union
 from pydantic import Field, PrivateAttr
 from sdRDM.base.utils import forge_signature, IDGenerator
 from datetime import datetime as Datetime
-from astropy.units import UnitBase
+from astropy.units import UnitBase, Unit
+from sdRDM.base.datatypes import UnitType
 from .datatype import DataType
 
 
@@ -43,7 +44,7 @@ class Metadata(sdRDM.DataModel):
         description="mode of the parameter. E.g., on and off.",
     )
 
-    unit: Optional[UnitBase] = Field(
+    unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
         default=None,
         description="unit of the parameter.",
     )
@@ -52,9 +53,9 @@ class Metadata(sdRDM.DataModel):
         default=None,
         description="description of the parameter.",
     )
-    __repo__: Optional[str] = PrivateAttr(
+    _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
-    __commit__: Optional[str] = PrivateAttr(
-        default="ddc41b4baadaf8dd1dec5234b201c6f1b4ca8902"
+    _commit: Optional[str] = PrivateAttr(
+        default="d3517c29138cd9ea80b6c4eb1ceab8a4277254ef"
     )

@@ -34,9 +34,9 @@ class Device(sdRDM.DataModel):
         default=None,
         description="operational mode of the flow module. True is on and False is off.",
     )
-    __repo__: Optional[str] = PrivateAttr(
+    _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
-    __commit__: Optional[str] = PrivateAttr(
-        default="ddc41b4baadaf8dd1dec5234b201c6f1b4ca8902"
+    _commit: Optional[str] = PrivateAttr(
+        default="d3517c29138cd9ea80b6c4eb1ceab8a4277254ef"
     )

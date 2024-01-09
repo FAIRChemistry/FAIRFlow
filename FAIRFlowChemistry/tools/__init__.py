@@ -1,3 +1,6 @@
-from .data_processing_widgets import initialize_dataset, reading_raw_data_widget, analyzing_raw_data_widget, DaRUS_upload
+from .initialize import initialize_dataset
+from .acquisition import  reading_raw_data_widget
+from .analysis import analyzing_raw_data_widget
+from .darus_upload import DaRUS_upload
 
 
