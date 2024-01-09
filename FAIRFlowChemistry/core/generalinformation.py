@@ -4,11 +4,11 @@ from typing import List, Optional
 from pydantic import Field, PrivateAttr
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature, IDGenerator
-from .keyword import Keyword
-from .relatedpublication import RelatedPublication
-from .topicclassification import TopicClassification
-from .author import Author
 from .contact import Contact
+from .keyword import Keyword
+from .topicclassification import TopicClassification
+from .relatedpublication import RelatedPublication
+from .author import Author
 
 
 @forge_signature
@@ -76,7 +76,7 @@ class GeneralInformation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="e456339bee79514bdb0b05626b283e99762b3e06"
+        default="975a2a013abe06809f4be39ccbb1a5a24103ea08"
     )
 
     def add_to_authors(
