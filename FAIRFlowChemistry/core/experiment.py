@@ -201,7 +201,7 @@ class Experiment(sdRDM.DataModel):
         # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
         if not type(volumetric_flow_datetime_list[0]) == DataType.DATETIME.value:
             volumetric_flow_datetime_list = [
-                pd.to_datetime(timestamp, format="%Y-%m-%d %H:%M:%S").to_pydatetime()
+                pd.to_datetime(timestamp, format="%Y-%m-%dT%H:%M:%S").to_pydatetime()
                 for timestamp in volumetric_flow_datetime_list
             ]
 

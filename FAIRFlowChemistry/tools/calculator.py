@@ -13,8 +13,10 @@ import scipy.constants as const
 
 import logging
 
-# Get the logger from the main file
-logger = logging.getLogger(__name__)
+def get_logger():
+    return logging.getLogger("__main__")
+
+logger = get_logger()
 
 class FaradayEfficiencyCalculator(BaseModel):
     experiment: Experiment
@@ -134,7 +136,7 @@ class FaradayEfficiencyCalculator(BaseModel):
         inj_date_datetime = gc_measurement.get("metadata", "parameter", "Injection Date")[0][0].value 
 
         # In the case the dataset is read it from json, every typ is incorrect and needs to be transfered
-        if not type(inj_date_datetime) == datetime: inj_date_datetime = datetime.strptime( inj_date_datetime, "%Y-%m-%d %H:%M:%S" )
+        if not type(inj_date_datetime) == datetime: inj_date_datetime = datetime.strptime( inj_date_datetime, "%Y-%m-%dT%H:%M:%S" )
 
         # Extract the peak areas dict out of the given gc_measurement
         assigned_peak_areas_dict = {}
@@ -168,8 +170,11 @@ class FaradayEfficiencyCalculator(BaseModel):
         faraday_efficiency_df.dropna(inplace=True)
 
         # Write into logger
-        logger.info( "\n\nProcessed data of GC measurement:\n", "%s\n"%self.volumetric_fractions_df.to_string(), 
-                     "%s\n"%self.material_flow_df.to_string(), "%s\n"%self.theoretical_material_flow_df.to_string(),
-                     "%s\n"%faraday_efficiency_df.to_string(), "\n\n" )
-
+        logger.info("\n\nProcessed data of GC measurement with id: %s\n%s\n%s\n%s\n%s\n\n",
+                    gc_measurement.id,
+                    self.volumetric_fractions_df.to_string(),
+                    self.material_flow_df.to_string(),
+                    self.theoretical_material_flow_df.to_string(),
+                    faraday_efficiency_df.to_string())
+        
         return faraday_efficiency_df
