@@ -1,4 +1,4 @@
-name: sdrdmv2
+name: fairflow
 channels:
   - conda-forge
   - defaults
