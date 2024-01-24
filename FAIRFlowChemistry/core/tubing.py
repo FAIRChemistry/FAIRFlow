@@ -1,6 +1,7 @@
 import sdRDM
 
 from typing import Optional
+from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
@@ -8,7 +9,12 @@ from .material import Material
 
 
 @forge_signature
-class Insulation(sdRDM.DataModel):
+class Insulation(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@db5f6da1081228bb92912b00a9cbad9be469320c#Insulation"
+    },
+):
     """Small type for attribute 'insulation'"""
 
     id: Optional[str] = attr(
@@ -23,10 +29,21 @@ class Insulation(sdRDM.DataModel):
     material: Optional[str] = element(
         default=None, tag="material", json_schema_extra=dict()
     )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="db5f6da1081228bb92912b00a9cbad9be469320c"
+    )
 
 
 @forge_signature
-class Tubing(sdRDM.DataModel):
+class Tubing(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@db5f6da1081228bb92912b00a9cbad9be469320c#Tubing"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -69,4 +86,10 @@ class Tubing(sdRDM.DataModel):
         default_factory=Insulation,
         tag="insulation",
         json_schema_extra=dict(),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="db5f6da1081228bb92912b00a9cbad9be469320c"
     )

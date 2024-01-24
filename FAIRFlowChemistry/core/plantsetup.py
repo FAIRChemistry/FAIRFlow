@@ -1,20 +1,26 @@
 import sdRDM
 
 from typing import List, Optional
+from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from .device import Device
-from .tubing import Tubing, Insulation
-from .material import Material
-from .chemical import Chemical
 from .stoichiometry import Stoichiometry
+from .device import Device
+from .chemical import Chemical
 from .reactantrole import ReactantRole
+from .material import Material
+from .tubing import Tubing, Insulation
 
 
 @forge_signature
-class PlantSetup(sdRDM.DataModel):
+class PlantSetup(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@db5f6da1081228bb92912b00a9cbad9be469320c#PlantSetup"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -62,6 +68,12 @@ class PlantSetup(sdRDM.DataModel):
             tag="Chemical",
             json_schema_extra=dict(multiple=True),
         ),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="db5f6da1081228bb92912b00a9cbad9be469320c"
     )
 
     def add_to_devices(
