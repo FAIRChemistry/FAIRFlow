@@ -1,11 +1,12 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
+from .species import Species
 from .chemicalformula import ChemicalFormula
 from .data import Data
-from .species import Species
 from .calibration import Calibration
 
 
@@ -13,44 +14,51 @@ from .calibration import Calibration
 class SpeciesData(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("speciesdataINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    species: Optional[Species] = Field(
-        default=None,
+    species: Optional[Species] = element(
         description="name of the species.",
-    )
-
-    chemical_formula: Optional[ChemicalFormula] = Field(
         default=None,
-        description="chemical formula of the species.",
+        tag="species",
+        json_schema_extra=dict(),
     )
 
-    calibration: Optional[Calibration] = Field(
+    chemical_formula: Optional[ChemicalFormula] = element(
+        description="chemical formula of the species.",
+        default=None,
+        tag="chemical_formula",
+        json_schema_extra=dict(),
+    )
+
+    calibration: Optional[Calibration] = element(
         description="calibration measurement.",
         default_factory=Calibration,
+        tag="calibration",
+        json_schema_extra=dict(),
     )
 
-    correction_factor: Optional[float] = Field(
-        default=None,
+    correction_factor: Optional[float] = element(
         description="correction factors of the individual species.",
-    )
-
-    faraday_coefficient: Optional[float] = Field(
         default=None,
-        description="Faraday coefficients of the individual species.",
+        tag="correction_factor",
+        json_schema_extra=dict(),
     )
 
-    faraday_efficiency: Optional[Data] = Field(
+    faraday_coefficient: Optional[float] = element(
+        description="Faraday coefficients of the individual species.",
+        default=None,
+        tag="faraday_coefficient",
+        json_schema_extra=dict(),
+    )
+
+    faraday_efficiency: Optional[Data] = element(
         description="Faraday efficiencies of the individual species.",
         default_factory=Data,
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        tag="faraday_efficiency",
+        json_schema_extra=dict(),
     )

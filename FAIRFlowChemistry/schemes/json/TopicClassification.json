@@ -1,0 +1,57 @@
+{
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Unique identifier of the given object.",
+      "title": "Id"
+    },
+    "value": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Topic or Subject term that is relevant to this Dataset.",
+      "title": "Value"
+    },
+    "vocab": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.",
+      "title": "Vocab"
+    },
+    "vocab_uri": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Specifies the URI location for the full controlled vocabulary.",
+      "title": "Vocab Uri"
+    }
+  },
+  "title": "TopicClassification",
+  "type": "object"
+}

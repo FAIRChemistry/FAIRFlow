@@ -1,34 +1,33 @@
 import sdRDM
 
-from typing import Optional, Union
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase, Unit
-from sdRDM.base.datatypes import UnitType
+from typing import Optional
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
+from sdRDM.base.datatypes import Unit
 
 
 @forge_signature
 class Parameter(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("parameterINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    value: Optional[float] = Field(
-        default=None,
+    value: Optional[float] = element(
         description="values.",
+        default=None,
+        tag="value",
+        json_schema_extra=dict(),
     )
 
-    unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
-        default=None,
+    unit: Optional[Unit] = element(
         description="unit of the values.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        default=None,
+        tag="unit",
+        json_schema_extra=dict(),
     )

@@ -1,12 +1,12 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase, Unit
-from sdRDM.base.datatypes import UnitType
+from sdRDM.base.utils import forge_signature
 from datetime import datetime as Datetime
+from sdRDM.base.datatypes import Unit
 from .quantity import Quantity
 
 
@@ -14,30 +14,33 @@ from .quantity import Quantity
 class Data(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("dataINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    quantity: Optional[Quantity] = Field(
-        default=None,
+    quantity: Optional[Quantity] = element(
         description="quantity of a value.",
-    )
-
-    values: List[Union[float, str, Datetime]] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="values.",
-    )
-
-    unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
         default=None,
+        tag="quantity",
+        json_schema_extra=dict(),
+    )
+
+    values: List[Union[float, str, Datetime]] = wrapped(
+        "values",
+        element(
+            description="values.",
+            default_factory=ListPlus,
+            tag="float",
+            json_schema_extra=dict(multiple=True),
+        ),
+    )
+
+    unit: Optional[Unit] = element(
         description="unit of the values.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        default=None,
+        tag="unit",
+        json_schema_extra=dict(),
     )

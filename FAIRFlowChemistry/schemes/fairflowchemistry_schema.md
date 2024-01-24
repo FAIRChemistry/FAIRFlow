@@ -7,7 +7,6 @@ classDiagram
     Dataset *-- GeneralInformation
     Dataset *-- Experiment
     GeneralInformation *-- Author
-    GeneralInformation *-- Contact
     GeneralInformation *-- RelatedPublication
     GeneralInformation *-- Keyword
     GeneralInformation *-- TopicClassification
@@ -16,18 +15,13 @@ classDiagram
     Experiment *-- SpeciesData
     PlantSetup *-- Device
     PlantSetup *-- Tubing
-    PlantSetup *-- Input
-    PlantSetup *-- Output
+    PlantSetup *-- Chemical
     Pump *-- PumpType
     Thermocouple *-- ThermocoupleType
     MassFlowMeter *-- Parameter
     Potentiostat *-- Metadata
     Potentiostat *-- Measurement
     Tubing *-- Material
-    Tubing *-- Insulation
-    Insulation *-- Material
-    Input *-- Chemical
-    Output *-- Chemical
     Chemical *-- ReactantRole
     Chemical *-- Stoichiometry
     Data *-- Quantity
@@ -65,12 +59,6 @@ classDiagram
         +string identifier
     }
     
-    class Contact {
-        +string name
-        +string affiliation
-        +string email
-    }
-    
     class RelatedPublication {
         +string citation
         +string id_type
@@ -99,8 +87,8 @@ classDiagram
     class PlantSetup {
         +Device[0..*] devices
         +Tubing[0..*] tubing
-        +Input[0..*] input
-        +Output[0..*] output
+        +Chemical[0..*] input
+        +Chemical[0..*] output
     }
     
     class Device {
@@ -125,7 +113,7 @@ classDiagram
     
     class Parameter {
         +float value
-        +UnitClass unit
+        +Unit unit
     }
     
     class Potentiostat {
@@ -141,21 +129,8 @@ classDiagram
         +Insulation insulation
     }
     
-    class Insulation {
-        +float thickness
-        +Material material
-    }
-    
-    class Input {
-        +Chemical[0..*] component
-    }
-    
-    class Output {
-        +Chemical[0..*] component
-    }
-    
     class Chemical {
-        +string[0..*] name
+        +string name
         +string formula
         +float pureness
         +string supplier
@@ -178,7 +153,7 @@ classDiagram
     class Data {
         +Quantity quantity
         +float, string, datetime[0..*] values
-        +UnitClass unit
+        +Unit unit
     }
     
     class Metadata {
@@ -187,7 +162,7 @@ classDiagram
         +string abbreviation
         +DataType, string data_type
         +string mode
-        +UnitClass unit
+        +Unit unit
         +string description
     }
     

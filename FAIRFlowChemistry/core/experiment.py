@@ -3,56 +3,63 @@ import sdRDM
 import json
 import pandas as pd
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
+from sdRDM.base.utils import forge_signature
 from pathlib import Path
+from .measurement import Measurement
+from .species import Species
+from .measurementtype import MeasurementType
+from .data import Data
+from .calibration import Calibration
+from .datatype import DataType
+from .speciesdata import SpeciesData
 from .metadata import Metadata
 from .quantity import Quantity
-from .datatype import DataType
-from .plantsetup import PlantSetup
-from .speciesdata import SpeciesData
-from .species import Species
-from .calibration import Calibration
-from .data import Data
-from .measurement import Measurement
-from .measurementtype import MeasurementType
 from .chemicalformula import ChemicalFormula
+from .plantsetup import PlantSetup
 
 
 @forge_signature
 class Experiment(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("experimentINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    plant_setup: Optional[PlantSetup] = Field(
+    plant_setup: Optional[PlantSetup] = element(
         description="the individual plant setup that is used in this one experiment.",
         default_factory=PlantSetup,
+        tag="plant_setup",
+        json_schema_extra=dict(),
     )
 
-    measurements: List[Measurement] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description=(
-            "different measurements that are made within the scope of one experiment."
+    measurements: List[Measurement] = wrapped(
+        "measurements",
+        element(
+            description=(
+                "different measurements that are made within the scope of one"
+                " experiment."
+            ),
+            default_factory=ListPlus,
+            tag="Measurement",
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
-    species_data: List[SpeciesData] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="all provided and calculated data about a specific species.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+    species_data: List[SpeciesData] = wrapped(
+        "species_data",
+        element(
+            description="all provided and calculated data about a specific species.",
+            default_factory=ListPlus,
+            tag="SpeciesData",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
     def add_to_measurements(
@@ -61,7 +68,7 @@ class Experiment(sdRDM.DataModel):
         metadata: List[Metadata] = ListPlus(),
         experimental_data: List[Data] = ListPlus(),
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Measurement:
         """
         This method adds an object of type 'Measurement' to attribute measurements
 
@@ -90,7 +97,7 @@ class Experiment(sdRDM.DataModel):
         faraday_coefficient: Optional[float] = None,
         faraday_efficiency: Optional[Data] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> SpeciesData:
         """
         This method adds an object of type 'SpeciesData' to attribute species_data
 

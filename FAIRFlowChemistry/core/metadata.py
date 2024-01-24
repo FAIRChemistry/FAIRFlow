@@ -1,11 +1,11 @@
 import sdRDM
 
 from typing import Optional, Union
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase, Unit
-from sdRDM.base.datatypes import UnitType
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
 from datetime import datetime as Datetime
+from sdRDM.base.datatypes import Unit
 from .datatype import DataType
 
 
@@ -13,49 +13,58 @@ from .datatype import DataType
 class Metadata(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("metadataINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    parameter: Optional[str] = Field(
-        default=None,
+    parameter: Optional[str] = element(
         description="Name of the parameter.",
+        default=None,
+        tag="parameter",
+        json_schema_extra=dict(),
     )
 
-    value: Union[str, float, Datetime, None] = Field(
-        default=None,
+    value: Union[str, float, Datetime, None] = element(
         description="value of the parameter.",
+        default=None,
+        tag="value",
+        json_schema_extra=dict(),
     )
 
-    abbreviation: Optional[str] = Field(
-        default=None,
+    abbreviation: Optional[str] = element(
         description="abbreviation for the parameter.",
+        default=None,
+        tag="abbreviation",
+        json_schema_extra=dict(),
     )
 
-    data_type: Union[DataType, str, None] = Field(
-        default=None,
+    data_type: Union[DataType, str, None] = element(
         description="type of the parameter.",
+        default=None,
+        tag="data_type",
+        json_schema_extra=dict(),
     )
 
-    mode: Optional[str] = Field(
-        default=None,
+    mode: Optional[str] = element(
         description="mode of the parameter. E.g., on and off.",
+        default=None,
+        tag="mode",
+        json_schema_extra=dict(),
     )
 
-    unit: Optional[Union[UnitBase, str, UnitType, Unit]] = Field(
-        default=None,
+    unit: Optional[Unit] = element(
         description="unit of the parameter.",
+        default=None,
+        tag="unit",
+        json_schema_extra=dict(),
     )
 
-    description: Optional[str] = Field(
-        default=None,
+    description: Optional[str] = element(
         description="description of the parameter.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        default=None,
+        tag="description",
+        json_schema_extra=dict(),
     )

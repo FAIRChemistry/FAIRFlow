@@ -1,50 +1,55 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
-from astropy.units import UnitBase, Unit
-from sdRDM.base.datatypes import UnitType
+from sdRDM.base.utils import forge_signature
 from datetime import datetime as Datetime
-from .datatype import DataType
-from .measurementtype import MeasurementType
-from .metadata import Metadata
+from sdRDM.base.datatypes import Unit
 from .quantity import Quantity
+from .measurementtype import MeasurementType
 from .data import Data
+from .datatype import DataType
+from .metadata import Metadata
 
 
 @forge_signature
 class Measurement(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("measurementINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    measurement_type: Optional[MeasurementType] = Field(
-        default=None,
+    measurement_type: Optional[MeasurementType] = element(
         description="type of a measurement, e.g. potentiostatic or gas chromatography.",
+        default=None,
+        tag="measurement_type",
+        json_schema_extra=dict(),
     )
 
-    metadata: List[Metadata] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="metadata of a measurement.",
+    metadata: List[Metadata] = wrapped(
+        "metadata",
+        element(
+            description="metadata of a measurement.",
+            default_factory=ListPlus,
+            tag="Metadata",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    experimental_data: List[Data] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="experimental data of a measurement.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+    experimental_data: List[Data] = wrapped(
+        "experimental_data",
+        element(
+            description="experimental data of a measurement.",
+            default_factory=ListPlus,
+            tag="Data",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
     def add_to_metadata(
@@ -54,10 +59,10 @@ class Measurement(sdRDM.DataModel):
         abbreviation: Optional[str] = None,
         data_type: Union[DataType, str, None] = None,
         mode: Optional[str] = None,
-        unit: Optional[Union[UnitBase, str, UnitType, Unit]] = None,
+        unit: Optional[Unit] = None,
         description: Optional[str] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Metadata:
         """
         This method adds an object of type 'Metadata' to attribute metadata
 
@@ -89,9 +94,9 @@ class Measurement(sdRDM.DataModel):
         self,
         quantity: Optional[Quantity] = None,
         values: List[Union[float, str, Datetime]] = ListPlus(),
-        unit: Optional[Union[UnitBase, str, UnitType, Unit]] = None,
+        unit: Optional[Unit] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Data:
         """
         This method adds an object of type 'Data' to attribute experimental_data
 

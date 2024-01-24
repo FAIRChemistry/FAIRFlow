@@ -1,43 +1,45 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
 
 
 @forge_signature
 class Keyword(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("keywordINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    value: Optional[str] = Field(
-        default=None,
+    value: Optional[str] = element(
         description="Key terms that describe important aspects of the Dataset.",
+        default=None,
+        tag="value",
+        json_schema_extra=dict(),
     )
 
-    vocabulary: Optional[str] = Field(
-        default=None,
+    vocabulary: Optional[str] = element(
         description=(
             "For the specification of the keyword controlled vocabulary in use, such as"
             " LCSH, MeSH, or others."
         ),
+        default=None,
+        tag="vocabulary",
+        json_schema_extra=dict(),
     )
 
-    vocabulary_uri: Optional[str] = Field(
-        default=None,
+    vocabulary_uri: Optional[str] = element(
         description=(
             "Keyword vocabulary URI points to the web presence that describes the"
             " keyword vocabulary, if appropriate."
         ),
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        default=None,
+        tag="vocabulary_uri",
+        json_schema_extra=dict(),
     )

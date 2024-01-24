@@ -1,49 +1,72 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
 from .material import Material
-from .insulation import Insulation
+
+
+@forge_signature
+class Insulation(sdRDM.DataModel):
+    """Small type for attribute 'insulation'"""
+
+    id: Optional[str] = attr(
+        name="id",
+        description="Unique identifier of the given object.",
+        default_factory=lambda: str(uuid4()),
+        xml="@id",
+    )
+    thickness: Optional[float] = element(
+        default=None, tag="thickness", json_schema_extra=dict()
+    )
+    material: Optional[str] = element(
+        default=None, tag="material", json_schema_extra=dict()
+    )
 
 
 @forge_signature
 class Tubing(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("tubingINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    material: Optional[Material] = Field(
-        default=None,
+    material: Optional[Material] = element(
         description="material with which the fluid flowing through comes into contact.",
+        default=None,
+        tag="material",
+        json_schema_extra=dict(),
     )
 
-    inner_diameter: Optional[float] = Field(
-        default=None,
+    inner_diameter: Optional[float] = element(
         description="inner diameter of the tubing in mm.",
+        default=None,
+        tag="inner_diameter",
+        json_schema_extra=dict(),
     )
 
-    outer_diameter: Optional[float] = Field(
-        default=None,
+    outer_diameter: Optional[float] = element(
         description="outer diameter of the tubing in mm.",
-    )
-
-    length: Optional[int] = Field(
         default=None,
-        description="length of the tubing in mm.",
+        tag="outer_diameter",
+        json_schema_extra=dict(),
     )
 
-    insulation: Optional[Insulation] = Field(
+    length: Optional[int] = element(
+        description="length of the tubing in mm.",
+        default=None,
+        tag="length",
+        json_schema_extra=dict(),
+    )
+
+    insulation: Optional[Insulation] = element(
         description="insulation of the tubing.",
         default_factory=Insulation,
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        tag="insulation",
+        json_schema_extra=dict(),
     )

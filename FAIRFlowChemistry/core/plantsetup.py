@@ -1,56 +1,67 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
-from .insulation import Insulation
-from .tubing import Tubing
-from .input import Input
-from .material import Material
-from .output import Output
+from sdRDM.base.utils import forge_signature
 from .device import Device
+from .tubing import Tubing, Insulation
+from .material import Material
 from .chemical import Chemical
+from .stoichiometry import Stoichiometry
+from .reactantrole import ReactantRole
 
 
 @forge_signature
 class PlantSetup(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("plantsetupINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    devices: List[Device] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="bla",
+    devices: List[Device] = wrapped(
+        "devices",
+        element(
+            description="bla",
+            default_factory=ListPlus,
+            tag="Device",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    tubing: List[Tubing] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="bla",
+    tubing: List[Tubing] = wrapped(
+        "tubing",
+        element(
+            description="bla",
+            default_factory=ListPlus,
+            tag="Tubing",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    input: List[Input] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="bla",
+    input: List[Chemical] = wrapped(
+        "input",
+        element(
+            description="bla",
+            default_factory=ListPlus,
+            tag="Chemical",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    output: List[Output] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="bla",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+    output: List[Chemical] = wrapped(
+        "output",
+        element(
+            description="bla",
+            default_factory=ListPlus,
+            tag="Chemical",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
     def add_to_devices(
@@ -60,7 +71,7 @@ class PlantSetup(sdRDM.DataModel):
         series: Optional[str] = None,
         on_off: Optional[bool] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Device:
         """
         This method adds an object of type 'Device' to attribute devices
 
@@ -90,7 +101,7 @@ class PlantSetup(sdRDM.DataModel):
         length: Optional[int] = None,
         insulation: Optional[Insulation] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Tubing:
         """
         This method adds an object of type 'Tubing' to attribute tubing
 
@@ -115,33 +126,77 @@ class PlantSetup(sdRDM.DataModel):
         return self.tubing[-1]
 
     def add_to_input(
-        self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
-    ) -> None:
+        self,
+        name: Optional[str] = None,
+        formula: Optional[str] = None,
+        pureness: Optional[float] = None,
+        supplier: Optional[str] = None,
+        stoichiometry: Optional[Stoichiometry] = None,
+        state_of_matter: Optional[str] = None,
+        reactant_role: Optional[ReactantRole] = None,
+        id: Optional[str] = None,
+    ) -> Chemical:
         """
-        This method adds an object of type 'Input' to attribute input
+        This method adds an object of type 'Chemical' to attribute input
 
         Args:
-            id (str): Unique identifier of the 'Input' object. Defaults to 'None'.
-            component (): component of the output fluid.. Defaults to ListPlus()
+            id (str): Unique identifier of the 'Chemical' object. Defaults to 'None'.
+            name (): IUPAC name of the compound.. Defaults to None
+            formula (): molecular formula of the compound.. Defaults to None
+            pureness (): pureness of the compound in percent.. Defaults to None
+            supplier (): name of the supplier of the compound.. Defaults to None
+            stoichiometry (): stoichiometric information like equivalents, mass, amount of substance, volume. Defaults to None
+            state_of_matter (): s for solid, l for liquid and g for gaseous. Defaults to None
+            reactant_role (): Role that a reactand plays in a chemical reaction or  in a process.. Defaults to None
         """
-        params = {"component": component}
+        params = {
+            "name": name,
+            "formula": formula,
+            "pureness": pureness,
+            "supplier": supplier,
+            "stoichiometry": stoichiometry,
+            "state_of_matter": state_of_matter,
+            "reactant_role": reactant_role,
+        }
         if id is not None:
             params["id"] = id
-        self.input.append(Input(**params))
+        self.input.append(Chemical(**params))
         return self.input[-1]
 
     def add_to_output(
-        self, component: List[Chemical] = ListPlus(), id: Optional[str] = None
-    ) -> None:
+        self,
+        name: Optional[str] = None,
+        formula: Optional[str] = None,
+        pureness: Optional[float] = None,
+        supplier: Optional[str] = None,
+        stoichiometry: Optional[Stoichiometry] = None,
+        state_of_matter: Optional[str] = None,
+        reactant_role: Optional[ReactantRole] = None,
+        id: Optional[str] = None,
+    ) -> Chemical:
         """
-        This method adds an object of type 'Output' to attribute output
+        This method adds an object of type 'Chemical' to attribute output
 
         Args:
-            id (str): Unique identifier of the 'Output' object. Defaults to 'None'.
-            component (): component of the output fluid.. Defaults to ListPlus()
+            id (str): Unique identifier of the 'Chemical' object. Defaults to 'None'.
+            name (): IUPAC name of the compound.. Defaults to None
+            formula (): molecular formula of the compound.. Defaults to None
+            pureness (): pureness of the compound in percent.. Defaults to None
+            supplier (): name of the supplier of the compound.. Defaults to None
+            stoichiometry (): stoichiometric information like equivalents, mass, amount of substance, volume. Defaults to None
+            state_of_matter (): s for solid, l for liquid and g for gaseous. Defaults to None
+            reactant_role (): Role that a reactand plays in a chemical reaction or  in a process.. Defaults to None
         """
-        params = {"component": component}
+        params = {
+            "name": name,
+            "formula": formula,
+            "pureness": pureness,
+            "supplier": supplier,
+            "stoichiometry": stoichiometry,
+            "state_of_matter": state_of_matter,
+            "reactant_role": reactant_role,
+        }
         if id is not None:
             params["id"] = id
-        self.output.append(Output(**params))
+        self.output.append(Chemical(**params))
         return self.output[-1]

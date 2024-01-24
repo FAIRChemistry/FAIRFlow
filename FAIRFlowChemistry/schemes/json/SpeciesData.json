@@ -1,0 +1,312 @@
+{
+  "$defs": {
+    "BaseUnit": {
+      "properties": {
+        "scale": {
+          "title": "Scale",
+          "type": "number"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "exponent": {
+          "title": "Exponent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "scale",
+        "kind",
+        "exponent"
+      ],
+      "title": "BaseUnit",
+      "type": "object"
+    },
+    "Calibration": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "peak_areas": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Recorded peak areas of the individual calibration solutions."
+        },
+        "concentrations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "concentrations of the individual calibration solutions."
+        },
+        "regression_coefficients": {
+          "description": "Polynomial coefficients in order of increasing degree.",
+          "items": {
+            "type": "number"
+          },
+          "multiple": true,
+          "title": "Regression Coefficients",
+          "type": "array"
+        },
+        "degree": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 1,
+          "description": "Degree of regression model.",
+          "title": "Degree"
+        }
+      },
+      "title": "Calibration",
+      "type": "object"
+    },
+    "ChemicalFormula": {
+      "enum": [
+        "H2",
+        "CO2",
+        "CO",
+        "CH4",
+        "C2H4",
+        "C2H6"
+      ],
+      "title": "ChemicalFormula",
+      "type": "string"
+    },
+    "Data": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Quantity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "quantity of a value."
+        },
+        "values": {
+          "description": "values.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "format": "date-time",
+                "type": "string"
+              }
+            ]
+          },
+          "multiple": true,
+          "title": "Values",
+          "type": "array"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Unit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "unit of the values."
+        }
+      },
+      "title": "Data",
+      "type": "object"
+    },
+    "Quantity": {
+      "enum": [
+        "Time",
+        "Voltage",
+        "Current",
+        "Electrode surface area",
+        "Concentration",
+        "Mass",
+        "Mass flow rate",
+        "Volumetric flow rate",
+        "Date time",
+        "Fraction",
+        "Retention time",
+        "Peak type",
+        "Peak area",
+        "Peak height",
+        "Peak area percentage",
+        "Peak assignment",
+        "Faraday efficiency"
+      ],
+      "title": "Quantity",
+      "type": "string"
+    },
+    "Species": {
+      "enum": [
+        "Hydrogen",
+        "Carbon dioxide",
+        "Carbon monoxide",
+        "Methane",
+        "Ethene",
+        "Ethane"
+      ],
+      "title": "Species",
+      "type": "string"
+    },
+    "Unit": {
+      "description": "Represents a unit type.\n\nAttributes:\n    scale (float): The scale of the unit.\n    bases (list[Union[str, UnitBase]]): The bases of the unit.\n    powers (list[float]): The powers of the unit.\n    _unit (Union[UnitBase, UnitBase]): The internal unit object.\n\nMethods:\n    _serialize_bases: Serializes the bases of the unit.\n    from_string: Creates a Unit object from a string representation.\n    from_astropy_unit: Creates an instance of the class from an Astropy unit.\n    to_unit_string: Returns a string representation of the unit.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "bases": {
+          "items": {
+            "$ref": "#/$defs/BaseUnit"
+          },
+          "title": "Bases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "bases"
+      ],
+      "title": "Unit",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Unique identifier of the given object.",
+      "title": "Id"
+    },
+    "species": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Species"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "name of the species."
+    },
+    "chemical_formula": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ChemicalFormula"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "chemical formula of the species."
+    },
+    "calibration": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Calibration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "calibration measurement."
+    },
+    "correction_factor": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "correction factors of the individual species.",
+      "title": "Correction Factor"
+    },
+    "faraday_coefficient": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Faraday coefficients of the individual species.",
+      "title": "Faraday Coefficient"
+    },
+    "faraday_efficiency": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Data"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Faraday efficiencies of the individual species."
+    }
+  },
+  "title": "SpeciesData",
+  "type": "object"
+}

@@ -1,42 +1,46 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
 
 
 @forge_signature
 class Device(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("deviceINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    manufacturer: Optional[str] = Field(
-        default=None,
+    manufacturer: Optional[str] = element(
         description="name of the manufacturer of the device.",
+        default=None,
+        tag="manufacturer",
+        json_schema_extra=dict(),
     )
 
-    device_type: Optional[str] = Field(
-        default=None,
+    device_type: Optional[str] = element(
         description="type given by the manufacturer of the device.",
+        default=None,
+        tag="device_type",
+        json_schema_extra=dict(),
     )
 
-    series: Optional[str] = Field(
-        default=None,
+    series: Optional[str] = element(
         description="the series of the device.",
+        default=None,
+        tag="series",
+        json_schema_extra=dict(),
     )
 
-    on_off: Optional[bool] = Field(
-        default=None,
+    on_off: Optional[bool] = element(
         description="operational mode of the flow module. True is on and False is off.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        default=None,
+        tag="on_off",
+        json_schema_extra=dict(),
     )

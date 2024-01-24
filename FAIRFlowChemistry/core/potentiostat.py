@@ -1,34 +1,34 @@
 
 from typing import Optional
-from pydantic import Field, PrivateAttr
-from sdRDM.base.utils import forge_signature, IDGenerator
+from uuid import uuid4
+from pydantic_xml import attr, element
+from sdRDM.base.utils import forge_signature
+from .device import Device
 from .measurement import Measurement
 from .metadata import Metadata
-from .device import Device
 
 
 @forge_signature
 class Potentiostat(Device):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("potentiostatINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    measurement: Optional[Measurement] = Field(
+    measurement: Optional[Measurement] = element(
         description="Measuring Data.",
         default_factory=Measurement,
+        tag="measurement",
+        json_schema_extra=dict(),
     )
 
-    metadata: Optional[Metadata] = Field(
+    metadata: Optional[Metadata] = element(
         description="Metadata of the Potentiostat.",
         default_factory=Metadata,
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        tag="metadata",
+        json_schema_extra=dict(),
     )

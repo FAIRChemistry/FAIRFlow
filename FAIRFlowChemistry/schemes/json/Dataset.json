@@ -1,0 +1,1513 @@
+{
+  "$defs": {
+    "Author": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "full name including given and family name.",
+          "title": "Name"
+        },
+        "affiliation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "organization the author is affiliated to.",
+          "title": "Affiliation"
+        },
+        "identifier_scheme": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Name of the identifier scheme (ORCID, ISNI).",
+          "title": "Identifier Scheme"
+        },
+        "identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Uniquely identifies an individual author or organization, according to various schemes.",
+          "title": "Identifier"
+        }
+      },
+      "title": "Author",
+      "type": "object"
+    },
+    "BaseUnit": {
+      "properties": {
+        "scale": {
+          "title": "Scale",
+          "type": "number"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "exponent": {
+          "title": "Exponent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "scale",
+        "kind",
+        "exponent"
+      ],
+      "title": "BaseUnit",
+      "type": "object"
+    },
+    "Calibration": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "peak_areas": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Recorded peak areas of the individual calibration solutions."
+        },
+        "concentrations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "concentrations of the individual calibration solutions."
+        },
+        "regression_coefficients": {
+          "description": "Polynomial coefficients in order of increasing degree.",
+          "items": {
+            "type": "number"
+          },
+          "multiple": true,
+          "title": "Regression Coefficients",
+          "type": "array"
+        },
+        "degree": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 1,
+          "description": "Degree of regression model.",
+          "title": "Degree"
+        }
+      },
+      "title": "Calibration",
+      "type": "object"
+    },
+    "Chemical": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "IUPAC name of the compound.",
+          "title": "Name"
+        },
+        "formula": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "molecular formula of the compound.",
+          "title": "Formula"
+        },
+        "pureness": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "pureness of the compound in percent.",
+          "title": "Pureness"
+        },
+        "supplier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "name of the supplier of the compound.",
+          "title": "Supplier"
+        },
+        "stoichiometry": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Stoichiometry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "stoichiometric information like equivalents, mass, amount of substance, volume"
+        },
+        "state_of_matter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "s for solid, l for liquid and g for gaseous",
+          "title": "State Of Matter"
+        },
+        "reactant_role": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReactantRole"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Role that a reactand plays in a chemical reaction or  in a process."
+        }
+      },
+      "title": "Chemical",
+      "type": "object"
+    },
+    "ChemicalFormula": {
+      "enum": [
+        "H2",
+        "CO2",
+        "CO",
+        "CH4",
+        "C2H4",
+        "C2H6"
+      ],
+      "title": "ChemicalFormula",
+      "type": "string"
+    },
+    "Contact": {
+      "description": "Small type for attribute 'contact'",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "affiliation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Affiliation"
+        },
+        "email": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Email"
+        }
+      },
+      "title": "Contact",
+      "type": "object"
+    },
+    "Data": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Quantity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "quantity of a value."
+        },
+        "values": {
+          "description": "values.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "format": "date-time",
+                "type": "string"
+              }
+            ]
+          },
+          "multiple": true,
+          "title": "Values",
+          "type": "array"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Unit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "unit of the values."
+        }
+      },
+      "title": "Data",
+      "type": "object"
+    },
+    "DataType": {
+      "enum": [
+        "string",
+        "float",
+        "date",
+        "time",
+        "datetime",
+        "Boolean",
+        "int",
+        "NONE",
+        "label"
+      ],
+      "title": "DataType",
+      "type": "string"
+    },
+    "Device": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "manufacturer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "name of the manufacturer of the device.",
+          "title": "Manufacturer"
+        },
+        "device_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "type given by the manufacturer of the device.",
+          "title": "Device Type"
+        },
+        "series": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "the series of the device.",
+          "title": "Series"
+        },
+        "on_off": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "operational mode of the flow module. True is on and False is off.",
+          "title": "On Off"
+        }
+      },
+      "title": "Device",
+      "type": "object"
+    },
+    "Experiment": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "plant_setup": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlantSetup"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "the individual plant setup that is used in this one experiment."
+        },
+        "measurements": {
+          "description": "different measurements that are made within the scope of one experiment.",
+          "items": {
+            "$ref": "#/$defs/Measurement"
+          },
+          "multiple": true,
+          "title": "Measurements",
+          "type": "array"
+        },
+        "species_data": {
+          "description": "all provided and calculated data about a specific species.",
+          "items": {
+            "$ref": "#/$defs/SpeciesData"
+          },
+          "multiple": true,
+          "title": "Species Data",
+          "type": "array"
+        }
+      },
+      "title": "Experiment",
+      "type": "object"
+    },
+    "GeneralInformation": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "title of the work.",
+          "title": "Title"
+        },
+        "project": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Name of the project this work is related to.",
+          "title": "Project"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "describes the content of the dataset.",
+          "title": "Description"
+        },
+        "authors": {
+          "description": "authors of this dataset.",
+          "items": {
+            "$ref": "#/$defs/Author"
+          },
+          "multiple": true,
+          "title": "Authors",
+          "type": "array"
+        },
+        "contact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Contact"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "point of contact for this projecet"
+        },
+        "subject": {
+          "description": "Domain-specific Subject Categories that are topically relevant to the Dataset.",
+          "items": {
+            "type": "string"
+          },
+          "multiple": true,
+          "title": "Subject",
+          "type": "array"
+        },
+        "related_publication": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RelatedPublication"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Related publication to the dataset."
+        },
+        "keywords": {
+          "description": "Keywords and url related to the project.",
+          "items": {
+            "$ref": "#/$defs/Keyword"
+          },
+          "multiple": true,
+          "title": "Keywords",
+          "type": "array"
+        },
+        "topic_classification": {
+          "description": "Topic classification.",
+          "items": {
+            "$ref": "#/$defs/TopicClassification"
+          },
+          "multiple": true,
+          "title": "Topic Classification",
+          "type": "array"
+        }
+      },
+      "title": "GeneralInformation",
+      "type": "object"
+    },
+    "Insulation": {
+      "description": "Small type for attribute 'insulation'",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "thickness": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thickness"
+        },
+        "material": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Material"
+        }
+      },
+      "title": "Insulation",
+      "type": "object"
+    },
+    "Keyword": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Key terms that describe important aspects of the Dataset.",
+          "title": "Value"
+        },
+        "vocabulary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.",
+          "title": "Vocabulary"
+        },
+        "vocabulary_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.",
+          "title": "Vocabulary Uri"
+        }
+      },
+      "title": "Keyword",
+      "type": "object"
+    },
+    "Material": {
+      "enum": [
+        "Stainless Steel 1.4404",
+        "Stainless Steel 1.4571",
+        "Stainless Steel 1.4301",
+        "PTFE",
+        "PFA",
+        "Stone Wool",
+        "Glass Wool",
+        "Glass Fiber"
+      ],
+      "title": "Material",
+      "type": "string"
+    },
+    "Measurement": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "measurement_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeasurementType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "type of a measurement, e.g. potentiostatic or gas chromatography."
+        },
+        "metadata": {
+          "description": "metadata of a measurement.",
+          "items": {
+            "$ref": "#/$defs/Metadata"
+          },
+          "multiple": true,
+          "title": "Metadata",
+          "type": "array"
+        },
+        "experimental_data": {
+          "description": "experimental data of a measurement.",
+          "items": {
+            "$ref": "#/$defs/Data"
+          },
+          "multiple": true,
+          "title": "Experimental Data",
+          "type": "array"
+        }
+      },
+      "title": "Measurement",
+      "type": "object"
+    },
+    "MeasurementType": {
+      "enum": [
+        "Potentiostatic measurement",
+        "Galvanostatic measurement",
+        "GC measurement",
+        "MFM measurement"
+      ],
+      "title": "MeasurementType",
+      "type": "string"
+    },
+    "Metadata": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "parameter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Name of the parameter.",
+          "title": "Parameter"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "value of the parameter.",
+          "title": "Value"
+        },
+        "abbreviation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "abbreviation for the parameter.",
+          "title": "Abbreviation"
+        },
+        "data_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DataType"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "type of the parameter.",
+          "title": "Data Type"
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "mode of the parameter. E.g., on and off.",
+          "title": "Mode"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Unit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "unit of the parameter."
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "description of the parameter.",
+          "title": "Description"
+        }
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "PlantSetup": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "devices": {
+          "description": "bla",
+          "items": {
+            "$ref": "#/$defs/Device"
+          },
+          "multiple": true,
+          "title": "Devices",
+          "type": "array"
+        },
+        "tubing": {
+          "description": "bla",
+          "items": {
+            "$ref": "#/$defs/Tubing"
+          },
+          "multiple": true,
+          "title": "Tubing",
+          "type": "array"
+        },
+        "input": {
+          "description": "bla",
+          "items": {
+            "$ref": "#/$defs/Chemical"
+          },
+          "multiple": true,
+          "title": "Input",
+          "type": "array"
+        },
+        "output": {
+          "description": "bla",
+          "items": {
+            "$ref": "#/$defs/Chemical"
+          },
+          "multiple": true,
+          "title": "Output",
+          "type": "array"
+        }
+      },
+      "title": "PlantSetup",
+      "type": "object"
+    },
+    "Quantity": {
+      "enum": [
+        "Time",
+        "Voltage",
+        "Current",
+        "Electrode surface area",
+        "Concentration",
+        "Mass",
+        "Mass flow rate",
+        "Volumetric flow rate",
+        "Date time",
+        "Fraction",
+        "Retention time",
+        "Peak type",
+        "Peak area",
+        "Peak height",
+        "Peak area percentage",
+        "Peak assignment",
+        "Faraday efficiency"
+      ],
+      "title": "Quantity",
+      "type": "string"
+    },
+    "ReactantRole": {
+      "enum": [
+        "Educt",
+        "Product",
+        "Catalyst",
+        "Solvent",
+        "Inert Gas"
+      ],
+      "title": "ReactantRole",
+      "type": "string"
+    },
+    "RelatedPublication": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "citation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The full bibliographic citation for this related publication.",
+          "title": "Citation"
+        },
+        "id_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The type of digital identifier used for this publication (e.g., Digital Object Identifier (DOI)).",
+          "title": "Id Type"
+        },
+        "id_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "'The identifier for the selected ID type.'",
+          "title": "Id Number"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "'Link to the publication web page (e.g., journal article page, archive record page, or other).",
+          "title": "Url"
+        }
+      },
+      "title": "RelatedPublication",
+      "type": "object"
+    },
+    "Species": {
+      "enum": [
+        "Hydrogen",
+        "Carbon dioxide",
+        "Carbon monoxide",
+        "Methane",
+        "Ethene",
+        "Ethane"
+      ],
+      "title": "Species",
+      "type": "string"
+    },
+    "SpeciesData": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "species": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Species"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "name of the species."
+        },
+        "chemical_formula": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ChemicalFormula"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "chemical formula of the species."
+        },
+        "calibration": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Calibration"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "calibration measurement."
+        },
+        "correction_factor": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "correction factors of the individual species.",
+          "title": "Correction Factor"
+        },
+        "faraday_coefficient": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Faraday coefficients of the individual species.",
+          "title": "Faraday Coefficient"
+        },
+        "faraday_efficiency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Faraday efficiencies of the individual species."
+        }
+      },
+      "title": "SpeciesData",
+      "type": "object"
+    },
+    "Stoichiometry": {
+      "description": "Stoichiometric information about the compound.",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "equivalents": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "used equivalents in relation to the reference compound",
+          "title": "Equivalents"
+        },
+        "amount_of_substance": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "amount of substance n in mmol",
+          "title": "Amount Of Substance"
+        },
+        "mass": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "used mass of the compound in g",
+          "title": "Mass"
+        },
+        "volume": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "volume of the compound",
+          "title": "Volume"
+        },
+        "density": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "density of the compound at standard temperature and pressure.",
+          "title": "Density"
+        },
+        "molar_mass": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "molar mass of the compound in g per mol",
+          "title": "Molar Mass"
+        },
+        "mass_concentration": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "mass concentration in percent.",
+          "title": "Mass Concentration"
+        },
+        "molar_concentration": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "molar concentration in mol per l.",
+          "title": "Molar Concentration"
+        }
+      },
+      "title": "Stoichiometry",
+      "type": "object"
+    },
+    "TopicClassification": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Topic or Subject term that is relevant to this Dataset.",
+          "title": "Value"
+        },
+        "vocab": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.",
+          "title": "Vocab"
+        },
+        "vocab_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Specifies the URI location for the full controlled vocabulary.",
+          "title": "Vocab Uri"
+        }
+      },
+      "title": "TopicClassification",
+      "type": "object"
+    },
+    "Tubing": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "material": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Material"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "material with which the fluid flowing through comes into contact."
+        },
+        "inner_diameter": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "inner diameter of the tubing in mm.",
+          "title": "Inner Diameter"
+        },
+        "outer_diameter": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "outer diameter of the tubing in mm.",
+          "title": "Outer Diameter"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "length of the tubing in mm.",
+          "title": "Length"
+        },
+        "insulation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Insulation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "insulation of the tubing."
+        }
+      },
+      "title": "Tubing",
+      "type": "object"
+    },
+    "Unit": {
+      "description": "Represents a unit type.\n\nAttributes:\n    scale (float): The scale of the unit.\n    bases (list[Union[str, UnitBase]]): The bases of the unit.\n    powers (list[float]): The powers of the unit.\n    _unit (Union[UnitBase, UnitBase]): The internal unit object.\n\nMethods:\n    _serialize_bases: Serializes the bases of the unit.\n    from_string: Creates a Unit object from a string representation.\n    from_astropy_unit: Creates an instance of the class from an Astropy unit.\n    to_unit_string: Returns a string representation of the unit.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "bases": {
+          "items": {
+            "$ref": "#/$defs/BaseUnit"
+          },
+          "title": "Bases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "bases"
+      ],
+      "title": "Unit",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Unique identifier of the given object.",
+      "title": "Id"
+    },
+    "general_information": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GeneralInformation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "general data about the data model."
+    },
+    "experiments": {
+      "description": "information about the individual experiment.",
+      "items": {
+        "$ref": "#/$defs/Experiment"
+      },
+      "multiple": true,
+      "title": "Experiments",
+      "type": "array"
+    }
+  },
+  "title": "Dataset",
+  "type": "object"
+}

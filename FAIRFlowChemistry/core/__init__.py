@@ -1,7 +1,6 @@
 from .dataset import Dataset
 from .generalinformation import GeneralInformation
 from .author import Author
-from .contact import Contact
 from .relatedpublication import RelatedPublication
 from .keyword import Keyword
 from .topicclassification import TopicClassification
@@ -14,9 +13,6 @@ from .massflowmeter import MassFlowMeter
 from .parameter import Parameter
 from .potentiostat import Potentiostat
 from .tubing import Tubing
-from .insulation import Insulation
-from .input import Input
-from .output import Output
 from .chemical import Chemical
 from .stoichiometry import Stoichiometry
 from .data import Data
@@ -40,7 +36,6 @@ __all__ = [
     "Dataset",
     "GeneralInformation",
     "Author",
-    "Contact",
     "RelatedPublication",
     "Keyword",
     "TopicClassification",
@@ -53,9 +48,6 @@ __all__ = [
     "Parameter",
     "Potentiostat",
     "Tubing",
-    "Insulation",
-    "Input",
-    "Output",
     "Chemical",
     "Stoichiometry",
     "Data",

@@ -1,41 +1,43 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
-from .generalinformation import GeneralInformation
-from .plantsetup import PlantSetup
-from .speciesdata import SpeciesData
-from .experiment import Experiment
+from sdRDM.base.utils import forge_signature
 from .measurement import Measurement
+from .experiment import Experiment
+from .generalinformation import GeneralInformation
+from .speciesdata import SpeciesData
+from .plantsetup import PlantSetup
 
 
 @forge_signature
 class Dataset(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("datasetINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    general_information: Optional[GeneralInformation] = Field(
+    general_information: Optional[GeneralInformation] = element(
         description="general data about the data model.",
         default_factory=GeneralInformation,
+        tag="general_information",
+        json_schema_extra=dict(),
     )
 
-    experiments: List[Experiment] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="information about the individual experiment.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+    experiments: List[Experiment] = wrapped(
+        "experiments",
+        element(
+            description="information about the individual experiment.",
+            default_factory=ListPlus,
+            tag="Experiment",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
     def add_to_experiments(
@@ -44,7 +46,7 @@ class Dataset(sdRDM.DataModel):
         measurements: List[Measurement] = ListPlus(),
         species_data: List[SpeciesData] = ListPlus(),
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Experiment:
         """
         This method adds an object of type 'Experiment' to attribute experiments
 

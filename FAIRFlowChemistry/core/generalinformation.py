@@ -1,82 +1,120 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
-from .topicclassification import TopicClassification
-from .contact import Contact
+from sdRDM.base.utils import forge_signature
+from .author import Author
 from .keyword import Keyword
 from .relatedpublication import RelatedPublication
-from .author import Author
+from .topicclassification import TopicClassification
+
+
+@forge_signature
+class Contact(sdRDM.DataModel):
+    """Small type for attribute 'contact'"""
+
+    id: Optional[str] = attr(
+        name="id",
+        description="Unique identifier of the given object.",
+        default_factory=lambda: str(uuid4()),
+        xml="@id",
+    )
+    name: Optional[str] = element(default=None, tag="name", json_schema_extra=dict())
+    affiliation: Optional[str] = element(
+        default=None, tag="affiliation", json_schema_extra=dict()
+    )
+    email: Optional[str] = element(default=None, tag="email", json_schema_extra=dict())
 
 
 @forge_signature
 class GeneralInformation(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("generalinformationINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    title: Optional[str] = Field(
-        default=None,
+    title: Optional[str] = element(
         description="title of the work.",
+        default=None,
+        tag="title",
+        json_schema_extra=dict(),
     )
 
-    project: Optional[str] = Field(
-        default=None,
+    project: Optional[str] = element(
         description="Name of the project this work is related to.",
-    )
-
-    description: Optional[str] = Field(
         default=None,
+        tag="project",
+        json_schema_extra=dict(),
+    )
+
+    description: Optional[str] = element(
         description="describes the content of the dataset.",
+        default=None,
+        tag="description",
+        json_schema_extra=dict(),
     )
 
-    authors: List[Author] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="authors of this dataset.",
-    )
-
-    contact: Optional[Contact] = Field(
-        description="point of contact for this projecet",
-        default_factory=Contact,
-    )
-
-    subject: List[str] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description=(
-            "Domain-specific Subject Categories that are topically relevant to the"
-            " Dataset."
+    authors: List[Author] = wrapped(
+        "authors",
+        element(
+            description="authors of this dataset.",
+            default_factory=ListPlus,
+            tag="Author",
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
-    related_publication: Optional[RelatedPublication] = Field(
+    contact: Optional[Contact] = element(
+        description="point of contact for this projecet",
+        default_factory=Contact,
+        tag="contact",
+        json_schema_extra=dict(),
+    )
+
+    subject: List[str] = wrapped(
+        "subject",
+        element(
+            description=(
+                "Domain-specific Subject Categories that are topically relevant to the"
+                " Dataset."
+            ),
+            default_factory=ListPlus,
+            tag="string",
+            json_schema_extra=dict(multiple=True),
+        ),
+    )
+
+    related_publication: Optional[RelatedPublication] = element(
         description="Related publication to the dataset.",
         default_factory=RelatedPublication,
+        tag="related_publication",
+        json_schema_extra=dict(),
     )
 
-    keywords: List[Keyword] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="Keywords and url related to the project.",
+    keywords: List[Keyword] = wrapped(
+        "keywords",
+        element(
+            description="Keywords and url related to the project.",
+            default_factory=ListPlus,
+            tag="Keyword",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    topic_classification: List[TopicClassification] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="Topic classification.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+    topic_classification: List[TopicClassification] = wrapped(
+        "topic_classification",
+        element(
+            description="Topic classification.",
+            default_factory=ListPlus,
+            tag="TopicClassification",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
     def add_to_authors(
@@ -86,7 +124,7 @@ class GeneralInformation(sdRDM.DataModel):
         identifier_scheme: Optional[str] = None,
         identifier: Optional[str] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Author:
         """
         This method adds an object of type 'Author' to attribute authors
 
@@ -114,7 +152,7 @@ class GeneralInformation(sdRDM.DataModel):
         vocabulary: Optional[str] = None,
         vocabulary_uri: Optional[str] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> Keyword:
         """
         This method adds an object of type 'Keyword' to attribute keywords
 
@@ -140,7 +178,7 @@ class GeneralInformation(sdRDM.DataModel):
         vocab: Optional[str] = None,
         vocab_uri: Optional[str] = None,
         id: Optional[str] = None,
-    ) -> None:
+    ) -> TopicClassification:
         """
         This method adds an object of type 'TopicClassification' to attribute topic_classification
 

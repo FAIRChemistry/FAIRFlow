@@ -2,9 +2,10 @@ import sdRDM
 
 import numpy as np
 from typing import List, Optional
-from pydantic import Field, PrivateAttr
+from uuid import uuid4
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
-from sdRDM.base.utils import forge_signature, IDGenerator
+from sdRDM.base.utils import forge_signature
 from .data import Data
 
 
@@ -12,37 +13,42 @@ from .data import Data
 class Calibration(sdRDM.DataModel):
     """"""
 
-    id: Optional[str] = Field(
+    id: Optional[str] = attr(
+        name="id",
         description="Unique identifier of the given object.",
-        default_factory=IDGenerator("calibrationINDEX"),
+        default_factory=lambda: str(uuid4()),
         xml="@id",
     )
 
-    peak_areas: Optional[Data] = Field(
+    peak_areas: Optional[Data] = element(
         description="Recorded peak areas of the individual calibration solutions.",
         default_factory=Data,
+        tag="peak_areas",
+        json_schema_extra=dict(),
     )
 
-    concentrations: Optional[Data] = Field(
+    concentrations: Optional[Data] = element(
         description="concentrations of the individual calibration solutions.",
         default_factory=Data,
+        tag="concentrations",
+        json_schema_extra=dict(),
     )
 
-    regression_coefficients: List[float] = Field(
-        default_factory=ListPlus,
-        multiple=True,
-        description="Polynomial coefficients in order of increasing degree.",
+    regression_coefficients: List[float] = wrapped(
+        "regression_coefficients",
+        element(
+            description="Polynomial coefficients in order of increasing degree.",
+            default_factory=ListPlus,
+            tag="float",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    degree: Optional[int] = Field(
-        default=1,
+    degree: Optional[int] = element(
         description="Degree of regression model.",
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="ef81b78015477a06bc88e5dd78879b337a8d9c2e"
+        default=1,
+        tag="degree",
+        json_schema_extra=dict(),
     )
 
     def calibrate(self):
