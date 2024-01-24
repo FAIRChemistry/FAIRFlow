@@ -21,8 +21,7 @@ from ipywidgets import (
     Layout,  # Layout specification object
 )
 
-logger = logging.getLogger(__name__)
-logger.propagate = True
+logger = logging.getLogger("main")
 
 class Librarian(BaseModel):
     """
@@ -142,17 +141,20 @@ class Librarian(BaseModel):
 class PeakAssigner:
     """
     Class that assign peaks of given GC measurements within a given experiment object
-
-    Args:
-        experiment (Experiment): Experiment object contain the GC measurements
-        species (List): List with possible species that should be matched to the GC results
-        typical_retention_time (dict): Dictionary with typical retenion times to pre assign peak values
     """
 
-    def __init__(self, experiment: Experiment, species: List[str], typical_retention_time: Dict = {} ):
+    def __init__(self, experiment: Experiment, species: List[str], typical_retention_time: Dict = {}, lower_assignment_bound: float=0.1 ):
+        """
+        Args:
+            experiment (Experiment): Experiment object contain the GC measurements
+            species (List): List with possible species that should be matched to the GC results
+            typical_retention_time (dict, optional): Dictionary with typical retenion times to pre assign peak values. Defaults to {}.
+            lower_assignment_bound (float, optional): Preassignment boundary for typical retention time dictionary and measured retetion time values. Defaults to 0.1.
+        """
         self.experiment = experiment
         self.species    = species
         self.typical_retention_time = typical_retention_time
+        self.lower_assignment_bound = lower_assignment_bound
         self._assignment_dicts = []
         self._selection_output = Output()
         self._VBox_list = []
@@ -170,7 +172,7 @@ class PeakAssigner:
                 
                 self.peak_areas_retention_time_dict[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
         else:
-            print("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
+            logger.info("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
 
     def save_assignments(self, _):
         """
@@ -255,8 +257,12 @@ class PeakAssigner:
                 
                 try:
                     # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
-                    idx           = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in self.species ] )
-                    default_value = list( self.typical_retention_time.items() )[idx][0]
+                    diff          = [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in self.species ]
+                    if np.min(diff) < self.lower_assignment_bound:
+                        idx           = np.argmin( diff )
+                        default_value = list( self.typical_retention_time.items() )[idx][0]
+                    else:
+                        default_value = ""
                 except:
                     default_value = ""
 
@@ -273,7 +279,7 @@ class PeakAssigner:
                 
                 hbox_list.append( HBox( [ retention_time_label, peak_area_label, dropdown ] ) )
 
-            # Append the bertical box for each measurement to the overall list with every vertical boxes
+            # Append the vertical box for each measurement to the overall list with every vertical boxes
             self._VBox_list.append( VBox( children = hbox_list, layout = layout_vbox ) )
 
         # Create a button to save the assignments made
@@ -284,11 +290,11 @@ class PeakAssigner:
         display_button.on_click(self.save_assignments)
         
         # Define the total layout
-        widget0 = HBox(children=self._VBox_list, layout=layout_hbox)
+        widget0 = [ HBox(children=self._VBox_list[i:i+3], layout=layout_hbox) for i in range( 0, len(self._VBox_list), 3 ) ]
         widget1 = HBox(children=[display_button],layout=Layout(justify_content="center"))
         widget2 = self._selection_output
 
-        full_layout = VBox([widget0,widget1,widget2])
+        full_layout = VBox([*widget0,widget1,widget2])
 
         display(full_layout)
 
@@ -312,8 +318,12 @@ class PeakAssigner:
 
                 try:
                     # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
-                    idx           = np.argmin( [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in new_options ] )
-                    default_value = list( self.typical_retention_time.items() )[idx][0]
+                    diff          = [ abs( trt[1] - retention_time ) for trt in self.typical_retention_time.items() if trt[0] in self.species ]
+                    if np.min(diff) < self.lower_assignment_bound:
+                        idx           = np.argmin( diff )
+                        default_value = list( self.typical_retention_time.items() )[idx][0]
+                    else:
+                        default_value = ""
                 except:
                     default_value = ""
 

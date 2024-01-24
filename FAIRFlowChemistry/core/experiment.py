@@ -154,7 +154,6 @@ class Experiment(
                 ),
                 concentrations=Data(
                     quantity=Quantity.CONCENTRATION.value,
-                    unit="%",
                     values=data["concentrations"],
                 ),
                 degree=degree,
@@ -206,16 +205,19 @@ class Experiment(
         Returns:
             list: Datetime list and flow value list
         """
-        mfm_measurement = self.get(
-            "measurements", "measurement_type", "MFM measurement"
-        )[0][0]
+        volumetric_flow_datetime_list = []
+        volumetric_flow_values_list   = []
 
-        volumetric_flow_datetime_list = mfm_measurement.get(
-            "experimental_data", "quantity", Quantity.DATETIME.value
-        )[0][0].values
-        volumetric_flow_values_list = mfm_measurement.get(
-            "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value
-        )[0][0].values
+        mfm_measurements = self.get(
+            "measurements", "measurement_type", "MFM measurement"
+        )[0]
+        for mfm_measurement in mfm_measurements:
+            volumetric_flow_datetime_list.extend( mfm_measurement.get(
+                "experimental_data", "quantity", Quantity.DATETIME.value
+            )[0][0].values )
+            volumetric_flow_values_list.extend( mfm_measurement.get(
+                "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value
+            )[0][0].values )
 
         # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
         if not type(volumetric_flow_datetime_list[0]) == DataType.DATETIME.value:

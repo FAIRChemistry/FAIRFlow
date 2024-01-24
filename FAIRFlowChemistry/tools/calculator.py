@@ -13,10 +13,7 @@ import scipy.constants as const
 
 import logging
 
-def get_logger():
-    return logging.getLogger("__main__")
-
-logger = get_logger()
+logger = logging.getLogger("main")
 
 class FaradayEfficiencyCalculator(BaseModel):
     experiment: Experiment
@@ -51,6 +48,10 @@ class FaradayEfficiencyCalculator(BaseModel):
         
         index_match                = np.argmin( [abs(dt - inj_date_datetime) for dt in volumetric_flow_datetime_list] )
         self.volumetric_flow_mean  = np.mean( np.array( volumetric_flow_values_list )[ range(index_match - self.mean_radius, index_match + self.mean_radius + 1) ] )
+        
+        logger.info("Matching time: %s"%str(volumetric_flow_datetime_list[index_match]))
+        logger.info("Matching mean volumetric flow [ml/min]: %.3f"%(self.volumetric_flow_mean*60))
+
 
     def _calculate_volumetric_fractions(self, assigned_peak_areas_dict: dict):
         """
@@ -76,14 +77,18 @@ class FaradayEfficiencyCalculator(BaseModel):
         With the correction factor, the real mean voulmetric flow of the mixture is computed
         """
 
-        correction_factor_H   = self.experiment.get("species_data", "species", Species.HYDROGEN.value)[0][0].correction_factor
-        correction_factor_CO  = self.experiment.get("species_data", "species", Species.CARBONMONOXIDE.value)[0][0].correction_factor
-        correction_factor_CO2 = self.experiment.get("species_data", "species", Species.CARBONDIOXIDE.value)[0][0].correction_factor
+        correction_factor_H    = self.experiment.get("species_data", "species", Species.HYDROGEN.value)[0][0].correction_factor
+        correction_factor_CO   = self.experiment.get("species_data", "species", Species.CARBONMONOXIDE.value)[0][0].correction_factor
+        correction_factor_CO2  = self.experiment.get("species_data", "species", Species.CARBONDIOXIDE.value)[0][0].correction_factor
+        
+        volumetric_fraction_H  = self.volumetric_fractions_df.loc[Species.HYDROGEN.value].values[0]
+        volumetric_fraction_CO = self.volumetric_fractions_df.loc[Species.CARBONMONOXIDE.value].values[0]
 
-        self.conversion_factor    = ( 1 / ( self.volumetric_fractions_df.loc[Species.HYDROGEN.value].values[0] / correction_factor_H
-                                        + ( 1 - self.volumetric_fractions_df.loc[Species.HYDROGEN.value].values[0]  + self.volumetric_fractions_df.loc[Species.CARBONMONOXIDE.value].values[0]  ) / correction_factor_CO2
-                                        + self.volumetric_fractions_df.loc[Species.CARBONMONOXIDE.value].values[0] / correction_factor_CO
-                                        ) / correction_factor_CO2 )
+        k1 = volumetric_fraction_H / correction_factor_H
+        k2 = ( 1 - volumetric_fraction_H  + volumetric_fraction_CO  ) / correction_factor_CO2
+        k3 = volumetric_fraction_CO / correction_factor_CO
+
+        self.conversion_factor    = 1 / ( k1 + k2 + k3 ) * 1 / correction_factor_CO2
         
         self.real_volumetric_flow = self.volumetric_flow_mean * self.conversion_factor
 
@@ -92,7 +97,7 @@ class FaradayEfficiencyCalculator(BaseModel):
         Function that computes the real material flow of every component [mol/s].
         Given the real volumetric flow and the volumetric fractions (computed from GC measurement and calibration data)
         """
-        ## molecular volume of ideal Gas at 1 atm and 273.15 K: 22.414 l/mol --> 22414 ml/mol (m^3/mol = 10^-6*ml^3/mol)
+        ## molecular volume of ideal Gas at 1 atm and 273.15 K in ml^3/mol (m^3/mol = 10^-6*ml^3/mol)
         molecular_volume                  = const.R * 273.15 / 101325 * 10**6
         rename                            = {"Volumetric_fraction [-]": "Material_flow [mol/s]"}
 
@@ -156,6 +161,8 @@ class FaradayEfficiencyCalculator(BaseModel):
             else:
                 assigned_peak_areas_dict[species] = [peak_area]
 
+        logger.info("\n\nProcessed data of GC measurement with id: %s\n"%gc_measurement.id)
+                    
         # Compute the theoretical material flow (several substeps are performed to do so)
         self._calculate_volumetric_flow_mean( inj_date_datetime = inj_date_datetime )
         self._calculate_volumetric_fractions( assigned_peak_areas_dict = assigned_peak_areas_dict)
@@ -169,12 +176,11 @@ class FaradayEfficiencyCalculator(BaseModel):
         faraday_efficiency_df = self.material_flow_df.divide( self.theoretical_material_flow_df["Theoretical_material_flow [mol/s]"], axis="index", ).rename(columns=rename) * 100
         faraday_efficiency_df.dropna(inplace=True)
 
-        # Write into logger
-        logger.info("\n\nProcessed data of GC measurement with id: %s\n%s\n%s\n%s\n%s\n\n",
-                    gc_measurement.id,
+        # Write into logger (but just in the first handler (which is the file handler))
+        logger.info("\n%s\n%s\n%s\n%s\n\n",
                     self.volumetric_fractions_df.to_string(),
-                    self.material_flow_df.to_string(),
-                    self.theoretical_material_flow_df.to_string(),
+                    (self.material_flow_df*60).rename( columns={"Material_flow [mol/s]":"Material_flow [mol/min]"}).to_string(),
+                    (self.theoretical_material_flow_df*60).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mol/min]"}).to_string(),
                     faraday_efficiency_df.to_string())
         
         return faraday_efficiency_df

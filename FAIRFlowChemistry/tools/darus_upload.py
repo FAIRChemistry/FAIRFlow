@@ -229,7 +229,7 @@ class DaRUS_upload:
     def DaRUS(self, dataset: Dataset, dataset_path: Path | str, dataverse_list: List):
         
         # Common variables
-        self.dataset                = Dataset(**dataset.__dict__)
+        self.dataset                = Dataset(**dataset.model_dump())
         self.dataverse_list         = dataverse_list
         self.dataset_path           = dataset_path
 

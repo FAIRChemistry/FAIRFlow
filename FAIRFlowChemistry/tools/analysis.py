@@ -66,7 +66,7 @@ class analyzing_raw_data_widget:
             for i, gc_measurement in enumerate( gc_measurements ):
                 tmp = fe_calculator.calculate_faraday_efficiencies( gc_measurement = gc_measurement )
                 faraday_efficiencies.append( tmp )
-                print("Faraday effiencies of GC measurement n°%d"%i)
+                print("Faraday effiencies of GC measurement n°%d"%(i+1))
                 print(tmp,"\n")
 
             mean_faraday_efficiency = pd.concat(faraday_efficiencies).groupby(level=0).mean()
@@ -77,7 +77,7 @@ class analyzing_raw_data_widget:
             for species_data in self.dataset.experiments[self.experiments_dropdown.value].species_data:
                 if species_data.species in mean_faraday_efficiency.index:
                     faraday_efficiency              = mean_faraday_efficiency.loc[species_data.species].values
-                    species_data.faraday_efficiency = Data( quantity = Quantity.FARADAYEFFIECENCY.value, values = faraday_efficiency.tolist(), unit = '%')
+                    species_data.faraday_efficiency = Data( quantity = Quantity.FARADAYEFFIECENCY.value, values = faraday_efficiency.tolist())
 
 
     def choose_experiment(self, dataset: Dataset, dataset_path: str, typical_retention_time: dict={}) -> None:
@@ -94,7 +94,7 @@ class analyzing_raw_data_widget:
         # Common variables
         self.typical_retention_time = typical_retention_time 
         self.dataset_path           = dataset_path
-        self.dataset                = Dataset(**dataset.__dict__)
+        self.dataset                = Dataset(**dataset.model_dump())
 
         if not bool( self.dataset.experiments  ): raise ValueError("Dataset contains no experiments!\n")
 

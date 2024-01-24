@@ -53,14 +53,16 @@ class reading_raw_data_widget():
     def add_experiment(self,_):
 
         ## Read in selected raw data and save it in Experiment class ##
-
-        experiment                 = Experiment()
+        if not self.experiment_name.value:
+            raise ValueError("Provide experiment name!\n")
         
-        potentiostatic_measurement = gstatic_parser( metadata_path = self.Echem_files.value[0] )
-        mfm_measurement            = mfm_parser( experimental_data_path = self.MFM_files.value[0] )
+        experiment                 = Experiment( id = self.experiment_name.value )
+        
+        potentiostatic_measurement = [ gstatic_parser( metadata_path = self.Echem_files.value[0] ) ]
+        mfm_measurement            = [ mfm_parser( experimental_data_path = mfm_file ) for mfm_file in self.MFM_files.value ]
         gc_measurements_list       = [ gc_parser( metadata_path = self.GC_files.value[i], experimental_data_path = self.GC_files.value[i+1] ) for i in range( 0, len(self.GC_files.value), 2 ) ]
 
-        experiment.measurements    = [ potentiostatic_measurement, mfm_measurement, *gc_measurements_list ]
+        experiment.measurements    = [ *potentiostatic_measurement, *mfm_measurement, *gc_measurements_list ]
 
         # Read in parameters such as calibration, correction factors and farraday coefficients and save it in Experiment class #
         experiment.calibrate_from_json( self.calib_files.value[0], degree=1 )
@@ -80,7 +82,8 @@ class reading_raw_data_widget():
         self.calib_files.value      = []
         self.correction_files.value = []
         self.faraday_files.value    = []
-
+        self.experiment_name.value  = ""
+        
     def folder_dropdown_option_handler(self,_):
         # If no subdirectories exist, then the parent folder is simply the first parent, otherwise it is the 2nd parent
         # (because the current dropdown value is already one deeper than the actual directory )
@@ -157,6 +160,11 @@ class reading_raw_data_widget():
                                                 description='for category:',
                                                 style={'description_width': 'auto'})
 
+        self.experiment_name  = widgets.Text(description='Experiment name:',
+                                            placeholder='Enter the name of the experiment (e.g.: experiment1)',
+                                            layout=widgets.Layout(width='auto'),
+                                            style={'description_width': 'auto'})
+
         self.button_go_for    = widgets.Button(description='Change into selected directory',
                                               layout=widgets.Layout(width='auto'))
         
@@ -222,7 +230,8 @@ class reading_raw_data_widget():
         widgets9  = widgets.HBox([widgets.VBox([widgets.Label(value='Files for calibration:'), self.calib_files]),
                                   widgets.VBox([widgets.Label(value='Files for correction factors:'), self.correction_files]),
                                   widgets.VBox([widgets.Label(value='Files for Farraday coefficients:'), self.faraday_files])])
-        widgets10 = widgets.VBox([widgets.VBox([widgets.Label(value='After selecting all necessary files of one experiment, add experiment to choosen dataset'),self.button_add_exp]), 
+        widgets10 = widgets.VBox([widgets.VBox([widgets.Label(value='After selecting all necessary files of one experiment, add experiment to choosen dataset'),
+                                                self.experiment_name, self.button_add_exp]), 
                                   widgets.VBox([widgets.Label(value='Experiments:'),self.experiments])])
         
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
