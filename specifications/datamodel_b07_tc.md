@@ -11,8 +11,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: GeneralInformation
   - Description: general data about the data model.
 - experiments
-  - Type: Experiment
-  - Multiple: True
+  - Type: Experiment[]
   - Description: information about the individual experiment.
 
 
@@ -28,26 +27,22 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: describes the content of the dataset.
 - authors
-  - Type: Author
-  - Multiple: True
+  - Type: Author[]
   - Description: authors of this dataset.
 - contact
-  - Type: Contact
+  - Type: {name:string, affiliation:string, email:string}
   - Description: point of contact for this projecet
 - subject
-  - Type: string
-  - Multiple: True
+  - Type: string[]
   - Description: Domain-specific Subject Categories that are topically relevant to the Dataset.
 - related_publication
   - Type: RelatedPublication
   - Description: Related publication to the dataset.
 - keywords
-  - Type: Keyword
-  - Multiple: True
+  - Type: Keyword[]
   - Description: Keywords and url related to the project.
 - topic_classification
-  - Type: TopicClassification
-  - Multiple: True
+  - Type: TopicClassification[]
   - Description: Topic classification.
 
 
@@ -66,17 +61,6 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: Uniquely identifies an individual author or organization, according to various schemes.
 
-### Contact
-
-- name
-  - Type: string
-  - Description: full name including given and family name.
-- affiliation
-  - Type: string
-  - Description: organization the author is affiliated to.
-- email
-  - Type: string
-  - Description: The e-mail address of the contact for the Dataset
 
 ### RelatedPublication
 
@@ -123,32 +107,26 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: PlantSetup
   - Description: the individual plant setup that is used in this one experiment.
 - measurements
-  - Type: Measurement
-  - Multiple: True
+  - Type: Measurement[]
   - Description: different measurements that are made within the scope of one experiment.
 - species_data
-  - Type: SpeciesData
-  - Multiple: True
+  - Type: SpeciesData[]
   - Description: all provided and calculated data about a specific species.
 
 
 ### PlantSetup
 
 - devices
-  - Type: Device
-  - Multiple: True
+  - Type: Device[]
   - Description: bla
 - tubing
-  - Type: Tubing
-  - Multiple: True
+  - Type: Tubing[]
   - Description: bla
 - input
-  - Type: Input
-  - Multiple: True
+  - Type: Input[]
   - Description: bla
 - output
-  - Type: Output
-  - Multiple: True
+  - Type: Output[]
   - Description: bla
 
 
@@ -198,7 +176,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
     - Type: float
     - Description: values.
   - unit
-    - Type: UnitClass
+    - Type: Unit
     - Description: unit of the values.
 
 
@@ -244,16 +222,14 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 ### Input
 
 - component
-  - Type: Chemical
-  - Multiple: True
+  - Type: Chemical[]
   - Description: component of the output fluid.
 
 
 ### Output
 
 - component
-  - Type: Chemical
-  - Multiple: True
+  - Type: Chemical[]
   - Description: component of the output fluid.
 
 
@@ -261,8 +237,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 - name
   - Type: string
-  - Description: IUPAC name of the compound.
-  - Multiple: True
+  - Description: IUPAC name of the compound.[]
 - formula
   - Type: string
   - Description: molecular formula of the compound.
@@ -319,11 +294,10 @@ Stoichiometric information about the compound.
   - Type: Quantity
   - Description: quantity of a value.
 - values
-  - Type: float, string, datetime
-  - Multiple: True
+  - Type: float, string, datetime[]
   - Description: values.
 - unit
-  - Type: UnitClass
+  - Type: Unit
   - Description: unit of the values.
 
 
@@ -345,7 +319,7 @@ Stoichiometric information about the compound.
   - Type: string
   - Description: mode of the parameter. E.g., on and off.
 - unit
-  - Type: UnitClass
+  - Type: Unit
   - Description: unit of the parameter.
 - description
     - Type: string
@@ -358,12 +332,10 @@ Stoichiometric information about the compound.
   - Type: MeasurementType
   - Description: type of a measurement, e.g. potentiostatic or gas chromatography.
 - metadata
-  - Type: Metadata
-  - Multiple: True
+  - Type: Metadata[]
   - Description: metadata of a measurement.
 - experimental_data
-  - Type: Data
-  - Multiple: True
+  - Type: Data[]
   - Description: experimental data of a measurement.
 
 
@@ -398,8 +370,7 @@ Stoichiometric information about the compound.
   - Type: Data
   - Description: concentrations of the individual calibration solutions. 
 - regression_coefficients
-  - Type: float
-  - Multiple: True
+  - Type: float[]
   - Description: Polynomial coefficients in order of increasing degree.
 - degree
   - Type: int
