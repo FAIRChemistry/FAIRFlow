@@ -123,10 +123,10 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: Tubing[]
   - Description: bla
 - input
-  - Type: Input[]
+  - Type: Chemical[]
   - Description: bla
 - output
-  - Type: Output[]
+  - Type: Chemical[]
   - Description: bla
 
 
@@ -205,39 +205,15 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: integer
   - Description: length of the tubing in mm.
 - insulation
-  - Type: Insulation
+  - Type: {thickness: float, material: string}
   - Description: insulation of the tubing.
-
-
-### Insulation
-
-- thickness
-  - Type: float
-  - Description: diameter of the insulating layer in mm.
-- material
-  - Type: Material
-  - Description: insulating material
-
-
-### Input
-
-- component
-  - Type: Chemical[]
-  - Description: component of the output fluid.
-
-
-### Output
-
-- component
-  - Type: Chemical[]
-  - Description: component of the output fluid.
 
 
 ### Chemical
 
 - name
   - Type: string
-  - Description: IUPAC name of the compound.[]
+  - Description: IUPAC name of the compound.
 - formula
   - Type: string
   - Description: molecular formula of the compound.
