@@ -4,15 +4,15 @@ from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
-from .device import Device
 from .parameter import Parameter
+from .device import Device
 
 
 @forge_signature
 class MassFlowMeter(
     Device,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@46cef31442ba9e52c957dc3a77a7bf5a64326c1e#MassFlowMeter"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f7accf3054d687b0e59ef5bd04786fc2617e0353#MassFlowMeter"
     },
 ):
     """"""
@@ -41,5 +41,5 @@ class MassFlowMeter(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="46cef31442ba9e52c957dc3a77a7bf5a64326c1e"
+        default="f7accf3054d687b0e59ef5bd04786fc2617e0353"
     )

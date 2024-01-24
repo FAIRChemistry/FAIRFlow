@@ -9,24 +9,24 @@ from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from pathlib import Path
-from .metadata import Metadata
-from .measurementtype import MeasurementType
-from .chemicalformula import ChemicalFormula
-from .measurement import Measurement
-from .species import Species
-from .plantsetup import PlantSetup
 from .calibration import Calibration
-from .data import Data
-from .quantity import Quantity
-from .speciesdata import SpeciesData
+from .species import Species
 from .datatype import DataType
+from .speciesdata import SpeciesData
+from .metadata import Metadata
+from .chemicalformula import ChemicalFormula
+from .plantsetup import PlantSetup
+from .data import Data
+from .measurementtype import MeasurementType
+from .quantity import Quantity
+from .measurement import Measurement
 
 
 @forge_signature
 class Experiment(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@46cef31442ba9e52c957dc3a77a7bf5a64326c1e#Experiment"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f7accf3054d687b0e59ef5bd04786fc2617e0353#Experiment"
     },
 ):
     """"""
@@ -71,7 +71,7 @@ class Experiment(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="46cef31442ba9e52c957dc3a77a7bf5a64326c1e"
+        default="f7accf3054d687b0e59ef5bd04786fc2617e0353"
     )
 
     def add_to_measurements(
@@ -206,18 +206,22 @@ class Experiment(
             list: Datetime list and flow value list
         """
         volumetric_flow_datetime_list = []
-        volumetric_flow_values_list   = []
+        volumetric_flow_values_list = []
 
         mfm_measurements = self.get(
             "measurements", "measurement_type", "MFM measurement"
         )[0]
         for mfm_measurement in mfm_measurements:
-            volumetric_flow_datetime_list.extend( mfm_measurement.get(
-                "experimental_data", "quantity", Quantity.DATETIME.value
-            )[0][0].values )
-            volumetric_flow_values_list.extend( mfm_measurement.get(
-                "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value
-            )[0][0].values )
+            volumetric_flow_datetime_list.extend(
+                mfm_measurement.get(
+                    "experimental_data", "quantity", Quantity.DATETIME.value
+                )[0][0].values
+            )
+            volumetric_flow_values_list.extend(
+                mfm_measurement.get(
+                    "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value
+                )[0][0].values
+            )
 
         # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
         if not type(volumetric_flow_datetime_list[0]) == DataType.DATETIME.value:
