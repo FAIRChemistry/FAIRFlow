@@ -5,17 +5,17 @@ from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
+from .data import Data
 from .chemicalformula import ChemicalFormula
 from .species import Species
 from .calibration import Calibration
-from .data import Data
 
 
 @forge_signature
 class SpeciesData(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@db5f6da1081228bb92912b00a9cbad9be469320c#SpeciesData"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@46cef31442ba9e52c957dc3a77a7bf5a64326c1e#SpeciesData"
     },
 ):
     """"""
@@ -72,5 +72,5 @@ class SpeciesData(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="db5f6da1081228bb92912b00a9cbad9be469320c"
+        default="46cef31442ba9e52c957dc3a77a7bf5a64326c1e"
     )

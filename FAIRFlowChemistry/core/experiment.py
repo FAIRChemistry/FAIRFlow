@@ -9,24 +9,24 @@ from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from pathlib import Path
-from .data import Data
-from .datatype import DataType
 from .metadata import Metadata
 from .measurementtype import MeasurementType
-from .plantsetup import PlantSetup
 from .chemicalformula import ChemicalFormula
-from .speciesdata import SpeciesData
-from .species import Species
 from .measurement import Measurement
+from .species import Species
+from .plantsetup import PlantSetup
 from .calibration import Calibration
+from .data import Data
 from .quantity import Quantity
+from .speciesdata import SpeciesData
+from .datatype import DataType
 
 
 @forge_signature
 class Experiment(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@db5f6da1081228bb92912b00a9cbad9be469320c#Experiment"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@46cef31442ba9e52c957dc3a77a7bf5a64326c1e#Experiment"
     },
 ):
     """"""
@@ -71,7 +71,7 @@ class Experiment(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="db5f6da1081228bb92912b00a9cbad9be469320c"
+        default="46cef31442ba9e52c957dc3a77a7bf5a64326c1e"
     )
 
     def add_to_measurements(
