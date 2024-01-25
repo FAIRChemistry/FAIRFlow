@@ -1,6 +1,7 @@
 #!~/miniconda3/bin/python
 
 import pandas as pd
+import logging
 import ipywidgets as widgets
 from IPython.display import display, clear_output
 
@@ -17,6 +18,8 @@ from FAIRFlowChemistry.core import Quantity
 # Tools #
 from .auxiliary import PeakAssigner
 from .calculator import FaradayEfficiencyCalculator
+
+logger = logging.getLogger("main")
 
 class analyzing_raw_data_widget:
 
@@ -53,7 +56,8 @@ class analyzing_raw_data_widget:
         # Clear existing output (in case several post processing are done, remove the print output )
         with self.postprocessing_output:
             clear_output(wait=True)
-            print("\nStarting the postprocessing\n")
+
+            logger.info("\nStarting the postprocessing for experiment: %s\n"%(self.dataset.experiments[self.experiments_dropdown.value].id))
 
             fe_calculator = FaradayEfficiencyCalculator(experiment  = self.dataset.experiments[self.experiments_dropdown.value],
                                                         mean_radius = self.mean_radius.value)

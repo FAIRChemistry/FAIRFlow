@@ -174,6 +174,25 @@ class PeakAssigner:
         else:
             logger.info("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
 
+
+        # Check if the GC measurement already has a assignment and use this instead of the typical retention time dictionary
+        try:
+            assigned_retention_time_dict = {}
+
+            peak_assignments = gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values
+            retention_time   = gc_measurement.get("experimental_data","quantity",Quantity.RETENTIONTIME.value)[0][0].values
+
+            for species,ret_time in zip( peak_assignments, retention_time):
+                # Prevent that not assigned peak will be used for analysis
+                if species :
+                    assigned_retention_time_dict[species] = ret_time
+
+            self.typical_retention_time = assigned_retention_time_dict
+            logger.info("\nGC measurement already contains an assignment. Uset this assignment rather than the default dictionary.\n")
+        except:
+            pass
+
+        
     def save_assignments(self, _):
         """
         This functions create the assignment dict, after the button is clicked.

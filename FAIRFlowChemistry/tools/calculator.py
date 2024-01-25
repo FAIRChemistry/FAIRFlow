@@ -49,7 +49,8 @@ class FaradayEfficiencyCalculator(BaseModel):
         index_match                = np.argmin( [abs(dt - inj_date_datetime) for dt in volumetric_flow_datetime_list] )
         self.volumetric_flow_mean  = np.mean( np.array( volumetric_flow_values_list )[ range(index_match - self.mean_radius, index_match + self.mean_radius + 1) ] )
         
-        logger.info("Matching time: %s"%str(volumetric_flow_datetime_list[index_match]))
+        logger.info("GC injection time %s"%str(inj_date_datetime))
+        logger.info("Matching time of MFM: %s"%str(volumetric_flow_datetime_list[index_match]))
         logger.info("Matching mean volumetric flow [ml/min]: %.3f"%(self.volumetric_flow_mean*60))
 
 
@@ -179,8 +180,8 @@ class FaradayEfficiencyCalculator(BaseModel):
         # Write into logger (but just in the first handler (which is the file handler))
         logger.info("\n%s\n%s\n%s\n%s\n\n",
                     self.volumetric_fractions_df.to_string(),
-                    (self.material_flow_df*60).rename( columns={"Material_flow [mol/s]":"Material_flow [mol/min]"}).to_string(),
-                    (self.theoretical_material_flow_df*60).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mol/min]"}).to_string(),
+                    (self.material_flow_df*60*1000).rename( columns={"Material_flow [mol/s]":"Material_flow [mmol/min]"}).to_string(),
+                    (self.theoretical_material_flow_df*60*1000).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mmol/min]"}).to_string(),
                     faraday_efficiency_df.to_string())
         
         return faraday_efficiency_df

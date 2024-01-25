@@ -17,8 +17,12 @@ from .reader import gc_parser, gstatic_parser, mfm_parser
 
 class reading_raw_data_widget():
     
+    # Function to save dataset
+    def save_dataset(self,_):
+        with open(self.dataset_dropdown.value, "w") as f: f.write(self.dataset.json())
+        print("Dataset saved.")
+    
     # Function to navigate into the selected subfolder
-
     def go_to_subfolder(self,_):
         self.current_dir.value       = str(self.folder_dropdown.value)
         subroot                      = self.librarian.enumerate_subdirectories(directory=self.folder_dropdown.value)
@@ -165,6 +169,10 @@ class reading_raw_data_widget():
                                             layout=widgets.Layout(width='auto'),
                                             style={'description_width': 'auto'})
 
+        self.button_save          = widgets.Button(description='Save dataset as:  %s'%self.dataset_dropdown.value.name,
+                                                   layout=widgets.Layout(width="30%"),
+                                                   style={"button_color": 'lightblue'})
+        
         self.button_go_for    = widgets.Button(description='Change into selected directory',
                                               layout=widgets.Layout(width='auto'))
         
@@ -207,6 +215,7 @@ class reading_raw_data_widget():
         self.button_go_back.on_click(self.go_to_parentfolder)
         self.button_select.on_click(self.add_file)
         self.button_add_exp.on_click(self.add_experiment)
+        self.button_save.on_click(self.save_dataset)
 
         # Attach the event handler to the 'value' property change of the file type widget
         self.file_type_text.observe(self.file_type_input_handler, names='value')
@@ -218,6 +227,8 @@ class reading_raw_data_widget():
         # Display the widgets
 
         # Create the layout
+        v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
+
         widgets0  = widgets.HBox([self.dataset_dropdown])
         widgets1  = widgets.VBox([self.current_dir,self.folder_dropdown])
         widgets2  = widgets.HBox([self.button_go_for, self.button_go_back])
@@ -233,12 +244,11 @@ class reading_raw_data_widget():
         widgets10 = widgets.VBox([widgets.VBox([widgets.Label(value='After selecting all necessary files of one experiment, add experiment to choosen dataset'),
                                                 self.experiment_name, self.button_add_exp]), 
                                   widgets.VBox([widgets.Label(value='Experiments:'),self.experiments])])
-        
-        v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
+        widgets11 = widgets.VBox([self.button_save ])
 
         # Combine the layout
         full_layout = widgets.VBox([widgets0,v_space,widgets1,widgets2,widgets3,widgets4,v_space,widgets5,widgets6,widgets7,widgets8,widgets9,
-                                    v_space,widgets10])
+                                    v_space,widgets10,v_space,widgets11])
 
         # Display the layout
         display(full_layout)
