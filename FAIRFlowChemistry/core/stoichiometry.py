@@ -11,7 +11,7 @@ from sdRDM.base.utils import forge_signature
 class Stoichiometry(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@fc10b75fe304b696b13fdc9d111bd0a4867177cd#Stoichiometry"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2142e14e0bb639468af89bac2b4b7b5dbd2087b1#Stoichiometry"
     },
 ):
     """Stoichiometric information about the compound."""
@@ -82,5 +82,5 @@ class Stoichiometry(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="fc10b75fe304b696b13fdc9d111bd0a4867177cd"
+        default="2142e14e0bb639468af89bac2b4b7b5dbd2087b1"
     )
