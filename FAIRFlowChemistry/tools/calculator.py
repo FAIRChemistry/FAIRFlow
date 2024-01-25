@@ -181,7 +181,6 @@ class FaradayEfficiencyCalculator(BaseModel):
         logger.info("\n%s\n%s\n%s\n%s\n\n",
                     self.volumetric_fractions_df.to_string(),
                     (self.material_flow_df*60*1000).rename( columns={"Material_flow [mol/s]":"Material_flow [mmol/min]"}).to_string(),
-                    (self.theoretical_material_flow_df*60*1000).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mmol/min]"}).to_string(),
-                    faraday_efficiency_df.to_string())
+                    (self.theoretical_material_flow_df*60*1000).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mmol/min]"}).to_string())
         
         return faraday_efficiency_df

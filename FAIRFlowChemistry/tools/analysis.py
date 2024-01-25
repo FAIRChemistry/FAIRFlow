@@ -70,13 +70,12 @@ class analyzing_raw_data_widget:
             for i, gc_measurement in enumerate( gc_measurements ):
                 tmp = fe_calculator.calculate_faraday_efficiencies( gc_measurement = gc_measurement )
                 faraday_efficiencies.append( tmp )
-                print("Faraday effiencies of GC measurement n°%d"%(i+1))
-                print(tmp,"\n")
+                logger.info("Faraday effiencies of GC measurement n°%d"%(i+1))
+                logger.info("%s\n"%tmp)
 
             mean_faraday_efficiency = pd.concat(faraday_efficiencies).groupby(level=0).mean()
             
-            print("\nMean Faraday efficency over all GC measurements")
-            print(mean_faraday_efficiency,"\n")
+            logger.info("\nMean Faraday efficency over all GC measurements: \n%s\n"%mean_faraday_efficiency)
 
             for species_data in self.dataset.experiments[self.experiments_dropdown.value].species_data:
                 if species_data.species in mean_faraday_efficiency.index:
