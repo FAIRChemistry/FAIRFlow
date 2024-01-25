@@ -6,18 +6,18 @@ from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from .experiment import Experiment
+from .plantsetup import PlantSetup
 from .speciesdata import SpeciesData
 from .generalinformation import GeneralInformation
-from .plantsetup import PlantSetup
 from .measurement import Measurement
+from .experiment import Experiment
 
 
 @forge_signature
 class Dataset(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f7accf3054d687b0e59ef5bd04786fc2617e0353#Dataset"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@fc10b75fe304b696b13fdc9d111bd0a4867177cd#Dataset"
     },
 ):
     """"""
@@ -49,7 +49,7 @@ class Dataset(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f7accf3054d687b0e59ef5bd04786fc2617e0353"
+        default="fc10b75fe304b696b13fdc9d111bd0a4867177cd"
     )
 
     def add_to_experiments(

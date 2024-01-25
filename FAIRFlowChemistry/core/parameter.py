@@ -12,7 +12,7 @@ from sdRDM.base.datatypes import Unit
 class Parameter(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f7accf3054d687b0e59ef5bd04786fc2617e0353#Parameter"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@fc10b75fe304b696b13fdc9d111bd0a4867177cd#Parameter"
     },
 ):
     """"""
@@ -41,5 +41,5 @@ class Parameter(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f7accf3054d687b0e59ef5bd04786fc2617e0353"
+        default="fc10b75fe304b696b13fdc9d111bd0a4867177cd"
     )
