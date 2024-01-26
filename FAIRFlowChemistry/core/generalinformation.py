@@ -7,8 +7,8 @@ from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from .relatedpublication import RelatedPublication
-from .keyword import Keyword
 from .topicclassification import TopicClassification
+from .keyword import Keyword
 from .author import Author
 
 
@@ -16,7 +16,7 @@ from .author import Author
 class Contact(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2142e14e0bb639468af89bac2b4b7b5dbd2087b1#Contact"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a#Contact"
     },
 ):
     """Small type for attribute 'contact'"""
@@ -36,7 +36,7 @@ class Contact(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="2142e14e0bb639468af89bac2b4b7b5dbd2087b1"
+        default="ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a"
     )
 
 
@@ -44,7 +44,7 @@ class Contact(
 class GeneralInformation(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2142e14e0bb639468af89bac2b4b7b5dbd2087b1#GeneralInformation"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a#GeneralInformation"
     },
 ):
     """"""
@@ -137,7 +137,7 @@ class GeneralInformation(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="2142e14e0bb639468af89bac2b4b7b5dbd2087b1"
+        default="ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a"
     )
 
     def add_to_authors(

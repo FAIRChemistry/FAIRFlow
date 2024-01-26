@@ -13,7 +13,7 @@ from .stoichiometry import Stoichiometry
 class Chemical(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2142e14e0bb639468af89bac2b4b7b5dbd2087b1#Chemical"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a#Chemical"
     },
 ):
     """"""
@@ -82,5 +82,5 @@ class Chemical(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="2142e14e0bb639468af89bac2b4b7b5dbd2087b1"
+        default="ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a"
     )
