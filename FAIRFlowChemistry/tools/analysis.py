@@ -7,8 +7,7 @@ from IPython.display import display, clear_output
 
 # Import general tools and objects of this datamodel #
 
-# Objects #
-#from easyDataverse import Dataverse
+# Objects
 from FAIRFlowChemistry.core import Data
 from FAIRFlowChemistry.core import Dataset
 from FAIRFlowChemistry.core import Experiment
