@@ -188,7 +188,7 @@ class PeakAssigner:
                     assigned_retention_time_dict[species] = ret_time
 
             self.typical_retention_time = assigned_retention_time_dict
-            logger.info("\nGC measurement already contains an assignment. Uset this assignment rather than the default dictionary.\n")
+            logger.info("\nGC measurement already contains an assignment. Use this assignment rather than the default dictionary.\n")
         except:
             pass
 
