@@ -12,7 +12,7 @@ from .device import Device
 class Thermocouple(
     Device,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a#Thermocouple"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1fe8cd09b86dc6043d0966423f3cb52d5025050d#Thermocouple"
     },
 ):
     """"""
@@ -34,5 +34,5 @@ class Thermocouple(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a"
+        default="1fe8cd09b86dc6043d0966423f3cb52d5025050d"
     )

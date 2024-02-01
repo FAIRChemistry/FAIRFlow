@@ -5,15 +5,15 @@ from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
 from .metadata import Metadata
-from .measurement import Measurement
 from .device import Device
+from .measurement import Measurement
 
 
 @forge_signature
 class Potentiostat(
     Device,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a#Potentiostat"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1fe8cd09b86dc6043d0966423f3cb52d5025050d#Potentiostat"
     },
 ):
     """"""
@@ -42,5 +42,5 @@ class Potentiostat(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="ecaec8b83d4ad94b6d8a4d0f7be4b76ce6cfa92a"
+        default="1fe8cd09b86dc6043d0966423f3cb52d5025050d"
     )
