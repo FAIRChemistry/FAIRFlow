@@ -55,7 +55,7 @@ class DaRUS_upload:
         """
         # Add project group
         self.DaRUS_data.citation.project = []
-        #self.DaRUS_data.citation.add_project( name = self.dataset.general_information.project, level="1" ) --> needs to be fixed by jan
+        self.DaRUS_data.citation.add_project( name = self.dataset.general_information.project, level="1" )
         
         # Add title
         self.DaRUS_data.citation.title = self.dataset.general_information.title
