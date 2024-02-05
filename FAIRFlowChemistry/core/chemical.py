@@ -5,15 +5,15 @@ from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
-from .reactantrole import ReactantRole
 from .stoichiometry import Stoichiometry
+from .reactantrole import ReactantRole
 
 
 @forge_signature
 class Chemical(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1fe8cd09b86dc6043d0966423f3cb52d5025050d#Chemical"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3a00657a27b163e6872492862513e86c0040689d#Chemical"
     },
 ):
     """"""
@@ -82,5 +82,5 @@ class Chemical(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1fe8cd09b86dc6043d0966423f3cb52d5025050d"
+        default="3a00657a27b163e6872492862513e86c0040689d"
     )

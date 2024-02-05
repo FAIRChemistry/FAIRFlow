@@ -12,7 +12,7 @@ from .material import Material
 class Insulation(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1fe8cd09b86dc6043d0966423f3cb52d5025050d#Insulation"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3a00657a27b163e6872492862513e86c0040689d#Insulation"
     },
 ):
     """Small type for attribute 'insulation'"""
@@ -33,7 +33,7 @@ class Insulation(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1fe8cd09b86dc6043d0966423f3cb52d5025050d"
+        default="3a00657a27b163e6872492862513e86c0040689d"
     )
 
 
@@ -41,7 +41,7 @@ class Insulation(
 class Tubing(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1fe8cd09b86dc6043d0966423f3cb52d5025050d#Tubing"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3a00657a27b163e6872492862513e86c0040689d#Tubing"
     },
 ):
     """"""
@@ -91,5 +91,5 @@ class Tubing(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1fe8cd09b86dc6043d0966423f3cb52d5025050d"
+        default="3a00657a27b163e6872492862513e86c0040689d"
     )
