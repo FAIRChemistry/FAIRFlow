@@ -1,0 +1,95 @@
+{
+  "id": "561b8daf-7221-41a0-96ce-4d0e0826cc19",
+  "general_information": {
+    "id": "e3f55335-7ecd-4bff-b64a-4d058878efad",
+    "title": "FAIRFlow: A Jupyter notebook-based platform for on-line analysis in flow chemistry ",
+    "project": "Project B07",
+    "description": "The aim of this project is to introduce the FAIR (findable, accessible, interoperable, reusable) principles into miniplant flow chemistry",
+    "authors": [
+      {
+        "id": "e15a0bbc-e0aa-4136-a974-51cdb1c0f828",
+        "name": "Richard Sch\u00f6mig",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      },
+      {
+        "id": "801647d0-8ca3-4feb-8846-a948d2fb4779",
+        "name": "Jan Range",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      },
+      {
+        "id": "911e425e-0e8e-4c22-8d55-3162aee0980e",
+        "name": "Samir Darouich",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      },
+      {
+        "id": "ed21fc28-fac6-4504-a48a-cd4f04daa82a",
+        "name": "Maximilian Schmidt",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      },
+      {
+        "id": "e931112b-3056-47ae-949e-0da857fbe95a",
+        "name": "Seda Yilmaz",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      },
+      {
+        "id": "711e11d7-593c-4dbd-b021-f8af69553720",
+        "name": "Elias Klemm",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      },
+      {
+        "id": "c75e18f9-4854-4f6b-ab13-f410ed44b434",
+        "name": "J\u00fcrgen Pleiss",
+        "affiliation": "University of Stuttgart",
+        "identifier_scheme": "ORCID",
+        "identifier": "xxx-xxx-xxx-xxx"
+      }
+    ],
+    "contact": {
+      "id": "4e9c59e3-70d8-4d19-bcb6-6c7926db771f",
+      "name": "J\u00fcrgen Pleiss",
+      "affiliation": " University of Stuttgart",
+      "email": "juergen.pleiss@itb.uni-stuttgart.de"
+    },
+    "subject": [
+      "Chemistry"
+    ],
+    "related_publication": {
+      "id": "6450e553-fe7a-45b7-9695-9f46f54e653a",
+      "citation": "test",
+      "url": "https://id.loc.gov/authorities/subjects/sh2014001146.html"
+    },
+    "keywords": [
+      {
+        "id": "23c6a8ed-ee8f-48bf-b01d-3f0abcb459d8",
+        "value": "polymer chemistry (Loterre Chemistry Vocabulary)",
+        "vocabulary_uri": "https://skosmos.loterre.fr/ERC/en/page/?uri=http%3A%2F%2Fdata.loterre.fr%2Fark%3A%2F67375%2FERC-KCSKD4X9-P"
+      }
+    ],
+    "topic_classification": [
+      {
+        "id": "c7de7344-5fbe-40ce-b007-f54bb83b0131",
+        "value": "homogeneous catalysis (LCSH)",
+        "vocab_uri": "https://id.loc.gov/authorities/subjects/sh2014001146.html"
+      }
+    ]
+  },
+  "experiments": [],
+  "__source__": {
+    "root": "Dataset",
+    "repo": "https://github.com/FAIRChemistry/FAIRFlowChemistry",
+    "commit": "1fe8cd09b86dc6043d0966423f3cb52d5025050d",
+    "url": "https://github.com/FAIRChemistry/FAIRFlowChemistry/tree/1fe8cd09b86dc6043d0966423f3cb52d5025050d"
+  }
+}

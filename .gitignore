@@ -1,11 +1,5 @@
 # raw data
-data/Rohdaten
-
-# generated datasets
-datasets/*
-
-# GitHub
-# .github/
+data/raw_data
 
 # VS Code
 .vscode
@@ -18,21 +12,3 @@ datasets/*
 
 #compiled python files
 *.pyc
-
-# generated python objects
-# datamodel_b07_tc/core
-
-# compiled bython files
-datamodel_b07_tc/__pycache__
-
-# generated schemes of the data model
-datamodel_b07_tc/schemes
-
-# to do list for this notebook
-todo.txt
-
-# test notebook to try new things
-test_notebook.ipynb
-
-#test notebook for dexpi
-dexpi_test.ipynb

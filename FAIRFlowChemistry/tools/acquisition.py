@@ -37,7 +37,7 @@ class reading_raw_data_widget():
     
     def add_file(self,_):
         if self.file_category.value == "EChem":
-            self.Echem_files.value      = self.Echem_files.value + [str(self.file_dropdown.value)]
+            self.galvano_files.value      = self.galvano_files.value + [str(self.file_dropdown.value)]
 
         elif self.file_category.value == "GC":
             self.GC_files.value         = self.GC_files.value + [str(self.file_dropdown.value)]
@@ -62,7 +62,7 @@ class reading_raw_data_widget():
         
         experiment                 = Experiment( id = self.experiment_name.value )
         
-        potentiostatic_measurement = [ gstatic_parser( metadata_path = self.Echem_files.value[0] ) ]
+        potentiostatic_measurement = [ gstatic_parser( metadata_path = self.galvano_files.value[0] ) ]
         mfm_measurement            = [ mfm_parser( experimental_data_path = mfm_file ) for mfm_file in self.MFM_files.value ]
         gc_measurements_list       = [ gc_parser( metadata_path = self.GC_files.value[i], experimental_data_path = self.GC_files.value[i+1] ) for i in range( 0, len(self.GC_files.value), 2 ) ]
 
@@ -80,7 +80,7 @@ class reading_raw_data_widget():
         self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
 
         # Empty files widget #
-        self.Echem_files.value      = []
+        self.galvano_files.value      = []
         self.GC_files.value         = []
         self.MFM_files.value        = []
         self.calib_files.value      = []
@@ -139,10 +139,10 @@ class reading_raw_data_widget():
         self.flag = False
     
 
-    def choose_data(self, root: Path) -> None:
+    def choose_data(self, root: Path, dataset_directory: str) -> None:
         
         self.librarian        = Librarian(root_directory=root)
-        datasets              = self.librarian.search_files_in_subdirectory(root_directory=root, directory_keys=["datasets"], file_filter="json", verbose=False)
+        datasets              = self.librarian.search_files_in_subdirectory(root_directory=root, directory_keys=[dataset_directory], file_filter="json", verbose=False)
         sub_directories       = self.librarian.enumerate_subdirectories(directory=root)
 
         self.dataset_dropdown = widgets.Dropdown(options=[(path.parts[-1],path) for _,path in datasets.items()],
@@ -150,7 +150,7 @@ class reading_raw_data_widget():
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
 
-        self.folder_dropdown  = widgets.Dropdown(description='Select folder:',
+        self.folder_dropdown  = widgets.Dropdown(description='Select directory:',
                                                 options=[(path.parts[-1],path) for _,path in sub_directories.items()],
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
@@ -159,13 +159,13 @@ class reading_raw_data_widget():
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
         
-        self.file_category    = widgets.Dropdown(options=['EChem', 'GC', 'MFM',"Calibration","Correction factors","Faraday coefficients"],
-                                                value='EChem',
+        self.file_category    = widgets.Dropdown(options=['Galvanostat', 'Gas chromatography', 'Mass flow meter', 'Calibration', 'Correction factors', 'Transferring  electrons'],
+                                                value='Galvanostat',
                                                 description='for category:',
                                                 style={'description_width': 'auto'})
 
         self.experiment_name  = widgets.Text(description='Experiment name:',
-                                            placeholder='Enter the name of the experiment (e.g.: experiment1)',
+                                            placeholder='Provida a name for the experiment',
                                             layout=widgets.Layout(width='auto'),
                                             style={'description_width': 'auto'})
 
@@ -196,7 +196,7 @@ class reading_raw_data_widget():
                                             layout=widgets.Layout(width='auto'),
                                             style={'description_width': 'auto'})
 
-        self.Echem_files      = widgets.TagsInput(allow_duplicates=False)
+        self.galvano_files    = widgets.TagsInput(allow_duplicates=False)
         self.GC_files         = widgets.TagsInput(allow_duplicates=False)
         self.MFM_files        = widgets.TagsInput(allow_duplicates=False)
         self.calib_files      = widgets.TagsInput(allow_duplicates=False)
@@ -228,23 +228,24 @@ class reading_raw_data_widget():
 
         # Create the layout
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
+        v_space_s = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='15px'))
 
         widgets0  = widgets.HBox([self.dataset_dropdown])
-        widgets1  = widgets.VBox([self.current_dir,self.folder_dropdown])
+        widgets1  = widgets.VBox([self.current_dir,v_space_s,self.folder_dropdown])
         widgets2  = widgets.HBox([self.button_go_for, self.button_go_back])
-        widgets3  = widgets.VBox([self.file_type_text])
+        widgets3  = widgets.VBox([v_space_s,self.file_type_text])
         widgets4  = widgets.HBox([self.file_dropdown,self.file_category])
         widgets5  = widgets.VBox([self.button_select])
-        widgets6  = widgets.VBox([widgets.Label(value='Files for EChem evaluation:'), self.Echem_files])
-        widgets7  = widgets.VBox([widgets.Label(value='Files for GC evaluation:'), self.GC_files])
-        widgets8  = widgets.VBox([widgets.Label(value='Files for MFM evaluation:'), self.MFM_files])
-        widgets9  = widgets.HBox([widgets.VBox([widgets.Label(value='Files for calibration:'), self.calib_files]),
-                                  widgets.VBox([widgets.Label(value='Files for correction factors:'), self.correction_files]),
-                                  widgets.VBox([widgets.Label(value='Files for Farraday coefficients:'), self.faraday_files])])
-        widgets10 = widgets.VBox([widgets.VBox([widgets.Label(value='After selecting all necessary files of one experiment, add experiment to choosen dataset'),
+        widgets6  = widgets.VBox([widgets.Label(value='Files for galvanostat:'), self.galvano_files])
+        widgets7  = widgets.VBox([widgets.Label(value='Files for gas chromatography:'), self.GC_files])
+        widgets8  = widgets.VBox([widgets.Label(value='Files for mass flow meter:'), self.MFM_files])
+        widgets9  = widgets.HBox([widgets.VBox([widgets.Label(value='File for calibration:'), self.calib_files]),
+                                  widgets.VBox([widgets.Label(value='File for correction factors:'), self.correction_files]),
+                                  widgets.VBox([widgets.Label(value='File for transferring electrons:'), self.faraday_files])])
+        widgets10 = widgets.VBox([widgets.VBox([widgets.Label(value='After selecting all necessary files for an experiment, add the experiment to the chosen dataset.'),
                                                 self.experiment_name, self.button_add_exp]), 
                                   widgets.VBox([widgets.Label(value='Experiments:'),self.experiments])])
-        widgets11 = widgets.VBox([self.button_save ])
+        widgets11 = widgets.VBox([self.button_save ],layout=widgets.Layout(align_items = 'center'))
 
         # Combine the layout
         full_layout = widgets.VBox([widgets0,v_space,widgets1,widgets2,widgets3,widgets4,v_space,widgets5,widgets6,widgets7,widgets8,widgets9,
