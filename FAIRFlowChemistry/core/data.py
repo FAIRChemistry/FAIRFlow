@@ -6,8 +6,8 @@ from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from sdRDM.base.datatypes import Unit
 from datetime import datetime as Datetime
+from sdRDM.base.datatypes import Unit
 from .quantity import Quantity
 
 
@@ -15,7 +15,7 @@ from .quantity import Quantity
 class Data(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@a03979ce033d711669c9db74f59cdfb6c2f9c3b5#Data"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3206d61a7ef1fb8aaa8971863b6ab25925c3e134#Data"
     },
 ):
     """"""
@@ -54,5 +54,5 @@ class Data(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="a03979ce033d711669c9db74f59cdfb6c2f9c3b5"
+        default="3206d61a7ef1fb8aaa8971863b6ab25925c3e134"
     )

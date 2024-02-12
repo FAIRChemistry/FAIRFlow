@@ -4,15 +4,15 @@ from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
-from .thermocoupletype import ThermocoupleType
 from .device import Device
+from .thermocoupletype import ThermocoupleType
 
 
 @forge_signature
 class Thermocouple(
     Device,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@a03979ce033d711669c9db74f59cdfb6c2f9c3b5#Thermocouple"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3206d61a7ef1fb8aaa8971863b6ab25925c3e134#Thermocouple"
     },
 ):
     """"""
@@ -34,5 +34,5 @@ class Thermocouple(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="a03979ce033d711669c9db74f59cdfb6c2f9c3b5"
+        default="3206d61a7ef1fb8aaa8971863b6ab25925c3e134"
     )
