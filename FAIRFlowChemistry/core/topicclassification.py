@@ -11,7 +11,7 @@ from sdRDM.base.utils import forge_signature
 class TopicClassification(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@cc21fbb7a702dae1961589c15c88101f41227f56#TopicClassification"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@a03979ce033d711669c9db74f59cdfb6c2f9c3b5#TopicClassification"
     },
 ):
     """"""
@@ -50,5 +50,5 @@ class TopicClassification(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="cc21fbb7a702dae1961589c15c88101f41227f56"
+        default="a03979ce033d711669c9db74f59cdfb6c2f9c3b5"
     )
