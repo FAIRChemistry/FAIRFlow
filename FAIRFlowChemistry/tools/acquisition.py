@@ -165,7 +165,7 @@ class reading_raw_data_widget():
                                                 style={'description_width': 'auto'})
 
         self.experiment_name  = widgets.Text(description='Experiment name:',
-                                            placeholder='Provida a name for the experiment',
+                                            placeholder='Provide a name for the experiment',
                                             layout=widgets.Layout(width='auto'),
                                             style={'description_width': 'auto'})
 
