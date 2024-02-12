@@ -50,18 +50,21 @@ class initialize_dataset:
         self.dataset.general_information.related_publication  = dict( citation = self.related_publication.value.split(",")[0].strip(),
                                                                       url      = self.related_publication.value.split(",")[1].strip() )
 
-        # Add topic classifications
-        for i in range(0, len(self.topic_classification.value.split(",")), 2):
-            self.dataset.general_information.add_to_topic_classification( value     = self.topic_classification.value.split(",")[i].strip() , 
-                                                                          vocab_uri = self.topic_classification.value.split(",")[i + 1].strip() )
+        # Add topic classifications (if provided)
+        if self.topic_classification.value:
+            for i in range(0, len(self.topic_classification.value.split(",")), 2):
+                self.dataset.general_information.add_to_topic_classification( value     = self.topic_classification.value.split(",")[i].strip() , 
+                                                                            vocab_uri = self.topic_classification.value.split(",")[i + 1].strip() )
 
-        # Add keywords
-        for i in range(0, len(self.keywords.value.split(",")), 2):
-            self.dataset.general_information.add_to_keywords( value          = self.keywords.value.split(",")[i].strip() , 
-                                                              vocabulary_uri = self.keywords.value.split(",")[i + 1].strip() )
+        # Add keywords (if provided)
+        if self.keywords.value:
+            for i in range(0, len(self.keywords.value.split(",")), 2):
+                self.dataset.general_information.add_to_keywords( value          = self.keywords.value.split(",")[i].strip() , 
+                                                                vocabulary_uri = self.keywords.value.split(",")[i + 1].strip() )
             
         # Write dataset #
-        os.makedirs( os.path.dirname(self.dataset_text.value), exist_ok=True )
+        
+        os.makedirs( f"{os.getcwd()}/{os.path.dirname(self.dataset_text.value)}", exist_ok=True )
         with open( "%s.json"%self.dataset_text.value, "w") as f: f.write(self.dataset.json())
 
     def change_dataset(self,_):
@@ -123,18 +126,18 @@ class initialize_dataset:
         
 
         self.topic_classification = widgets.Text (description="Topic classification:",
-                                                    placeholder="The classification and the url, seperated by a comma (e.g.: homogeneous catalysis (LCSH), https://xxx, polyethers (LCSH), https://xxx, ... )",
+                                                    placeholder="[Optional] The classification and the url, seperated by a comma (e.g.: homogeneous catalysis (LCSH), https://xxx, polyethers (LCSH), https://xxx, ... )",
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})
 
         self.keywords             = widgets.Text (description="Keywords:",
-                                                    placeholder="The keywords and the url, seperated by a comma (e.g.: polymer chemistry (Loterre Chemistry Vocabulary), https://xxx )",
+                                                    placeholder="[Optional] The keywords and the url, seperated by a comma (e.g.: polymer chemistry (Loterre Chemistry Vocabulary), https://xxx )",
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})
 
 
-        self.dataset_text        = widgets.Text(description="Dataset:",
-                                                placeholder="Name the dataset for this project (will be saved as json file)",
+        self.dataset_text        = widgets.Text(description="Dataset destination:",
+                                                placeholder="Provide a relative path to save the dataset (e.g. datasets/dummy will be saved as datasets/dummy.json).",
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
 

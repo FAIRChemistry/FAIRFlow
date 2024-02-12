@@ -95,19 +95,27 @@ class Librarian(BaseModel):
 
         # First search for every nested sub directory in provided root directory #
         
-        root = self.enumerate_subdirectories(root_directory)
-        for j,directory_key in enumerate(directory_keys):
-            try:
-                idx_sub_directory = [i for i in range(len(root)) if root[i].parts[-1] == directory_key ][0]
-                if j < len(directory_keys)-1: 
-                    root          = self.enumerate_subdirectories(directory=root[idx_sub_directory])
-            except:
-                raise KeyError("Defined key: '%s' cannot be found in the given root directory: %s"%(directory_key,root[0].parent))
+        if len(directory_keys) == 1 and directory_keys[0] == ".":
+            subdirectory_files = self.enumerate_files(directory=root_directory, filter=file_filter, verbose=verbose)   
 
-        # Search for all files that match the given filter in the specified sub directory #
-        subdirectory_files = self.enumerate_files(directory=root[idx_sub_directory], filter=file_filter, verbose=verbose)   
-        if not bool(subdirectory_files): 
-            raise KeyError("No files with filter: '%s' found in the given sub directory: %s"%(file_filter,root_directory[idx_sub_directory]))
+            if not bool(subdirectory_files): 
+                raise KeyError("No files with filter: '%s' found in the given directory: %s"%(file_filter,root_directory))
+        
+        else:
+            root = self.enumerate_subdirectories(root_directory)
+            for j,directory_key in enumerate(directory_keys):
+                try:
+                    idx_sub_directory = [i for i in range(len(root)) if root[i].parts[-1] == directory_key ][0]
+                    if j < len(directory_keys)-1: 
+                        root          = self.enumerate_subdirectories(directory=root[idx_sub_directory])
+                except:
+                    raise KeyError("Defined key: '%s' cannot be found in the given root directory: %s"%(directory_key,root[0].parent))
+
+            # Search for all files that match the given filter in the specified sub directory #
+            subdirectory_files = self.enumerate_files(directory=root[idx_sub_directory], filter=file_filter, verbose=verbose)
+
+            if not bool(subdirectory_files): 
+                raise KeyError("No files with filter: '%s' found in the given sub directory: %s"%(file_filter,root[idx_sub_directory]))
         
         return subdirectory_files
 
@@ -307,13 +315,14 @@ class PeakAssigner:
         
         # Handle button on click
         display_button.on_click(self.save_assignments)
-        
+        v_space   = VBox([Label(value='')], layout=Layout(height='30px'))
+
         # Define the total layout
         widget0 = [ HBox(children=self._VBox_list[i:i+3], layout=layout_hbox) for i in range( 0, len(self._VBox_list), 3 ) ]
         widget1 = HBox(children=[display_button],layout=Layout(justify_content="center"))
         widget2 = self._selection_output
 
-        full_layout = VBox([*widget0,widget1,widget2])
+        full_layout = VBox([*widget0,v_space,widget1,widget2])
 
         display(full_layout)
 

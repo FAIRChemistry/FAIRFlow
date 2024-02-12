@@ -122,10 +122,10 @@ class analyzing_raw_data_widget:
                                                    layout=widgets.Layout(width="30%"),
                                                    style={"button_color": 'lightblue'})
         
-        self.explanation_label    = widgets.HTML(value='The mass flow at the time of the GC measurement is determined by matching the time of the gc measurement\
-                                                        with the corresponding times of the mass flow measurements. Errors in the mass flows due to strong fluctuations\
+        self.explanation_label    = widgets.HTML(value='The mass flow at the time of the gas chromatography measurement is determined by matching the time of the gas chromatography measurement\
+                                                        with the corresponding times of the mass flow measurements. Errors in the mass flow due to strong fluctuations\
                                                         are minimized by calculating the mean by averaging over a certain number (=radius) of measuring points before and\
-                                                        after the time of the GC measurement. The radius has to be specified in accordance with the strength of fluctuations.')
+                                                        after the time of the gas chromatography measurement. The radius has to be specified in accordance with the strength of fluctuations.')
 
         # Output areas
         self.postprocessing_output = widgets.Output()
@@ -142,7 +142,7 @@ class analyzing_raw_data_widget:
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
 
         widgets0  = widgets.HBox([self.experiments_dropdown])
-        widgets1  = widgets.VBox([widgets.Label(value='Species in GC analysis:'), self.species_tags])
+        widgets1  = widgets.VBox([widgets.Label(value='Species in gas chromatographic analysis:'), self.species_tags])
         widgets2  = widgets.VBox([self.explanation_label, v_space, self.mean_radius, v_space])
         widgets3  = widgets.VBox([self.display_button, v_space, self.postprocessing_output], layout=widgets.Layout(align_items = 'center'))
         widgets4  = widgets.VBox([v_space,self.button_save], layout=widgets.Layout(align_items = 'center') )

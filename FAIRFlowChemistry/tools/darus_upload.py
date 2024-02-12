@@ -89,7 +89,7 @@ class DaRUS_upload:
 
         # Add related publication
         self.DaRUS_data.citation.publication = []
-        self.DaRUS_data.citation.add_publication( **{k:self.dataset.general_information.related_publication.__dict__[k] for k in self.dataset.general_information.related_publication.__dict__.keys() if k!="id"})
+        self.DaRUS_data.citation.add_publication( **{k:self.dataset.general_information.related_publication.__dict__[k] for k in self.dataset.general_information.related_publication.__dict__.keys() if k!="id"} )
         
         # Add topic classification
         self.DaRUS_data.citation.topic_classification = []
@@ -159,10 +159,11 @@ class DaRUS_upload:
         self.button_download.on_click( self.download_from_DaRUS )
 
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
-        widgets0  = widgets.VBox([self.doi_text, self.file_directoy_text, v_space, self.button_download],layout=widgets.Layout(align_items = 'center'))
+        widgets0  = widgets.VBox([self.doi_text, self.file_directoy_text,])
+        widgets1  = widgets.VBox([v_space, self.button_download],layout=widgets.Layout(align_items = 'center'))
 
         # Combine the layout
-        full_layout = widgets.VBox([widgets0, v_space,self.download_output])
+        full_layout = widgets.VBox([widgets0, widgets1, v_space, self.download_output])
 
         # Display the layout
         display(full_layout)
