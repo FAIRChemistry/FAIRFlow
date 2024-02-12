@@ -8,18 +8,18 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
 from datetime import datetime as Datetime
+from .measurementtype import MeasurementType
+from .quantity import Quantity
 from .datatype import DataType
 from .data import Data
-from .measurementtype import MeasurementType
 from .metadata import Metadata
-from .quantity import Quantity
 
 
 @forge_signature
 class Measurement(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3a00657a27b163e6872492862513e86c0040689d#Measurement"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@cc21fbb7a702dae1961589c15c88101f41227f56#Measurement"
     },
 ):
     """"""
@@ -61,7 +61,7 @@ class Measurement(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="3a00657a27b163e6872492862513e86c0040689d"
+        default="cc21fbb7a702dae1961589c15c88101f41227f56"
     )
 
     def add_to_metadata(
