@@ -196,8 +196,8 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: unit of the parameter.
 - description
-    - Type: string
-    - Description: description of the parameter.
+  - Type: string
+  - Description: description of the parameter.
 
 
 ### Measurement
@@ -251,7 +251,6 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Description: Polynomial coefficients in order of increasing degree.
 - degree
   - Type: int
-  - Default: 1
   - Description: Degree of regression model.
 
 
