@@ -7,6 +7,7 @@ from .topicclassification import TopicClassification
 from .experiment import Experiment
 from .plantsetup import PlantSetup
 from .component import Component
+from .genericattibute import GenericAttibute
 from .parameter import Parameter
 from .data import Data
 from .metadata import Metadata
@@ -31,6 +32,7 @@ __all__ = [
     "Experiment",
     "PlantSetup",
     "Component",
+    "GenericAttibute",
     "Parameter",
     "Data",
     "Metadata",

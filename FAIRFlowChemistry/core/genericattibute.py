@@ -1,20 +1,20 @@
 import sdRDM
 
-from typing import Dict, Optional, Union
-from pydantic import PrivateAttr, model_validator
+from typing import Dict, Optional
 from uuid import uuid4
+from pydantic import PrivateAttr, model_validator
 from pydantic_xml import attr, element
 from lxml.etree import _Element
+
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
-from datetime import datetime as Datetime
-from .datatype import DataType
 
 
 @forge_signature
-class Metadata(sdRDM.DataModel):
+class GenericAttibute(
+    sdRDM.DataModel,
+):
     """"""
 
     id: Optional[str] = attr(
@@ -24,54 +24,48 @@ class Metadata(sdRDM.DataModel):
         xml="@id",
     )
 
-    parameter: Optional[str] = element(
-        description="name of the parameter.",
+    name: Optional[str] = element(
+        description="bla.",
         default=None,
-        tag="parameter",
+        tag="name",
         json_schema_extra=dict(),
     )
 
-    value: Union[str, float, Datetime, None] = element(
-        description="value of the parameter.",
+    attribute_uri: Optional[str] = element(
+        description="bla.",
+        default=None,
+        tag="attribute_uri",
+        json_schema_extra=dict(),
+    )
+
+    value: Optional[str] = element(
+        description="bla.",
         default=None,
         tag="value",
         json_schema_extra=dict(),
     )
 
-    abbreviation: Optional[str] = element(
-        description="abbreviation for the parameter.",
+    format: Optional[str] = element(
+        description="bla.",
         default=None,
-        tag="abbreviation",
+        tag="format",
         json_schema_extra=dict(),
     )
 
-    data_type: Union[DataType, str, None] = element(
-        description="type of the parameter.",
+    units: Optional[str] = element(
+        description="bla.",
         default=None,
-        tag="data_type",
+        tag="units",
         json_schema_extra=dict(),
     )
 
-    mode: Optional[str] = element(
-        description="mode of the parameter. e.g., on and off.",
+    units_uri: Optional[str] = element(
+        description="bla",
         default=None,
-        tag="mode",
+        tag="units_uri",
         json_schema_extra=dict(),
     )
 
-    unit: Optional[Unit] = element(
-        description="unit of the parameter.",
-        default=None,
-        tag="unit",
-        json_schema_extra=dict(),
-    )
-
-    description: Optional[str] = element(
-        description="description of the parameter.",
-        default=None,
-        tag="description",
-        json_schema_extra=dict(),
-    )
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
@@ -84,9 +78,10 @@ class Metadata(sdRDM.DataModel):
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                (isinstance(i, _Element) for i in value)
+                isinstance(i, _Element) for i in value
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
+
         return self

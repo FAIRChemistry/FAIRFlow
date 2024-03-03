@@ -8,8 +8,9 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .component import Component
 from .componenttype import ComponentType
+from .genericattibute import GenericAttibute
+from .component import Component
 
 
 @forge_signature
@@ -47,7 +48,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
+        default="39b4d9c8b2d56cee632e1aa5d881b928354ae938"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -69,7 +70,7 @@ class PlantSetup(sdRDM.DataModel):
         component_class: Optional[str] = None,
         component_class_uri: Optional[str] = None,
         component_name: Optional[str] = None,
-        generic_attribute: Optional[GenericAttribute] = None,
+        generic_attributes: List[GenericAttibute] = ListPlus(),
         connections: List[Component] = ListPlus(),
         id: Optional[str] = None,
     ) -> Component:
@@ -83,7 +84,7 @@ class PlantSetup(sdRDM.DataModel):
             component_class (): class of the component.. Defaults to None
             component_class_uri (): uri of the component.. Defaults to None
             component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
-            generic_attribute (): a generic attribute as defined by DEXPI.. Defaults to None
+            generic_attributes (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
             connections (): other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
         """
         params = {
@@ -92,7 +93,7 @@ class PlantSetup(sdRDM.DataModel):
             "component_class": component_class,
             "component_class_uri": component_class_uri,
             "component_name": component_name,
-            "generic_attribute": generic_attribute,
+            "generic_attributes": generic_attributes,
             "connections": connections,
         }
         if id is not None:
