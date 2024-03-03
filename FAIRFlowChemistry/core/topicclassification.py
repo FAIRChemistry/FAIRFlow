@@ -22,7 +22,7 @@ class TopicClassification(sdRDM.DataModel):
     )
 
     value: Optional[str] = element(
-        description="Topic or Subject term that is relevant to this Dataset.",
+        description="topic or Subject term that is relevant to this Dataset.",
         default=None,
         tag="value",
         json_schema_extra=dict(),
@@ -30,7 +30,7 @@ class TopicClassification(sdRDM.DataModel):
 
     vocab: Optional[str] = element(
         description=(
-            "Provided for specification of the controlled vocabulary in use, e.g.,"
+            "provided for specification of the controlled vocabulary in use, e.g.,"
             " LCSH, MeSH, etc."
         ),
         default=None,
@@ -39,7 +39,7 @@ class TopicClassification(sdRDM.DataModel):
     )
 
     vocab_uri: Optional[str] = element(
-        description="Specifies the URI location for the full controlled vocabulary.",
+        description="specifies the URI location for the full controlled vocabulary.",
         default=None,
         tag="vocab_uri",
         json_schema_extra=dict(),
@@ -48,7 +48,7 @@ class TopicClassification(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

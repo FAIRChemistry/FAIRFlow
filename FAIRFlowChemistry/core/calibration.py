@@ -24,7 +24,7 @@ class Calibration(sdRDM.DataModel):
     )
 
     peak_areas: Optional[Data] = element(
-        description="Recorded peak areas of the individual calibration solutions.",
+        description="recorded peak areas of the individual calibration solutions.",
         default_factory=Data,
         tag="peak_areas",
         json_schema_extra=dict(),
@@ -38,15 +38,15 @@ class Calibration(sdRDM.DataModel):
     )
 
     regression_coefficients: List[float] = element(
-        description="Polynomial coefficients in order of increasing degree.",
+        description="polynomial coefficients in order of increasing degree.",
         default_factory=ListPlus,
         tag="regression_coefficients",
         json_schema_extra=dict(multiple=True),
     )
 
     degree: Optional[int] = element(
-        description="Degree of regression model.",
-        default=1,
+        description="degree of regression model.",
+        default=None,
         tag="degree",
         json_schema_extra=dict(),
     )
@@ -54,7 +54,7 @@ class Calibration(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

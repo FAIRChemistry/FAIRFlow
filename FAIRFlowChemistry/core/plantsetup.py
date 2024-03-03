@@ -8,12 +8,8 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .reactantrole import ReactantRole
-from .material import Material
-from .chemical import Chemical
-from .device import Device
-from .stoichiometry import Stoichiometry
-from .tubing import Tubing, Insulation
+from .componenttype import ComponentType
+from .component import Component
 
 
 @forge_signature
@@ -27,29 +23,22 @@ class PlantSetup(sdRDM.DataModel):
         xml="@id",
     )
 
-    devices: List[Device] = element(
-        description="bla",
+    component: List[Component] = element(
+        description="bla.",
         default_factory=ListPlus,
-        tag="devices",
+        tag="component",
         json_schema_extra=dict(multiple=True),
     )
 
-    tubing: List[Tubing] = element(
-        description="bla",
-        default_factory=ListPlus,
-        tag="tubing",
-        json_schema_extra=dict(multiple=True),
-    )
-
-    input: List[Chemical] = element(
-        description="bla",
+    input: List[str] = element(
+        description="bla.",
         default_factory=ListPlus,
         tag="input",
         json_schema_extra=dict(multiple=True),
     )
 
-    output: List[Chemical] = element(
-        description="bla",
+    output: List[str] = element(
+        description="bla.",
         default_factory=ListPlus,
         tag="output",
         json_schema_extra=dict(multiple=True),
@@ -58,7 +47,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -73,139 +62,40 @@ class PlantSetup(sdRDM.DataModel):
                 self._raw_xml_data[attr] = elem2dict(value)
         return self
 
-    def add_to_devices(
+    def add_to_component(
         self,
-        manufacturer: Optional[str] = None,
-        device_type: Optional[str] = None,
-        series: Optional[str] = None,
-        on_off: Optional[bool] = None,
+        component_type: Optional[ComponentType] = None,
         id: Optional[str] = None,
-    ) -> Device:
+        component_class: Optional[str] = None,
+        component_class_uri: Optional[str] = None,
+        component_name: Optional[str] = None,
+        generic_attribute: List[str] = ListPlus(),
+        connections: List[str] = ListPlus(),
+        id: Optional[str] = None,
+    ) -> Component:
         """
-        This method adds an object of type 'Device' to attribute devices
+        This method adds an object of type 'Component' to attribute component
 
         Args:
-            id (str): Unique identifier of the 'Device' object. Defaults to 'None'.
-            manufacturer (): name of the manufacturer of the device.. Defaults to None
-            device_type (): type given by the manufacturer of the device.. Defaults to None
-            series (): the series of the device.. Defaults to None
-            on_off (): operational mode of the flow module. True is on and False is off.. Defaults to None
+            id (str): Unique identifier of the 'Component' object. Defaults to 'None'.
+            component_type (): equipment or piping component.. Defaults to None
+            id (): id used to unambiguously identify the component.. Defaults to None
+            component_class (): class of the component.. Defaults to None
+            component_class_uri (): uri of the component.. Defaults to None
+            component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
+            generic_attribute (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
+            connections (): other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
         """
         params = {
-            "manufacturer": manufacturer,
-            "device_type": device_type,
-            "series": series,
-            "on_off": on_off,
+            "component_type": component_type,
+            "id": id,
+            "component_class": component_class,
+            "component_class_uri": component_class_uri,
+            "component_name": component_name,
+            "generic_attribute": generic_attribute,
+            "connections": connections,
         }
         if id is not None:
             params["id"] = id
-        self.devices.append(Device(**params))
-        return self.devices[-1]
-
-    def add_to_tubing(
-        self,
-        material: Optional[Material] = None,
-        inner_diameter: Optional[float] = None,
-        outer_diameter: Optional[float] = None,
-        length: Optional[int] = None,
-        insulation: Optional[Insulation] = None,
-        id: Optional[str] = None,
-    ) -> Tubing:
-        """
-        This method adds an object of type 'Tubing' to attribute tubing
-
-        Args:
-            id (str): Unique identifier of the 'Tubing' object. Defaults to 'None'.
-            material (): material with which the fluid flowing through comes into contact.. Defaults to None
-            inner_diameter (): inner diameter of the tubing in mm.. Defaults to None
-            outer_diameter (): outer diameter of the tubing in mm.. Defaults to None
-            length (): length of the tubing in mm.. Defaults to None
-            insulation (): insulation of the tubing.. Defaults to None
-        """
-        params = {
-            "material": material,
-            "inner_diameter": inner_diameter,
-            "outer_diameter": outer_diameter,
-            "length": length,
-            "insulation": insulation,
-        }
-        if id is not None:
-            params["id"] = id
-        self.tubing.append(Tubing(**params))
-        return self.tubing[-1]
-
-    def add_to_input(
-        self,
-        name: Optional[str] = None,
-        formula: Optional[str] = None,
-        pureness: Optional[float] = None,
-        supplier: Optional[str] = None,
-        stoichiometry: Optional[Stoichiometry] = None,
-        state_of_matter: Optional[str] = None,
-        reactant_role: Optional[ReactantRole] = None,
-        id: Optional[str] = None,
-    ) -> Chemical:
-        """
-        This method adds an object of type 'Chemical' to attribute input
-
-        Args:
-            id (str): Unique identifier of the 'Chemical' object. Defaults to 'None'.
-            name (): IUPAC name of the compound.. Defaults to None
-            formula (): molecular formula of the compound.. Defaults to None
-            pureness (): pureness of the compound in percent.. Defaults to None
-            supplier (): name of the supplier of the compound.. Defaults to None
-            stoichiometry (): stoichiometric information like equivalents, mass, amount of substance, volume. Defaults to None
-            state_of_matter (): s for solid, l for liquid and g for gaseous. Defaults to None
-            reactant_role (): Role that a reactand plays in a chemical reaction or  in a process.. Defaults to None
-        """
-        params = {
-            "name": name,
-            "formula": formula,
-            "pureness": pureness,
-            "supplier": supplier,
-            "stoichiometry": stoichiometry,
-            "state_of_matter": state_of_matter,
-            "reactant_role": reactant_role,
-        }
-        if id is not None:
-            params["id"] = id
-        self.input.append(Chemical(**params))
-        return self.input[-1]
-
-    def add_to_output(
-        self,
-        name: Optional[str] = None,
-        formula: Optional[str] = None,
-        pureness: Optional[float] = None,
-        supplier: Optional[str] = None,
-        stoichiometry: Optional[Stoichiometry] = None,
-        state_of_matter: Optional[str] = None,
-        reactant_role: Optional[ReactantRole] = None,
-        id: Optional[str] = None,
-    ) -> Chemical:
-        """
-        This method adds an object of type 'Chemical' to attribute output
-
-        Args:
-            id (str): Unique identifier of the 'Chemical' object. Defaults to 'None'.
-            name (): IUPAC name of the compound.. Defaults to None
-            formula (): molecular formula of the compound.. Defaults to None
-            pureness (): pureness of the compound in percent.. Defaults to None
-            supplier (): name of the supplier of the compound.. Defaults to None
-            stoichiometry (): stoichiometric information like equivalents, mass, amount of substance, volume. Defaults to None
-            state_of_matter (): s for solid, l for liquid and g for gaseous. Defaults to None
-            reactant_role (): Role that a reactand plays in a chemical reaction or  in a process.. Defaults to None
-        """
-        params = {
-            "name": name,
-            "formula": formula,
-            "pureness": pureness,
-            "supplier": supplier,
-            "stoichiometry": stoichiometry,
-            "state_of_matter": state_of_matter,
-            "reactant_role": reactant_role,
-        }
-        if id is not None:
-            params["id"] = id
-        self.output.append(Chemical(**params))
-        return self.output[-1]
+        self.component.append(Component(**params))
+        return self.component[-1]
