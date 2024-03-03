@@ -121,10 +121,10 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Description: bla.
 - input
   - Type: string[]
-  - Description: bla
+  - Description: bla.
 - output
   - Type: string[]
-  - Description: bla
+  - Description: bla.
 
 
 ### Component
@@ -145,10 +145,10 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: name of the component used to link between the abstract component and its shape.
 - generic_attribute
-  - Type: {name:string, attribute_uri:string, value:string, format:str, units:str, units_uri:str}[]
+  - Type: string
   - Description: A generic attribute as defined by DEXPI.
 - connections:
-  - Type: str[]
+  - Type: Component[]
   - Description: other component this component is connected to via pipes, wires or similar.
 
 
