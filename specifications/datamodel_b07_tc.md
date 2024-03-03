@@ -150,8 +150,8 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Type: GenericAttibute[]
   - Description: a generic attribute as defined by DEXPI.
 - connections
-  - Type: Component[]
-  - Description: other component this component is connected to via pipes, wires or similar.
+  - Type: string[]
+  - Description: id of other component this component is connected to via pipes, wires or similar.
 
 
 ###  GenericAttibute
