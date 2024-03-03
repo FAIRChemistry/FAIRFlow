@@ -68,7 +68,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Description: full bibliographic citation for this related publication.
 - id_type
   - Type: string
-  - Description: type of digital identifier used for this publication, e.g., digital object identifier, DOI.
+  - Description: type of digital identifier used for this publication, e.g., digital object identifier (DOI).
 - id_number
   - Type: string
   - Description: identifier for the selected ID type.
@@ -150,7 +150,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Type: string[]
   - Description: a generic attribute as defined by DEXPI.
 - connections
-  - Type: string[]
+  - Type: Component[]
   - Description: other component this component is connected to via pipes, wires or similar.
 
 
