@@ -1,20 +1,17 @@
 import sdRDM
 
 from typing import Dict, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr, model_validator
+from uuid import uuid4
 from pydantic_xml import attr, element
 from lxml.etree import _Element
-
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 
 
 @forge_signature
-class GenericAttibute(
-    sdRDM.DataModel,
-):
+class GenericAttibute(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -65,12 +62,11 @@ class GenericAttibute(
         tag="units_uri",
         json_schema_extra=dict(),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="39b4d9c8b2d56cee632e1aa5d881b928354ae938"
+        default="776c01c6d4f826efbd50d299dde774d1201156d1"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -78,10 +74,9 @@ class GenericAttibute(
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                isinstance(i, _Element) for i in value
+                (isinstance(i, _Element) for i in value)
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
-
         return self

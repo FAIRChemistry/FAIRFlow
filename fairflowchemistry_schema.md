@@ -82,7 +82,7 @@ classDiagram
     
     class Component {
         +ComponentType component_type
-        +string id
+        +string component_id
         +string component_class
         +string component_class_uri
         +string component_name

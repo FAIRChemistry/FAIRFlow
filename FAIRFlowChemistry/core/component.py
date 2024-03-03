@@ -30,10 +30,10 @@ class Component(sdRDM.DataModel):
         json_schema_extra=dict(),
     )
 
-    id: Optional[str] = element(
+    component_id: Optional[str] = element(
         description="id used to unambiguously identify the component.",
         default=None,
-        tag="id",
+        tag="component_id",
         json_schema_extra=dict(),
     )
 
@@ -81,7 +81,7 @@ class Component(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="39b4d9c8b2d56cee632e1aa5d881b928354ae938"
+        default="776c01c6d4f826efbd50d299dde774d1201156d1"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -134,7 +134,7 @@ class Component(sdRDM.DataModel):
     def add_to_connections(
         self,
         component_type: Optional[ComponentType] = None,
-        id: Optional[str] = None,
+        component_id: Optional[str] = None,
         component_class: Optional[str] = None,
         component_class_uri: Optional[str] = None,
         component_name: Optional[str] = None,
@@ -148,7 +148,7 @@ class Component(sdRDM.DataModel):
         Args:
             id (str): Unique identifier of the 'Component' object. Defaults to 'None'.
             component_type (): equipment or piping component.. Defaults to None
-            id (): id used to unambiguously identify the component.. Defaults to None
+            component_id (): id used to unambiguously identify the component.. Defaults to None
             component_class (): class of the component.. Defaults to None
             component_class_uri (): uri of the component.. Defaults to None
             component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
@@ -157,7 +157,7 @@ class Component(sdRDM.DataModel):
         """
         params = {
             "component_type": component_type,
-            "id": id,
+            "component_id": component_id,
             "component_class": component_class,
             "component_class_uri": component_class_uri,
             "component_name": component_name,
