@@ -11,6 +11,7 @@ classDiagram
     Experiment *-- SpeciesData
     PlantSetup *-- Component
     Component *-- ComponentType
+    Component *-- Component
     Data *-- Quantity
     Metadata *-- DataType
     Measurement *-- MeasurementType
@@ -85,7 +86,7 @@ classDiagram
         +string component_class_uri
         +string component_name
         +string[0..*] generic_attribute
-        +string[0..*] connections
+        +Component[0..*] connections
     }
     
     class Parameter {

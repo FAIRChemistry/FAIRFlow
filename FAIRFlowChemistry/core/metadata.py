@@ -76,7 +76,7 @@ class Metadata(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="568e963367a92a436259393eefaf1740cd7db4db"
+        default="c0afa15b3139d198065f3824cc2033e5ab02f73a"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
