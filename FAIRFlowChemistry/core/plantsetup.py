@@ -1,26 +1,23 @@
 import sdRDM
 
-from typing import List, Optional
-from pydantic import PrivateAttr
+from typing import Dict, List, Optional
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element, wrapped
+from pydantic_xml import attr, element
+from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
+from sdRDM.tools.utils import elem2dict
+from .reactantrole import ReactantRole
 from .material import Material
+from .chemical import Chemical
+from .device import Device
 from .stoichiometry import Stoichiometry
 from .tubing import Tubing, Insulation
-from .reactantrole import ReactantRole
-from .device import Device
-from .chemical import Chemical
 
 
 @forge_signature
-class PlantSetup(
-    sdRDM.DataModel,
-    nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3206d61a7ef1fb8aaa8971863b6ab25925c3e134#PlantSetup"
-    },
-):
+class PlantSetup(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -30,51 +27,51 @@ class PlantSetup(
         xml="@id",
     )
 
-    devices: List[Device] = wrapped(
-        "devices",
-        element(
-            description="bla",
-            default_factory=ListPlus,
-            tag="Device",
-            json_schema_extra=dict(multiple=True),
-        ),
+    devices: List[Device] = element(
+        description="bla",
+        default_factory=ListPlus,
+        tag="devices",
+        json_schema_extra=dict(multiple=True),
     )
 
-    tubing: List[Tubing] = wrapped(
-        "tubing",
-        element(
-            description="bla",
-            default_factory=ListPlus,
-            tag="Tubing",
-            json_schema_extra=dict(multiple=True),
-        ),
+    tubing: List[Tubing] = element(
+        description="bla",
+        default_factory=ListPlus,
+        tag="tubing",
+        json_schema_extra=dict(multiple=True),
     )
 
-    input: List[Chemical] = wrapped(
-        "input",
-        element(
-            description="bla",
-            default_factory=ListPlus,
-            tag="Chemical",
-            json_schema_extra=dict(multiple=True),
-        ),
+    input: List[Chemical] = element(
+        description="bla",
+        default_factory=ListPlus,
+        tag="input",
+        json_schema_extra=dict(multiple=True),
     )
 
-    output: List[Chemical] = wrapped(
-        "output",
-        element(
-            description="bla",
-            default_factory=ListPlus,
-            tag="Chemical",
-            json_schema_extra=dict(multiple=True),
-        ),
+    output: List[Chemical] = element(
+        description="bla",
+        default_factory=ListPlus,
+        tag="output",
+        json_schema_extra=dict(multiple=True),
     )
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="3206d61a7ef1fb8aaa8971863b6ab25925c3e134"
+        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
     )
+    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _parse_raw_xml_data(self):
+        for attr, value in self:
+            if isinstance(value, (ListPlus, list)) and all(
+                (isinstance(i, _Element) for i in value)
+            ):
+                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
+            elif isinstance(value, _Element):
+                self._raw_xml_data[attr] = elem2dict(value)
+        return self
 
     def add_to_devices(
         self,

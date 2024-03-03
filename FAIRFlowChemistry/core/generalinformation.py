@@ -1,24 +1,21 @@
 import sdRDM
 
-from typing import List, Optional
-from pydantic import PrivateAttr
+from typing import Dict, List, Optional
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element, wrapped
+from pydantic_xml import attr, element
+from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from .keyword import Keyword
+from sdRDM.tools.utils import elem2dict
 from .relatedpublication import RelatedPublication
+from .keyword import Keyword
 from .topicclassification import TopicClassification
 from .author import Author
 
 
 @forge_signature
-class Contact(
-    sdRDM.DataModel,
-    nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3206d61a7ef1fb8aaa8971863b6ab25925c3e134#Contact"
-    },
-):
+class Contact(sdRDM.DataModel):
     """Small type for attribute 'contact'"""
 
     id: Optional[str] = attr(
@@ -36,17 +33,24 @@ class Contact(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="3206d61a7ef1fb8aaa8971863b6ab25925c3e134"
+        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
     )
+    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _parse_raw_xml_data(self):
+        for attr, value in self:
+            if isinstance(value, (ListPlus, list)) and all(
+                (isinstance(i, _Element) for i in value)
+            ):
+                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
+            elif isinstance(value, _Element):
+                self._raw_xml_data[attr] = elem2dict(value)
+        return self
 
 
 @forge_signature
-class GeneralInformation(
-    sdRDM.DataModel,
-    nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@3206d61a7ef1fb8aaa8971863b6ab25925c3e134#GeneralInformation"
-    },
-):
+class GeneralInformation(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -77,14 +81,11 @@ class GeneralInformation(
         json_schema_extra=dict(),
     )
 
-    authors: List[Author] = wrapped(
-        "authors",
-        element(
-            description="authors of this dataset.",
-            default_factory=ListPlus,
-            tag="Author",
-            json_schema_extra=dict(multiple=True),
-        ),
+    authors: List[Author] = element(
+        description="authors of this dataset.",
+        default_factory=ListPlus,
+        tag="authors",
+        json_schema_extra=dict(multiple=True),
     )
 
     contact: Optional[Contact] = element(
@@ -94,17 +95,14 @@ class GeneralInformation(
         json_schema_extra=dict(),
     )
 
-    subject: List[str] = wrapped(
-        "subject",
-        element(
-            description=(
-                "Domain-specific Subject Categories that are topically relevant to the"
-                " Dataset."
-            ),
-            default_factory=ListPlus,
-            tag="string",
-            json_schema_extra=dict(multiple=True),
+    subject: List[str] = element(
+        description=(
+            "Domain-specific Subject Categories that are topically relevant to the"
+            " Dataset."
         ),
+        default_factory=ListPlus,
+        tag="subject",
+        json_schema_extra=dict(multiple=True),
     )
 
     related_publication: Optional[RelatedPublication] = element(
@@ -114,31 +112,37 @@ class GeneralInformation(
         json_schema_extra=dict(),
     )
 
-    keywords: List[Keyword] = wrapped(
-        "keywords",
-        element(
-            description="Keywords and url related to the project.",
-            default_factory=ListPlus,
-            tag="Keyword",
-            json_schema_extra=dict(multiple=True),
-        ),
+    keywords: List[Keyword] = element(
+        description="Keywords and url related to the project.",
+        default_factory=ListPlus,
+        tag="keywords",
+        json_schema_extra=dict(multiple=True),
     )
 
-    topic_classification: List[TopicClassification] = wrapped(
-        "topic_classification",
-        element(
-            description="Topic classification.",
-            default_factory=ListPlus,
-            tag="TopicClassification",
-            json_schema_extra=dict(multiple=True),
-        ),
+    topic_classification: List[TopicClassification] = element(
+        description="Topic classification.",
+        default_factory=ListPlus,
+        tag="topic_classification",
+        json_schema_extra=dict(multiple=True),
     )
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="3206d61a7ef1fb8aaa8971863b6ab25925c3e134"
+        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
     )
+    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _parse_raw_xml_data(self):
+        for attr, value in self:
+            if isinstance(value, (ListPlus, list)) and all(
+                (isinstance(i, _Element) for i in value)
+            ):
+                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
+            elif isinstance(value, _Element):
+                self._raw_xml_data[attr] = elem2dict(value)
+        return self
 
     def add_to_authors(
         self,
