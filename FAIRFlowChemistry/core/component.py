@@ -8,8 +8,8 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .componenttype import ComponentType
 from .genericattibute import GenericAttibute
+from .componenttype import ComponentType
 
 
 @forge_signature
@@ -68,9 +68,9 @@ class Component(sdRDM.DataModel):
         json_schema_extra=dict(multiple=True),
     )
 
-    connections: List["Component"] = element(
+    connections: List[str] = element(
         description=(
-            "other component this component is connected to via pipes, wires or"
+            "id of other component this component is connected to via pipes, wires or"
             " similar."
         ),
         default_factory=ListPlus,
@@ -81,7 +81,7 @@ class Component(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="776c01c6d4f826efbd50d299dde774d1201156d1"
+        default="a3664c6ee46c14647cf387c36cf2566997890114"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -130,41 +130,3 @@ class Component(sdRDM.DataModel):
             params["id"] = id
         self.generic_attributes.append(GenericAttibute(**params))
         return self.generic_attributes[-1]
-
-    def add_to_connections(
-        self,
-        component_type: Optional[ComponentType] = None,
-        component_id: Optional[str] = None,
-        component_class: Optional[str] = None,
-        component_class_uri: Optional[str] = None,
-        component_name: Optional[str] = None,
-        generic_attributes: List[GenericAttibute] = ListPlus(),
-        connections: List["Component"] = ListPlus(),
-        id: Optional[str] = None,
-    ) -> Component:
-        """
-        This method adds an object of type 'Component' to attribute connections
-
-        Args:
-            id (str): Unique identifier of the 'Component' object. Defaults to 'None'.
-            component_type (): equipment or piping component.. Defaults to None
-            component_id (): id used to unambiguously identify the component.. Defaults to None
-            component_class (): class of the component.. Defaults to None
-            component_class_uri (): uri of the component.. Defaults to None
-            component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
-            generic_attributes (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
-            connections (): other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
-        """
-        params = {
-            "component_type": component_type,
-            "component_id": component_id,
-            "component_class": component_class,
-            "component_class_uri": component_class_uri,
-            "component_name": component_name,
-            "generic_attributes": generic_attributes,
-            "connections": connections,
-        }
-        if id is not None:
-            params["id"] = id
-        self.connections.append(Component(**params))
-        return self.connections[-1]

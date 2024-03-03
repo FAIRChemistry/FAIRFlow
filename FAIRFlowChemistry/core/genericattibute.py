@@ -66,7 +66,7 @@ class GenericAttibute(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="776c01c6d4f826efbd50d299dde774d1201156d1"
+        default="a3664c6ee46c14647cf387c36cf2566997890114"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

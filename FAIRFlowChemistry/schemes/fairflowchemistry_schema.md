@@ -11,7 +11,6 @@ classDiagram
     Experiment *-- SpeciesData
     PlantSetup *-- Component
     Component *-- ComponentType
-    Component *-- Component
     Component *-- GenericAttibute
     Data *-- Quantity
     Metadata *-- DataType
@@ -87,7 +86,7 @@ classDiagram
         +string component_class_uri
         +string component_name
         +GenericAttibute[0..*] generic_attributes
-        +Component[0..*] connections
+        +string[0..*] connections
     }
     
     class GenericAttibute {
