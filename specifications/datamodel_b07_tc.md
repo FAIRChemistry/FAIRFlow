@@ -134,7 +134,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 - component_type
   - Type: ComponentType
   - Description: equipment or piping component.
-- id
+- component_id
   - Type: string
   - Description: id used to unambiguously identify the component.
 - component_class
