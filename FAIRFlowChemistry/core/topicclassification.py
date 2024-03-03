@@ -48,7 +48,7 @@ class TopicClassification(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
+        default="39b4d9c8b2d56cee632e1aa5d881b928354ae938"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

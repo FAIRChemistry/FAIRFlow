@@ -9,48 +9,7 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 from .componenttype import ComponentType
-
-
-@forge_signature
-class GenericAttribute(sdRDM.DataModel):
-    """Small type for attribute 'generic_attribute'"""
-
-    id: Optional[str] = attr(
-        name="id",
-        description="Unique identifier of the given object.",
-        default_factory=lambda: str(uuid4()),
-        xml="@id",
-    )
-    name: Optional[str] = element(default=None, tag="name", json_schema_extra=dict())
-    attribute_uri: Optional[str] = element(
-        default=None, tag="attribute_uri", json_schema_extra=dict()
-    )
-    value: Optional[str] = element(default=None, tag="value", json_schema_extra=dict())
-    format: Optional[str] = element(
-        default=None, tag="format", json_schema_extra=dict()
-    )
-    units: Optional[str] = element(default=None, tag="units", json_schema_extra=dict())
-    units_uri: Optional[str] = element(
-        default=None, tag="units_uri", json_schema_extra=dict()
-    )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
-    )
-    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
-
-    @model_validator(mode="after")
-    def _parse_raw_xml_data(self):
-        for attr, value in self:
-            if isinstance(value, (ListPlus, list)) and all(
-                (isinstance(i, _Element) for i in value)
-            ):
-                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
-            elif isinstance(value, _Element):
-                self._raw_xml_data[attr] = elem2dict(value)
-        return self
+from .genericattibute import GenericAttibute
 
 
 @forge_signature
@@ -102,11 +61,11 @@ class Component(sdRDM.DataModel):
         json_schema_extra=dict(),
     )
 
-    generic_attribute: Optional[GenericAttribute] = element(
+    generic_attributes: List[GenericAttibute] = element(
         description="a generic attribute as defined by DEXPI.",
-        default_factory=GenericAttribute,
-        tag="generic_attribute",
-        json_schema_extra=dict(),
+        default_factory=ListPlus,
+        tag="generic_attributes",
+        json_schema_extra=dict(multiple=True),
     )
 
     connections: List["Component"] = element(
@@ -122,7 +81,7 @@ class Component(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
+        default="39b4d9c8b2d56cee632e1aa5d881b928354ae938"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -137,6 +96,41 @@ class Component(sdRDM.DataModel):
                 self._raw_xml_data[attr] = elem2dict(value)
         return self
 
+    def add_to_generic_attributes(
+        self,
+        name: Optional[str] = None,
+        attribute_uri: Optional[str] = None,
+        value: Optional[str] = None,
+        format: Optional[str] = None,
+        units: Optional[str] = None,
+        units_uri: Optional[str] = None,
+        id: Optional[str] = None,
+    ) -> GenericAttibute:
+        """
+        This method adds an object of type 'GenericAttibute' to attribute generic_attributes
+
+        Args:
+            id (str): Unique identifier of the 'GenericAttibute' object. Defaults to 'None'.
+            name (): bla.. Defaults to None
+            attribute_uri (): bla.. Defaults to None
+            value (): bla.. Defaults to None
+            format (): bla.. Defaults to None
+            units (): bla.. Defaults to None
+            units_uri (): bla. Defaults to None
+        """
+        params = {
+            "name": name,
+            "attribute_uri": attribute_uri,
+            "value": value,
+            "format": format,
+            "units": units,
+            "units_uri": units_uri,
+        }
+        if id is not None:
+            params["id"] = id
+        self.generic_attributes.append(GenericAttibute(**params))
+        return self.generic_attributes[-1]
+
     def add_to_connections(
         self,
         component_type: Optional[ComponentType] = None,
@@ -144,7 +138,7 @@ class Component(sdRDM.DataModel):
         component_class: Optional[str] = None,
         component_class_uri: Optional[str] = None,
         component_name: Optional[str] = None,
-        generic_attribute: Optional[GenericAttribute] = None,
+        generic_attributes: List[GenericAttibute] = ListPlus(),
         connections: List["Component"] = ListPlus(),
         id: Optional[str] = None,
     ) -> Component:
@@ -158,7 +152,7 @@ class Component(sdRDM.DataModel):
             component_class (): class of the component.. Defaults to None
             component_class_uri (): uri of the component.. Defaults to None
             component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
-            generic_attribute (): a generic attribute as defined by DEXPI.. Defaults to None
+            generic_attributes (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
             connections (): other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
         """
         params = {
@@ -167,7 +161,7 @@ class Component(sdRDM.DataModel):
             "component_class": component_class,
             "component_class_uri": component_class_uri,
             "component_name": component_name,
-            "generic_attribute": generic_attribute,
+            "generic_attributes": generic_attributes,
             "connections": connections,
         }
         if id is not None:

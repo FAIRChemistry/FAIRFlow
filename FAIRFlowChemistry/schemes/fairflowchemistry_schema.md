@@ -12,6 +12,7 @@ classDiagram
     PlantSetup *-- Component
     Component *-- ComponentType
     Component *-- Component
+    Component *-- GenericAttibute
     Data *-- Quantity
     Metadata *-- DataType
     Measurement *-- MeasurementType
@@ -85,8 +86,17 @@ classDiagram
         +string component_class
         +string component_class_uri
         +string component_name
-        +GenericAttribute generic_attribute
+        +GenericAttibute[0..*] generic_attributes
         +Component[0..*] connections
+    }
+    
+    class GenericAttibute {
+        +string name
+        +string attribute_uri
+        +string value
+        +string format
+        +string units
+        +string units_uri
     }
     
     class Parameter {
