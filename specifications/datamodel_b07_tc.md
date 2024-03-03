@@ -148,7 +148,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: {name:string, attribute_uri:string, value:string, format:str, units:str, units_uri:str}[]
   - Description: A generic attribute as defined by DEXPI.
 - connections:
-  - Type: Component[]
+  - Type: str[]
   - Description: other component this component is connected to via pipes, wires or similar.
 
 
