@@ -147,7 +147,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Type: string
   - Description: name of the component used to link between the abstract component and its shape.
 - generic_attribute
-  - Type: {name:string, attribute_uri:string, value:string, format:string, units:string, units_uri:string}[]
+  - Type: {name:string, attribute_uri:string, value:string, format:string, units:string, units_uri:string}
   - Description: a generic attribute as defined by DEXPI.
 - connections
   - Type: Component[]
@@ -253,6 +253,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Description: polynomial coefficients in order of increasing degree.
 - degree
   - Type: int
+  - Default: 1
   - Description: degree of regression model.
 
 
