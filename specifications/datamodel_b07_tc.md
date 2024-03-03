@@ -120,10 +120,10 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: Component[]
   - Description: bla.
 - input
-  - Type: Chemical[]
+  - Type: string[]
   - Description: bla
 - output
-  - Type: Chemical[]
+  - Type: string[]
   - Description: bla
 
 
