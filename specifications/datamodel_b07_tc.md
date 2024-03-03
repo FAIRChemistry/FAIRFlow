@@ -4,7 +4,6 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 ## Objects
 
-
 ### Dataset
 
 - general_information
@@ -77,6 +76,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: 'Link to the publication web page (e.g., journal article page, archive record page, or other).
 
+
 ### Keyword
 
 - value
@@ -89,6 +89,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: Keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.
 
+
 ### TopicClassification
 
 - value
@@ -100,6 +101,7 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 - vocab_uri
   - Type: string
   - Description: Specifies the URI location for the full controlled vocabulary.
+
 
 ### Experiment
 
@@ -145,10 +147,10 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Type: string
   - Description: name of the component used to link between the abstract component and its shape.
 - generic_attribute
-  - Type: {name:string, attribute_uri:string, value:string, format:str, units:str, units_uri:str}[]
+  - Type: string[]
   - Description: a generic attribute as defined by DEXPI.
 - connections:
-  - Type: Component[]
+  - Type: string[]
   - Description: other component this component is connected to via pipes, wires or similar.
 
 
@@ -265,6 +267,7 @@ EQUIPMENT = 'equipment'
 PIPINGCOMPONENT = 'piping_component'
 ```
 
+
 ### DataType
 
 Different data types are supported.
@@ -280,7 +283,6 @@ INTEGER = 'int'
 NONE = 'NONE'
 LABEL = 'label'
 ```
-
 
 
 ### Quantity
