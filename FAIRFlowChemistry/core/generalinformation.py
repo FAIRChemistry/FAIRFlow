@@ -33,7 +33,7 @@ class Contact(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="661158ab273ced2873569935234d707a9dc65a53"
+        default="568e963367a92a436259393eefaf1740cd7db4db"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -129,7 +129,7 @@ class GeneralInformation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="661158ab273ced2873569935234d707a9dc65a53"
+        default="568e963367a92a436259393eefaf1740cd7db4db"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -159,7 +159,7 @@ class GeneralInformation(sdRDM.DataModel):
             id (str): Unique identifier of the 'Author' object. Defaults to 'None'.
             name (): full name including given and family name.. Defaults to None
             affiliation (): organization the author is affiliated to.. Defaults to None
-            identifier_scheme (): name of the identifier scheme, ORCID, ISNI.. Defaults to None
+            identifier_scheme (): name of the identifier scheme (ORCID, ISNI).. Defaults to None
             identifier (): unique identifier of an individual author or organization, according to various schemes.. Defaults to None
         """
         params = {
