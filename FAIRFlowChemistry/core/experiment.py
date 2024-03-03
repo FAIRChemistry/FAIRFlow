@@ -11,18 +11,18 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 from pathlib import Path
-from .component import Component
-from .chemicalformula import ChemicalFormula
-from .measurement import Measurement
-from .quantity import Quantity
-from .species import Species
-from .speciesdata import SpeciesData
+from .measurementtype import MeasurementType
 from .data import Data
+from .component import Component
 from .calibration import Calibration
+from .species import Species
+from .quantity import Quantity
 from .plantsetup import PlantSetup
 from .datatype import DataType
 from .metadata import Metadata
-from .measurementtype import MeasurementType
+from .speciesdata import SpeciesData
+from .chemicalformula import ChemicalFormula
+from .measurement import Measurement
 
 
 @forge_signature
@@ -62,7 +62,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="661158ab273ced2873569935234d707a9dc65a53"
+        default="568e963367a92a436259393eefaf1740cd7db4db"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
