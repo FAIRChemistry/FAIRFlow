@@ -129,24 +129,24 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 ### Component
 
-- component_type: ComponentType
-  - Type:
-  - Description:
+- component_type
+  - Type: ComponentType
+  - Description: equipment or piping component.
 - id
-  - Type:
-  - Description:
+  - Type: string
+  - Description: id used to unambiguously identify the component.
 - component_class
-  - Type:
-  - Description:
+  - Type: string
+  - Description: class of the component.
 - component_class_uri
-  - Type:
-  - Description:
+  - Type: string
+  - Description: uri of the component.
 - component_name
-  - Type:
-  - Description:
+  - Type: string
+  - Description: name of the component used to link between the abstract component and its shape.
 - generic_attribute
   - Type: {name:string, attribute_uri:string, value:string, format:str, units:str, units_uri:str}[]
-  - Description:
+  - Description: A generic attribute as defined by DEXPI.
 - connections:
   - Type: Component[]
   - Description: other component this component is connected to via pipes, wires or similar.
