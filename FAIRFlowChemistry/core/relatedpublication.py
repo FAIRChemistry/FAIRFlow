@@ -22,7 +22,7 @@ class RelatedPublication(sdRDM.DataModel):
     )
 
     citation: Optional[str] = element(
-        description="The full bibliographic citation for this related publication.",
+        description="full bibliographic citation for this related publication.",
         default=None,
         tag="citation",
         json_schema_extra=dict(),
@@ -30,8 +30,8 @@ class RelatedPublication(sdRDM.DataModel):
 
     id_type: Optional[str] = element(
         description=(
-            "The type of digital identifier used for this publication (e.g., Digital"
-            " Object Identifier (DOI))."
+            "type of digital identifier used for this publication, e.g., digital object"
+            " identifier, DOI."
         ),
         default=None,
         tag="id_type",
@@ -39,7 +39,7 @@ class RelatedPublication(sdRDM.DataModel):
     )
 
     id_number: Optional[str] = element(
-        description="'The identifier for the selected ID type.'",
+        description="identifier for the selected ID type.",
         default=None,
         tag="id_number",
         json_schema_extra=dict(),
@@ -47,8 +47,8 @@ class RelatedPublication(sdRDM.DataModel):
 
     url: Optional[str] = element(
         description=(
-            "'Link to the publication web page (e.g., journal article page, archive"
-            " record page, or other)."
+            "link to the publication web page, e.g., journal article page, archive"
+            " record page, or other."
         ),
         default=None,
         tag="url",
@@ -58,7 +58,7 @@ class RelatedPublication(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

@@ -25,7 +25,7 @@ class Metadata(sdRDM.DataModel):
     )
 
     parameter: Optional[str] = element(
-        description="Name of the parameter.",
+        description="name of the parameter.",
         default=None,
         tag="parameter",
         json_schema_extra=dict(),
@@ -53,7 +53,7 @@ class Metadata(sdRDM.DataModel):
     )
 
     mode: Optional[str] = element(
-        description="mode of the parameter. E.g., on and off.",
+        description="mode of the parameter. e.g., on and off.",
         default=None,
         tag="mode",
         json_schema_extra=dict(),
@@ -76,7 +76,7 @@ class Metadata(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

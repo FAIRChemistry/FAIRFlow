@@ -36,7 +36,7 @@ class Author(sdRDM.DataModel):
     )
 
     identifier_scheme: Optional[str] = element(
-        description="Name of the identifier scheme (ORCID, ISNI).",
+        description="name of the identifier scheme, ORCID, ISNI.",
         default=None,
         tag="identifier_scheme",
         json_schema_extra=dict(),
@@ -44,7 +44,7 @@ class Author(sdRDM.DataModel):
 
     identifier: Optional[str] = element(
         description=(
-            "Uniquely identifies an individual author or organization, according to"
+            "unique identifier of an individual author or organization, according to"
             " various schemes."
         ),
         default=None,
@@ -55,7 +55,7 @@ class Author(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

@@ -22,7 +22,7 @@ class Keyword(sdRDM.DataModel):
     )
 
     value: Optional[str] = element(
-        description="Key terms that describe important aspects of the Dataset.",
+        description="key terms describing important aspects of the dataset.",
         default=None,
         tag="value",
         json_schema_extra=dict(),
@@ -30,7 +30,7 @@ class Keyword(sdRDM.DataModel):
 
     vocabulary: Optional[str] = element(
         description=(
-            "For the specification of the keyword controlled vocabulary in use, such as"
+            "for the specification of the keyword controlled vocabulary in use, such as"
             " LCSH, MeSH, or others."
         ),
         default=None,
@@ -40,7 +40,7 @@ class Keyword(sdRDM.DataModel):
 
     vocabulary_uri: Optional[str] = element(
         description=(
-            "Keyword vocabulary URI points to the web presence that describes the"
+            "keyword vocabulary URI points to the web presence that describes the"
             " keyword vocabulary, if appropriate."
         ),
         default=None,
@@ -51,7 +51,7 @@ class Keyword(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

@@ -11,17 +11,18 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 from pathlib import Path
-from .calibration import Calibration
-from .datatype import DataType
-from .speciesdata import SpeciesData
-from .plantsetup import PlantSetup
-from .measurementtype import MeasurementType
-from .measurement import Measurement
+from .component import Component
 from .chemicalformula import ChemicalFormula
-from .species import Species
+from .measurement import Measurement
 from .quantity import Quantity
-from .metadata import Metadata
+from .species import Species
+from .speciesdata import SpeciesData
 from .data import Data
+from .calibration import Calibration
+from .plantsetup import PlantSetup
+from .datatype import DataType
+from .metadata import Metadata
+from .measurementtype import MeasurementType
 
 
 @forge_signature
@@ -61,7 +62,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -81,6 +82,7 @@ class Experiment(sdRDM.DataModel):
         measurement_type: Optional[MeasurementType] = None,
         metadata: List[Metadata] = ListPlus(),
         experimental_data: List[Data] = ListPlus(),
+        source: Optional[Component] = None,
         id: Optional[str] = None,
     ) -> Measurement:
         """
@@ -91,11 +93,13 @@ class Experiment(sdRDM.DataModel):
             measurement_type (): type of a measurement, e.g. potentiostatic or gas chromatography.. Defaults to None
             metadata (): metadata of a measurement.. Defaults to ListPlus()
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
+            source (): measuring device the data stems from.. Defaults to None
         """
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
+            "source": source,
         }
         if id is not None:
             params["id"] = id

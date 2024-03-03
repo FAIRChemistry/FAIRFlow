@@ -10,11 +10,12 @@ from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
 from datetime import datetime as Datetime
-from .measurementtype import MeasurementType
-from .metadata import Metadata
-from .datatype import DataType
 from .quantity import Quantity
 from .data import Data
+from .datatype import DataType
+from .metadata import Metadata
+from .measurementtype import MeasurementType
+from .component import Component
 
 
 @forge_signature
@@ -48,11 +49,18 @@ class Measurement(sdRDM.DataModel):
         tag="experimental_data",
         json_schema_extra=dict(multiple=True),
     )
+
+    source: Optional[Component] = element(
+        description="measuring device the data stems from.",
+        default_factory=Component,
+        tag="source",
+        json_schema_extra=dict(),
+    )
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -83,11 +91,11 @@ class Measurement(sdRDM.DataModel):
 
         Args:
             id (str): Unique identifier of the 'Metadata' object. Defaults to 'None'.
-            parameter (): Name of the parameter.. Defaults to None
+            parameter (): name of the parameter.. Defaults to None
             value (): value of the parameter.. Defaults to None
             abbreviation (): abbreviation for the parameter.. Defaults to None
             data_type (): type of the parameter.. Defaults to None
-            mode (): mode of the parameter. E.g., on and off.. Defaults to None
+            mode (): mode of the parameter. e.g., on and off.. Defaults to None
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
         """
@@ -109,7 +117,7 @@ class Measurement(sdRDM.DataModel):
         self,
         quantity: Optional[Quantity] = None,
         values: List[Union[float, str, Datetime]] = ListPlus(),
-        unit: Optional[Unit] = None,
+        unit: Optional[str] = None,
         id: Optional[str] = None,
     ) -> Data:
         """

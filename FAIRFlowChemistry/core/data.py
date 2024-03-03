@@ -7,7 +7,6 @@ from pydantic_xml import attr, element
 from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
 from datetime import datetime as Datetime
 from .quantity import Quantity
@@ -38,7 +37,7 @@ class Data(sdRDM.DataModel):
         json_schema_extra=dict(multiple=True),
     )
 
-    unit: Optional[Unit] = element(
+    unit: Optional[str] = element(
         description="unit of the values.",
         default=None,
         tag="unit",
@@ -48,7 +47,7 @@ class Data(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="f8cdbee59156292c0dda1a7171efeb7a002d7a55"
+        default="661158ab273ced2873569935234d707a9dc65a53"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

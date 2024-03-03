@@ -1,9 +1,5 @@
 ```mermaid
 classDiagram
-    Device <-- Pump
-    Device <-- Thermocouple
-    Device <-- MassFlowMeter
-    Device <-- Potentiostat
     Dataset *-- GeneralInformation
     Dataset *-- Experiment
     GeneralInformation *-- Author
@@ -13,20 +9,12 @@ classDiagram
     Experiment *-- PlantSetup
     Experiment *-- Measurement
     Experiment *-- SpeciesData
-    PlantSetup *-- Device
-    PlantSetup *-- Tubing
-    PlantSetup *-- Chemical
-    Pump *-- PumpType
-    Thermocouple *-- ThermocoupleType
-    MassFlowMeter *-- Parameter
-    Potentiostat *-- Metadata
-    Potentiostat *-- Measurement
-    Tubing *-- Material
-    Chemical *-- ReactantRole
-    Chemical *-- Stoichiometry
+    PlantSetup *-- Component
+    Component *-- ComponentType
     Data *-- Quantity
     Metadata *-- DataType
     Measurement *-- MeasurementType
+    Measurement *-- Component
     Measurement *-- Data
     Measurement *-- Metadata
     SpeciesData *-- Species
@@ -85,75 +73,30 @@ classDiagram
     }
     
     class PlantSetup {
-        +Device[0..*] devices
-        +Tubing[0..*] tubing
-        +Chemical[0..*] input
-        +Chemical[0..*] output
+        +Component[0..*] component
+        +string[0..*] input
+        +string[0..*] output
     }
     
-    class Device {
-        +string manufacturer
-        +string device_type
-        +string series
-        +boolean on_off
-    }
-    
-    class Pump {
-        +PumpType pump_type
-    }
-    
-    class Thermocouple {
-        +ThermocoupleType thermocouple_type
-    }
-    
-    class MassFlowMeter {
-        +Parameter min_flow
-        +Parameter max_flow
+    class Component {
+        +ComponentType component_type
+        +string id
+        +string component_class
+        +string component_class_uri
+        +string component_name
+        +string[0..*] generic_attribute
+        +string[0..*] connections
     }
     
     class Parameter {
         +float value
-        +Unit unit
-    }
-    
-    class Potentiostat {
-        +Measurement measurement
-        +Metadata metadata
-    }
-    
-    class Tubing {
-        +Material material
-        +float inner_diameter
-        +float outer_diameter
-        +integer length
-        +Insulation insulation
-    }
-    
-    class Chemical {
-        +string name
-        +string formula
-        +float pureness
-        +string supplier
-        +Stoichiometry stoichiometry
-        +string state_of_matter
-        +ReactantRole reactant_role
-    }
-    
-    class Stoichiometry {
-        +float equivalents
-        +float amount_of_substance
-        +float mass
-        +float volume
-        +float density
-        +float molar_mass
-        +float mass_concentration
-        +float molar_concentration
+        +string unit
     }
     
     class Data {
         +Quantity quantity
         +float, string, datetime[0..*] values
-        +Unit unit
+        +string unit
     }
     
     class Metadata {
@@ -170,6 +113,7 @@ classDiagram
         +MeasurementType measurement_type
         +Metadata[0..*] metadata
         +Data[0..*] experimental_data
+        +Component source
     }
     
     class SpeciesData {
@@ -188,6 +132,12 @@ classDiagram
         +int degree
     }
     
+    class ComponentType {
+        << Enumeration >>
+        +EQUIPMENT
+        +PIPINGCOMPONENT
+    }
+    
     class DataType {
         << Enumeration >>
         +STRING
@@ -199,50 +149,6 @@ classDiagram
         +INTEGER
         +NONE
         +LABEL
-    }
-    
-    class ThermocoupleType {
-        << Enumeration >>
-        +JTYPE
-        +KTYPE
-    }
-    
-    class Material {
-        << Enumeration >>
-        +SS14404
-        +SS14571
-        +SS14301
-        +PTFE
-        +PFA
-        +STONEWOOL
-        +GLASSWOOL
-        +GLASSFIBER
-    }
-    
-    class PumpType {
-        << Enumeration >>
-        +TUBINGPUMP
-        +DIAPHRAGMPUMP
-    }
-    
-    class ReactantRole {
-        << Enumeration >>
-        +EDUCT
-        +PRODUCT
-        +CATALYST
-        +SOLVENT
-        +INERTGAS
-    }
-    
-    class DeviceList {
-        << Enumeration >>
-        +MASSFLOWCONTROLLER
-        +HPLC
-        +GC
-        +POTENTIOSTAT
-        +GALVANOSTAT
-        +PRESSURETRANSDUCER
-        +CONTROLUNIT
     }
     
     class Quantity {
@@ -269,7 +175,6 @@ classDiagram
     class MeasurementType {
         << Enumeration >>
         +POTENTIOSTATIC
-        +GALVANOSTATIC
         +GC
         +MFM
     }
