@@ -10,12 +10,12 @@ from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
 from datetime import datetime as Datetime
-from .measurementtype import MeasurementType
 from .datatype import DataType
-from .metadata import Metadata
 from .data import Data
-from .quantity import Quantity
+from .measurementtype import MeasurementType
 from .component import Component
+from .quantity import Quantity
+from .metadata import Metadata
 
 
 @forge_signature
@@ -60,7 +60,7 @@ class Measurement(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="c0afa15b3139d198065f3824cc2033e5ab02f73a"
+        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -117,7 +117,7 @@ class Measurement(sdRDM.DataModel):
         self,
         quantity: Optional[Quantity] = None,
         values: List[Union[float, str, Datetime]] = ListPlus(),
-        unit: Optional[str] = None,
+        unit: Optional[Unit] = None,
         id: Optional[str] = None,
     ) -> Data:
         """

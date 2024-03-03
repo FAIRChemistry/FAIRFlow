@@ -47,7 +47,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="c0afa15b3139d198065f3824cc2033e5ab02f73a"
+        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -69,7 +69,7 @@ class PlantSetup(sdRDM.DataModel):
         component_class: Optional[str] = None,
         component_class_uri: Optional[str] = None,
         component_name: Optional[str] = None,
-        generic_attribute: List[str] = ListPlus(),
+        generic_attribute: Optional[GenericAttribute] = None,
         connections: List[Component] = ListPlus(),
         id: Optional[str] = None,
     ) -> Component:
@@ -83,7 +83,7 @@ class PlantSetup(sdRDM.DataModel):
             component_class (): class of the component.. Defaults to None
             component_class_uri (): uri of the component.. Defaults to None
             component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
-            generic_attribute (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
+            generic_attribute (): a generic attribute as defined by DEXPI.. Defaults to None
             connections (): other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
         """
         params = {

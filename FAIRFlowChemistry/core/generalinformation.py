@@ -10,8 +10,8 @@ from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 from .topicclassification import TopicClassification
 from .keyword import Keyword
-from .relatedpublication import RelatedPublication
 from .author import Author
+from .relatedpublication import RelatedPublication
 
 
 @forge_signature
@@ -33,7 +33,7 @@ class Contact(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="c0afa15b3139d198065f3824cc2033e5ab02f73a"
+        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -129,7 +129,7 @@ class GeneralInformation(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="c0afa15b3139d198065f3824cc2033e5ab02f73a"
+        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
