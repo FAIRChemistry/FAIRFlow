@@ -55,7 +55,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Description: organization the author is affiliated to.
 - identifier_scheme
   - Type: string
-  - Description: name of the identifier scheme, ORCID, ISNI.
+  - Description: name of the identifier scheme (ORCID, ISNI).
 - identifier
   - Type: string
   - Description: unique identifier of an individual author or organization, according to various schemes.
