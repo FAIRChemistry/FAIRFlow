@@ -21,28 +21,28 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Description: title of the work.
 - project
   - Type: string
-  - Description: Name of the project this work is related to.
+  - Description: name of the project this work is related to.
 - description
   - Type: string
-  - Description: describes the content of the dataset.
+  - Description: describtion of the content of the dataset.
 - authors
   - Type: Author[]
   - Description: authors of this dataset.
 - contact
   - Type: {name:string, affiliation:string, email:string}
-  - Description: point of contact for this projecet
+  - Description: point of contact for this project.
 - subject
   - Type: string[]
-  - Description: Domain-specific Subject Categories that are topically relevant to the Dataset.
+  - Description: domain specific subject categories that are topically relevant to the dataset.
 - related_publication
   - Type: RelatedPublication
-  - Description: Related publication to the dataset.
+  - Description: publication related to the dataset.
 - keywords
   - Type: Keyword[]
-  - Description: Keywords and url related to the project.
+  - Description: keywords and url related to the project.
 - topic_classification
   - Type: TopicClassification[]
-  - Description: Topic classification.
+  - Description: topic classification.
 
 
 ### Author
@@ -58,49 +58,49 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Description: name of the identifier scheme, ORCID, ISNI.
 - identifier
   - Type: string
-  - Description: uniquely identifies an individual author or organization, according to various schemes.
+  - Description: unique identifier of an individual author or organization, according to various schemes.
 
 
 ### RelatedPublication
 
 - citation
   - Type: string
-  - Description: The full bibliographic citation for this related publication.
+  - Description: full bibliographic citation for this related publication.
 - id_type
   - Type: string
-  - Description: The type of digital identifier used for this publication, e.g., Digital Object Identifier, DOI.
+  - Description: type of digital identifier used for this publication, e.g., digital object identifier, DOI.
 - id_number
   - Type: string
-  - Description: The identifier for the selected ID type.
+  - Description: identifier for the selected ID type.
 - url
   - Type: string
-  - Description: Link to the publication web page, e.g., journal article page, archive record page, or other.
+  - Description: link to the publication web page, e.g., journal article page, archive record page, or other.
 
 
 ### Keyword
 
 - value
   - Type: string
-  - Description: Key terms that describe important aspects of the Dataset. 
+  - Description: key terms describing important aspects of the dataset. 
 - vocabulary
   - Type: string
-  - Description: For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.
+  - Description: for the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.
 - vocabulary_uri
   - Type: string
-  - Description: Keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.
+  - Description: keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.
 
 
 ### TopicClassification
 
 - value
   - Type: string
-  - Description: Topic or Subject term that is relevant to this Dataset.
+  - Description: topic or Subject term that is relevant to this Dataset.
 - vocab
   - Type: string
-  - Description: Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.
+  - Description: provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.
 - vocab_uri
   - Type: string
-  - Description: Specifies the URI location for the full controlled vocabulary.
+  - Description: specifies the URI location for the full controlled vocabulary.
 
 
 ### Experiment
@@ -181,7 +181,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 
 - parameter
   - Type: string
-  - Description: Name of the parameter.
+  - Description: name of the parameter.
 - value
   - Type: string, float, datetime
   - Description: value of the parameter.
@@ -195,7 +195,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Type: string
   - Description: mode of the parameter. e.g., on and off.
 - unit
-  - Type: string
+  - Type: Unit
   - Description: unit of the parameter.
 - description
   - Type: string
@@ -263,8 +263,8 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 Component types.
 
 ```python
-EQUIPMENT = 'equipment'
-PIPINGCOMPONENT = 'piping_component'
+EQUIPMENT = 'Equipment'
+PIPINGCOMPONENT = 'Piping component'
 ```
 
 
