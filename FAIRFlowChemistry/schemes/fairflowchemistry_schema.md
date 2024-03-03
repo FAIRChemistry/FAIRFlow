@@ -85,19 +85,19 @@ classDiagram
         +string component_class
         +string component_class_uri
         +string component_name
-        +string[0..*] generic_attribute
+        +GenericAttribute generic_attribute
         +Component[0..*] connections
     }
     
     class Parameter {
         +float value
-        +string unit
+        +Unit unit
     }
     
     class Data {
         +Quantity quantity
         +float, string, datetime[0..*] values
-        +string unit
+        +Unit unit
     }
     
     class Metadata {

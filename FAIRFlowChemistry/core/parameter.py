@@ -7,6 +7,7 @@ from pydantic_xml import attr, element
 from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
+from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
 
 
@@ -28,7 +29,7 @@ class Parameter(sdRDM.DataModel):
         json_schema_extra=dict(),
     )
 
-    unit: Optional[str] = element(
+    unit: Optional[Unit] = element(
         description="unit of the values.",
         default=None,
         tag="unit",
@@ -38,7 +39,7 @@ class Parameter(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="c0afa15b3139d198065f3824cc2033e5ab02f73a"
+        default="8e5d353c065e7e8a85e5ef6668ffcf167265b669"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
