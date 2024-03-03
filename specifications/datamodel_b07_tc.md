@@ -1,6 +1,6 @@
 # Data model for CRC 1333 project B07 TC
 
-This is the perliminary data model for CRC 1333 project B02. At the current time, the data model is still under development and major changes can occur at any time. Please feel free to make changes and contribute to the project.
+This is the perliminary data model for CRC 1333 project B07. At the current time, the data model is still under development and major changes can occur at any time. Please feel free to make changes and contribute to the project.
 
 ## Objects
 
@@ -55,10 +55,10 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Description: organization the author is affiliated to.
 - identifier_scheme
   - Type: string
-  - Description: Name of the identifier scheme (ORCID, ISNI).
+  - Description: name of the identifier scheme (ORCID, ISNI).
 - identifier
   - Type: string
-  - Description: Uniquely identifies an individual author or organization, according to various schemes.
+  - Description: uniquely identifies an individual author or organization, according to various schemes.
 
 
 ### RelatedPublication
@@ -68,13 +68,13 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Description: The full bibliographic citation for this related publication.
 - id_type
   - Type: string
-  - Description: The type of digital identifier used for this publication (e.g., Digital Object Identifier (DOI)).
+  - Description: The type of digital identifier used for this publication, e.g., Digital Object Identifier, DOI.
 - id_number
   - Type: string
-  - Description: 'The identifier for the selected ID type.'
+  - Description: The identifier for the selected ID type.
 - url
   - Type: string
-  - Description: 'Link to the publication web page (e.g., journal article page, archive record page, or other).
+  - Description: Link to the publication web page, e.g., journal article page, archive record page, or other.
 
 
 ### Keyword
@@ -244,16 +244,16 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 - peak_areas
   - Type: Data
-  - Description: Recorded peak areas of the individual calibration solutions.
+  - Description: recorded peak areas of the individual calibration solutions.
 - concentrations
   - Type: Data
   - Description: concentrations of the individual calibration solutions. 
 - regression_coefficients
   - Type: float[]
-  - Description: Polynomial coefficients in order of increasing degree.
+  - Description: polynomial coefficients in order of increasing degree.
 - degree
   - Type: int
-  - Description: Degree of regression model.
+  - Description: degree of regression model.
 
 
 ## Enumerations
@@ -316,7 +316,6 @@ List of different measurements that do not need any further quantities to be def
 
 ```python
 POTENTIOSTATIC = "Potentiostatic measurement"
-GALVANOSTATIC  = "Galvanostatic measurement"
 GC = "GC measurement"
 MFM = "MFM measurement"
 ``` 
