@@ -116,12 +116,9 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
 
 ### PlantSetup
 
-- devices
-  - Type: Device[]
-  - Description: bla
-- tubing
-  - Type: Tubing[]
-  - Description: bla
+- component
+  - Type: Component[]
+  - Description: bla.
 - input
   - Type: Chemical[]
   - Description: bla
@@ -130,44 +127,29 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - Description: bla
 
 
-### Device
+### Component
 
-- manufacturer
-  - Type: string
-  - Description: name of the manufacturer of the device.
-- device_type
-  - Type: string
-  - Description: type given by the manufacturer of the device.
-- series
-  - Type: string
-  - Description: the series of the device.
-- on_off
-  - Type: boolean
-  - Description: operational mode of the flow module. True is on and False is off.
-
-
-### Pump[_Device_]
-
-- pump_type
-  - Type: PumpType
-  - Description: type of the pump.
-
-
-### Thermocouple[_Device_]
-
-- thermocouple_type
-  - Type: ThermocoupleType
-  - Description: type of thermocouple like J, K and so on.  
-
-
-### MassFlowMeter[_Device_]
-
-- min_flow
-  - Type: Parameter
-  - Description: Minimum possible flow rate.
-- max_flow
-  - Type: Parameter
-  - Description: Maximum possible flow rate.
+- component_type: ComponentType
+  - Type:
+  - Description:
+- id
+  - Type:
+  - Description:
+- component_class
+  - Type:
+  - Description:
+- component_class_uri
+  - Type:
+  - Description:
+- component_name
+  - Type:
+  - Description:
+- generic_attribute
+  - Type: {name:string, attribute_uri:string, value:string, format:str, units:str, units_uri:str}[]
+  - Description:
+- connections:
+  - Type: Component[]
+  - Description: other component this component is connected to via pipes, wires or similar.
 
 
 ### Parameter
@@ -178,90 +160,6 @@ This is the perliminary data model for CRC 1333 project B02. At the current time
   - unit
     - Type: Unit
     - Description: unit of the values.
-
-
-### Potentiostat[_Device_]
-
-- measurement
-  - Type: Measurement
-  - Description: Measuring Data.
-- metadata
-  - Type: Metadata
-  - Description: Metadata of the Potentiostat.
-
-
-### Tubing
-
-- material
-  - Type: Material
-  - Description: material with which the fluid flowing through comes into contact.
-- inner_diameter
-  - Type: float
-  - Description: inner diameter of the tubing in mm.
-- outer_diameter
-  - Type: float
-  - Description: outer diameter of the tubing in mm.
-- length
-  - Type: integer
-  - Description: length of the tubing in mm.
-- insulation
-  - Type: {thickness: float, material: string}
-  - Description: insulation of the tubing.
-
-
-### Chemical
-
-- name
-  - Type: string
-  - Description: IUPAC name of the compound.
-- formula
-  - Type: string
-  - Description: molecular formula of the compound.
-- pureness
-  - Type: float
-  - Description: pureness of the compound in percent.
-- supplier
-  - Type: string
-  - Description: name of the supplier of the compound.
-- stoichiometry
-  - Type: Stoichiometry
-  - Description: stoichiometric information like equivalents, mass, amount of substance, volume
-- state_of_matter
-  - Type: string
-  - Description: s for solid, l for liquid and g for gaseous
-- reactant_role
-  - Type: ReactantRole
-  - Description: Role that a reactand plays in a chemical reaction or  in a process.
-
-
-### Stoichiometry
-
-Stoichiometric information about the compound.
-
-- equivalents
-  - Type: float
-  - Description: used equivalents in relation to the reference compound
-- amount_of_substance
-  - Type: float
-  - Description: amount of substance n in mmol
-- mass
-  - Type: float
-  - Description: used mass of the compound in g
-- volume
-  - Type: float
-  - Description: volume of the compound
-- density
-  - Type: float
-  - Description: density of the compound at standard temperature and pressure.
-- molar_mass
-  - Type: float
-  - Description: molar mass of the compound in g per mol
-- mass_concentration
-  - Type: float
-  - Description: mass concentration in percent.
-- molar_concentration
-  - Type: float
-  - Description: molar concentration in mol per l.
 
 
 ### Data
@@ -313,6 +211,9 @@ Stoichiometric information about the compound.
 - experimental_data
   - Type: Data[]
   - Description: experimental data of a measurement.
+- source
+  - Type: Component
+  - Description: measuring device the data stems from.
 
 
 ### SpeciesData
@@ -356,6 +257,14 @@ Stoichiometric information about the compound.
 
 ## Enumerations
 
+### ComponentType
+
+Component types.
+
+```python
+EQUIPMENT = 'equipment'
+PIPINGCOMPONENT = 'piping_component'
+```
 
 ### DataType
 
@@ -373,67 +282,6 @@ NONE = 'NONE'
 LABEL = 'label'
 ```
 
-
-### ThermocoupleType
-
-Different types of thermocouples.
-```python
-JTYPE = "Type J"
-KTYPE = "Type K"
-```
-
-
-### Material
-
-Different materials.
-```python
-SS14404 = "Stainless Steel 1.4404"
-SS14571 = "Stainless Steel 1.4571"
-SS14301 = "Stainless Steel 1.4301"
-PTFE = "PTFE"
-PFA = "PFA"
-STONEWOOL = "Stone Wool"
-GLASSWOOL = "Glass Wool"
-GLASSFIBER = "Glass Fiber"
-```
-
-
-### PumpType
-
-Different types of pumps.
-
-```python
-TUBINGPUMP = "Tubing pump"
-DIAPHRAGMPUMP = "Diaphragm pump"
-```
-
-
-### ReactantRole
-
-Role that a reactant plays in a chemical reaction or in a process.
-
-```python
-EDUCT = "Educt"
-PRODUCT = "Product"
-CATALYST = "Catalyst"
-SOLVENT = "Solvent"
-INERTGAS = "Inert Gas"
-```
-
-
-### DeviceList
-
-List of devices that are part of a plant.
-
-```python
-MASSFLOWCONTROLLER = "Mass flow controller"
-HPLC = "HPLC"
-GC = "GC"
-POTENTIOSTAT = "Potentiostat"
-GALVANOSTAT  = "Galvanostat"
-PRESSURETRANSDUCER = "Pressure transducer"
-CONTROLUNIT = "Control unit"
-```
 
 
 ### Quantity

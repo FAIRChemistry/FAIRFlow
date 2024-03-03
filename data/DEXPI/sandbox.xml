@@ -1,0 +1,538 @@
+<PipingNetworkSystem ID="PipingNetworkSystem-6" ComponentClass="PipingNetworkSystem"
+    ComponentClassURI="http://data.posccaesar.org/rdl/RDS270359">
+    <PipingNetworkSegment ID="PipingNetworkSegment-9" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="260.25" Y="143" />
+            <Coordinate X="264.999" Y="143" />
+        </CenterLine>
+        <PipingComponent ID="PipeTee-2" ComponentClass="PipeTee"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS427724"
+            ComponentName="T_TYPE_CONNECTION_SHAPE">
+            <ConnectionPoints FlowIn="2" NumPoints="4">
+                <Node ID="PipeTee-2-DefaultNode" />
+                <Node Type="process" ID="PipingNode-14">
+                    <Position>
+                        <Location X="265.001" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-15">
+                    <Position>
+                        <Location X="264.999" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-16">
+                    <Position>
+                        <Location X="265" Y="142.999" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="265" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="-1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.0001" Y="0.0001" />
+        </PipingComponent>
+        <Connection FromID="Nozzle-9" FromNode="1" ToID="PipeTee-2" ToNode="1" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-10" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.25" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="265" Y="142.999" />
+            <Coordinate X="265" Y="139" />
+        </CenterLine>
+        <PipingComponent ID="BallValve-2" ComponentClass="BallValve"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS416654"
+            ComponentName="BALL_VALVE_SHAPE">
+            <ConnectionPoints FlowIn="2" NumPoints="3">
+                <Node ID="BallValve-2-DefaultNode" />
+                <Node Type="process" ID="PipingNode-17">
+                    <Position>
+                        <Location X="265" Y="135" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-18">
+                    <Position>
+                        <Location X="265" Y="139" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="265" Y="137" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="0" Y="1" Z="0" />
+            </Position>
+            <Scale X="0.4" Y="0.4" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-2" FromNode="3" ToID="BallValve-2" ToNode="1" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-11" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="265.001" Y="143" />
+            <Coordinate X="268.999" Y="143" />
+        </CenterLine>
+        <PipingComponent ID="PipeTee-1" ComponentClass="PipeTee"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS427724"
+            ComponentName="T_TYPE_CONNECTION_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="4">
+                <Node ID="PipeTee-1-DefaultNode" />
+                <Node Type="process" ID="PipingNode-19">
+                    <Position>
+                        <Location X="268.999" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-20">
+                    <Position>
+                        <Location X="269.001" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-21">
+                    <Position>
+                        <Location X="269" Y="143.001" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="269" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.0001" Y="0.0001" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-2" FromNode="1" ToID="PipeTee-1" ToNode="2" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-12" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="269.001" Y="143" />
+            <Coordinate X="280.999" Y="143" />
+        </CenterLine>
+        <PipingComponent ID="PipeTee-3" ComponentClass="PipeTee"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS427724"
+            ComponentName="T_TYPE_CONNECTION_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="4">
+                <Node ID="PipeTee-3-DefaultNode" />
+                <Node Type="process" ID="PipingNode-22">
+                    <Position>
+                        <Location X="280.999" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-23">
+                    <Position>
+                        <Location X="281.001" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-24">
+                    <Position>
+                        <Location X="281" Y="143.001" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="281" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.0001" Y="0.0001" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-1" FromNode="2" ToID="PipeTee-3" ToNode="2" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-13" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.25" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="281" Y="143.001" />
+            <Coordinate X="281" Y="147" />
+        </CenterLine>
+        <PipingComponent ID="BallValve-3" ComponentClass="BallValve"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS416654"
+            ComponentName="BALL_VALVE_SHAPE">
+            <ConnectionPoints FlowIn="1" FlowOut="2" NumPoints="3">
+                <Node ID="BallValve-3-DefaultNode" />
+                <Node Type="process" ID="PipingNode-25">
+                    <GenericAttributes Set="DexpiAttributes" Number="4">
+                    <Position>
+                        <Location X="281" Y="147" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-26">
+                    <Position>
+                        <Location X="281" Y="151" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="281" Y="149" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="0" Y="1" Z="0" />
+            </Position>
+            <Scale X="0.4" Y="0.4" />
+        </PipingComponent>
+        <PipingComponent ID="BlindFlange-1" ComponentClass="BlindFlange"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS414719"
+            ComponentName="BLIND_COVER_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="3">
+                <Node ID="BlindFlange-1-DefaultNode" />
+                <Node Type="process" ID="PipingNode-27">
+                    <Position>
+                        <Location X="281" Y="151.8" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="signal" ID="InstrumentationNodePosition-4">
+                    <Position>
+                        <Location X="281" Y="151.8" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="281" Y="151.8" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="0" Y="1" Z="0" />
+            </Position>
+            <Scale X="0.4" Y="0.4" />
+            <Association Type="is the location of" ItemID="ProcessSignalGeneratingFunction-1" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-3" FromNode="3" ToID="BlindFlange-1" ToNode="1" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-14" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="281.001" Y="143" />
+            <Coordinate X="287" Y="143" />
+        </CenterLine>
+        <PipingComponent ID="BallValve-4" ComponentClass="BallValve"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS416654"
+            ComponentName="BALL_VALVE_SHAPE">
+            <ConnectionPoints FlowIn="1" FlowOut="2" NumPoints="3">
+                <Node ID="BallValve-4-DefaultNode" />
+                <Node Type="process" ID="PipingNode-28">
+                    <Position>
+                        <Location X="287" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-29">
+                    <Position>
+                        <Location X="291" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="289" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.4" Y="0.4" />
+        </PipingComponent>
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="291" Y="143" />
+            <Coordinate X="323.499" Y="143" />
+        </CenterLine>
+        <PipingComponent ID="PipeTee-4" ComponentClass="PipeTee"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS427724"
+            ComponentName="T_TYPE_CONNECTION_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="4">
+                <Node ID="PipeTee-4-DefaultNode" />
+                <Node Type="process" ID="PipingNode-30">
+                    <Position>
+                        <Location X="323.499" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-31">
+                    <Position>
+                        <Location X="323.501" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-32">
+                    <Position>
+                        <Location X="323.5" Y="143.001" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="323.5" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.0001" Y="0.0001" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-3" FromNode="2" ToID="PipeTee-4" ToNode="2" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-15" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.25" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="323.5" Y="143.001" />
+            <Coordinate X="323.5" Y="159.5" />
+        </CenterLine>
+        <Connection FromID="PipeTee-4" FromNode="3" ToID="Nozzle-10" ToNode="1" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-16" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="323.501" Y="143" />
+            <Coordinate X="364.999" Y="143" />
+        </CenterLine>
+        <PipingComponent ID="PipeTee-5" ComponentClass="PipeTee"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS427724"
+            ComponentName="T_TYPE_CONNECTION_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="4">
+                <Node ID="PipeTee-5-DefaultNode" />
+                <Node Type="process" ID="PipingNode-33">
+                    <Position>
+                        <Location X="364.999" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-34">
+                    <Position>
+                        <Location X="365.001" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-35">
+                    <Position>
+                        <Location X="365" Y="143.001" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="365" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.0001" Y="0.0001" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-4" FromNode="2" ToID="PipeTee-5" ToNode="2" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-17" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.25" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="365" Y="143.001" />
+            <Coordinate X="365" Y="147" />
+        </CenterLine>
+        <PipingComponent ID="BallValve-5" ComponentClass="BallValve"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS416654"
+            ComponentName="BALL_VALVE_SHAPE">
+            <ConnectionPoints FlowIn="1" FlowOut="2" NumPoints="3">
+                <Node ID="BallValve-5-DefaultNode" />
+                <Node Type="process" ID="PipingNode-36">
+                    <Position>
+                        <Location X="365" Y="147" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="process" ID="PipingNode-37">
+                    <Position>
+                        <Location X="365" Y="151" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="365" Y="149" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="0" Y="1" Z="0" />
+            </Position>
+            <Scale X="0.4" Y="0.4" />
+        </PipingComponent>
+        <PipingComponent ID="BlindFlange-2" ComponentClass="BlindFlange"
+            ComponentClassURI="http://data.posccaesar.org/rdl/RDS414719"
+            ComponentName="BLIND_COVER_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="3">
+                <Node ID="BlindFlange-2-DefaultNode" />
+                <Node Type="process" ID="PipingNode-38">
+                    <Position>
+                        <Location X="365" Y="151.8" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+                <Node Type="signal" ID="InstrumentationNodePosition-5">
+                    <Position>
+                        <Location X="365" Y="151.8" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="365" Y="151.8" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="0" Y="1" Z="0" />
+            </Position>
+            <Scale X="0.4" Y="0.4" />
+            <Association Type="is the location of" ItemID="ProcessSignalGeneratingFunction-2" />
+        </PipingComponent>
+        <Connection FromID="PipeTee-5" FromNode="3" ToID="BlindFlange-2" ToNode="1" />
+    </PipingNetworkSegment>
+    <PipingNetworkSegment ID="PipingNetworkSegment-18" ComponentClass="PipingNetworkSegment"
+        ComponentClassURI="http://data.posccaesar.org/rdl/RDS267704">
+        <CenterLine NumPoints="2">
+            <Presentation LineType="0" LineWeight="0.5" R="0.501960784" G="0.501960784" B="0" />
+            <Coordinate X="365.001" Y="143" />
+            <Coordinate X="378" Y="143" />
+        </CenterLine>
+        <PipeOffPageConnector ID="FlowOutPipeOffPageConnector-1"
+            ComponentClass="FlowOutPipeOffPageConnector"
+            ComponentClassURI="http://sandbox.dexpi.org/rdl/FlowOutPipeOffPageConnector"
+            ComponentName="ARROW_FOR_OUTLET_OF_ESSENTIAL_SUBSTANCES_SHAPE">
+            <ConnectionPoints FlowIn="1" NumPoints="2">
+                <Node ID="FlowOutPipeOffPageConnector-1-DefaultNode" />
+                <Node Type="process" ID="PipingNode-39">
+                    <Position>
+                        <Location X="378" Y="143" Z="0" />
+                        <Axis X="0" Y="0" Z="1" />
+                        <Reference X="1" Y="0" Z="0" />
+                    </Position>
+                </Node>
+            </ConnectionPoints>
+            <Position>
+                <Location X="378" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.7" Y="0.7" />
+        </PipeOffPageConnector>
+        <PipeFlowArrow ID="PipeFlowArrow-3"
+            ComponentName="DIRECTION_OF_FLOW_SHAPE_FOR_PRIMARY_SEGMENT">
+            <Position>
+                <Location X="375" Y="143" Z="0" />
+                <Axis X="0" Y="0" Z="1" />
+                <Reference X="1" Y="0" Z="0" />
+            </Position>
+            <Scale X="0.7" Y="0.7" />
+        </PipeFlowArrow>
+        <Connection FromID="PipeTee-5" FromNode="2" ToID="FlowOutPipeOffPageConnector-1" ToNode="1" />
+    </PipingNetworkSegment>
+</PipingNetworkSystem>
+
+
+<Equipment ID="Vessel-2" ComponentClass="Vessel"
+    ComponentClassURI="https://data.posccaesar.org/rdl/RDS414674"
+    ComponentName="VESSEL_SHAPE">
+    <Position>
+        <Location X="330" Y="200" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="1" Y="0" Z="0" />
+    </Position>
+    <Scale X="1.0" Y="1.0" />
+</Equipment>
+<Equipment ID="Vessel-3" ComponentClass="Vessel"
+    ComponentClassURI="https://data.posccaesar.org/rdl/RDS414674"
+    ComponentName="VESSEL_SHAPE">
+    <Position>
+        <Location X="360" Y="200" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="1" Y="0" Z="0" />
+    </Position>
+    <Scale X="1.0" Y="1.0" />
+</Equipment>
+<Equipment ID="Vessel-4" ComponentClass="Vessel"
+    ComponentClassURI="https://data.posccaesar.org/rdl/RDS414674"
+    ComponentName="VESSEL_SHAPE">
+    <Position>
+        <Location X="330" Y="100" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="1" Y="0" Z="0" />
+    </Position>
+    <Scale X="1.0" Y="1.0" />
+</Equipment>
+<Equipment ID="Vessel-5" ComponentClass="Vessel"
+    ComponentClassURI="https://data.posccaesar.org/rdl/RDS414674"
+    ComponentName="VESSEL_SHAPE">
+    <Position>
+        <Location X="360" Y="100" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="1" Y="0" Z="0" />
+    </Position>
+    <Scale X="1.0" Y="1.0" />
+</Equipment>
+
+
+<Equipment ID="GasFilter-2" ComponentClass="GasFilter"
+    ComponentClassURI="https://data.posccaesar.org/rdl/RDS4316755843"
+    ComponentName="GAS_FILTER_SHAPE">
+    <Position>
+        <Location X="95" Y="140" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="0" Y="1" Z="0" />
+    </Position>
+    <Scale X="1.0" Y="1.0" />
+</Equipment>
+<Equipment ID="ElectrolysisCell-1" ComponentClass="CustomEquipment"
+    ComponentClassURI="https://sandbox.dexpi.org/rdl/CustomEquipment"
+    ComponentName="ELECTROLYSIS_CELL_SHAPE">
+    <Position>
+        <Location X="200" Y="150" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="1" Y="0" Z="0" />
+    </Position>
+    <Scale X="3.0" Y="3.0" />
+</Equipment>
+
+<Equipment ID="OnLineProcessGasChromatograph-1" ComponentClass="OnLineProcessGasChromatograph"
+    ComponentClassURI="https://data.posccaesar.org/rdl/RDS1066724"
+    ComponentName="ON_LINE_PROCESS_GAS_CHROMATOGRAPH_SHAPE">
+    <Position>
+        <Location X="80" Y="250" Z="0" />
+        <Axis X="0" Y="0" Z="1" />
+        <Reference X="1" Y="0" Z="0" />
+    </Position>
+    <Scale X="1.0" Y="1.0" />
+</Equipment>
