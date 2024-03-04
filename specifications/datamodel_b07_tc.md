@@ -118,7 +118,7 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 
 ### PlantSetup
 
-- component
+- components
   - Type: Component[]
   - Description: bla.
 - input
