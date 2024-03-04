@@ -1,6 +1,7 @@
+import yaml
 import sdRDM
-
 import pandas as pd
+
 from typing import Dict, List, Optional
 from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
@@ -136,6 +137,56 @@ class Experiment(sdRDM.DataModel):
             params["id"] = id
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
+
+    def initialize_species_from_yaml( self, yaml_file: str ):
+        """
+        Function that initializes species from a yaml file
+
+        Args:
+            yaml_file (str): Path to the yaml file
+        """
+
+        with open( yaml_file ) as f:
+            species_data = yaml.safe_load(f)
+
+        for species,item in species_data.items():
+            
+            if not "calibration" in item.keys():
+                raise KeyError(f"No calibration data provided for species: {species}!")
+            else:
+                if not "peak_areas" in item["calibration"].keys():
+                    raise KeyError(f"No peak areas provided for calibration of species: {species}!")
+                if not "concentrations" in item["calibration"].keys():
+                    raise KeyError(f"No concentrations provided for calibration of species: {species}!")
+            
+            if not "chemical_formula" in item.keys():
+                raise KeyError(f"No chemical formula provided for species: {species}!")
+            
+            if not "correction_factor" in item.keys():
+                raise KeyError(f"No correction factor provided for species: {species}!")
+            
+            if not "electron_transfer" in item.keys():
+                raise KeyError(f"No electron transfer provided for species: {species}!")
+            
+            # Create Calibration object and fit it to the given data
+            calibration = Calibration(
+                peak_areas=Data(
+                    quantity="Peak area", values=item["calibration"]["peak_areas"]
+                ),
+                concentrations=Data(
+                    quantity=Quantity.CONCENTRATION.value,
+                    values=item["calibration"]["concentrations"],
+                ),
+            )
+            calibration.calibrate()
+            
+            # Add species
+            self.add_to_species_data( species = species, 
+                                      chemical_formula = item["chemical_formula"],
+                                      calibration = calibration,
+                                      correction_factor = item["correction_factor"],
+                                      electron_transfer = item["electron_transfer"]
+                                    )
 
     @property
     def volumetric_flow_time_course(self) -> list:

@@ -68,10 +68,9 @@ class reading_raw_data_widget():
 
         experiment.measurements    = [ *potentiostatic_measurement, *mfm_measurement, *gc_measurements_list ]
 
-        # Read in parameters such as calibration, correction factors and farraday coefficients and save it in Experiment class #
-        experiment.calibrate_from_json( self.calib_files.value[0], degree=1 )
-        experiment.read_correction_factors( self.correction_files.value[0] )
-        experiment.read_faraday_coefficients( self.faraday_files.value[0] )
+        # Initialize species data such as calibration, correction factors and transfering eletron number
+        for species_file in self.species_file.value:
+            experiment.initialize_species_from_yaml( species_file )
 
         # Append new experiment to current dataset #
         self.dataset.experiments.append( experiment )
@@ -80,13 +79,11 @@ class reading_raw_data_widget():
         self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
 
         # Empty files widget #
-        self.galvano_files.value      = []
-        self.GC_files.value         = []
-        self.MFM_files.value        = []
-        self.calib_files.value      = []
-        self.correction_files.value = []
-        self.faraday_files.value    = []
-        self.experiment_name.value  = ""
+        self.galvano_files.value   = []
+        self.GC_files.value        = []
+        self.MFM_files.value       = []
+        self.species_file.value    = []
+        self.experiment_name.value = ""
         
     def folder_dropdown_option_handler(self,_):
         # If no subdirectories exist, then the parent folder is simply the first parent, otherwise it is the 2nd parent
@@ -199,9 +196,7 @@ class reading_raw_data_widget():
         self.galvano_files    = widgets.TagsInput(allow_duplicates=False)
         self.GC_files         = widgets.TagsInput(allow_duplicates=False)
         self.MFM_files        = widgets.TagsInput(allow_duplicates=False)
-        self.calib_files      = widgets.TagsInput(allow_duplicates=False)
-        self.correction_files = widgets.TagsInput(allow_duplicates=False)
-        self.faraday_files    = widgets.TagsInput(allow_duplicates=False)
+        self.species_file     = widgets.TagsInput(allow_duplicates=False)
         self.experiments      = widgets.TagsInput(allow_duplicates=False)
 
         self.file_folder      = root
@@ -239,9 +234,7 @@ class reading_raw_data_widget():
         widgets6  = widgets.VBox([widgets.Label(value='Files for galvanostat:'), self.galvano_files])
         widgets7  = widgets.VBox([widgets.Label(value='Files for gas chromatography:'), self.GC_files])
         widgets8  = widgets.VBox([widgets.Label(value='Files for mass flow meter:'), self.MFM_files])
-        widgets9  = widgets.HBox([widgets.VBox([widgets.Label(value='File for calibration:'), self.calib_files]),
-                                  widgets.VBox([widgets.Label(value='File for correction factors:'), self.correction_files]),
-                                  widgets.VBox([widgets.Label(value='File for transferring electrons:'), self.faraday_files])])
+        widgets9  = widgets.HBox([widgets.VBox([widgets.Label(value='Files for species initialization:'), self.species_file])])
         widgets10 = widgets.VBox([widgets.VBox([widgets.Label(value='After selecting all necessary files for an experiment, add the experiment to the chosen dataset.'),
                                                 self.experiment_name, self.button_add_exp]), 
                                   widgets.VBox([widgets.Label(value='Experiments:'),self.experiments])])
