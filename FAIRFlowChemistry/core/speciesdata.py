@@ -51,10 +51,10 @@ class SpeciesData(sdRDM.DataModel):
         json_schema_extra=dict(),
     )
 
-    faraday_coefficient: Optional[float] = element(
-        description="Faraday coefficients of the individual species.",
+    electron_transfer: Optional[float] = element(
+        description="Number of transfered electrons of the individual species.",
         default=None,
-        tag="faraday_coefficient",
+        tag="electron_transfer",
         json_schema_extra=dict(),
     )
 
@@ -68,7 +68,7 @@ class SpeciesData(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="baba9828ada6ed6f008c2c2fa0dc6c11f0d0c41c"
+        default="500617128e38cdc8daa3164aa4c15c26eaf07000"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

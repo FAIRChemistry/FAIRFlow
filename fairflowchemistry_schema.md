@@ -46,7 +46,7 @@ classDiagram
         +string chemical_formula
         +Calibration calibration
         +float correction_factor
-        +float faraday_coefficient
+        +float electron_transfer
         +Data faraday_efficiency
     }
     

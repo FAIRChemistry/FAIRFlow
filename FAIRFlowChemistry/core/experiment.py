@@ -1,6 +1,6 @@
 import sdRDM
-import pandas as pd
 
+import pandas as pd
 from typing import Dict, List, Optional
 from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
@@ -9,16 +9,17 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .speciesdata import SpeciesData
-from .data import Data
-from .measurementtype import MeasurementType
 from .component import Component
 from .measurement import Measurement
-from .plantsetup import PlantSetup
-from .metadata import Metadata
-from .calibration import Calibration
+from .measurementtype import MeasurementType
+from .data import Data
 from .quantity import Quantity
+from .calibration import Calibration
+from .plantsetup import PlantSetup
+from .speciesdata import SpeciesData
+from .metadata import Metadata
 from .datatype import DataType
+
 
 @forge_signature
 class Experiment(sdRDM.DataModel):
@@ -57,7 +58,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="baba9828ada6ed6f008c2c2fa0dc6c11f0d0c41c"
+        default="500617128e38cdc8daa3164aa4c15c26eaf07000"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -107,7 +108,7 @@ class Experiment(sdRDM.DataModel):
         chemical_formula: Optional[str] = None,
         calibration: Optional[Calibration] = None,
         correction_factor: Optional[float] = None,
-        faraday_coefficient: Optional[float] = None,
+        electron_transfer: Optional[float] = None,
         faraday_efficiency: Optional[Data] = None,
         id: Optional[str] = None,
     ) -> SpeciesData:
@@ -120,7 +121,7 @@ class Experiment(sdRDM.DataModel):
             chemical_formula (): chemical formula of the species.. Defaults to None
             calibration (): calibration measurement.. Defaults to None
             correction_factor (): correction factors of the individual species.. Defaults to None
-            faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
+            electron_transfer (): Number of transfered electrons of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
         params = {
@@ -128,7 +129,7 @@ class Experiment(sdRDM.DataModel):
             "chemical_formula": chemical_formula,
             "calibration": calibration,
             "correction_factor": correction_factor,
-            "faraday_coefficient": faraday_coefficient,
+            "electron_transfer": electron_transfer,
             "faraday_efficiency": faraday_efficiency,
         }
         if id is not None:
