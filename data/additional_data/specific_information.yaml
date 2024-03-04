@@ -1,0 +1,90 @@
+Carbon dioxide:
+    chemical_formula: CO2
+    calibration:
+      concentrations:
+      - 0
+      - 50
+      peak_areas:
+      - 0
+      - 38653
+    correction_factor:
+      0.74
+    electron_transfer:
+      2
+
+Carbon monoxide:
+    chemical_formula: CO
+    calibration:
+      concentrations:
+      - 0.5
+      - 1
+      - 5
+      peak_areas:
+      - 797
+      - 1328
+      - 7223
+    correction_factor:
+      1.0
+    electron_transfer:
+      2
+
+Hydrogen:
+    chemical_formula: H2
+    calibration:
+      concentrations:
+      - 5
+      - 10
+      - 20
+      peak_areas:
+      - 71
+      - 153
+      - 330
+    correction_factor:
+      1.01
+    electron_transfer:
+      2
+
+Ethane:
+    chemical_formula: C2H6
+    calibration:
+      concentrations:
+      - 0
+      - 5
+      peak_areas:
+      - 0
+      - 12168
+    correction_factor:
+      null
+    electron_transfer:
+      16
+
+Ethene:
+    chemical_formula: C2H4
+    calibration:
+      concentrations:
+      - 0.5
+      - 2
+      - 3
+      peak_areas:
+      - 1122
+      - 4864
+      - 7297
+    correction_factor:
+      null
+    electron_transfer:
+      12
+
+Methane:
+    chemical_formula: CH4
+    calibration:
+      concentrations:
+      - 5
+      - 10
+      peak_areas:
+      - 5727
+      - 11991
+    correction_factor:
+      0.76
+    electron_transfer:
+      8
+
