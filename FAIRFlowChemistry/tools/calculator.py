@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 from FAIRFlowChemistry.core import Experiment
 from FAIRFlowChemistry.core import Measurement
-from FAIRFlowChemistry.core import Species
 from FAIRFlowChemistry.core import Quantity
 
 import scipy.constants as const
@@ -78,12 +77,12 @@ class FaradayEfficiencyCalculator(BaseModel):
         With the correction factor, the real mean voulmetric flow of the mixture is computed
         """
 
-        correction_factor_H    = self.experiment.get("species_data", "species", Species.HYDROGEN.value)[0][0].correction_factor
-        correction_factor_CO   = self.experiment.get("species_data", "species", Species.CARBONMONOXIDE.value)[0][0].correction_factor
-        correction_factor_CO2  = self.experiment.get("species_data", "species", Species.CARBONDIOXIDE.value)[0][0].correction_factor
+        correction_factor_H    = self.experiment.get("species_data", "species", "Hydrogen")[0][0].correction_factor
+        correction_factor_CO   = self.experiment.get("species_data", "species", "Carbon monoxide")[0][0].correction_factor
+        correction_factor_CO2  = self.experiment.get("species_data", "species", "Carbon dioxide")[0][0].correction_factor
         
-        volumetric_fraction_H  = self.volumetric_fractions_df.loc[Species.HYDROGEN.value].values[0]
-        volumetric_fraction_CO = self.volumetric_fractions_df.loc[Species.CARBONMONOXIDE.value].values[0]
+        volumetric_fraction_H  = self.volumetric_fractions_df.loc["Hydrogen"].values[0]
+        volumetric_fraction_CO = self.volumetric_fractions_df.loc["Carbon Monooxide"].values[0]
 
         k1 = volumetric_fraction_H / correction_factor_H
         k2 = ( 1 - volumetric_fraction_H  + volumetric_fraction_CO  ) / correction_factor_CO2

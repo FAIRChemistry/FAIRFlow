@@ -11,6 +11,6 @@ jobs:
       uses: JR-1991/generate-sdrdm-api@v3
       with:
         library_name: "FAIRFlowChemistry"
-        schema_path: "./specifications/datamodel_b07_tc.md"
+        schema_path: "./specifications/datamodel.md"
         schema: "true"
         branch: "main"
