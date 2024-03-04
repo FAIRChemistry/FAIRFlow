@@ -57,10 +57,10 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 ### SpeciesData
 
 - species
-  - Type: Species
+  - Type: string
   - Description: name of the species.
 - chemical_formula
-  - Type: ChemicalFormula
+  - Type: string
   - Description: chemical formula of the species.
 - calibration
   - Type: Calibration
