@@ -1,4 +1,5 @@
 import sdRDM
+import numpy as np
 
 from typing import Dict, List, Optional
 from pydantic import PrivateAttr, model_validator
@@ -67,3 +68,25 @@ class Calibration(sdRDM.DataModel):
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
         return self
+
+    def calibrate(self):
+        """
+        Calibrate the regression model on seen data
+        """
+
+        self.regression_coefficients = np.polynomial.polynomial.polyfit(
+            self.peak_areas.values, self.concentrations.values, self.degree
+        ).tolist()
+
+    def predict(self, x: list) -> np.ndarray:
+        """
+        Predict with regression model
+
+        Args:
+            x (1D list): New locations for which predictions should be made
+
+        Returns:
+           (1D numpy array): Predicted data at new locations
+        """
+
+        return np.polynomial.Polynomial(self.regression_coefficients)(np.array(x))

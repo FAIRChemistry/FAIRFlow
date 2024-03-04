@@ -1,4 +1,5 @@
 import sdRDM
+import pandas as pd
 
 from typing import Dict, List, Optional
 from pydantic import PrivateAttr, model_validator
@@ -16,7 +17,8 @@ from .measurement import Measurement
 from .plantsetup import PlantSetup
 from .metadata import Metadata
 from .calibration import Calibration
-
+from .quantity import Quantity
+from .datatype import DataType
 
 @forge_signature
 class Experiment(sdRDM.DataModel):
@@ -133,3 +135,37 @@ class Experiment(sdRDM.DataModel):
             params["id"] = id
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
+
+    @property
+    def volumetric_flow_time_course(self) -> list:
+        """This property extracts the volumetric flow time as well as the flow it self from the experiment class
+
+        Returns:
+            list: Datetime list and flow value list
+        """
+        volumetric_flow_datetime_list = []
+        volumetric_flow_values_list = []
+
+        mfm_measurements = self.get(
+            "measurements", "measurement_type", "MFM measurement"
+        )[0]
+        for mfm_measurement in mfm_measurements:
+            volumetric_flow_datetime_list.extend(
+                mfm_measurement.get(
+                    "experimental_data", "quantity", Quantity.DATETIME.value
+                )[0][0].values
+            )
+            volumetric_flow_values_list.extend(
+                mfm_measurement.get(
+                    "experimental_data", "quantity", Quantity.VOLUMETRICFLOWRATE.value
+                )[0][0].values
+            )
+
+        # If data is directly read in from the experiment, it is the correct format, if read from json dataset, it is a string and needs to be converted
+        if not type(volumetric_flow_datetime_list[0]) == DataType.DATETIME.value:
+            volumetric_flow_datetime_list = [
+                pd.to_datetime(timestamp, format="%Y-%m-%dT%H:%M:%S").to_pydatetime()
+                for timestamp in volumetric_flow_datetime_list
+            ]
+
+        return [volumetric_flow_datetime_list, volumetric_flow_values_list]

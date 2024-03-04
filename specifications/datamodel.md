@@ -68,9 +68,9 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 - correction_factor
   - Type: float
   - Description: correction factors of the individual species.
-- faraday_coefficient
+- electron_transfer
   - Type: float
-  - Description: Faraday coefficients of the individual species.
+  - Description: Number of transfered electrons of the individual species.
 - faraday_efficiency
   - Type: Data
   - Description: Faraday efficiencies of the individual species.
