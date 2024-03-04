@@ -51,7 +51,7 @@ class Keyword(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="0ac4b46fc7efe83957d1676773cd61495bf1cdbd"
+        default="96bbd425389c756d7ecb435c2e415374dc17b988"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
