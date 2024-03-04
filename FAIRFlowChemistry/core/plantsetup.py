@@ -8,9 +8,9 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .component import Component
-from .genericattibute import GenericAttibute
 from .componenttype import ComponentType
+from .genericattibute import GenericAttibute
+from .component import Component
 
 
 @forge_signature
@@ -48,7 +48,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="a3664c6ee46c14647cf387c36cf2566997890114"
+        default="347b27d91bdf446180753173ad51b018302abcb6"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -85,7 +85,7 @@ class PlantSetup(sdRDM.DataModel):
             component_class_uri (): uri of the component.. Defaults to None
             component_name (): name of the component used to link between the abstract component and its shape.. Defaults to None
             generic_attributes (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
-            connections (): id of other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
+            connections (): component id of other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
         """
         params = {
             "component_type": component_type,
