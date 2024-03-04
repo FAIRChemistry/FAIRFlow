@@ -94,12 +94,32 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
   - Type: string
   - Description: name of the component used to link between the abstract component and its shape.
 - generic_attributes
-  - Type:  {name:string, attribute_uri:string, value:string, format:string, units:string, units_uri:string }[]
+  - Type: GenericAttibute[]
   - Description: a generic attribute as defined by DEXPI.
 - connections
   - Type: string[]
   - Description: component id of other component this component is connected to via pipes, wires or similar.
 
+###  GenericAttibute
+
+- name
+  - Type: string
+  - Description: bla.
+- attribute_uri
+  - Type: string
+  - Description: bla.
+- value
+  - Type: string
+  - Description: bla.
+- format
+  - Type: string
+  - Description: bla.
+- units
+  - Type: string
+  - Description: bla.
+- units_uri
+  - Type: string
+  - Description: bla
 
 ### Parameter
 
