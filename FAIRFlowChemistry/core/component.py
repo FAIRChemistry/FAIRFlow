@@ -1,24 +1,19 @@
 import sdRDM
 
 from typing import Dict, List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr, model_validator
+from uuid import uuid4
 from pydantic_xml import attr, element
 from lxml.etree import _Element
-
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-
-
-from .genericattibute import GenericAttibute
 from .componenttype import ComponentType
+from .genericattibute import GenericAttibute
 
 
 @forge_signature
-class Component(
-    sdRDM.DataModel,
-):
+class Component(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -70,9 +65,7 @@ class Component(
         description="a generic attribute as defined by DEXPI.",
         default_factory=ListPlus,
         tag="generic_attributes",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
 
     connections: List[str] = element(
@@ -82,16 +75,13 @@ class Component(
         ),
         default_factory=ListPlus,
         tag="connections",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="5758410ce318ee8026c009d13824477cf9ae6c70"
+        default="eeec5fc568ef915c120faa37e5ef5eb07b888380"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -99,12 +89,11 @@ class Component(
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                isinstance(i, _Element) for i in value
+                (isinstance(i, _Element) for i in value)
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
-
         return self
 
     def add_to_generic_attributes(
@@ -129,7 +118,6 @@ class Component(
             units (): bla.. Defaults to None
             units_uri (): bla. Defaults to None
         """
-
         params = {
             "name": name,
             "attribute_uri": attribute_uri,
@@ -138,10 +126,7 @@ class Component(
             "units": units,
             "units_uri": units_uri,
         }
-
         if id is not None:
             params["id"] = id
-
         self.generic_attributes.append(GenericAttibute(**params))
-
         return self.generic_attributes[-1]

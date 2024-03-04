@@ -1,31 +1,25 @@
 import sdRDM
 
 from typing import Dict, List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr, model_validator
+from uuid import uuid4
 from pydantic_xml import attr, element
 from lxml.etree import _Element
-
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-
-
-
-from .component import Component
+from .plantsetup import PlantSetup
+from .measurement import Measurement
 from .measurementtype import MeasurementType
 from .data import Data
-from .measurement import Measurement
-from .plantsetup import PlantSetup
-from .calibration import Calibration
-from .metadata import Metadata
 from .speciesdata import SpeciesData
+from .calibration import Calibration
+from .component import Component
+from .metadata import Metadata
 
 
 @forge_signature
-class Experiment(
-    sdRDM.DataModel,
-):
+class Experiment(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -48,25 +42,20 @@ class Experiment(
         ),
         default_factory=ListPlus,
         tag="measurements",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
 
     species_data: List[SpeciesData] = element(
         description="all provided and calculated data about a specific species.",
         default_factory=ListPlus,
         tag="species_data",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="5758410ce318ee8026c009d13824477cf9ae6c70"
+        default="eeec5fc568ef915c120faa37e5ef5eb07b888380"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -74,12 +63,11 @@ class Experiment(
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                isinstance(i, _Element) for i in value
+                (isinstance(i, _Element) for i in value)
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
-
         return self
 
     def add_to_measurements(
@@ -100,19 +88,15 @@ class Experiment(
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
             source (): measuring device the data stems from.. Defaults to None
         """
-
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
             "source": source,
         }
-
         if id is not None:
             params["id"] = id
-
         self.measurements.append(Measurement(**params))
-
         return self.measurements[-1]
 
     def add_to_species_data(
@@ -137,7 +121,6 @@ class Experiment(
             faraday_coefficient (): Faraday coefficients of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
-
         params = {
             "species": species,
             "chemical_formula": chemical_formula,
@@ -146,10 +129,7 @@ class Experiment(
             "faraday_coefficient": faraday_coefficient,
             "faraday_efficiency": faraday_efficiency,
         }
-
         if id is not None:
             params["id"] = id
-
         self.species_data.append(SpeciesData(**params))
-
         return self.species_data[-1]

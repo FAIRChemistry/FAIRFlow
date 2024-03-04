@@ -1,27 +1,21 @@
 import sdRDM
 
 from typing import Dict, List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr, model_validator
+from uuid import uuid4
 from pydantic_xml import attr, element
 from lxml.etree import _Element
-
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-
-
-
+from .plantsetup import PlantSetup
 from .measurement import Measurement
 from .experiment import Experiment
 from .speciesdata import SpeciesData
-from .plantsetup import PlantSetup
 
 
 @forge_signature
-class GeneralInformation(
-    sdRDM.DataModel,
-):
+class GeneralInformation(sdRDM.DataModel):
     """Small type for attribute 'general_information'"""
 
     id: Optional[str] = attr(
@@ -30,30 +24,18 @@ class GeneralInformation(
         default_factory=lambda: str(uuid4()),
         xml="@id",
     )
-
-    title: Optional[str] = element(
-        default=None,
-        tag="title",
-        json_schema_extra=dict(),
-    )
-
+    title: Optional[str] = element(default=None, tag="title", json_schema_extra=dict())
     project: Optional[str] = element(
-        default=None,
-        tag="project",
-        json_schema_extra=dict(),
+        default=None, tag="project", json_schema_extra=dict()
     )
-
     description: Optional[str] = element(
-        default=None,
-        tag="description",
-        json_schema_extra=dict(),
+        default=None, tag="description", json_schema_extra=dict()
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="5758410ce318ee8026c009d13824477cf9ae6c70"
+        default="eeec5fc568ef915c120faa37e5ef5eb07b888380"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -61,19 +43,16 @@ class GeneralInformation(
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                isinstance(i, _Element) for i in value
+                (isinstance(i, _Element) for i in value)
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
-
         return self
 
 
 @forge_signature
-class Dataset(
-    sdRDM.DataModel,
-):
+class Dataset(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -96,16 +75,13 @@ class Dataset(
         description="information about the individual experiment.",
         default_factory=ListPlus,
         tag="experiments",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="5758410ce318ee8026c009d13824477cf9ae6c70"
+        default="eeec5fc568ef915c120faa37e5ef5eb07b888380"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -113,12 +89,11 @@ class Dataset(
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                isinstance(i, _Element) for i in value
+                (isinstance(i, _Element) for i in value)
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
-
         return self
 
     def add_to_experiments(
@@ -137,16 +112,12 @@ class Dataset(
             measurements (): different measurements that are made within the scope of one experiment.. Defaults to ListPlus()
             species_data (): all provided and calculated data about a specific species.. Defaults to ListPlus()
         """
-
         params = {
             "plant_setup": plant_setup,
             "measurements": measurements,
             "species_data": species_data,
         }
-
         if id is not None:
             params["id"] = id
-
         self.experiments.append(Experiment(**params))
-
         return self.experiments[-1]

@@ -1,32 +1,25 @@
 import sdRDM
 
 from typing import Optional, Union, List, Dict
-from uuid import uuid4
 from pydantic import PrivateAttr, model_validator
+from uuid import uuid4
 from pydantic_xml import attr, element
 from lxml.etree import _Element
-
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
-
-
 from datetime import datetime as Datetime
-from sdRDM.base.datatypes import Unit
-
-from .component import Component
-from .datatype import DataType
 from .measurementtype import MeasurementType
 from .data import Data
 from .quantity import Quantity
 from .metadata import Metadata
+from .component import Component
+from .datatype import DataType
 
 
 @forge_signature
-class Measurement(
-    sdRDM.DataModel,
-):
+class Measurement(sdRDM.DataModel):
     """"""
 
     id: Optional[str] = attr(
@@ -47,18 +40,14 @@ class Measurement(
         description="metadata of a measurement.",
         default_factory=ListPlus,
         tag="metadata",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
 
     experimental_data: List[Data] = element(
         description="experimental data of a measurement.",
         default_factory=ListPlus,
         tag="experimental_data",
-        json_schema_extra=dict(
-            multiple=True,
-        ),
+        json_schema_extra=dict(multiple=True),
     )
 
     source: Optional[Component] = element(
@@ -67,12 +56,11 @@ class Measurement(
         tag="source",
         json_schema_extra=dict(),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="5758410ce318ee8026c009d13824477cf9ae6c70"
+        default="eeec5fc568ef915c120faa37e5ef5eb07b888380"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -80,12 +68,11 @@ class Measurement(
     def _parse_raw_xml_data(self):
         for attr, value in self:
             if isinstance(value, (ListPlus, list)) and all(
-                isinstance(i, _Element) for i in value
+                (isinstance(i, _Element) for i in value)
             ):
                 self._raw_xml_data[attr] = [elem2dict(i) for i in value]
             elif isinstance(value, _Element):
                 self._raw_xml_data[attr] = elem2dict(value)
-
         return self
 
     def add_to_metadata(
@@ -112,7 +99,6 @@ class Measurement(
             unit (): unit of the parameter.. Defaults to None
             description (): description of the parameter.. Defaults to None
         """
-
         params = {
             "parameter": parameter,
             "value": value,
@@ -122,12 +108,9 @@ class Measurement(
             "unit": unit,
             "description": description,
         }
-
         if id is not None:
             params["id"] = id
-
         self.metadata.append(Metadata(**params))
-
         return self.metadata[-1]
 
     def add_to_experimental_data(
@@ -146,16 +129,8 @@ class Measurement(
             values (): values.. Defaults to ListPlus()
             unit (): unit of the values.. Defaults to None
         """
-
-        params = {
-            "quantity": quantity,
-            "values": values,
-            "unit": unit,
-        }
-
+        params = {"quantity": quantity, "values": values, "unit": unit}
         if id is not None:
             params["id"] = id
-
         self.experimental_data.append(Data(**params))
-
         return self.experimental_data[-1]
