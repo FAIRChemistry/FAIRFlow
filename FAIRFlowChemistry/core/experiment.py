@@ -1,7 +1,7 @@
-import yaml
 import sdRDM
-import pandas as pd
 
+import yaml
+import pandas as pd
 from typing import Dict, List, Optional
 from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
@@ -10,16 +10,16 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
+from .quantity import Quantity
+from .plantsetup import PlantSetup
+from .calibration import Calibration
+from .metadata import Metadata
 from .component import Component
+from .speciesdata import SpeciesData
 from .measurement import Measurement
 from .measurementtype import MeasurementType
-from .data import Data
-from .quantity import Quantity
-from .calibration import Calibration
-from .plantsetup import PlantSetup
-from .speciesdata import SpeciesData
-from .metadata import Metadata
 from .datatype import DataType
+from .data import Data
 
 
 @forge_signature
@@ -59,7 +59,7 @@ class Experiment(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="500617128e38cdc8daa3164aa4c15c26eaf07000"
+        default="8cd2a321d0f28e24e41c7a3ac5d90aa738b1646d"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -138,7 +138,7 @@ class Experiment(sdRDM.DataModel):
         self.species_data.append(SpeciesData(**params))
         return self.species_data[-1]
 
-    def initialize_species_from_yaml( self, yaml_file: str ):
+    def initialize_species_from_yaml(self, yaml_file: str):
         """
         Function that initializes species from a yaml file
 
@@ -146,28 +146,33 @@ class Experiment(sdRDM.DataModel):
             yaml_file (str): Path to the yaml file
         """
 
-        with open( yaml_file ) as f:
+        with open(yaml_file) as f:
             species_data = yaml.safe_load(f)
 
-        for species,item in species_data.items():
-            
+        for species, item in species_data.items():
+
             if not "calibration" in item.keys():
                 raise KeyError(f"No calibration data provided for species: {species}!")
             else:
                 if not "peak_areas" in item["calibration"].keys():
-                    raise KeyError(f"No peak areas provided for calibration of species: {species}!")
+                    raise KeyError(
+                        f"No peak areas provided for calibration of species: {species}!"
+                    )
                 if not "concentrations" in item["calibration"].keys():
-                    raise KeyError(f"No concentrations provided for calibration of species: {species}!")
-            
+                    raise KeyError(
+                        "No concentrations provided for calibration of species:"
+                        f" {species}!"
+                    )
+
             if not "chemical_formula" in item.keys():
                 raise KeyError(f"No chemical formula provided for species: {species}!")
-            
+
             if not "correction_factor" in item.keys():
                 raise KeyError(f"No correction factor provided for species: {species}!")
-            
+
             if not "electron_transfer" in item.keys():
                 raise KeyError(f"No electron transfer provided for species: {species}!")
-            
+
             # Create Calibration object and fit it to the given data
             calibration = Calibration(
                 peak_areas=Data(
@@ -179,14 +184,15 @@ class Experiment(sdRDM.DataModel):
                 ),
             )
             calibration.calibrate()
-            
+
             # Add species
-            self.add_to_species_data( species = species, 
-                                      chemical_formula = item["chemical_formula"],
-                                      calibration = calibration,
-                                      correction_factor = item["correction_factor"],
-                                      electron_transfer = item["electron_transfer"]
-                                    )
+            self.add_to_species_data(
+                species=species,
+                chemical_formula=item["chemical_formula"],
+                calibration=calibration,
+                correction_factor=item["correction_factor"],
+                electron_transfer=item["electron_transfer"],
+            )
 
     @property
     def volumetric_flow_time_course(self) -> list:
