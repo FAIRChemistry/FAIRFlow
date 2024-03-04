@@ -8,9 +8,9 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .componenttype import ComponentType
-from .genericattibute import GenericAttibute
 from .component import Component
+from .genericattibute import GenericAttibute
+from .componenttype import ComponentType
 
 
 @forge_signature
@@ -24,10 +24,10 @@ class PlantSetup(sdRDM.DataModel):
         xml="@id",
     )
 
-    component: List[Component] = element(
+    components: List[Component] = element(
         description="bla.",
         default_factory=ListPlus,
-        tag="component",
+        tag="components",
         json_schema_extra=dict(multiple=True),
     )
 
@@ -48,7 +48,7 @@ class PlantSetup(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="347b27d91bdf446180753173ad51b018302abcb6"
+        default="0ac4b46fc7efe83957d1676773cd61495bf1cdbd"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -63,7 +63,7 @@ class PlantSetup(sdRDM.DataModel):
                 self._raw_xml_data[attr] = elem2dict(value)
         return self
 
-    def add_to_component(
+    def add_to_components(
         self,
         component_type: Optional[ComponentType] = None,
         component_id: Optional[str] = None,
@@ -75,7 +75,7 @@ class PlantSetup(sdRDM.DataModel):
         id: Optional[str] = None,
     ) -> Component:
         """
-        This method adds an object of type 'Component' to attribute component
+        This method adds an object of type 'Component' to attribute components
 
         Args:
             id (str): Unique identifier of the 'Component' object. Defaults to 'None'.
@@ -98,5 +98,5 @@ class PlantSetup(sdRDM.DataModel):
         }
         if id is not None:
             params["id"] = id
-        self.component.append(Component(**params))
-        return self.component[-1]
+        self.components.append(Component(**params))
+        return self.components[-1]

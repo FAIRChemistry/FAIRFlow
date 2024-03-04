@@ -43,7 +43,7 @@ class Dataset(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="347b27d91bdf446180753173ad51b018302abcb6"
+        default="0ac4b46fc7efe83957d1676773cd61495bf1cdbd"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

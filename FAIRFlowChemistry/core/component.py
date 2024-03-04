@@ -8,8 +8,8 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .componenttype import ComponentType
 from .genericattibute import GenericAttibute
+from .componenttype import ComponentType
 
 
 @forge_signature
@@ -81,7 +81,7 @@ class Component(sdRDM.DataModel):
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="347b27d91bdf446180753173ad51b018302abcb6"
+        default="0ac4b46fc7efe83957d1676773cd61495bf1cdbd"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 

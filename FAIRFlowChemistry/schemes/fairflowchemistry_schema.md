@@ -74,7 +74,7 @@ classDiagram
     }
     
     class PlantSetup {
-        +Component[0..*] component
+        +Component[0..*] components
         +string[0..*] input
         +string[0..*] output
     }
