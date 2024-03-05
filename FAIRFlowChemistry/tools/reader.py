@@ -240,18 +240,17 @@ def mfm_parser(experimental_data_path: Path):
 
     return mfm_measurement
 
-
-def DEXPI2sdRDM(filepath: Path):
-    tree = ET.parse(filepath)
-    root = tree.getroot()
-
-    def build_component(component, component_type: ComponentType):
+def build_component(component, component_type: ComponentType):
         return Component(
             component_type=component_type,
             component_id=component.get("ID"),
             component_class=component.get("ComponentClass"),
             component_class_uri=component.get("ComponentClassURI"),
         )
+
+def DEXPI2sdRDM(filepath: Path|str ):
+    tree = ET.parse(filepath)
+    root = tree.getroot()
 
     components = []
     nozzles = DefaultDict(list)
@@ -287,6 +286,6 @@ def DEXPI2sdRDM(filepath: Path):
                 component.connections.extend(connection)
                 component.connections.remove(component.component_id)
 
-    for component in components:
-        print(component.component_id, component.connections)
+    #for component in components:
+    #    print(component.component_id, component.connections)
     return PlantSetup(components=components)

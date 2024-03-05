@@ -1,8 +1,9 @@
 import logging
 import numpy as np
+import ipywidgets as widgets
 
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Callable
 from pydantic import BaseModel
 from IPython.display import display
 from FAIRFlowChemistry.core import Experiment
@@ -142,6 +143,127 @@ class Librarian(BaseModel):
     @property
     def get_root_directory(self):
         return self.root_directory
+
+class explorer:
+    """
+    This class is a widget that allows to scroll through folders and select files
+    """
+    # Function to navigate into the selected subfolder
+    def go_to_subfolder(self,_):
+        self.current_dir.value       = str(self.folder_dropdown.value)
+        subroot                      = self.librarian.enumerate_subdirectories(directory=self.folder_dropdown.value)
+        self.folder_dropdown.options = [ (path.parts[-1],path) for _,path in subroot.items() ] if bool(subroot) else [ ("No subdirectories",self.folder_dropdown.value) ]
+
+    # Function to navigate back from the selected subfolder
+    def go_to_parentfolder(self,_):
+        parentfolder                 = self.parent
+        self.current_dir.value       = str(parentfolder)
+        parentroot                   = self.librarian.enumerate_subdirectories(directory=parentfolder)
+        self.folder_dropdown.options = [(path.parts[-1],path) for _,path in parentroot.items()]
+
+    def folder_dropdown_option_handler(self,_):
+        # If no subdirectories exist, then the parent folder is simply the first parent, otherwise it is the 2nd parent
+        # (because the current dropdown value is already one deeper than the actual directory )
+        if str(self.folder_dropdown.value.parent) == self.current_dir.value:
+            self.parent                  = self.folder_dropdown.value.parent.parent
+            self.file_folder             = self.folder_dropdown.value.parent
+        else:
+            self.parent                  = self.folder_dropdown.value.parent
+            self.file_folder             = self.folder_dropdown.value
+
+        # Reset file type after chaning dropdown
+
+        self.file_type_text.value        = ""
+        self.file_dropdown.options       = []
+
+    def file_type_input_handler(self,_):
+        if self.file_type_text.value:
+            file_filter                  = self.file_type_text.value
+            subdirectory_files           = self.librarian.enumerate_files(directory=self.file_folder, filter=file_filter)
+            
+            # Show all available files and show the first initially that they know if file are available
+            try:
+                self.file_dropdown.options   = [(file.parts[-1],file) for _,file in subdirectory_files.items()]
+                self.file_dropdown.value     = subdirectory_files[0]
+            except:
+                self.file_dropdown.options   = ["No files with specified suffix"]
+                self.file_dropdown.value     = "No files with specified suffix"
+    
+    def file_category_input_handler(self,_):
+        self.button_select.description = 'Add file to %s'%(self.file_category.value)
+
+    def add_file(self,_):
+        self.add_file_callalbe( self.file_category.value, str(self.file_dropdown.value) )
+    
+    def main(self, root: str, file_categories: List[str], add_file_callalbe: Callable[[str,str], None]):
+
+        self.librarian         = Librarian(root_directory=root)
+        sub_directories        = self.librarian.enumerate_subdirectories(directory=root)
+        self.file_folder       = root
+        self.add_file_callalbe = add_file_callalbe
+
+
+        self.folder_dropdown  = widgets.Dropdown(description='Select directory:',
+                                                options=[(path.parts[-1],path) for _,path in sub_directories.items()],
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+
+        self.file_dropdown    = widgets.Dropdown(description='Select file:',
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+        
+        self.file_category    = widgets.Dropdown(options=file_categories,
+                                                value=file_categories[0],
+                                                description='for category:',
+                                                style={'description_width': 'auto'})
+        
+        self.file_type_text   = widgets.Text(description='File type:',
+                                            placeholder='Enter type here (e.g.: csv, json, ... or * for all files)',
+                                            layout=widgets.Layout(width='auto'),
+                                            style={'description_width': 'auto'})
+        
+        self.current_dir      = widgets.Text(description='Current directory:',
+                                            disabled=True,
+                                            value=str(root),
+                                            layout=widgets.Layout(width='auto'),
+                                            style={'description_width': 'auto'})
+
+        self.button_go_for    = widgets.Button(description='Change into selected directory',
+                                              layout=widgets.Layout(width='auto'))
+        
+        self.button_go_back   = widgets.Button(description='Change to parent diretory',
+                                              layout=widgets.Layout(width='auto'))
+        
+        self.button_select    = widgets.Button(description='Add file to %s'%(self.file_category.value),
+                                              layout=widgets.Layout(width='auto'))
+        
+
+        # Attach the event handler to the 'value' property change of the file type widget
+        self.file_type_text.observe(self.file_type_input_handler, names='value')
+        self.folder_dropdown.observe(self.folder_dropdown_option_handler, names='options')
+        self.file_category.observe(self.file_category_input_handler, names='value')
+        
+        # Functions for the buttons
+        self.button_go_for.on_click(self.go_to_subfolder)
+        self.button_go_back.on_click(self.go_to_parentfolder)
+        self.button_select.on_click(self.add_file)
+
+        # Display the widgets
+
+        # Create the layout
+        v_space_s = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='15px'))
+
+        widgets0  = widgets.VBox([self.current_dir,v_space_s,self.folder_dropdown])
+        widgets1  = widgets.HBox([self.button_go_for, self.button_go_back])
+        widgets2  = widgets.VBox([v_space_s,self.file_type_text])
+        widgets3  = widgets.HBox([self.file_dropdown,self.file_category])
+        widgets4  = widgets.VBox([v_space_s,self.button_select])
+
+        # Combine the layout
+        full_layout = widgets.VBox([widgets0,widgets1,widgets2,widgets3,widgets4])
+
+        # Return the layout
+        return full_layout
 
 class PeakAssigner:
     """
