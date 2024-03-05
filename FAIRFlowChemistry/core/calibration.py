@@ -1,14 +1,12 @@
 import sdRDM
-import numpy as np
 
+import numpy as np
 from typing import List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-
-
 from .data import Data
 
 
@@ -16,7 +14,7 @@ from .data import Data
 class Calibration(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@238a0547367fc736463730403ca8c1b7c46e9422#Calibration"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f4f90b698573ebe018bb7f96d10be4877e4643b3#Calibration"
     },
 ):
     """"""
@@ -48,9 +46,7 @@ class Calibration(
             description="regression coefficients in order of increasing degree.",
             default_factory=ListPlus,
             tag="float",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
@@ -60,12 +56,11 @@ class Calibration(
         tag="degree",
         json_schema_extra=dict(),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="238a0547367fc736463730403ca8c1b7c46e9422"
+        default="f4f90b698573ebe018bb7f96d10be4877e4643b3"
     )
 
     def calibrate(self):

@@ -1,13 +1,11 @@
 import sdRDM
 
 from typing import List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-
-
 from .genericattibute import GenericAttibute
 from .componenttype import ComponentType
 
@@ -16,7 +14,7 @@ from .componenttype import ComponentType
 class Component(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@238a0547367fc736463730403ca8c1b7c46e9422#Component"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f4f90b698573ebe018bb7f96d10be4877e4643b3#Component"
     },
 ):
     """"""
@@ -72,9 +70,7 @@ class Component(
             description="a generic attribute as defined by DEXPI.",
             default_factory=ListPlus,
             tag="GenericAttibute",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
@@ -87,17 +83,14 @@ class Component(
             ),
             default_factory=ListPlus,
             tag="string",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="238a0547367fc736463730403ca8c1b7c46e9422"
+        default="f4f90b698573ebe018bb7f96d10be4877e4643b3"
     )
 
     def add_to_generic_attributes(
@@ -122,7 +115,6 @@ class Component(
             units (): bla.. Defaults to None
             units_uri (): bla. Defaults to None
         """
-
         params = {
             "name": name,
             "attribute_uri": attribute_uri,
@@ -131,10 +123,7 @@ class Component(
             "units": units,
             "units_uri": units_uri,
         }
-
         if id is not None:
             params["id"] = id
-
         self.generic_attributes.append(GenericAttibute(**params))
-
         return self.generic_attributes[-1]

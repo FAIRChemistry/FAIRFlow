@@ -1,23 +1,21 @@
 import sdRDM
 
 from typing import List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-
-
 from .genericattibute import GenericAttibute
-from .componenttype import ComponentType
 from .component import Component
+from .componenttype import ComponentType
 
 
 @forge_signature
 class PlantSetup(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@238a0547367fc736463730403ca8c1b7c46e9422#PlantSetup"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f4f90b698573ebe018bb7f96d10be4877e4643b3#PlantSetup"
     },
 ):
     """"""
@@ -35,9 +33,7 @@ class PlantSetup(
             description="bla.",
             default_factory=ListPlus,
             tag="Component",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
@@ -47,9 +43,7 @@ class PlantSetup(
             description="bla.",
             default_factory=ListPlus,
             tag="string",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
@@ -59,17 +53,14 @@ class PlantSetup(
             description="bla.",
             default_factory=ListPlus,
             tag="string",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="238a0547367fc736463730403ca8c1b7c46e9422"
+        default="f4f90b698573ebe018bb7f96d10be4877e4643b3"
     )
 
     def add_to_components(
@@ -96,7 +87,6 @@ class PlantSetup(
             generic_attributes (): a generic attribute as defined by DEXPI.. Defaults to ListPlus()
             connections (): component id of other component this component is connected to via pipes, wires or similar.. Defaults to ListPlus()
         """
-
         params = {
             "component_type": component_type,
             "component_id": component_id,
@@ -106,10 +96,7 @@ class PlantSetup(
             "generic_attributes": generic_attributes,
             "connections": connections,
         }
-
         if id is not None:
             params["id"] = id
-
         self.components.append(Component(**params))
-
         return self.components[-1]

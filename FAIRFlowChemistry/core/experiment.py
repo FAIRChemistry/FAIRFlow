@@ -1,31 +1,30 @@
 import sdRDM
+
 import yaml
 import pandas as pd
-
 from typing import List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-
-
-from .calibration import Calibration
-from .speciesdata import SpeciesData
-from .component import Component
-from .measurement import Measurement
-from .data import Data
-from .datatype import DataType
 from .plantsetup import PlantSetup
 from .metadata import Metadata
 from .measurementtype import MeasurementType
+from .calibration import Calibration
 from .quantity import Quantity
+from .measurement import Measurement
+from .data import Data
+from .datatype import DataType
+from .component import Component
+from .speciesdata import SpeciesData
+
 
 @forge_signature
 class Experiment(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@238a0547367fc736463730403ca8c1b7c46e9422#Experiment"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f4f90b698573ebe018bb7f96d10be4877e4643b3#Experiment"
     },
 ):
     """"""
@@ -53,9 +52,7 @@ class Experiment(
             ),
             default_factory=ListPlus,
             tag="Measurement",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
 
@@ -65,17 +62,14 @@ class Experiment(
             description="all provided and calculated data about a specific species.",
             default_factory=ListPlus,
             tag="SpeciesData",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="238a0547367fc736463730403ca8c1b7c46e9422"
+        default="f4f90b698573ebe018bb7f96d10be4877e4643b3"
     )
 
     def add_to_measurements(
@@ -96,19 +90,15 @@ class Experiment(
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
             source (): measuring device the data stems from.. Defaults to None
         """
-
         params = {
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,
             "source": source,
         }
-
         if id is not None:
             params["id"] = id
-
         self.measurements.append(Measurement(**params))
-
         return self.measurements[-1]
 
     def add_to_species_data(
@@ -133,7 +123,6 @@ class Experiment(
             electron_transfer (): Number of transfered electrons of the individual species.. Defaults to None
             faraday_efficiency (): Faraday efficiencies of the individual species.. Defaults to None
         """
-
         params = {
             "species": species,
             "chemical_formula": chemical_formula,
@@ -142,12 +131,9 @@ class Experiment(
             "electron_transfer": electron_transfer,
             "faraday_efficiency": faraday_efficiency,
         }
-
         if id is not None:
             params["id"] = id
-
         self.species_data.append(SpeciesData(**params))
-
         return self.species_data[-1]
 
     def initialize_species_from_yaml(self, yaml_file: str):

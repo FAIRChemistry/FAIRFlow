@@ -1,11 +1,10 @@
 import sdRDM
 
 from typing import Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
-
 from sdRDM.base.datatypes import Unit
 
 
@@ -13,7 +12,7 @@ from sdRDM.base.datatypes import Unit
 class Parameter(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@238a0547367fc736463730403ca8c1b7c46e9422#Parameter"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@f4f90b698573ebe018bb7f96d10be4877e4643b3#Parameter"
     },
 ):
     """"""
@@ -38,10 +37,9 @@ class Parameter(
         tag="unit",
         json_schema_extra=dict(),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="238a0547367fc736463730403ca8c1b7c46e9422"
+        default="f4f90b698573ebe018bb7f96d10be4877e4643b3"
     )
