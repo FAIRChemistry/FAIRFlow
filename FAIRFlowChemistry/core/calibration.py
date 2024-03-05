@@ -1,14 +1,13 @@
 import sdRDM
 
 import numpy as np
-from typing import Dict, List, Optional
-from pydantic import PrivateAttr, model_validator
+from typing import List, Optional
+from pydantic import model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element
-from lxml.etree import _Element
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from sdRDM.tools.utils import elem2dict
+from lxml.etree import _Element
 from .data import Data
 
 
@@ -37,11 +36,14 @@ class Calibration(sdRDM.DataModel):
         json_schema_extra=dict(),
     )
 
-    regression_coefficients: List[float] = element(
-        description="regression coefficients in order of increasing degree.",
-        default_factory=ListPlus,
-        tag="regression_coefficients",
-        json_schema_extra=dict(multiple=True),
+    regression_coefficients: List[float] = wrapped(
+        "regression_coefficients",
+        element(
+            description="regression coefficients in order of increasing degree.",
+            default_factory=ListPlus,
+            tag="float",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
     degree: Optional[int] = element(
@@ -50,13 +52,6 @@ class Calibration(sdRDM.DataModel):
         tag="degree",
         json_schema_extra=dict(),
     )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="8cd2a321d0f28e24e41c7a3ac5d90aa738b1646d"
-    )
-    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
     @model_validator(mode="after")
     def _parse_raw_xml_data(self):

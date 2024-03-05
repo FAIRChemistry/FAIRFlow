@@ -1,13 +1,12 @@
 import sdRDM
 
-from typing import Dict, Optional
-from pydantic import PrivateAttr, model_validator
+from typing import Optional
+from pydantic import model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element
-from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from sdRDM.tools.utils import elem2dict
+from lxml.etree import _Element
 
 
 @forge_signature
@@ -62,13 +61,6 @@ class GenericAttibute(sdRDM.DataModel):
         tag="units_uri",
         json_schema_extra=dict(),
     )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="8cd2a321d0f28e24e41c7a3ac5d90aa738b1646d"
-    )
-    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
     @model_validator(mode="after")
     def _parse_raw_xml_data(self):

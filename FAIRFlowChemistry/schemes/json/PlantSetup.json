@@ -1,6 +1,114 @@
 {
   "$defs": {
-    "Chemical": {
+    "Component": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "component_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ComponentType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "equipment or piping component."
+        },
+        "component_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "id used to unambiguously identify the component.",
+          "title": "Component Id"
+        },
+        "component_class": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "class of the component.",
+          "title": "Component Class"
+        },
+        "component_class_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "uri of the component.",
+          "title": "Component Class Uri"
+        },
+        "component_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "name of the component used to link between the abstract component and its shape.",
+          "title": "Component Name"
+        },
+        "generic_attributes": {
+          "description": "a generic attribute as defined by DEXPI.",
+          "items": {
+            "$ref": "#/$defs/GenericAttibute"
+          },
+          "multiple": true,
+          "title": "Generic Attributes",
+          "type": "array"
+        },
+        "connections": {
+          "description": "component id of other component this component is connected to via pipes, wires or similar.",
+          "items": {
+            "type": "string"
+          },
+          "multiple": true,
+          "title": "Connections",
+          "type": "array"
+        }
+      },
+      "title": "Component",
+      "type": "object"
+    },
+    "ComponentType": {
+      "enum": [
+        "Equipment",
+        "Piping component"
+      ],
+      "title": "ComponentType",
+      "type": "string"
+    },
+    "GenericAttibute": {
       "properties": {
         "id": {
           "anyOf": [
@@ -24,10 +132,10 @@
             }
           ],
           "default": null,
-          "description": "IUPAC name of the compound.",
+          "description": "bla.",
           "title": "Name"
         },
-        "formula": {
+        "attribute_uri": {
           "anyOf": [
             {
               "type": "string"
@@ -37,23 +145,10 @@
             }
           ],
           "default": null,
-          "description": "molecular formula of the compound.",
-          "title": "Formula"
+          "description": "bla.",
+          "title": "Attribute Uri"
         },
-        "pureness": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "pureness of the compound in percent.",
-          "title": "Pureness"
-        },
-        "supplier": {
+        "value": {
           "anyOf": [
             {
               "type": "string"
@@ -63,21 +158,10 @@
             }
           ],
           "default": null,
-          "description": "name of the supplier of the compound.",
-          "title": "Supplier"
+          "description": "bla.",
+          "title": "Value"
         },
-        "stoichiometry": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Stoichiometry"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "stoichiometric information like equivalents, mass, amount of substance, volume"
-        },
-        "state_of_matter": {
+        "format": {
           "anyOf": [
             {
               "type": "string"
@@ -87,364 +171,37 @@
             }
           ],
           "default": null,
-          "description": "s for solid, l for liquid and g for gaseous",
-          "title": "State Of Matter"
+          "description": "bla.",
+          "title": "Format"
         },
-        "reactant_role": {
+        "units": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ReactantRole"
+              "type": "string"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "Role that a reactand plays in a chemical reaction or  in a process."
+          "description": "bla.",
+          "title": "Units"
+        },
+        "units_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla",
+          "title": "Units Uri"
         }
       },
-      "title": "Chemical",
-      "type": "object"
-    },
-    "Device": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "manufacturer": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "name of the manufacturer of the device.",
-          "title": "Manufacturer"
-        },
-        "device_type": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "type given by the manufacturer of the device.",
-          "title": "Device Type"
-        },
-        "series": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "the series of the device.",
-          "title": "Series"
-        },
-        "on_off": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "operational mode of the flow module. True is on and False is off.",
-          "title": "On Off"
-        }
-      },
-      "title": "Device",
-      "type": "object"
-    },
-    "Insulation": {
-      "description": "Small type for attribute 'insulation'",
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "thickness": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Thickness"
-        },
-        "material": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Material"
-        }
-      },
-      "title": "Insulation",
-      "type": "object"
-    },
-    "Material": {
-      "enum": [
-        "Stainless Steel 1.4404",
-        "Stainless Steel 1.4571",
-        "Stainless Steel 1.4301",
-        "PTFE",
-        "PFA",
-        "Stone Wool",
-        "Glass Wool",
-        "Glass Fiber"
-      ],
-      "title": "Material",
-      "type": "string"
-    },
-    "ReactantRole": {
-      "enum": [
-        "Educt",
-        "Product",
-        "Catalyst",
-        "Solvent",
-        "Inert Gas"
-      ],
-      "title": "ReactantRole",
-      "type": "string"
-    },
-    "Stoichiometry": {
-      "description": "Stoichiometric information about the compound.",
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "equivalents": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "used equivalents in relation to the reference compound",
-          "title": "Equivalents"
-        },
-        "amount_of_substance": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "amount of substance n in mmol",
-          "title": "Amount Of Substance"
-        },
-        "mass": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "used mass of the compound in g",
-          "title": "Mass"
-        },
-        "volume": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "volume of the compound",
-          "title": "Volume"
-        },
-        "density": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "density of the compound at standard temperature and pressure.",
-          "title": "Density"
-        },
-        "molar_mass": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "molar mass of the compound in g per mol",
-          "title": "Molar Mass"
-        },
-        "mass_concentration": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "mass concentration in percent.",
-          "title": "Mass Concentration"
-        },
-        "molar_concentration": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "molar concentration in mol per l.",
-          "title": "Molar Concentration"
-        }
-      },
-      "title": "Stoichiometry",
-      "type": "object"
-    },
-    "Tubing": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "material": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Material"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "material with which the fluid flowing through comes into contact."
-        },
-        "inner_diameter": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "inner diameter of the tubing in mm.",
-          "title": "Inner Diameter"
-        },
-        "outer_diameter": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "outer diameter of the tubing in mm.",
-          "title": "Outer Diameter"
-        },
-        "length": {
-          "anyOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "length of the tubing in mm.",
-          "title": "Length"
-        },
-        "insulation": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Insulation"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "insulation of the tubing."
-        }
-      },
-      "title": "Tubing",
+      "title": "GenericAttibute",
       "type": "object"
     }
   },
@@ -461,37 +218,28 @@
       "description": "Unique identifier of the given object.",
       "title": "Id"
     },
-    "devices": {
-      "description": "bla",
+    "components": {
+      "description": "bla.",
       "items": {
-        "$ref": "#/$defs/Device"
+        "$ref": "#/$defs/Component"
       },
       "multiple": true,
-      "title": "Devices",
-      "type": "array"
-    },
-    "tubing": {
-      "description": "bla",
-      "items": {
-        "$ref": "#/$defs/Tubing"
-      },
-      "multiple": true,
-      "title": "Tubing",
+      "title": "Components",
       "type": "array"
     },
     "input": {
-      "description": "bla",
+      "description": "bla.",
       "items": {
-        "$ref": "#/$defs/Chemical"
+        "type": "string"
       },
       "multiple": true,
       "title": "Input",
       "type": "array"
     },
     "output": {
-      "description": "bla",
+      "description": "bla.",
       "items": {
-        "$ref": "#/$defs/Chemical"
+        "type": "string"
       },
       "multiple": true,
       "title": "Output",

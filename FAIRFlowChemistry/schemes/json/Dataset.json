@@ -1,75 +1,5 @@
 {
   "$defs": {
-    "Author": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "name": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "full name including given and family name.",
-          "title": "Name"
-        },
-        "affiliation": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "organization the author is affiliated to.",
-          "title": "Affiliation"
-        },
-        "identifier_scheme": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Name of the identifier scheme (ORCID, ISNI).",
-          "title": "Identifier Scheme"
-        },
-        "identifier": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Uniquely identifies an individual author or organization, according to various schemes.",
-          "title": "Identifier"
-        }
-      },
-      "title": "Author",
-      "type": "object"
-    },
     "BaseUnit": {
       "properties": {
         "scale": {
@@ -116,7 +46,7 @@
               "type": "null"
             }
           ],
-          "description": "Recorded peak areas of the individual calibration solutions."
+          "description": "recorded peak areas of the individual calibration solutions."
         },
         "concentrations": {
           "anyOf": [
@@ -130,7 +60,7 @@
           "description": "concentrations of the individual calibration solutions."
         },
         "regression_coefficients": {
-          "description": "Polynomial coefficients in order of increasing degree.",
+          "description": "regression coefficients in order of increasing degree.",
           "items": {
             "type": "number"
           },
@@ -148,14 +78,14 @@
             }
           ],
           "default": 1,
-          "description": "Degree of regression model.",
+          "description": "degree of regression model.",
           "title": "Degree"
         }
       },
       "title": "Calibration",
       "type": "object"
     },
-    "Chemical": {
+    "Component": {
       "properties": {
         "id": {
           "anyOf": [
@@ -169,7 +99,19 @@
           "description": "Unique identifier of the given object.",
           "title": "Id"
         },
-        "name": {
+        "component_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ComponentType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "equipment or piping component."
+        },
+        "component_id": {
           "anyOf": [
             {
               "type": "string"
@@ -179,10 +121,10 @@
             }
           ],
           "default": null,
-          "description": "IUPAC name of the compound.",
-          "title": "Name"
+          "description": "id used to unambiguously identify the component.",
+          "title": "Component Id"
         },
-        "formula": {
+        "component_class": {
           "anyOf": [
             {
               "type": "string"
@@ -192,23 +134,10 @@
             }
           ],
           "default": null,
-          "description": "molecular formula of the compound.",
-          "title": "Formula"
+          "description": "class of the component.",
+          "title": "Component Class"
         },
-        "pureness": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "pureness of the compound in percent.",
-          "title": "Pureness"
-        },
-        "supplier": {
+        "component_class_uri": {
           "anyOf": [
             {
               "type": "string"
@@ -218,21 +147,10 @@
             }
           ],
           "default": null,
-          "description": "name of the supplier of the compound.",
-          "title": "Supplier"
+          "description": "uri of the component.",
+          "title": "Component Class Uri"
         },
-        "stoichiometry": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Stoichiometry"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "stoichiometric information like equivalents, mass, amount of substance, volume"
-        },
-        "state_of_matter": {
+        "component_name": {
           "anyOf": [
             {
               "type": "string"
@@ -242,91 +160,38 @@
             }
           ],
           "default": null,
-          "description": "s for solid, l for liquid and g for gaseous",
-          "title": "State Of Matter"
+          "description": "name of the component used to link between the abstract component and its shape.",
+          "title": "Component Name"
         },
-        "reactant_role": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ReactantRole"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Role that a reactand plays in a chemical reaction or  in a process."
+        "generic_attributes": {
+          "description": "a generic attribute as defined by DEXPI.",
+          "items": {
+            "$ref": "#/$defs/GenericAttibute"
+          },
+          "multiple": true,
+          "title": "Generic Attributes",
+          "type": "array"
+        },
+        "connections": {
+          "description": "component id of other component this component is connected to via pipes, wires or similar.",
+          "items": {
+            "type": "string"
+          },
+          "multiple": true,
+          "title": "Connections",
+          "type": "array"
         }
       },
-      "title": "Chemical",
+      "title": "Component",
       "type": "object"
     },
-    "ChemicalFormula": {
+    "ComponentType": {
       "enum": [
-        "H2",
-        "CO2",
-        "CO",
-        "CH4",
-        "C2H4",
-        "C2H6"
+        "Equipment",
+        "Piping component"
       ],
-      "title": "ChemicalFormula",
+      "title": "ComponentType",
       "type": "string"
-    },
-    "Contact": {
-      "description": "Small type for attribute 'contact'",
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "name": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Name"
-        },
-        "affiliation": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Affiliation"
-        },
-        "email": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Email"
-        }
-      },
-      "title": "Contact",
-      "type": "object"
     },
     "Data": {
       "properties": {
@@ -405,76 +270,6 @@
       "title": "DataType",
       "type": "string"
     },
-    "Device": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "manufacturer": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "name of the manufacturer of the device.",
-          "title": "Manufacturer"
-        },
-        "device_type": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "type given by the manufacturer of the device.",
-          "title": "Device Type"
-        },
-        "series": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "the series of the device.",
-          "title": "Series"
-        },
-        "on_off": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "operational mode of the flow module. True is on and False is off.",
-          "title": "On Off"
-        }
-      },
-      "title": "Device",
-      "type": "object"
-    },
     "Experiment": {
       "properties": {
         "id": {
@@ -523,6 +318,7 @@
       "type": "object"
     },
     "GeneralInformation": {
+      "description": "Small type for attribute 'general_information'",
       "properties": {
         "id": {
           "anyOf": [
@@ -546,7 +342,6 @@
             }
           ],
           "default": null,
-          "description": "title of the work.",
           "title": "Title"
         },
         "project": {
@@ -559,7 +354,6 @@
             }
           ],
           "default": null,
-          "description": "Name of the project this work is related to.",
           "title": "Project"
         },
         "description": {
@@ -572,73 +366,13 @@
             }
           ],
           "default": null,
-          "description": "describes the content of the dataset.",
           "title": "Description"
-        },
-        "authors": {
-          "description": "authors of this dataset.",
-          "items": {
-            "$ref": "#/$defs/Author"
-          },
-          "multiple": true,
-          "title": "Authors",
-          "type": "array"
-        },
-        "contact": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Contact"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "point of contact for this projecet"
-        },
-        "subject": {
-          "description": "Domain-specific Subject Categories that are topically relevant to the Dataset.",
-          "items": {
-            "type": "string"
-          },
-          "multiple": true,
-          "title": "Subject",
-          "type": "array"
-        },
-        "related_publication": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/RelatedPublication"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Related publication to the dataset."
-        },
-        "keywords": {
-          "description": "Keywords and url related to the project.",
-          "items": {
-            "$ref": "#/$defs/Keyword"
-          },
-          "multiple": true,
-          "title": "Keywords",
-          "type": "array"
-        },
-        "topic_classification": {
-          "description": "Topic classification.",
-          "items": {
-            "$ref": "#/$defs/TopicClassification"
-          },
-          "multiple": true,
-          "title": "Topic Classification",
-          "type": "array"
         }
       },
       "title": "GeneralInformation",
       "type": "object"
     },
-    "Insulation": {
-      "description": "Small type for attribute 'insulation'",
+    "GenericAttibute": {
       "properties": {
         "id": {
           "anyOf": [
@@ -652,19 +386,20 @@
           "description": "Unique identifier of the given object.",
           "title": "Id"
         },
-        "thickness": {
+        "name": {
           "anyOf": [
             {
-              "type": "number"
+              "type": "string"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "title": "Thickness"
+          "description": "bla.",
+          "title": "Name"
         },
-        "material": {
+        "attribute_uri": {
           "anyOf": [
             {
               "type": "string"
@@ -674,25 +409,8 @@
             }
           ],
           "default": null,
-          "title": "Material"
-        }
-      },
-      "title": "Insulation",
-      "type": "object"
-    },
-    "Keyword": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
+          "description": "bla.",
+          "title": "Attribute Uri"
         },
         "value": {
           "anyOf": [
@@ -704,10 +422,10 @@
             }
           ],
           "default": null,
-          "description": "Key terms that describe important aspects of the Dataset.",
+          "description": "bla.",
           "title": "Value"
         },
-        "vocabulary": {
+        "format": {
           "anyOf": [
             {
               "type": "string"
@@ -717,10 +435,10 @@
             }
           ],
           "default": null,
-          "description": "For the specification of the keyword controlled vocabulary in use, such as LCSH, MeSH, or others.",
-          "title": "Vocabulary"
+          "description": "bla.",
+          "title": "Format"
         },
-        "vocabulary_uri": {
+        "units": {
           "anyOf": [
             {
               "type": "string"
@@ -730,26 +448,25 @@
             }
           ],
           "default": null,
-          "description": "Keyword vocabulary URI points to the web presence that describes the keyword vocabulary, if appropriate.",
-          "title": "Vocabulary Uri"
+          "description": "bla.",
+          "title": "Units"
+        },
+        "units_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla",
+          "title": "Units Uri"
         }
       },
-      "title": "Keyword",
+      "title": "GenericAttibute",
       "type": "object"
-    },
-    "Material": {
-      "enum": [
-        "Stainless Steel 1.4404",
-        "Stainless Steel 1.4571",
-        "Stainless Steel 1.4301",
-        "PTFE",
-        "PFA",
-        "Stone Wool",
-        "Glass Wool",
-        "Glass Fiber"
-      ],
-      "title": "Material",
-      "type": "string"
     },
     "Measurement": {
       "properties": {
@@ -794,6 +511,17 @@
           "multiple": true,
           "title": "Experimental Data",
           "type": "array"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Component"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "measuring device the data stems from."
         }
       },
       "title": "Measurement",
@@ -801,7 +529,6 @@
     },
     "MeasurementType": {
       "enum": [
-        "Potentiostatic measurement",
         "Galvanostatic measurement",
         "GC measurement",
         "MFM measurement"
@@ -833,7 +560,7 @@
             }
           ],
           "default": null,
-          "description": "Name of the parameter.",
+          "description": "name of the parameter.",
           "title": "Parameter"
         },
         "value": {
@@ -875,15 +602,11 @@
               "$ref": "#/$defs/DataType"
             },
             {
-              "type": "string"
-            },
-            {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "type of the parameter.",
-          "title": "Data Type"
+          "description": "type of the parameter."
         },
         "mode": {
           "anyOf": [
@@ -895,7 +618,7 @@
             }
           ],
           "default": null,
-          "description": "mode of the parameter. E.g., on and off.",
+          "description": "mode of the parameter. e.g., on and off.",
           "title": "Mode"
         },
         "unit": {
@@ -941,37 +664,28 @@
           "description": "Unique identifier of the given object.",
           "title": "Id"
         },
-        "devices": {
-          "description": "bla",
+        "components": {
+          "description": "bla.",
           "items": {
-            "$ref": "#/$defs/Device"
+            "$ref": "#/$defs/Component"
           },
           "multiple": true,
-          "title": "Devices",
-          "type": "array"
-        },
-        "tubing": {
-          "description": "bla",
-          "items": {
-            "$ref": "#/$defs/Tubing"
-          },
-          "multiple": true,
-          "title": "Tubing",
+          "title": "Components",
           "type": "array"
         },
         "input": {
-          "description": "bla",
+          "description": "bla.",
           "items": {
-            "$ref": "#/$defs/Chemical"
+            "type": "string"
           },
           "multiple": true,
           "title": "Input",
           "type": "array"
         },
         "output": {
-          "description": "bla",
+          "description": "bla.",
           "items": {
-            "$ref": "#/$defs/Chemical"
+            "type": "string"
           },
           "multiple": true,
           "title": "Output",
@@ -1004,99 +718,6 @@
       "title": "Quantity",
       "type": "string"
     },
-    "ReactantRole": {
-      "enum": [
-        "Educt",
-        "Product",
-        "Catalyst",
-        "Solvent",
-        "Inert Gas"
-      ],
-      "title": "ReactantRole",
-      "type": "string"
-    },
-    "RelatedPublication": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "citation": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The full bibliographic citation for this related publication.",
-          "title": "Citation"
-        },
-        "id_type": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The type of digital identifier used for this publication (e.g., Digital Object Identifier (DOI)).",
-          "title": "Id Type"
-        },
-        "id_number": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "'The identifier for the selected ID type.'",
-          "title": "Id Number"
-        },
-        "url": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "'Link to the publication web page (e.g., journal article page, archive record page, or other).",
-          "title": "Url"
-        }
-      },
-      "title": "RelatedPublication",
-      "type": "object"
-    },
-    "Species": {
-      "enum": [
-        "Hydrogen",
-        "Carbon dioxide",
-        "Carbon monoxide",
-        "Methane",
-        "Ethene",
-        "Ethane"
-      ],
-      "title": "Species",
-      "type": "string"
-    },
     "SpeciesData": {
       "properties": {
         "id": {
@@ -1114,26 +735,28 @@
         "species": {
           "anyOf": [
             {
-              "$ref": "#/$defs/Species"
+              "type": "string"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "name of the species."
+          "description": "name of the species.",
+          "title": "Species"
         },
         "chemical_formula": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ChemicalFormula"
+              "type": "string"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "chemical formula of the species."
+          "description": "chemical formula of the species.",
+          "title": "Chemical Formula"
         },
         "calibration": {
           "anyOf": [
@@ -1159,7 +782,7 @@
           "description": "correction factors of the individual species.",
           "title": "Correction Factor"
         },
-        "faraday_coefficient": {
+        "electron_transfer": {
           "anyOf": [
             {
               "type": "number"
@@ -1169,8 +792,8 @@
             }
           ],
           "default": null,
-          "description": "Faraday coefficients of the individual species.",
-          "title": "Faraday Coefficient"
+          "description": "Number of transfered electrons of the individual species.",
+          "title": "Electron Transfer"
         },
         "faraday_efficiency": {
           "anyOf": [
@@ -1185,266 +808,6 @@
         }
       },
       "title": "SpeciesData",
-      "type": "object"
-    },
-    "Stoichiometry": {
-      "description": "Stoichiometric information about the compound.",
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "equivalents": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "used equivalents in relation to the reference compound",
-          "title": "Equivalents"
-        },
-        "amount_of_substance": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "amount of substance n in mmol",
-          "title": "Amount Of Substance"
-        },
-        "mass": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "used mass of the compound in g",
-          "title": "Mass"
-        },
-        "volume": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "volume of the compound",
-          "title": "Volume"
-        },
-        "density": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "density of the compound at standard temperature and pressure.",
-          "title": "Density"
-        },
-        "molar_mass": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "molar mass of the compound in g per mol",
-          "title": "Molar Mass"
-        },
-        "mass_concentration": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "mass concentration in percent.",
-          "title": "Mass Concentration"
-        },
-        "molar_concentration": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "molar concentration in mol per l.",
-          "title": "Molar Concentration"
-        }
-      },
-      "title": "Stoichiometry",
-      "type": "object"
-    },
-    "TopicClassification": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Topic or Subject term that is relevant to this Dataset.",
-          "title": "Value"
-        },
-        "vocab": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Provided for specification of the controlled vocabulary in use, e.g., LCSH, MeSH, etc.",
-          "title": "Vocab"
-        },
-        "vocab_uri": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "Specifies the URI location for the full controlled vocabulary.",
-          "title": "Vocab Uri"
-        }
-      },
-      "title": "TopicClassification",
-      "type": "object"
-    },
-    "Tubing": {
-      "properties": {
-        "id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Unique identifier of the given object.",
-          "title": "Id"
-        },
-        "material": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Material"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "material with which the fluid flowing through comes into contact."
-        },
-        "inner_diameter": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "inner diameter of the tubing in mm.",
-          "title": "Inner Diameter"
-        },
-        "outer_diameter": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "outer diameter of the tubing in mm.",
-          "title": "Outer Diameter"
-        },
-        "length": {
-          "anyOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "length of the tubing in mm.",
-          "title": "Length"
-        },
-        "insulation": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Insulation"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "insulation of the tubing."
-        }
-      },
-      "title": "Tubing",
       "type": "object"
     },
     "Unit": {
@@ -1496,7 +859,7 @@
           "type": "null"
         }
       ],
-      "description": "general data about the data model."
+      "description": "general data about the datasetm like titel, project name, and description."
     },
     "experiments": {
       "description": "information about the individual experiment.",

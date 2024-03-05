@@ -157,7 +157,7 @@
           "type": "null"
         }
       ],
-      "description": "Recorded peak areas of the individual calibration solutions."
+      "description": "recorded peak areas of the individual calibration solutions."
     },
     "concentrations": {
       "anyOf": [
@@ -171,7 +171,7 @@
       "description": "concentrations of the individual calibration solutions."
     },
     "regression_coefficients": {
-      "description": "Polynomial coefficients in order of increasing degree.",
+      "description": "regression coefficients in order of increasing degree.",
       "items": {
         "type": "number"
       },
@@ -189,7 +189,7 @@
         }
       ],
       "default": 1,
-      "description": "Degree of regression model.",
+      "description": "degree of regression model.",
       "title": "Degree"
     }
   },

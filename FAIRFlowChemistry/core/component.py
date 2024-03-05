@@ -1,13 +1,12 @@
 import sdRDM
 
-from typing import Dict, List, Optional
-from pydantic import PrivateAttr, model_validator
+from typing import List, Optional
+from pydantic import model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element
-from lxml.etree import _Element
+from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from sdRDM.tools.utils import elem2dict
+from lxml.etree import _Element
 from .genericattibute import GenericAttibute
 from .componenttype import ComponentType
 
@@ -61,29 +60,63 @@ class Component(sdRDM.DataModel):
         json_schema_extra=dict(),
     )
 
-    generic_attributes: List[GenericAttibute] = element(
-        description="a generic attribute as defined by DEXPI.",
-        default_factory=ListPlus,
-        tag="generic_attributes",
-        json_schema_extra=dict(multiple=True),
+    generic_attributes: List[GenericAttibute] = wrapped(
+        "generic_attributes",
+        element(
+            description="a generic attribute as defined by DEXPI.",
+            default_factory=ListPlus,
+            tag="GenericAttibute",
+            json_schema_extra=dict(multiple=True),
+        ),
     )
 
-    connections: List[str] = element(
-        description=(
-            "component id of other component this component is connected to via pipes,"
-            " wires or similar."
+    connections: List[str] = wrapped(
+        "connections",
+        element(
+            description=(
+                "component id of other component this component is connected to via"
+                " pipes, wires or similar."
+            ),
+            default_factory=ListPlus,
+            tag="string",
+            json_schema_extra=dict(multiple=True),
         ),
-        default_factory=ListPlus,
-        tag="connections",
-        json_schema_extra=dict(multiple=True),
     )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="8cd2a321d0f28e24e41c7a3ac5d90aa738b1646d"
-    )
-    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    def add_to_generic_attributes(
+        self,
+        name: Optional[str] = None,
+        attribute_uri: Optional[str] = None,
+        value: Optional[str] = None,
+        format: Optional[str] = None,
+        units: Optional[str] = None,
+        units_uri: Optional[str] = None,
+        id: Optional[str] = None,
+    ) -> GenericAttibute:
+        """
+        This method adds an object of type 'GenericAttibute' to attribute generic_attributes
+
+        Args:
+            id (str): Unique identifier of the 'GenericAttibute' object. Defaults to 'None'.
+            name (): bla.. Defaults to None
+            attribute_uri (): bla.. Defaults to None
+            value (): bla.. Defaults to None
+            format (): bla.. Defaults to None
+            units (): bla.. Defaults to None
+            units_uri (): bla. Defaults to None
+        """
+        params = {
+            "name": name,
+            "attribute_uri": attribute_uri,
+            "value": value,
+            "format": format,
+            "units": units,
+            "units_uri": units_uri,
+        }
+        if id is not None:
+            params["id"] = id
+        self.generic_attributes.append(GenericAttibute(**params))
+        return self.generic_attributes[-1]
 
     @model_validator(mode="after")
     def _parse_raw_xml_data(self):

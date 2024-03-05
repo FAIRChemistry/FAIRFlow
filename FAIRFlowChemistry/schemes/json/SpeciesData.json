@@ -46,7 +46,7 @@
               "type": "null"
             }
           ],
-          "description": "Recorded peak areas of the individual calibration solutions."
+          "description": "recorded peak areas of the individual calibration solutions."
         },
         "concentrations": {
           "anyOf": [
@@ -60,7 +60,7 @@
           "description": "concentrations of the individual calibration solutions."
         },
         "regression_coefficients": {
-          "description": "Polynomial coefficients in order of increasing degree.",
+          "description": "regression coefficients in order of increasing degree.",
           "items": {
             "type": "number"
           },
@@ -78,24 +78,12 @@
             }
           ],
           "default": 1,
-          "description": "Degree of regression model.",
+          "description": "degree of regression model.",
           "title": "Degree"
         }
       },
       "title": "Calibration",
       "type": "object"
-    },
-    "ChemicalFormula": {
-      "enum": [
-        "H2",
-        "CO2",
-        "CO",
-        "CH4",
-        "C2H4",
-        "C2H6"
-      ],
-      "title": "ChemicalFormula",
-      "type": "string"
     },
     "Data": {
       "properties": {
@@ -182,18 +170,6 @@
       "title": "Quantity",
       "type": "string"
     },
-    "Species": {
-      "enum": [
-        "Hydrogen",
-        "Carbon dioxide",
-        "Carbon monoxide",
-        "Methane",
-        "Ethene",
-        "Ethane"
-      ],
-      "title": "Species",
-      "type": "string"
-    },
     "Unit": {
       "description": "Represents a unit type.\n\nAttributes:\n    scale (float): The scale of the unit.\n    bases (list[Union[str, UnitBase]]): The bases of the unit.\n    powers (list[float]): The powers of the unit.\n    _unit (Union[UnitBase, UnitBase]): The internal unit object.\n\nMethods:\n    _serialize_bases: Serializes the bases of the unit.\n    from_string: Creates a Unit object from a string representation.\n    from_astropy_unit: Creates an instance of the class from an Astropy unit.\n    to_unit_string: Returns a string representation of the unit.",
       "properties": {
@@ -237,26 +213,28 @@
     "species": {
       "anyOf": [
         {
-          "$ref": "#/$defs/Species"
+          "type": "string"
         },
         {
           "type": "null"
         }
       ],
       "default": null,
-      "description": "name of the species."
+      "description": "name of the species.",
+      "title": "Species"
     },
     "chemical_formula": {
       "anyOf": [
         {
-          "$ref": "#/$defs/ChemicalFormula"
+          "type": "string"
         },
         {
           "type": "null"
         }
       ],
       "default": null,
-      "description": "chemical formula of the species."
+      "description": "chemical formula of the species.",
+      "title": "Chemical Formula"
     },
     "calibration": {
       "anyOf": [
@@ -282,7 +260,7 @@
       "description": "correction factors of the individual species.",
       "title": "Correction Factor"
     },
-    "faraday_coefficient": {
+    "electron_transfer": {
       "anyOf": [
         {
           "type": "number"
@@ -292,8 +270,8 @@
         }
       ],
       "default": null,
-      "description": "Faraday coefficients of the individual species.",
-      "title": "Faraday Coefficient"
+      "description": "Number of transfered electrons of the individual species.",
+      "title": "Electron Transfer"
     },
     "faraday_efficiency": {
       "anyOf": [
