@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import List, Optional
-from pydantic import model_validator
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
@@ -13,7 +13,12 @@ from .componenttype import ComponentType
 
 
 @forge_signature
-class PlantSetup(sdRDM.DataModel):
+class PlantSetup(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#PlantSetup"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -51,6 +56,12 @@ class PlantSetup(sdRDM.DataModel):
             tag="string",
             json_schema_extra=dict(multiple=True),
         ),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     def add_to_components(

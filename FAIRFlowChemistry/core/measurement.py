@@ -1,24 +1,29 @@
 import sdRDM
 
 from typing import Optional, Union, List
-from pydantic import model_validator
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from datetime import datetime as Datetime
 from sdRDM.base.datatypes import Unit
+from datetime import datetime as Datetime
 from lxml.etree import _Element
-from .measurementtype import MeasurementType
-from .quantity import Quantity
-from .data import Data
-from .metadata import Metadata
 from .component import Component
 from .datatype import DataType
+from .measurementtype import MeasurementType
+from .metadata import Metadata
+from .quantity import Quantity
+from .data import Data
 
 
 @forge_signature
-class Measurement(sdRDM.DataModel):
+class Measurement(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#Measurement"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -60,6 +65,12 @@ class Measurement(sdRDM.DataModel):
         default_factory=Component,
         tag="source",
         json_schema_extra=dict(),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     def add_to_metadata(

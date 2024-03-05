@@ -7,14 +7,19 @@ from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from lxml.etree import _Element
-from .experiment import Experiment
 from .speciesdata import SpeciesData
-from .plantsetup import PlantSetup
 from .measurement import Measurement
+from .experiment import Experiment
+from .plantsetup import PlantSetup
 
 
 @forge_signature
-class GeneralInformation(sdRDM.DataModel):
+class GeneralInformation(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#GeneralInformation"
+    },
+):
     """Small type for attribute 'general_information'"""
 
     id: Optional[str] = attr(
@@ -30,10 +35,21 @@ class GeneralInformation(sdRDM.DataModel):
     description: Optional[str] = element(
         default=None, tag="description", json_schema_extra=dict()
     )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
+    )
 
 
 @forge_signature
-class Dataset(sdRDM.DataModel):
+class Dataset(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#Dataset"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -60,6 +76,12 @@ class Dataset(sdRDM.DataModel):
             tag="Experiment",
             json_schema_extra=dict(multiple=True),
         ),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     def add_to_experiments(

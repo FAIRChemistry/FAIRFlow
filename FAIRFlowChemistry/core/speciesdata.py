@@ -1,7 +1,7 @@
 import sdRDM
 
 from typing import Optional
-from pydantic import model_validator
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.listplus import ListPlus
@@ -12,7 +12,12 @@ from .data import Data
 
 
 @forge_signature
-class SpeciesData(sdRDM.DataModel):
+class SpeciesData(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#SpeciesData"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -62,6 +67,12 @@ class SpeciesData(sdRDM.DataModel):
         default_factory=Data,
         tag="faraday_efficiency",
         json_schema_extra=dict(),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     @model_validator(mode="after")

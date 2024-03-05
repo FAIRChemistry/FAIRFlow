@@ -2,7 +2,7 @@ import sdRDM
 
 import numpy as np
 from typing import List, Optional
-from pydantic import model_validator
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
@@ -12,7 +12,12 @@ from .data import Data
 
 
 @forge_signature
-class Calibration(sdRDM.DataModel):
+class Calibration(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#Calibration"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -51,6 +56,12 @@ class Calibration(sdRDM.DataModel):
         default=1,
         tag="degree",
         json_schema_extra=dict(),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     @model_validator(mode="after")

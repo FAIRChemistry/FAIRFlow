@@ -1,19 +1,24 @@
 import sdRDM
 
 from typing import Optional, Union
-from pydantic import model_validator
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from datetime import datetime as Datetime
 from sdRDM.base.datatypes import Unit
+from datetime import datetime as Datetime
 from lxml.etree import _Element
 from .datatype import DataType
 
 
 @forge_signature
-class Metadata(sdRDM.DataModel):
+class Metadata(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#Metadata"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -70,6 +75,12 @@ class Metadata(sdRDM.DataModel):
         default=None,
         tag="description",
         json_schema_extra=dict(),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     @model_validator(mode="after")

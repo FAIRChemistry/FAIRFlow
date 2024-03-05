@@ -3,26 +3,31 @@ import sdRDM
 import yaml
 import pandas as pd
 from typing import List, Optional
-from pydantic import model_validator
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from lxml.etree import _Element
-from .measurementtype import MeasurementType
-from .quantity import Quantity
-from .plantsetup import PlantSetup
-from .calibration import Calibration
-from .data import Data
 from .component import Component
-from .metadata import Metadata
-from .measurement import Measurement
+from .calibration import Calibration
 from .datatype import DataType
+from .data import Data
+from .measurementtype import MeasurementType
 from .speciesdata import SpeciesData
+from .metadata import Metadata
+from .plantsetup import PlantSetup
+from .quantity import Quantity
+from .measurement import Measurement
 
 
 @forge_signature
-class Experiment(sdRDM.DataModel):
+class Experiment(
+    sdRDM.DataModel,
+    nsmap={
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@d957c6074b70fafa6e197b474ff403e15b0f7142#Experiment"
+    },
+):
     """"""
 
     id: Optional[str] = attr(
@@ -60,6 +65,12 @@ class Experiment(sdRDM.DataModel):
             tag="SpeciesData",
             json_schema_extra=dict(multiple=True),
         ),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="d957c6074b70fafa6e197b474ff403e15b0f7142"
     )
 
     def add_to_measurements(
