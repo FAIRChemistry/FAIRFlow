@@ -1,4 +1,5 @@
 import sdRDM
+import numpy as np
 
 from typing import List, Optional
 from uuid import uuid4
@@ -66,3 +67,25 @@ class Calibration(
     _commit: Optional[str] = PrivateAttr(
         default="238a0547367fc736463730403ca8c1b7c46e9422"
     )
+
+    def calibrate(self):
+        """
+        Calibrate the regression model on seen data
+        """
+
+        self.regression_coefficients = np.polynomial.polynomial.polyfit(
+            self.peak_areas.values, self.concentrations.values, self.degree
+        ).tolist()
+
+    def predict(self, x: list) -> np.ndarray:
+        """
+        Predict with regression model
+
+        Args:
+            x (1D list): New locations for which predictions should be made
+
+        Returns:
+           (1D numpy array): Predicted data at new locations
+        """
+
+        return np.polynomial.Polynomial(self.regression_coefficients)(np.array(x))
