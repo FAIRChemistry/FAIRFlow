@@ -3,8 +3,8 @@
 import ipywidgets as widgets
 
 from pathlib import Path
-from typing import List, Callable
-from IPython.display import display
+from typing import List
+from IPython.display import display, clear_output
 
 # Import general tools and objects of this datamodel
 
@@ -60,47 +60,31 @@ class measurement_object:
 
 class reading_raw_data_widget():
     
-    def measurement_tabs(self):
+    def dataset_input_handler(self,_):
+        try:
+            with open(self.dataset_dropdown.value) as f:
+                self.dataset = Dataset.from_json(f)
+            self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
+            self.plant = self.dataset.experiments[0].plant_setup if self.dataset.experiments else PlantSetup()
+            
+            # Update component list
+            self.component_list = [ pl.component_id for pl in self.plant.components ]
+
+            if self.component_list:
+                with self.pid_output:
+                    clear_output(wait=False)
+                    print("PID taken from first experiment of dataset!\n")
+            else:
+                with self.pid_output:
+                    clear_output(wait=False)
+                    print("")
+            
+            # Call measurement input handler to update 
+            self.measurement_input_handler(None)
+
+        except:
+            raise KeyError("\nChoosen dataset cannot be interpreted!\n")
         
-        # Define tab widget
-        self.tabs  = widgets.Tab( [obj.full_layout for obj in self.measurement_objects] )
-
-        # Set title of the tabs
-        for i,title in enumerate( [ obj.name for obj in self.measurement_objects ] ):
-            self.tabs.set_title(i, title)
-
-        heading = widgets.Label(value="Files for measurements:")
-
-        with self.tab_output:
-            self.tab_output.clear_output(wait=False)
-            display( widgets.VBox([ heading, self.tabs ]))
-
-    def read_pid(self,_):
-        # Function that reads in DEXPI PID file and generates the PlantSetup
-        self.plant = DEXPI2sdRDM( self.pid_file.value )
-
-        with self.pid_output:
-            self.pid_output.clear_output(wait=False)
-            print("PID sucessfully read out!\n")
-        
-        # Update component list
-        self.component_list = [ pl.component_id for pl in self.plant.components ]
-
-        # Call tab widget
-        self.measurement_input_handler(None)
-
-    def visualize_pid(self,_):
-        # Function that visualizes the PID as graph
-        # If plant is just initialized read in PID first
-        if not self.plant.components:
-            self.read_pid(None)
-        self.plant.visualize()
-
-    def save_dataset(self,_):
-        # Function to save dataset
-        with open(self.dataset_dropdown.value, "w") as f: f.write(self.dataset.json())
-        print("Dataset saved.")
-    
     def add_file(self, category: str, file: str ):
         # Function that adds a file to a chosen category
         # The file is added to the selected measurement tab to the selected children (galvanostat, gas chromatography, etc.)
@@ -124,7 +108,67 @@ class reading_raw_data_widget():
 
         elif category == "P&ID":
             self.pid_file.value      = file
+
+    def read_pid(self,_):
+        # Function that reads in DEXPI PID file and generates the PlantSetup
+        self.plant = DEXPI2sdRDM( self.pid_file.value )
+
+        with self.pid_output:
+            self.pid_output.clear_output(wait=False)
+            print("PID sucessfully read out!\n")
         
+        # Update component list
+        self.component_list = [ pl.component_id for pl in self.plant.components ]
+
+        # Call tab widget
+        self.measurement_input_handler(None)
+
+    def visualize_pid(self,_):
+        # Function that visualizes the PID as graph
+        # If plant is just initialized read in PID first
+        if not self.plant.components:
+            self.read_pid(None)
+        self.plant.visualize()
+    
+    def measurement_input_handler(self,_):
+
+        # Delete measurement object that are not in the measurements widget anymore
+        del_idx = [ i for i,obj in enumerate(self.measurement_objects) if not obj.name in self.measurements.value ]
+        del_idx.sort( reverse = True)
+
+        for idx in del_idx:
+            del self.measurement_objects[idx]
+
+        # Get names of current experiments
+        measurement_names = [ obj.name for obj in self.measurement_objects ]
+
+        # Add new measurement objects if they are not already there
+        for i, measurement in enumerate(self.measurements.value):
+            if not measurement in measurement_names:
+                self.measurement_objects.insert( i, measurement_object( name = measurement, component_list = self.component_list ) )
+
+        # Update component list of all exisiting measurements
+        for obj in self.measurement_objects:
+            obj.update_component_list( self.component_list )
+        
+        # Call measurement tab widget
+        self.measurement_tabs()
+    
+    def measurement_tabs(self):
+        
+        # Define tab widget
+        self.tabs  = widgets.Tab( [obj.full_layout for obj in self.measurement_objects] )
+
+        # Set title of the tabs
+        for i,title in enumerate( [ obj.name for obj in self.measurement_objects ] ):
+            self.tabs.set_title(i, title)
+
+        heading = widgets.Label(value="Files for measurements:")
+
+        with self.tab_output:
+            self.tab_output.clear_output(wait=False)
+            display( widgets.VBox([ heading, self.tabs ]))
+ 
     def add_experiment(self,_):
 
         ## Read in selected raw data and save it in Experiment class ##
@@ -180,50 +224,9 @@ class reading_raw_data_widget():
         self.experiments.value     = [ exp.id for exp in self.dataset.experiments ]
 
         # Empty files widget
-        self.measurements.value    = [ "Measurement 1" ]
+        self.measurements.value    = []
         self.experiment_name.value = ""
         
-    def dataset_input_handler(self,_):
-        try:
-            with open(self.dataset_dropdown.value) as f:
-                self.dataset = Dataset.from_json(f)
-            self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
-            self.plant = self.dataset.experiments[0].plant_setup if self.dataset.experiments else PlantSetup()
-
-            # Update component list
-            self.component_list = [ pl.component_id for pl in self.plant.components ]
-
-            if self.component_list:
-                with self.pid_output:
-                    self.pid_output.clear_output(wait=False)
-                    print("PID taken from first experiment of dataset!\n")
-        except:
-            raise KeyError("\nChoosen dataset cannot be interpreted!\n")
-    
-    def measurement_input_handler(self,_):
-
-        # Delete measurement object that are not in the measurements widget anymore
-        del_idx = [ i for i,obj in enumerate(self.measurement_objects) if not obj.name in self.measurements.value ]
-        del_idx.sort( reverse = True)
-
-        for idx in del_idx:
-            del self.measurement_objects[idx]
-
-        # Get names of current experiments
-        measurement_names = [ obj.name for obj in self.measurement_objects ]
-
-        # Add new measurement objects if they are not already there
-        for i, measurement in enumerate(self.measurements.value):
-            if not measurement in measurement_names:
-                self.measurement_objects.insert( i, measurement_object( name = measurement, component_list = self.component_list ) )
-
-        # Update component list of all exisiting measurements
-        for obj in self.measurement_objects:
-            obj.update_component_list( self.component_list )
-        
-        # Call measurement tab widget
-        self.measurement_tabs()
-    
     def experiment_input_handler(self,_):
 
         # Delete experiment objects that are not in the experiment widget anymore
@@ -233,7 +236,11 @@ class reading_raw_data_widget():
         for idx in del_idx:
             del self.dataset.experiments[idx]
     
-
+    def save_dataset(self,_):
+        # Function to save dataset
+        with open(self.dataset_dropdown.value, "w") as f: f.write(self.dataset.json())
+        print("Dataset saved.")
+    
     def choose_data(self, root: Path, dataset_directory: str) -> None:
         
         self.librarian          = Librarian(root_directory=root)
@@ -251,7 +258,7 @@ class reading_raw_data_widget():
                                                      add_file_callalbe = self.add_file )
 
         # Define all widgets
-        self.dataset_dropdown   = widgets.Dropdown( options=[(path.parts[-1],path) for _,path in datasets.items()],
+        self.dataset_dropdown   = widgets.Dropdown( options=[("",Path(""))]+[(path.parts[-1],path) for _,path in datasets.items()],
                                                     description="Choose dataset",
                                                     layout=widgets.Layout(width='auto'),
                                                     style={'description_width': 'auto'})
@@ -275,7 +282,7 @@ class reading_raw_data_widget():
 
         self.measurements       = widgets.TagsInput( allow_duplicates=False )
  
-        self.button_save        = widgets.Button( description='Save dataset as:  %s'%self.dataset_dropdown.value.name,
+        self.button_save        = widgets.Button( description=f'Save dataset as:  {self.dataset_dropdown.value.name}',
                                                   layout=widgets.Layout(width="30%"),
                                                   style={"button_color": 'lightblue'})
 
@@ -300,9 +307,7 @@ class reading_raw_data_widget():
         self.experiments.observe(self.experiment_input_handler,names="value")
 
         # Initialize several objects
-        self.dataset_input_handler(None)
-        self.measurement_objects  = [ ]
-        self.measurements.value   = [ "Measurement 1" ]
+        self.measurement_objects  = []
 
         # Display the widgets
 

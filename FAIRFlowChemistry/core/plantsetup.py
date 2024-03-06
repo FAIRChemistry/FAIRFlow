@@ -1,5 +1,7 @@
 import sdRDM
 
+import networkx as nx
+import matplotlib.pyplot as plt
 from typing import List, Optional
 from pydantic import PrivateAttr
 from uuid import uuid4
@@ -100,3 +102,28 @@ class PlantSetup(
             params["id"] = id
         self.components.append(Component(**params))
         return self.components[-1]
+
+    def visualize(self, save_path: str=""):
+        """
+        Function that visualize the plantsetup as graph. 
+
+        Args:
+            save_path (str, optional): Path to save the graph (if wanted). Defaults to "".
+        """
+        # Create a directed graph
+        G = nx.DiGraph()
+
+        # Add nodes and edges
+        for component in self.components:
+            G.add_node(component.component_id)
+            for connection in component.connections:
+                G.add_edge(component.component_id, connection)
+
+        # Draw the graph
+        plt.figure()
+        pos = nx.spring_layout(G, seed=42)
+        nx.draw(G, pos, with_labels=True, node_size=2000, node_color="skyblue", font_size=10, font_weight="bold", arrowsize=20, linewidths=2)
+        plt.title('Plantsetup')
+        if save_path: plt.savefig( save_path )
+        plt.show()
+        plt.close()
