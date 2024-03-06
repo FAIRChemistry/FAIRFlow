@@ -7,8 +7,8 @@ This is the perliminary data model for CRC 1333 project B07. At the current time
 ### Dataset
 
 - general_information
-  - Type: { title: string, project: string, description: string }
-  - Description: general data about the datasetm like titel, project name, and description.
+  - Type: { title: string, project: string, description: string, purpose: string }
+  - Description: general data about the dataset like titel, project name, description, and purpose.
 - experiments
   - Type: Experiment[]
   - Description: information about the individual experiment.

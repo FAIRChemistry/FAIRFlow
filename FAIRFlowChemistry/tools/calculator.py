@@ -82,7 +82,7 @@ class FaradayEfficiencyCalculator(BaseModel):
         correction_factor_CO2  = self.experiment.get("species_data", "species", "Carbon dioxide")[0][0].correction_factor
         
         volumetric_fraction_H  = self.volumetric_fractions_df.loc["Hydrogen"].values[0]
-        volumetric_fraction_CO = self.volumetric_fractions_df.loc["Carbon Monooxide"].values[0]
+        volumetric_fraction_CO = self.volumetric_fractions_df.loc["Carbon monoxide"].values[0]
 
         k1 = volumetric_fraction_H / correction_factor_H
         k2 = ( 1 - volumetric_fraction_H  + volumetric_fraction_CO  ) / correction_factor_CO2
@@ -110,7 +110,7 @@ class FaradayEfficiencyCalculator(BaseModel):
         and a factor describing the electron transfer for each species
         """
         faraday_constant                   = const.physical_constants["Faraday constant"][0]
-        factors                            = { esd.species: esd.faraday_coefficient for esd in self.experiment.species_data }
+        factors                            = { esd.species: esd.electron_transfer for esd in self.experiment.species_data }
         self.theoretical_material_flow_df  = pd.DataFrame( index=[species for species in factors.keys()], columns = ["Theoretical_material_flow [mol/s]"] )
 
         # Current_density i provided in mA/cm^2; Electrode surface A is given as cm^2 --> current I = i*A_surface * 1A / 1000mA [A]
@@ -176,10 +176,9 @@ class FaradayEfficiencyCalculator(BaseModel):
         faraday_efficiency_df = self.material_flow_df.divide( self.theoretical_material_flow_df["Theoretical_material_flow [mol/s]"], axis="index", ).rename(columns=rename) * 100
         faraday_efficiency_df.dropna(inplace=True)
 
-        # Write into logger (but just in the first handler (which is the file handler))
-        logger.info("\n%s\n%s\n%s\n%s\n\n",
-                    self.volumetric_fractions_df.to_string(),
-                    (self.material_flow_df*60*1000).rename( columns={"Material_flow [mol/s]":"Material_flow [mmol/min]"}).to_string(),
-                    (self.theoretical_material_flow_df*60*1000).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mmol/min]"}).to_string())
+        # Write into logger
+        logger.info( self.volumetric_fractions_df.to_string() )
+        logger.info( (self.material_flow_df*60*1000).rename( columns={"Material_flow [mol/s]":"Material_flow [mmol/min]"}).to_string() )
+        logger.info( (self.theoretical_material_flow_df*60*1000).rename( columns={"Theoretical_material_flow  [mol/s]":"Theoretical_material_flow  [mmol/min]"}).to_string() )
         
         return faraday_efficiency_df

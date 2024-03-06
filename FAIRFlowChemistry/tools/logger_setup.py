@@ -12,9 +12,6 @@ def setup_logger( log_file: str="" ):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
-    # Create a formatter
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(message)s", datefmt="%m-%d-%y %H:%M:%S")
-
     # Create a file handler and set the level to INFO
     if log_file:
         file_handler = FileHandler( log_file )
@@ -22,7 +19,7 @@ def setup_logger( log_file: str="" ):
         file_handler.setFormatter( logging.Formatter( "%(asctime)s - %(name)s - %(message)s", datefmt="%m-%d-%y %H:%M:%S" ) )
         logger.addHandler(file_handler)
 
-    # Create a console handler and set the level to INFO
+    # Create a console handler and set the level to WARNING
     console_handler = StreamHandler()
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter( logging.Formatter( "%(message)s" ) )

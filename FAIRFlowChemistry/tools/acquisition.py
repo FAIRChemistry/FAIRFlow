@@ -91,7 +91,9 @@ class reading_raw_data_widget():
 
     def visualize_pid(self,_):
         # Function that visualizes the PID as graph
-        self.read_pid(None)
+        # If plant is just initialized read in PID first
+        if not self.plant.components:
+            self.read_pid(None)
         self.plant.visualize()
 
     def save_dataset(self,_):
@@ -186,6 +188,15 @@ class reading_raw_data_widget():
             with open(self.dataset_dropdown.value) as f:
                 self.dataset = Dataset.from_json(f)
             self.experiments.value = [ exp.id for exp in self.dataset.experiments ]
+            self.plant = self.dataset.experiments[0].plant_setup if self.dataset.experiments else PlantSetup()
+
+            # Update component list
+            self.component_list = [ pl.component_id for pl in self.plant.components ]
+
+            if self.component_list:
+                with self.pid_output:
+                    self.pid_output.clear_output(wait=False)
+                    print("PID taken from first experiment of dataset!\n")
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
     
@@ -290,8 +301,6 @@ class reading_raw_data_widget():
 
         # Initialize several objects
         self.dataset_input_handler(None)
-        self.plant                = PlantSetup()
-        self.component_list       = [ ]
         self.measurement_objects  = [ ]
         self.measurements.value   = [ "Measurement 1" ]
 

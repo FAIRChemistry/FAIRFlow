@@ -1,0 +1,16 @@
+{
+  "id": "a693b85d-4487-487b-9c1e-7659a385380b",
+  "general_information": {
+    "id": "749c47dc-2bb2-4bbd-ab57-30a2d04975a9",
+    "title": "FAIRFlow: A Jupyter notebook-based platform for on-line analysis in flow chemistry ",
+    "project": "Project B07",
+    "description": "The aim of this project is to introduce the FAIR (findable, accessible, interoperable, reusable) principles into miniplant flow chemistry"
+  },
+  "experiments": [],
+  "__source__": {
+    "root": "Dataset",
+    "repo": "https://github.com/FAIRChemistry/FAIRFlowChemistry",
+    "commit": "f4f90b698573ebe018bb7f96d10be4877e4643b3",
+    "url": "https://github.com/FAIRChemistry/FAIRFlowChemistry/tree/f4f90b698573ebe018bb7f96d10be4877e4643b3"
+  }
+}
