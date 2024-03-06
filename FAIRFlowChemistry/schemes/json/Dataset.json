@@ -367,6 +367,18 @@
           ],
           "default": null,
           "title": "Description"
+        },
+        "purpose": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Purpose"
         }
       },
       "title": "GeneralInformation",
@@ -859,7 +871,7 @@
           "type": "null"
         }
       ],
-      "description": "general data about the datasetm like titel, project name, and description."
+      "description": "general data about the dataset like titel, project name, description, and purpose."
     },
     "experiments": {
       "description": "information about the individual experiment.",
