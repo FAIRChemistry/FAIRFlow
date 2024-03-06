@@ -1,12 +1,10 @@
 import sdRDM
 
 from typing import Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
-
-
 from .calibration import Calibration
 from .data import Data
 
@@ -15,7 +13,7 @@ from .data import Data
 class SpeciesData(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ff495cb3c7e3baec101ecf174569b19e722565cc#SpeciesData"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7#SpeciesData"
     },
 ):
     """"""
@@ -68,10 +66,9 @@ class SpeciesData(
         tag="faraday_efficiency",
         json_schema_extra=dict(),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="ff495cb3c7e3baec101ecf174569b19e722565cc"
+        default="c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7"
     )

@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class DataType(Enum):
-
     STRING = "string"
     FLOAT = "float"
     DATE = "date"

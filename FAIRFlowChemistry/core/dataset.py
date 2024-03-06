@@ -1,24 +1,22 @@
 import sdRDM
 
 from typing import List, Optional
-from uuid import uuid4
 from pydantic import PrivateAttr
+from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-
-
-from .experiment import Experiment
 from .measurement import Measurement
-from .plantsetup import PlantSetup
+from .experiment import Experiment
 from .speciesdata import SpeciesData
+from .plantsetup import PlantSetup
 
 
 @forge_signature
 class GeneralInformation(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ff495cb3c7e3baec101ecf174569b19e722565cc#GeneralInformation"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7#GeneralInformation"
     },
 ):
     """Small type for attribute 'general_information'"""
@@ -29,36 +27,21 @@ class GeneralInformation(
         default_factory=lambda: str(uuid4()),
         xml="@id",
     )
-
-    title: Optional[str] = element(
-        default=None,
-        tag="title",
-        json_schema_extra=dict(),
-    )
-
+    title: Optional[str] = element(default=None, tag="title", json_schema_extra=dict())
     project: Optional[str] = element(
-        default=None,
-        tag="project",
-        json_schema_extra=dict(),
+        default=None, tag="project", json_schema_extra=dict()
     )
-
     description: Optional[str] = element(
-        default=None,
-        tag="description",
-        json_schema_extra=dict(),
+        default=None, tag="description", json_schema_extra=dict()
     )
-
     purpose: Optional[str] = element(
-        default=None,
-        tag="purpose",
-        json_schema_extra=dict(),
+        default=None, tag="purpose", json_schema_extra=dict()
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="ff495cb3c7e3baec101ecf174569b19e722565cc"
+        default="c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7"
     )
 
 
@@ -66,7 +49,7 @@ class GeneralInformation(
 class Dataset(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@ff495cb3c7e3baec101ecf174569b19e722565cc#Dataset"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7#Dataset"
     },
 ):
     """"""
@@ -94,17 +77,14 @@ class Dataset(
             description="information about the individual experiment.",
             default_factory=ListPlus,
             tag="Experiment",
-            json_schema_extra=dict(
-                multiple=True,
-            ),
+            json_schema_extra=dict(multiple=True),
         ),
     )
-
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="ff495cb3c7e3baec101ecf174569b19e722565cc"
+        default="c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7"
     )
 
     def add_to_experiments(
@@ -123,16 +103,12 @@ class Dataset(
             measurements (): different measurements that are made within the scope of one experiment.. Defaults to ListPlus()
             species_data (): all provided and calculated data about a specific species.. Defaults to ListPlus()
         """
-
         params = {
             "plant_setup": plant_setup,
             "measurements": measurements,
             "species_data": species_data,
         }
-
         if id is not None:
             params["id"] = id
-
         self.experiments.append(Experiment(**params))
-
         return self.experiments[-1]

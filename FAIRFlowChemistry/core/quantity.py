@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class Quantity(Enum):
-
     TIME = "Time"
     VOLTAGE = "Voltage"
     CURRENT = "Current"
