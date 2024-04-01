@@ -286,6 +286,9 @@ def DEXPI2sdRDM(filepath: Path|str ):
                 component.connections.extend(connection)
                 component.connections.remove(component.component_id)
 
+<<<<<<< Updated upstream
     #for component in components:
     #    print(component.component_id, component.connections)
+=======
+>>>>>>> Stashed changes
     return PlantSetup(components=components)
