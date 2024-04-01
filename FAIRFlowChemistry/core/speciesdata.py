@@ -13,7 +13,7 @@ from .data import Data
 class SpeciesData(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7#SpeciesData"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1bb5f3b4519dae01439e0005d07224bae46e1d13#SpeciesData"
     },
 ):
     """"""
@@ -70,5 +70,5 @@ class SpeciesData(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="c41a0c1e08586e8cb4deff5d7a6e8b76d1e12ca7"
+        default="1bb5f3b4519dae01439e0005d07224bae46e1d13"
     )

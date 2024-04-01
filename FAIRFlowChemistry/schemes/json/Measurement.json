@@ -306,7 +306,7 @@
     },
     "MeasurementType": {
       "enum": [
-        "Galvanostatic measurement",
+        "Potentiostatic measurement",
         "GC measurement",
         "MFM measurement"
       ],

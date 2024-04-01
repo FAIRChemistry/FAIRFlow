@@ -139,7 +139,7 @@ classDiagram
     
     class MeasurementType {
         << Enumeration >>
-        +GALVANOSTATIC
+        +POTENTIOSTATIC
         +GC
         +MFM
     }

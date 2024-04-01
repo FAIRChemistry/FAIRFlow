@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class MeasurementType(Enum):
-    GALVANOSTATIC = "Galvanostatic measurement"
+    POTENTIOSTATIC = "Potentiostatic measurement"
     GC = "GC measurement"
     MFM = "MFM measurement"
