@@ -6,17 +6,17 @@ from uuid import uuid4
 from pydantic_xml import attr, element, wrapped
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from .plantsetup import PlantSetup
-from .speciesdata import SpeciesData
 from .measurement import Measurement
+from .plantsetup import PlantSetup
 from .experiment import Experiment
+from .speciesdata import SpeciesData
 
 
 @forge_signature
 class GeneralInformation(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1bb5f3b4519dae01439e0005d07224bae46e1d13#GeneralInformation"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#GeneralInformation"
     },
 ):
     """Small type for attribute 'general_information'"""
@@ -41,7 +41,7 @@ class GeneralInformation(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1bb5f3b4519dae01439e0005d07224bae46e1d13"
+        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
     )
 
 
@@ -49,7 +49,7 @@ class GeneralInformation(
 class Dataset(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1bb5f3b4519dae01439e0005d07224bae46e1d13#Dataset"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#Dataset"
     },
 ):
     """"""
@@ -84,7 +84,7 @@ class Dataset(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1bb5f3b4519dae01439e0005d07224bae46e1d13"
+        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
     )
 
     def add_to_experiments(

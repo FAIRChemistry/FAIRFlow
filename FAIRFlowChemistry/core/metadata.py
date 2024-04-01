@@ -5,8 +5,8 @@ from pydantic import PrivateAttr
 from uuid import uuid4
 from pydantic_xml import attr, element
 from sdRDM.base.utils import forge_signature
-from datetime import datetime as Datetime
 from sdRDM.base.datatypes import Unit
+from datetime import datetime as Datetime
 from .datatype import DataType
 
 
@@ -14,7 +14,7 @@ from .datatype import DataType
 class Metadata(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1bb5f3b4519dae01439e0005d07224bae46e1d13#Metadata"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#Metadata"
     },
 ):
     """"""
@@ -78,5 +78,5 @@ class Metadata(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1bb5f3b4519dae01439e0005d07224bae46e1d13"
+        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
     )

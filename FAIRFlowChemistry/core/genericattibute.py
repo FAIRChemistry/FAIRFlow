@@ -11,7 +11,7 @@ from sdRDM.base.utils import forge_signature
 class GenericAttibute(
     sdRDM.DataModel,
     nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@1bb5f3b4519dae01439e0005d07224bae46e1d13#GenericAttibute"
+        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#GenericAttibute"
     },
 ):
     """"""
@@ -68,5 +68,5 @@ class GenericAttibute(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="1bb5f3b4519dae01439e0005d07224bae46e1d13"
+        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
     )
