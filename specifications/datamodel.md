@@ -1,6 +1,7 @@
-# Data model for CRC 1333 project B07 TC
+# Data model for the FAIRFlowChemistry platform
 
-This is the perliminary data model for CRC 1333 project B07. At the current time, the data model is still under development and major changes can occur at any time. Please feel free to make changes and contribute to the project.
+In this markdown file the structure of the data model for the FAIRFlowChemistry platform is defined.
+It follows the syntax specified by the sdRDM engine.
 
 ## Objects
 
