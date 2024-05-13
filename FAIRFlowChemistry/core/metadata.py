@@ -72,12 +72,6 @@ class Metadata(sdRDM.DataModel, search_mode="unordered"):
         tag="description",
         json_schema_extra=dict(),
     )
-    _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
-    )
-    _commit: Optional[str] = PrivateAttr(
-        default="f4222f6744222333280cdf737a377645a4c02321"
-    )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
     @model_validator(mode="after")
