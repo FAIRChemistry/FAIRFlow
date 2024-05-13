@@ -116,6 +116,9 @@ class reading_raw_data_widget:
             # Call measurement input handler to update
             self.measurement_input_handler(None)
 
+            # Update button description
+            self.button_save.description = f"Save dataset as:  {self.dataset_dropdown.value.name}"
+            
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
 

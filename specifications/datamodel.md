@@ -238,6 +238,7 @@ PEAKHEIGHT = "Peak height"
 PEAKAREAPERCENTAGE = "Peak area percentage"
 PEAKASSIGNMENT = "Peak assignment"
 FARADAYEFFIECENCY = "Faraday efficiency"
+SIGNAL = "Signal"
 ```
 
 

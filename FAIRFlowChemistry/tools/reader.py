@@ -28,7 +28,7 @@ def gc_parser(metadata_path: Path, experimental_data_path: Path):
 
     # Extract important data
     gc_measurement = Measurement(measurement_type="GC measurement")
-    key_list = ["Injection Date"]
+    key_list = ["Injection Date", "Signal 1", "Signal 2"]
 
     metadata_df = pd.read_csv(
         metadata_path,
@@ -89,7 +89,7 @@ def gc_parser(metadata_path: Path, experimental_data_path: Path):
         encoding="utf-16_le",
     )
 
-    key_list = ["Retention Time", "Peak Type", "Area", "Area   %"]
+    key_list = ["Retention Time", "Signal", "Peak Type", "Area", "Area   %"]
 
     for key in key_list:
 
@@ -145,7 +145,7 @@ def gstatic_parser(metadata_path: Path):
     )
 
     # Extract important meta data
-    echem_measurement = Measurement(measurement_type="Galvanostatic measurement")
+    echem_measurement = Measurement(measurement_type="Potentiostatic measurement")
     key_list = ["IINIT", "AREA"]
     Quantity_list = {
         "IINIT": Quantity.CURRENT.value,

@@ -17,6 +17,7 @@ from ipywidgets import (
     Dropdown,  # Classic dropdown menu
     Button,  # Classic button
     Layout,  # Layout specification object
+    TagsInput
 )
 
 logger = logging.getLogger("main")
@@ -286,6 +287,7 @@ class PeakAssigner:
         self._selection_output = Output()
         self._VBox_list = []
         self._full_layout = VBox([])
+        self.signal_types = []
 
         self.peak_areas_retention_time_dict = {}
 
@@ -293,11 +295,18 @@ class PeakAssigner:
         gc_measurements = self.experiment.get("measurements", "measurement_type", MeasurementType.GC.value)
 
         if len(gc_measurements) > 0:
+
+            # Get signal types
+            self.signal_types = [ md.value for md in gc_measurements[0][0].metadata if "Signal" in md.parameter ]
+            
             for i, gc_measurement in enumerate(gc_measurements[0]):
                 peak_areas     = gc_measurement.get("experimental_data", "quantity", Quantity.PEAKAREA.value)[0][0].values
                 retention_time = gc_measurement.get("experimental_data", "quantity", Quantity.RETENTIONTIME.value)[0][0].values
-                
-                self.peak_areas_retention_time_dict[f"Measurement number {i}"] = { "peak_areas": peak_areas, "retention_time": retention_time }
+                signal_type    = gc_measurement.get("experimental_data", "quantity", Quantity.SIGNAL.value)[0][0].values
+
+                self.peak_areas_retention_time_dict[f"Measurement number {i}"] = { "peak_areas": peak_areas, 
+                                                                                   "retention_time": retention_time,
+                                                                                    "signal_type": signal_type }
         else:
             logger.info("\n!!! Warning: Given experiment doesn't contain GC measurements !!!\n")
 
@@ -338,7 +347,7 @@ class PeakAssigner:
 
                 # Dropdown in the last entry in each children
                 species   = widget.children[2].value
-                peak_area = float( widget.children[1].value )
+                peak_area = float( widget.children[1].value.split("(")[0].strip() )
 
                 if species in _assignment_dict:
                     _assignment_dict[species].append( peak_area )
@@ -354,9 +363,9 @@ class PeakAssigner:
 
             # Sort the tuples based on peak values
             sorted_species_peak_tuples = sorted( [(key, value) for key, values in _assignment_dict.items() for value in values], key=lambda x: tmp2.index(x[1]) )
-
+            
             # check if there is already an exisiting entry, if yes overwrite
-            if bool( gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value) ):
+            if all( gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value) ):
                 
                 # Extract the species names in the sorted order --> if a peak has no species assignment its saved as: ""
                 gc_measurement.get("experimental_data","quantity",Quantity.PEAKASSIGNMENT.value)[0][0].values = [ item[0] for item in sorted_species_peak_tuples ]
@@ -399,7 +408,9 @@ class PeakAssigner:
                                   Label( value="Species",
                                          layout=Layout(width="40%", height="30px")) ] ) ]
         
-            for peak_area, retention_time in zip(peak_areas_retention_time["peak_areas"], peak_areas_retention_time["retention_time"]):
+            for peak_area, retention_time, signal_type in zip( peak_areas_retention_time["peak_areas"], 
+                                                               peak_areas_retention_time["retention_time"],
+                                                               peak_areas_retention_time["signal_type"]):
                 
                 try:
                     # Set default values with a given dict (search for the species with the closest retention time and pick it as standard value)
@@ -417,7 +428,7 @@ class PeakAssigner:
                                                  style   = {"description_width": "initial"},
                                                  value   = default_value)
                 
-                retention_time_label = Label( value  = f"{retention_time:.2f}",
+                retention_time_label = Label( value  = f"{retention_time:.2f} (Signal: {signal_type:.0f})",
                                               layout = Layout(width="30%", height="30px"))
 
                 peak_area_label      = Label( value  = f"{peak_area:.2f}",
@@ -436,12 +447,27 @@ class PeakAssigner:
         display_button.on_click(self.save_assignments)
         v_space   = VBox([Label(value='')], layout=Layout(height='30px'))
 
+        # Description of signals:
+        signal_descripton = TagsInput(allow_duplicates=False,
+                                      layout = Layout(width="30%", height="30px")  
+                                )
+        
+        signal_descripton.value = [ f'{i}: {stype}' for i,stype in enumerate(self.signal_types) ]
+
+        signal_widget = widgets.VBox(
+            [
+                widgets.Label(value="GC Signal:"),
+                signal_descripton,
+            ]
+        )
+
+
         # Define the total layout
         widget0 = [ HBox(children=self._VBox_list[i:i+3], layout=layout_hbox) for i in range( 0, len(self._VBox_list), 3 ) ]
         widget1 = HBox(children=[display_button],layout=Layout(justify_content="center"))
         widget2 = self._selection_output
 
-        full_layout = VBox([*widget0,v_space,widget1,widget2])
+        full_layout = VBox([signal_widget,v_space,*widget0,v_space,widget1,widget2])
 
         display(full_layout)
 
