@@ -44,6 +44,12 @@ class Data(sdRDM.DataModel, search_mode="unordered"):
         tag="unit",
         json_schema_extra=dict(),
     )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="2db1d881b230dff78178a78a2360339d1bc95946"
+    )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
     @model_validator(mode="after")

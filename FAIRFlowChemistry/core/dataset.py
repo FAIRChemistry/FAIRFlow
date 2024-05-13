@@ -8,10 +8,10 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .measurement import Measurement
-from .experiment import Experiment
 from .speciesdata import SpeciesData
+from .experiment import Experiment
 from .plantsetup import PlantSetup
+from .measurement import Measurement
 
 
 @forge_signature
@@ -33,6 +33,12 @@ class GeneralInformation(sdRDM.DataModel, search_mode="unordered"):
     )
     purpose: Optional[str] = element(
         default=None, tag="purpose", json_schema_extra=dict()
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="2db1d881b230dff78178a78a2360339d1bc95946"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -74,6 +80,12 @@ class Dataset(sdRDM.DataModel, search_mode="unordered"):
         default_factory=ListPlus,
         tag="experiments",
         json_schema_extra=dict(multiple=True),
+    )
+    _repo: Optional[str] = PrivateAttr(
+        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+    )
+    _commit: Optional[str] = PrivateAttr(
+        default="2db1d881b230dff78178a78a2360339d1bc95946"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
