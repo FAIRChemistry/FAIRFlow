@@ -1,28 +1,25 @@
 import sdRDM
 
-from typing import Optional, Union, List
-from pydantic import PrivateAttr
+from typing import Optional, Union, List, Dict
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element, wrapped
+from pydantic_xml import attr, element
+from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
+from sdRDM.tools.utils import elem2dict
 from datetime import datetime as Datetime
-from .datatype import DataType
-from .data import Data
-from .component import Component
-from .quantity import Quantity
 from .measurementtype import MeasurementType
+from .component import Component
+from .datatype import DataType
+from .quantity import Quantity
 from .metadata import Metadata
+from .data import Data
 
 
 @forge_signature
-class Measurement(
-    sdRDM.DataModel,
-    nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#Measurement"
-    },
-):
+class Measurement(sdRDM.DataModel, search_mode="unordered"):
     """"""
 
     id: Optional[str] = attr(
@@ -39,24 +36,18 @@ class Measurement(
         json_schema_extra=dict(),
     )
 
-    metadata: List[Metadata] = wrapped(
-        "metadata",
-        element(
-            description="metadata of a measurement.",
-            default_factory=ListPlus,
-            tag="Metadata",
-            json_schema_extra=dict(multiple=True),
-        ),
+    metadata: List[Metadata] = element(
+        description="metadata of a measurement.",
+        default_factory=ListPlus,
+        tag="metadata",
+        json_schema_extra=dict(multiple=True),
     )
 
-    experimental_data: List[Data] = wrapped(
-        "experimental_data",
-        element(
-            description="experimental data of a measurement.",
-            default_factory=ListPlus,
-            tag="Data",
-            json_schema_extra=dict(multiple=True),
-        ),
+    experimental_data: List[Data] = element(
+        description="experimental data of a measurement.",
+        default_factory=ListPlus,
+        tag="experimental_data",
+        json_schema_extra=dict(multiple=True),
     )
 
     source: Optional[Component] = element(
@@ -69,8 +60,20 @@ class Measurement(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
+        default="f4222f6744222333280cdf737a377645a4c02321"
     )
+    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _parse_raw_xml_data(self):
+        for attr, value in self:
+            if isinstance(value, (ListPlus, list)) and all(
+                (isinstance(i, _Element) for i in value)
+            ):
+                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
+            elif isinstance(value, _Element):
+                self._raw_xml_data[attr] = elem2dict(value)
+        return self
 
     def add_to_metadata(
         self,
@@ -82,6 +85,7 @@ class Measurement(
         unit: Optional[Unit] = None,
         description: Optional[str] = None,
         id: Optional[str] = None,
+        **kwargs
     ) -> Metadata:
         """
         This method adds an object of type 'Metadata' to attribute metadata
@@ -116,6 +120,7 @@ class Measurement(
         values: List[Union[float, str, Datetime]] = ListPlus(),
         unit: Optional[Unit] = None,
         id: Optional[str] = None,
+        **kwargs
     ) -> Data:
         """
         This method adds an object of type 'Data' to attribute experimental_data

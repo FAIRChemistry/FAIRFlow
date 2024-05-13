@@ -2,31 +2,28 @@ import sdRDM
 
 import yaml
 import pandas as pd
-from typing import List, Optional
-from pydantic import PrivateAttr
+from typing import Dict, List, Optional
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element, wrapped
+from pydantic_xml import attr, element
+from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from .datatype import DataType
-from .plantsetup import PlantSetup
-from .data import Data
-from .speciesdata import SpeciesData
-from .component import Component
-from .quantity import Quantity
+from sdRDM.tools.utils import elem2dict
 from .measurementtype import MeasurementType
+from .component import Component
+from .datatype import DataType
+from .quantity import Quantity
+from .calibration import Calibration
+from .plantsetup import PlantSetup
 from .measurement import Measurement
 from .metadata import Metadata
-from .calibration import Calibration
+from .data import Data
+from .speciesdata import SpeciesData
 
 
 @forge_signature
-class Experiment(
-    sdRDM.DataModel,
-    nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#Experiment"
-    },
-):
+class Experiment(sdRDM.DataModel, search_mode="unordered"):
     """"""
 
     id: Optional[str] = attr(
@@ -43,34 +40,39 @@ class Experiment(
         json_schema_extra=dict(),
     )
 
-    measurements: List[Measurement] = wrapped(
-        "measurements",
-        element(
-            description=(
-                "different measurements that are made within the scope of one"
-                " experiment."
-            ),
-            default_factory=ListPlus,
-            tag="Measurement",
-            json_schema_extra=dict(multiple=True),
+    measurements: List[Measurement] = element(
+        description=(
+            "different measurements that are made within the scope of one experiment."
         ),
+        default_factory=ListPlus,
+        tag="measurements",
+        json_schema_extra=dict(multiple=True),
     )
 
-    species_data: List[SpeciesData] = wrapped(
-        "species_data",
-        element(
-            description="all provided and calculated data about a specific species.",
-            default_factory=ListPlus,
-            tag="SpeciesData",
-            json_schema_extra=dict(multiple=True),
-        ),
+    species_data: List[SpeciesData] = element(
+        description="all provided and calculated data about a specific species.",
+        default_factory=ListPlus,
+        tag="species_data",
+        json_schema_extra=dict(multiple=True),
     )
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
+        default="f4222f6744222333280cdf737a377645a4c02321"
     )
+    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _parse_raw_xml_data(self):
+        for attr, value in self:
+            if isinstance(value, (ListPlus, list)) and all(
+                (isinstance(i, _Element) for i in value)
+            ):
+                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
+            elif isinstance(value, _Element):
+                self._raw_xml_data[attr] = elem2dict(value)
+        return self
 
     def add_to_measurements(
         self,
@@ -79,6 +81,7 @@ class Experiment(
         experimental_data: List[Data] = ListPlus(),
         source: Optional[Component] = None,
         id: Optional[str] = None,
+        **kwargs,
     ) -> Measurement:
         """
         This method adds an object of type 'Measurement' to attribute measurements
@@ -110,6 +113,7 @@ class Experiment(
         electron_transfer: Optional[float] = None,
         faraday_efficiency: Optional[Data] = None,
         id: Optional[str] = None,
+        **kwargs,
     ) -> SpeciesData:
         """
         This method adds an object of type 'SpeciesData' to attribute species_data

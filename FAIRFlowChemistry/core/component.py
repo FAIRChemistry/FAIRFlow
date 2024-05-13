@@ -1,22 +1,19 @@
 import sdRDM
 
-from typing import List, Optional
-from pydantic import PrivateAttr
+from typing import Dict, List, Optional
+from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
-from pydantic_xml import attr, element, wrapped
+from pydantic_xml import attr, element
+from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
-from .genericattibute import GenericAttibute
+from sdRDM.tools.utils import elem2dict
 from .componenttype import ComponentType
+from .genericattibute import GenericAttibute
 
 
 @forge_signature
-class Component(
-    sdRDM.DataModel,
-    nsmap={
-        "": "https://github.com/FAIRChemistry/FAIRFlowChemistry@2430ed60950545d51f2fa235656907e21e8d3ac4#Component"
-    },
-):
+class Component(sdRDM.DataModel, search_mode="unordered"):
     """"""
 
     id: Optional[str] = attr(
@@ -64,34 +61,40 @@ class Component(
         json_schema_extra=dict(),
     )
 
-    generic_attributes: List[GenericAttibute] = wrapped(
-        "generic_attributes",
-        element(
-            description="a generic attribute as defined by DEXPI.",
-            default_factory=ListPlus,
-            tag="GenericAttibute",
-            json_schema_extra=dict(multiple=True),
-        ),
+    generic_attributes: List[GenericAttibute] = element(
+        description="a generic attribute as defined by DEXPI.",
+        default_factory=ListPlus,
+        tag="generic_attributes",
+        json_schema_extra=dict(multiple=True),
     )
 
-    connections: List[str] = wrapped(
-        "connections",
-        element(
-            description=(
-                "component id of other component this component is connected to via"
-                " pipes, wires or similar."
-            ),
-            default_factory=ListPlus,
-            tag="string",
-            json_schema_extra=dict(multiple=True),
+    connections: List[str] = element(
+        description=(
+            "component id of other component this component is connected to via pipes,"
+            " wires or similar."
         ),
+        default_factory=ListPlus,
+        tag="connections",
+        json_schema_extra=dict(multiple=True),
     )
     _repo: Optional[str] = PrivateAttr(
         default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="2430ed60950545d51f2fa235656907e21e8d3ac4"
+        default="f4222f6744222333280cdf737a377645a4c02321"
     )
+    _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _parse_raw_xml_data(self):
+        for attr, value in self:
+            if isinstance(value, (ListPlus, list)) and all(
+                (isinstance(i, _Element) for i in value)
+            ):
+                self._raw_xml_data[attr] = [elem2dict(i) for i in value]
+            elif isinstance(value, _Element):
+                self._raw_xml_data[attr] = elem2dict(value)
+        return self
 
     def add_to_generic_attributes(
         self,
@@ -102,6 +105,7 @@ class Component(
         units: Optional[str] = None,
         units_uri: Optional[str] = None,
         id: Optional[str] = None,
+        **kwargs
     ) -> GenericAttibute:
         """
         This method adds an object of type 'GenericAttibute' to attribute generic_attributes
