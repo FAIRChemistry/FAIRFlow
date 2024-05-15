@@ -135,6 +135,7 @@ classDiagram
         +PEAKAREAPERCENTAGE
         +PEAKASSIGNMENT
         +FARADAYEFFIECENCY
+        +SIGNAL
     }
     
     class MeasurementType {
