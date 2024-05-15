@@ -421,26 +421,31 @@ class reading_raw_data_widget:
         v_space_s = widgets.VBox(
             [widgets.Label(value="")], layout=widgets.Layout(height="15px")
         )
+        v_space_ss = widgets.VBox(
+            [widgets.Label(value="")], layout=widgets.Layout(height="7.5px")
+        )
 
         widgets0 = widgets.HBox([self.dataset_dropdown])
-        widgets1 = widgets.VBox([v_space_s, explorer_widget, v_space_s])
-        widgets2 = widgets.VBox(
-            [
-                self.pid_file,
-                widgets.HBox([self.button_read_pid, self.button_vis_pid]),
-                self.pid_output,
-                v_space_s,
-                self.species_file,
-                v_space_s,
-            ]
-        )
-        widgets3 = widgets.VBox(
+        widgets1 = widgets.VBox(
             [
                 widgets.Label(value="Manually add/remove Measurements:"),
                 self.measurements,
             ]
         )
-        widgets4 = widgets.VBox([v_space_s, self.tab_output, v_space_s])
+        widgets2 = widgets.VBox([explorer_widget, v_space_s])
+        widgets3 = widgets.VBox([self.tab_output, v_space_s])
+        widgets4 = widgets.VBox(
+            [
+                v_space_s,
+                self.pid_file,
+                v_space_ss,
+                widgets.HBox([self.button_read_pid, self.button_vis_pid]),
+                self.pid_output,
+                v_space_ss,
+                self.species_file,
+                v_space_s,
+            ]
+        )
         widgets5 = widgets.VBox(
             [
                 widgets.VBox(
@@ -465,6 +470,7 @@ class reading_raw_data_widget:
                 widgets0,
                 v_space,
                 widgets1,
+                v_space_s,
                 widgets2,
                 widgets3,
                 widgets4,

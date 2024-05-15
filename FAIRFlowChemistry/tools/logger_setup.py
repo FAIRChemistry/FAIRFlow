@@ -1,3 +1,4 @@
+import os
 import logging
 from logging import FileHandler, StreamHandler
 
@@ -14,6 +15,10 @@ def setup_logger( log_file: str="" ):
 
     # Create a file handler and set the level to INFO
     if log_file:
+        # Setup a new logger file if already existing
+        if os.path.exists( log_file ):
+            os.remove( log_file )
+
         file_handler = FileHandler( log_file )
         file_handler.setLevel(logging.INFO)
         file_handler.setFormatter( logging.Formatter( "%(asctime)s - %(name)s - %(message)s", datefmt="%m-%d-%y %H:%M:%S" ) )
