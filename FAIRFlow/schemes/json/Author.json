@@ -1,0 +1,70 @@
+{
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Unique identifier of the given object.",
+      "title": "Id"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "full name including given and family name.",
+      "title": "Name"
+    },
+    "affiliation": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "organization the author is affiliated to.",
+      "title": "Affiliation"
+    },
+    "identifier_scheme": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Name of the identifier scheme (ORCID, ISNI).",
+      "title": "Identifier Scheme"
+    },
+    "identifier": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Uniquely identifies an individual author or organization, according to various schemes.",
+      "title": "Identifier"
+    }
+  },
+  "title": "Author",
+  "type": "object"
+}

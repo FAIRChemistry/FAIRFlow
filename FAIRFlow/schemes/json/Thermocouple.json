@@ -1,0 +1,92 @@
+{
+  "$defs": {
+    "ThermocoupleType": {
+      "enum": [
+        "Type J",
+        "Type K"
+      ],
+      "title": "ThermocoupleType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Unique identifier of the given object.",
+      "title": "Id"
+    },
+    "manufacturer": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "name of the manufacturer of the device.",
+      "title": "Manufacturer"
+    },
+    "device_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "type given by the manufacturer of the device.",
+      "title": "Device Type"
+    },
+    "series": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "the series of the device.",
+      "title": "Series"
+    },
+    "on_off": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "operational mode of the flow module. True is on and False is off.",
+      "title": "On Off"
+    },
+    "thermocouple_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ThermocoupleType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "type of thermocouple like J, K and so on."
+    }
+  },
+  "title": "Thermocouple",
+  "type": "object"
+}

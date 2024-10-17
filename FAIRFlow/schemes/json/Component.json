@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "ComponentType": {
+      "enum": [
+        "Equipment",
+        "Piping component"
+      ],
+      "title": "ComponentType",
+      "type": "string"
+    },
+    "GenericAttibute": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Unique identifier of the given object.",
+          "title": "Id"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla.",
+          "title": "Name"
+        },
+        "attribute_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla.",
+          "title": "Attribute Uri"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla.",
+          "title": "Value"
+        },
+        "format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla.",
+          "title": "Format"
+        },
+        "units": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla.",
+          "title": "Units"
+        },
+        "units_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "bla",
+          "title": "Units Uri"
+        }
+      },
+      "title": "GenericAttibute",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Unique identifier of the given object.",
+      "title": "Id"
+    },
+    "component_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ComponentType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "equipment or piping component."
+    },
+    "component_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "id used to unambiguously identify the component.",
+      "title": "Component Id"
+    },
+    "component_class": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "class of the component.",
+      "title": "Component Class"
+    },
+    "component_class_uri": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "uri of the component.",
+      "title": "Component Class Uri"
+    },
+    "component_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "name of the component used to link between the abstract component and its shape.",
+      "title": "Component Name"
+    },
+    "generic_attributes": {
+      "description": "a generic attribute as defined by DEXPI.",
+      "items": {
+        "$ref": "#/$defs/GenericAttibute"
+      },
+      "multiple": true,
+      "title": "Generic Attributes",
+      "type": "array"
+    },
+    "connections": {
+      "description": "component id of other component this component is connected to via pipes, wires or similar.",
+      "items": {
+        "type": "string"
+      },
+      "multiple": true,
+      "title": "Connections",
+      "type": "array"
+    }
+  },
+  "title": "Component",
+  "type": "object"
+}
