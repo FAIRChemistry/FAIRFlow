@@ -1,9 +1,10 @@
 # raw data
 data/raw_data
-
+# datasets
+datasets
 # VS Code
 .vscode
-
+.ipynb_checkpoints
 # images
 *.png
 
