@@ -11,8 +11,8 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 from .component import Component
-from .componenttype import ComponentType
 from .genericattibute import GenericAttibute
+from .componenttype import ComponentType
 
 
 @forge_signature
@@ -47,10 +47,10 @@ class PlantSetup(sdRDM.DataModel, search_mode="unordered"):
         json_schema_extra=dict(multiple=True),
     )
     _repo: Optional[str] = PrivateAttr(
-        default="https://github.com/FAIRChemistry/FAIRFlowChemistry"
+        default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="ceddb1affbafa515085b3de753b1315e5cd6076a"
+        default="cb79cadf6115feb0ae23be27aec6885df4d70bc8"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
