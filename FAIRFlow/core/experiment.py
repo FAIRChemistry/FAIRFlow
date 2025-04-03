@@ -2,7 +2,7 @@ import sdRDM
 
 import yaml
 import pandas as pd
-from typing import Dict, List, Optional
+from typing import Optional, Union, List, Dict
 from pydantic import PrivateAttr, model_validator
 from uuid import uuid4
 from pydantic_xml import attr, element
@@ -10,16 +10,16 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .datatype import DataType
-from .speciesdata import SpeciesData
-from .measurementtype import MeasurementType
-from .measurement import Measurement
-from .data import Data
-from .quantity import Quantity
-from .calibration import Calibration
 from .component import Component
+from .datatype import DataType
+from .measurement import Measurement
+from .measurementtype import MeasurementType
+from .quantity import Quantity
 from .plantsetup import PlantSetup
+from .data import Data
+from .speciesdata import SpeciesData
 from .metadata import Metadata
+from .calibration import Calibration
 
 
 @forge_signature
@@ -59,7 +59,7 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="cb79cadf6115feb0ae23be27aec6885df4d70bc8"
+        default="a0240b92701c7c0e398a70bc35d599e485cbe2dd"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -78,7 +78,7 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
         self,
         measurement_type: Optional[MeasurementType] = None,
         metadata: List[Metadata] = ListPlus(),
-        experimental_data: List[Data] = ListPlus(),
+        experimental_data: List[Union[Data, Measurement]] = ListPlus(),
         source: Optional[Component] = None,
         id: Optional[str] = None,
         **kwargs,

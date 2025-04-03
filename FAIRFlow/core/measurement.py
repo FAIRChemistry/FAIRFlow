@@ -10,11 +10,11 @@ from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
 from datetime import datetime as Datetime
+from .component import Component
 from .datatype import DataType
 from .measurementtype import MeasurementType
 from .quantity import Quantity
 from .data import Data
-from .component import Component
 from .metadata import Metadata
 
 
@@ -43,7 +43,7 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
         json_schema_extra=dict(multiple=True),
     )
 
-    experimental_data: List[Data] = element(
+    experimental_data: List[Union[Data, "Measurement"]] = element(
         description="experimental data of a measurement.",
         default_factory=ListPlus,
         tag="experimental_data",
@@ -60,7 +60,7 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="cb79cadf6115feb0ae23be27aec6885df4d70bc8"
+        default="a0240b92701c7c0e398a70bc35d599e485cbe2dd"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -114,7 +114,7 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
         self.metadata.append(Metadata(**params))
         return self.metadata[-1]
 
-    def add_to_experimental_data(
+    def add_data_to_experimental_data(
         self,
         quantity: Optional[Quantity] = None,
         values: List[Union[float, str, Datetime]] = ListPlus(),
@@ -135,4 +135,34 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
         if id is not None:
             params["id"] = id
         self.experimental_data.append(Data(**params))
+        return self.experimental_data[-1]
+
+    def add_measurement_to_experimental_data(
+        self,
+        measurement_type: Optional[MeasurementType] = None,
+        metadata: List[Metadata] = ListPlus(),
+        experimental_data: List[Union[Data, "Measurement"]] = ListPlus(),
+        source: Optional[Component] = None,
+        id: Optional[str] = None,
+        **kwargs
+    ) -> Measurement:
+        """
+        This method adds an object of type 'Measurement' to attribute experimental_data
+
+        Args:
+            id (str): Unique identifier of the 'Measurement' object. Defaults to 'None'.
+            measurement_type (): type of a measurement, e.g. potentiostatic or gas chromatography.. Defaults to None
+            metadata (): metadata of a measurement.. Defaults to ListPlus()
+            experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
+            source (): measuring device the data stems from.. Defaults to None
+        """
+        params = {
+            "measurement_type": measurement_type,
+            "metadata": metadata,
+            "experimental_data": experimental_data,
+            "source": source,
+        }
+        if id is not None:
+            params["id"] = id
+        self.experimental_data.append(Measurement(**params))
         return self.experimental_data[-1]

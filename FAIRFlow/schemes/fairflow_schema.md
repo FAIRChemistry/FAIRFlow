@@ -6,6 +6,7 @@ classDiagram
     Experiment *-- SpeciesData
     PlantSetup *-- Component
     Measurement *-- MeasurementType
+    Measurement *-- Measurement
     Measurement *-- Component
     Measurement *-- Data
     Measurement *-- Metadata
@@ -37,7 +38,7 @@ classDiagram
     class Measurement {
         +MeasurementType measurement_type
         +Metadata[0..*] metadata
-        +Data[0..*] experimental_data
+        +Data, Measurement[0..*] experimental_data
         +Component source
     }
     
