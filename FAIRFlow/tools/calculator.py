@@ -183,7 +183,7 @@ class FaradayEfficiency(BaseModel):
         
         return faraday_efficiency_df
     
-    # class GasPhaseOxidation(BaseModel):
+    # class SelectiveOxidation(BaseModel):
     #     experiment: Experiment
 
     #     # input

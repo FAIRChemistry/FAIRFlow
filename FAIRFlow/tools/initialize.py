@@ -26,6 +26,9 @@ class initialize_dataset:
             # Add project group
             self.dataset.general_information.project     = self.project.value
 
+            # Add scenario number
+            self.dataset.general_information.scenario_nr = self.scenario_nr.value
+
             # Add purpose
             self.dataset.general_information.purpose     = self.purpose.value
 
@@ -50,6 +53,11 @@ class initialize_dataset:
 
         self.project             = widgets.Text(description="Project:",
                                                 placeholder="Name of the project group (e.g.: Project B07)",
+                                                layout=widgets.Layout(width='auto'),
+                                                style={'description_width': 'auto'})
+        
+        self.scenario_nr         = widgets.Text(description="Scenario Nr:",
+                                                placeholder="Number of the scenario (1 or 2)",
                                                 layout=widgets.Layout(width='auto'),
                                                 style={'description_width': 'auto'})
 
@@ -82,7 +90,7 @@ class initialize_dataset:
         # Widgets
         v_space   = widgets.VBox([widgets.Label(value='')], layout=widgets.Layout(height='30px'))
 
-        widgets0  = widgets.VBox([self.title, self.description, self.project, self.purpose, v_space, self.dataset_text, v_space])
+        widgets0  = widgets.VBox([self.title, self.description, self.project, self.scenario_nr, self.purpose, v_space, self.dataset_text, v_space])
         widgets1  = widgets.VBox([self.button_save, self.button_output], layout=widgets.Layout(align_items = 'center') )
 
         # Combine the layout

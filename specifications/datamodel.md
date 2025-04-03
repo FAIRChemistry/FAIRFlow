@@ -48,7 +48,7 @@ It follows the syntax specified by the sdRDM engine.
   - Type: Metadata[]
   - Description: metadata of a measurement.
 - experimental_data
-  - Type: Data[]
+  - Type: Data[], Measurement
   - Description: experimental data of a measurement.
 - source
   - Type: Component

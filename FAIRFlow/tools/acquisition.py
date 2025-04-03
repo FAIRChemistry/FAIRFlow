@@ -13,12 +13,12 @@ from FAIRFlow.core import Dataset, Experiment, PlantSetup
 
 # Tools
 from .auxiliary import Librarian, explorer
-from .reader import gc_parser, gstatic_parser, mfm_parser, DEXPI2sdRDM
+from .reader import gc_parser_faraday_efficiency, gstatic_parser, mfm_parser, DEXPI2sdRDM
 
 
 class measurement_object:
     """
-    Stores the measurement widgets.
+    Class that stores widgets for measurement files
     """
 
     def __init__(self, name: str, component_list: List[str]) -> None:
@@ -90,7 +90,8 @@ class measurement_object:
 
 class reading_raw_data_widget:
 
-    def _dataset_input_handler(self, _):
+
+    def dataset_input_handler(self, _):
         try:
             with open(self.dataset_dropdown.value) as f:
                 self.dataset = Dataset.from_json(f)
@@ -114,7 +115,7 @@ class reading_raw_data_widget:
                     print("")
 
             # Call measurement input handler to update
-            self._measurement_input_handler(None)
+            self.measurement_input_handler(None)
 
             # Update button description
             self.button_save.description = f"Save dataset as:  {self.dataset_dropdown.value.name}"
@@ -122,10 +123,10 @@ class reading_raw_data_widget:
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")
 
-    def _add_file(self, category: str, file: str):
+    def add_file(self, category: str, file: str):
         # Function that adds a file to a chosen category
         # The file is added to the selected measurement tab to the selected children (potentiostat, gas chromatograph, etc.)
-        if category == "potentiostat":
+        if category == "Potentiostat":
             self.tabs.children[self.tabs.selected_index].children[0].children[
                 1
             ].value = self.tabs.children[self.tabs.selected_index].children[0].children[
@@ -133,7 +134,7 @@ class reading_raw_data_widget:
             ].value + [
                 file
             ]
-        elif category == "gas chromatograph":
+        elif category == "Gas chromatograph":
             self.tabs.children[self.tabs.selected_index].children[1].children[
                 1
             ].value = self.tabs.children[self.tabs.selected_index].children[1].children[
@@ -141,7 +142,7 @@ class reading_raw_data_widget:
             ].value + [
                 file
             ]
-        elif category == "mass flow meter":
+        elif category == "Mass flow meter":
             self.tabs.children[self.tabs.selected_index].children[2].children[
                 1
             ].value = self.tabs.children[self.tabs.selected_index].children[2].children[
@@ -149,13 +150,13 @@ class reading_raw_data_widget:
             ].value + [
                 file
             ]
-        elif category == "species data":
+        elif category == "Species data":
             self.species_file.value = file
 
         elif category == "P&ID":
             self.pid_file.value = file
 
-    def _read_pid(self, _):
+    def read_pid(self, _):
         # Function that reads in DEXPI PID file and generates the PlantSetup
         self.plant = DEXPI2sdRDM(self.pid_file.value)
 
@@ -167,18 +168,18 @@ class reading_raw_data_widget:
         self.component_list = [pl.component_id for pl in self.plant.components]
 
         # Call tab widget
-        self._measurement_input_handler(None)
+        self.measurement_input_handler(None)
 
-    def _visualize_pid(self, _):
+    def visualize_pid(self, _):
         # Function that visualizes the PID as graph
         # If plant is just initialized read in PID first
         if not self.plant.components:
-            self._read_pid(None)
+            self.read_pid(None)
         self.plant.visualize()
 
-    def _measurement_input_handler(self, _):
+    def measurement_input_handler(self, _):
 
-        # Delete measurement objects that are not in the measurements widget anymore
+        # Delete measurement object that are not in the measurements widget anymore
         del_idx = [
             i
             for i, obj in enumerate(self.measurement_objects)
@@ -207,9 +208,9 @@ class reading_raw_data_widget:
             obj.update_component_list(self.component_list)
 
         # Call measurement tab widget
-        self._measurement_tabs()
+        self.measurement_tabs()
 
-    def _measurement_tabs(self):
+    def measurement_tabs(self):
 
         # Define tab widget
         self.tabs = widgets.Tab([obj.full_layout for obj in self.measurement_objects])
@@ -224,7 +225,7 @@ class reading_raw_data_widget:
             self.tab_output.clear_output(wait=False)
             display(widgets.VBox([heading, self.tabs]))
 
-    def _add_experiment(self, _):
+    def add_experiment(self, _):
 
         ## Read in selected raw data and save it in Experiment class ##
         if not self.experiment_name.value:
@@ -248,7 +249,7 @@ class reading_raw_data_widget:
                 for mfm_file in measurement.MFM_files.value
             ]
             gc_measurements = [
-                gc_parser(
+                gc_parser_faraday_efficiency(
                     metadata_path=measurement.GC_files.value[i],
                     experimental_data_path=measurement.GC_files.value[i + 1],
                 )
@@ -299,7 +300,7 @@ class reading_raw_data_widget:
         self.measurements.value = []
         self.experiment_name.value = ""
 
-    def _experiment_input_handler(self, _):
+    def experiment_input_handler(self, _):
 
         # Delete experiment objects that are not in the experiment widget anymore
         del_idx = [
@@ -312,13 +313,11 @@ class reading_raw_data_widget:
         for idx in del_idx:
             del self.dataset.experiments[idx]
 
-    def _save_dataset(self, _):
+    def save_dataset(self, _):
         # Function to save dataset
         with open(self.dataset_dropdown.value, "w") as f:
             f.write(self.dataset.json())
         print("Dataset saved.")
-
-
 
     def choose_data(self, root: Path, dataset_directory: str) -> None:
 
@@ -345,7 +344,7 @@ class reading_raw_data_widget:
                 "Species data",
                 "P&ID",
             ],
-            add_file_callalbe=self._add_file,
+            add_file_callalbe=self.add_file,
         )
 
         # Define all widgets
@@ -366,7 +365,7 @@ class reading_raw_data_widget:
 
         self.pid_file = widgets.Text(
             description="P&ID file:",
-            placeholder="Provided as xml file using the DEXPI standard",
+            placeholder="Provided as xml file using DEXPI standards",
             layout=widgets.Layout(width="auto"),
             style={"description_width": "auto"},
         )
@@ -401,15 +400,15 @@ class reading_raw_data_widget:
         )
 
         # Functions for the buttons
-        self.button_add_exp.on_click(self._add_experiment)
-        self.button_save.on_click(self._save_dataset)
-        self.button_read_pid.on_click(self._read_pid)
-        self.button_vis_pid.on_click(self._visualize_pid)
+        self.button_add_exp.on_click(self.add_experiment)
+        self.button_save.on_click(self.save_dataset)
+        self.button_read_pid.on_click(self.read_pid)
+        self.button_vis_pid.on_click(self.visualize_pid)
 
         # Attach the event handler to the 'value' property change of the file type widget
-        self.dataset_dropdown.observe(self._dataset_input_handler, names="value")
-        self.measurements.observe(self._measurement_input_handler, names="value")
-        self.experiments.observe(self._experiment_input_handler, names="value")
+        self.dataset_dropdown.observe(self.dataset_input_handler, names="value")
+        self.measurements.observe(self.measurement_input_handler, names="value")
+        self.experiments.observe(self.experiment_input_handler, names="value")
 
         # Initialize several objects
         self.measurement_objects = []

@@ -74,7 +74,7 @@ class Librarian(BaseModel):
 
         return file_dict
 
-    def search_files_in_subdirectory(self,root_directory: Path, directory_keys: list[str], file_filter: str, verbose: bool = None) -> Path:
+    def search_files_in_subdirectory(self, root_directory: Path, directory_keys: list[str], file_filter: str, verbose: bool = None) -> dict[int, Path]:
         """
         Function that loobs through Path objects containing a main directory. In this directory it is recoursevly searched for sub directories. 
         In the last sub directory files with the suffix 'file_filter' are searched and returned
