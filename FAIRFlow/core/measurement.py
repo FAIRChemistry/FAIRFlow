@@ -10,12 +10,12 @@ from sdRDM.base.utils import forge_signature
 from sdRDM.base.datatypes import Unit
 from sdRDM.tools.utils import elem2dict
 from datetime import datetime as Datetime
-from .component import Component
-from .datatype import DataType
 from .measurementtype import MeasurementType
 from .quantity import Quantity
 from .data import Data
+from .datatype import DataType
 from .metadata import Metadata
+from .component import Component
 
 
 @forge_signature
@@ -43,7 +43,7 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
         json_schema_extra=dict(multiple=True),
     )
 
-    experimental_data: List[Union[Data, "Measurement"]] = element(
+    experimental_data: List[Data] = element(
         description="experimental data of a measurement.",
         default_factory=ListPlus,
         tag="experimental_data",
@@ -60,7 +60,7 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="a0240b92701c7c0e398a70bc35d599e485cbe2dd"
+        default="f25d262b2ac17a7cee28543a01727653b763f818"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -113,6 +113,29 @@ class Measurement(sdRDM.DataModel, search_mode="unordered"):
             params["id"] = id
         self.metadata.append(Metadata(**params))
         return self.metadata[-1]
+
+    def add_to_experimental_data(
+        self,
+        quantity: Optional[Quantity] = None,
+        values: List[Union[float, str, Datetime]] = ListPlus(),
+        unit: Optional[Unit] = None,
+        id: Optional[str] = None,
+        **kwargs
+    ) -> Data:
+        """
+        This method adds an object of type 'Data' to attribute experimental_data
+
+        Args:
+            id (str): Unique identifier of the 'Data' object. Defaults to 'None'.
+            quantity (): quantity of a value.. Defaults to None
+            values (): values.. Defaults to ListPlus()
+            unit (): unit of the values.. Defaults to None
+        """
+        params = {"quantity": quantity, "values": values, "unit": unit}
+        if id is not None:
+            params["id"] = id
+        self.experimental_data.append(Data(**params))
+        return self.experimental_data[-1]
 
     def add_data_to_experimental_data(
         self,
