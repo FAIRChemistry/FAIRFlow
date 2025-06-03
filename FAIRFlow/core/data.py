@@ -48,7 +48,7 @@ class Data(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="efdc41e8af79ca3fc3bd71c80857d7d9a0f94149"
+        default="3fe8ccbf0b6eca5ab751365b45c8204460ba17b9"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
