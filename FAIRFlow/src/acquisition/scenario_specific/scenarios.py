@@ -187,7 +187,7 @@ class ScenarioBase:
         # self.w_Button_NewMeasurement._click_handlers.callbacks.clear()
         self.w_Button_NewMeasurement.on_click(self.Handler_Button_NewMeasurement)
         self.w_Dropdown_Measure.observe(self.Handler_Measurement_Dropdown)
-        self.w_FileChooser_PID.observe(self.Handler_FileChooser_PID)
+        self.w_FileChooser_PID.observe(self.Handler_FileChooser_PID)   # Not yet working, has to be changed
         # self.w_Dropdown_Measure.value # name of the currently selected measurement
 
 
@@ -237,12 +237,10 @@ class ScenarioBase:
 
 
     def Handler_Button_NewMeasurement(self, _=None):
-        print("Handler called")
         with self.w_Output_NewMeasurement:
             self.w_Output_NewMeasurement.clear_output()
             name = self.w_Text_MeasurementName.value.strip()
             if name:
-                print(f"✅ New measurement added: {name}")
                 # 
                 # Here the logic for creating a new measurement!!!
                 if name in self.measurement_objects_dict.keys():
@@ -251,6 +249,7 @@ class ScenarioBase:
                 else:
                     self.measurement_objects_dict.update({name: Measurement(name)})
                     self.w_Dropdown_Measure.options = list(self.measurement_objects_dict.keys())
+                    print(f"✅ New measurement added: {name}")
                 # # What is a measurement object?
                 # 
                 self.w_Text_MeasurementName.value = ''
@@ -260,7 +259,7 @@ class ScenarioBase:
         self.Handler_Measurement_Dropdown()
 
 
-    def Handler_Measurement_Dropdown(self):
+    def Handler_Measurement_Dropdown(self, _=None):
         '''
         Attached to the w_Dropdown_Measure widget. Clear the current output
         seen in the w_Output_DropdownMeasure widget and displays the selected
@@ -272,7 +271,9 @@ class ScenarioBase:
             # display(self.w_Gridbox_Measurement)
             display("Hallo du kleine Maus")
     
-    def Handler_FileChooser_PID(self, _):
+    def Handler_FileChooser_PID(self, _=None):
+        with open('logging', 'w') as f:
+            f.write('hallo')
         if self.w_FileChooser_PID.selected:
             self.plant = DEXPI2sdRDM(self.w_FileChooser_PID.selected)
 
@@ -282,6 +283,8 @@ class ScenarioBase:
 
         # Update component list
         self.component_list = [pl.component_id for pl in self.plant.components]
+        self.w_Dropdown_Component.options=[""] + self.component_list
+
 
 
     def Handler_Button_ComponentToMeasurement(self, _=None):
@@ -370,7 +373,6 @@ class FaradayEfficiency(ScenarioBase):
 
 
         # attach handlers
-
         self.w_Button_FileToMeasurement.on_click(self.Button_FileToMeasurement_handler)
 
 

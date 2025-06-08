@@ -8,7 +8,7 @@ It follows the syntax specified by the sdRDM engine.
 ### Dataset
 
 - general_information
-  - Type: { title: string, project: string, scenario_nr: string, description: string, purpose: string }
+  - Type: { title: string, project: string, scenario_name: string, description: string, purpose: string }
   - Description: general data about the dataset like titel, project name, description, and purpose.
 - experiments
   - Type: Experiment[]

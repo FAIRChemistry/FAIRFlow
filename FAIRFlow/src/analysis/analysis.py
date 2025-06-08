@@ -15,7 +15,7 @@ from FAIRFlow.core import MeasurementType
 from FAIRFlow.core import Quantity
 
 # Tools #
-from .auxiliary import PeakAssigner
+from FAIRFlow.src.utils.auxiliary import PeakAssigner
 from .calculator import FaradayEfficiency
 # from .calculator import GasPhaseOxidation
 

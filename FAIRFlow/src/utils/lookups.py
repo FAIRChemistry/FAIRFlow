@@ -1,21 +1,19 @@
+import importlib
+package_name = "numpy"  # or any package name determined at runtime
+module = importlib.import_module(package_name)
+
+# Now you can use it like:
+print(module.__version__)
+array = module.array([1, 2, 3])
+
 SCENARIO_MAPPING = {
-    "SelectiveOxidation": {
-        "dir_name": "selective_oxidation",
-        "scenario_nr": "1",
-    },
-    "FaradayEfficiency": {
-        "dir_name": "faraday_efficiency",
-        "scenario_nr": "2",
-    },
+    "selective_oxidation": "SelectiveOxidation",
+    "faraday_efficiency": "FaradayEfficiency"  
 }
 
-NR_TO_SCENARIO_TYPE = {
-    "1": "SelectiveOxidation",
-    "2": "FaradayEfficiency",
-}
+def NR_TO_SCENARIO_CLS(scenario_name):
 
-def NR_TO_SCENARIO_CLS():
-    from FAIRFlow.src.acquisition.scenario_specific.scenarios import SelectiveOxidation, FaradayEfficiency
+    from FAIRFlow.src.acquisition.scenario_specific.scenarios import SelectiveOxidation, FaradayEfficiency # make the import scenario dependent
     return {
         "1": SelectiveOxidation,
         "2": FaradayEfficiency,
