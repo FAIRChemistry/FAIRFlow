@@ -13,3 +13,10 @@ datasets
 
 #compiled python files
 *.pyc
+
+# Jupyter Notebook checkpoints
+*.ipynb_checkpoints
+
+#test notebooks
+test.ipynb
+FileChooserTest.ipynb

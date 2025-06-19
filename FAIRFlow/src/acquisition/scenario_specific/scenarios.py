@@ -42,14 +42,15 @@ class ScenarioBase:
     def __init__(self, dataset, root, gridbox_specific):
 
         # make arguments class-wide available
-        self.dataset            = dataset
+        self.experiments        = dataset.experiments
+        self.scenario_type      = dataset.general_information.scenario_type
         self.root               = root
         self.w_Gridbox_Specific = gridbox_specific
 
         # try reading in the experiments and subsequently the plant and the plant components
         try:
-            experiments_ids_list = [exp.id for exp in self.dataset.experiments]
-            self.plant_setup = (self.dataset.experiments[0].plant_setup if self.dataset.experiments else PlantSetup())
+            experiments_ids_list = [exp.id for exp in self.experiments]
+            self.plant_setup = (self.experiments[0].plant_setup if self.experiments else PlantSetup())
             self.component_list = [pl.component_id for pl in self.plant_setup.components]
         except:
             raise KeyError("\nChoosen dataset cannot be interpreted!\n")        
@@ -119,7 +120,7 @@ class ScenarioBase:
         )
 
         self.w_FileChooser_Data = FileChooser(
-            self.root / "scenarios" / SCENARIO_MAPPING[self.__class__.__name__]['dir_name'] / 'raw_data',
+            self.root / "scenarios" / self.scenario_type / 'raw_data',
             layout = widgets.Layout(
                 width='auto',
                 grid_area='file_chooser_data'
@@ -127,7 +128,7 @@ class ScenarioBase:
         )
 
         self.w_FileChooser_PID = FileChooser(
-            self.root / "scenarios" / SCENARIO_MAPPING[self.__class__.__name__]['dir_name'] / 'DEXPI',
+            self.root / "scenarios" / self.scenario_type / 'DEXPI',
             layout = widgets.Layout(
                 width='auto',
                 grid_area='file_chooser_pid'
@@ -426,7 +427,7 @@ class SelectiveOxidation(ScenarioBase):
 
         style = self.style
         # Scenario-specific imports
-        from FAIRFlow.src.acquisition.scenario_specific.readers import gc_parser_selective_oxidation
+        from FAIRFlow.src.scenarios.selective_oxidation.readers import gc_parser_selective_oxidation
         from pathlib import PureWindowsPath
 
         self.GCParser = gc_parser_selective_oxidation

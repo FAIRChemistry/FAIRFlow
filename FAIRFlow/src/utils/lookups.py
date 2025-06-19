@@ -11,10 +11,10 @@ SCENARIO_MAPPING = {
     "faraday_efficiency": "FaradayEfficiency"  
 }
 
-def NR_TO_SCENARIO_CLS(scenario_name):
+# def NR_TO_SCENARIO_CLS(scenario_name):
 
-    from FAIRFlow.src.acquisition.scenario_specific.scenarios import SelectiveOxidation, FaradayEfficiency # make the import scenario dependent
-    return {
-        "1": SelectiveOxidation,
-        "2": FaradayEfficiency,
-    }
+#     from FAIRFlow.src.acquisition.scenario_specific.scenarios import SelectiveOxidation, FaradayEfficiency # make the import scenario dependent
+#     return {
+#         "1": SelectiveOxidation,
+#         "2": FaradayEfficiency,
+#     }
