@@ -23,6 +23,7 @@ classDiagram
     }
     
     class Experiment {
+        +string tag
         +PlantSetup plant_setup
         +Measurement[0..*] measurements
         +SpeciesData[0..*] species_data
@@ -35,6 +36,7 @@ classDiagram
     }
     
     class Measurement {
+        +string tag
         +MeasurementType measurement_type
         +Metadata[0..*] metadata
         +Data[0..*] experimental_data

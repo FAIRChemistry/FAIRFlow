@@ -11,15 +11,15 @@ from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
 from .metadata import Metadata
-from .calibration import Calibration
-from .measurement import Measurement
-from .data import Data
 from .quantity import Quantity
+from .measurement import Measurement
+from .calibration import Calibration
 from .speciesdata import SpeciesData
-from .plantsetup import PlantSetup
-from .component import Component
-from .datatype import DataType
 from .measurementtype import MeasurementType
+from .datatype import DataType
+from .plantsetup import PlantSetup
+from .data import Data
+from .component import Component
 
 
 @forge_signature
@@ -31,6 +31,15 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
         description="Unique identifier of the given object.",
         default_factory=lambda: str(uuid4()),
         xml="@id",
+    )
+
+    tag: Optional[str] = element(
+        description=(
+            "name tag for an experiment. Unique within the namespace of one dataset."
+        ),
+        default=None,
+        tag="tag",
+        json_schema_extra=dict(),
     )
 
     plant_setup: Optional[PlantSetup] = element(
@@ -59,7 +68,7 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="05b3a0a347338defbf0974ba84e43f1d87d735c7"
+        default="99668fdf395af98113883d8ebcd006d7852abab3"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -76,6 +85,7 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
 
     def add_to_measurements(
         self,
+        tag: Optional[str] = None,
         measurement_type: Optional[MeasurementType] = None,
         metadata: List[Metadata] = ListPlus(),
         experimental_data: List[Data] = ListPlus(),
@@ -88,12 +98,14 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
 
         Args:
             id (str): Unique identifier of the 'Measurement' object. Defaults to 'None'.
+            tag (): name tag for a measurement. Unique within the namespace of one experiment.. Defaults to None
             measurement_type (): type of a measurement, e.g. potentiostatic or gas chromatography.. Defaults to None
             metadata (): metadata of a measurement.. Defaults to ListPlus()
             experimental_data (): experimental data of a measurement.. Defaults to ListPlus()
             source (): measuring device the data stems from.. Defaults to None
         """
         params = {
+            "tag": tag,
             "measurement_type": measurement_type,
             "metadata": metadata,
             "experimental_data": experimental_data,

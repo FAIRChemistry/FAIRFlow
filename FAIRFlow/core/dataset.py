@@ -8,10 +8,10 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
-from .plantsetup import PlantSetup
-from .experiment import Experiment
 from .measurement import Measurement
+from .experiment import Experiment
 from .speciesdata import SpeciesData
+from .plantsetup import PlantSetup
 
 
 @forge_signature
@@ -41,7 +41,7 @@ class GeneralInformation(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="05b3a0a347338defbf0974ba84e43f1d87d735c7"
+        default="99668fdf395af98113883d8ebcd006d7852abab3"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -88,7 +88,7 @@ class Dataset(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="05b3a0a347338defbf0974ba84e43f1d87d735c7"
+        default="99668fdf395af98113883d8ebcd006d7852abab3"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
@@ -105,6 +105,7 @@ class Dataset(sdRDM.DataModel, search_mode="unordered"):
 
     def add_to_experiments(
         self,
+        tag: Optional[str] = None,
         plant_setup: Optional[PlantSetup] = None,
         measurements: List[Measurement] = ListPlus(),
         species_data: List[SpeciesData] = ListPlus(),
@@ -116,11 +117,13 @@ class Dataset(sdRDM.DataModel, search_mode="unordered"):
 
         Args:
             id (str): Unique identifier of the 'Experiment' object. Defaults to 'None'.
+            tag (): name tag for an experiment. Unique within the namespace of one dataset.. Defaults to None
             plant_setup (): the individual plant setup that is used in this one experiment.. Defaults to None
             measurements (): different measurements that are made within the scope of one experiment.. Defaults to ListPlus()
             species_data (): all provided and calculated data about a specific species.. Defaults to ListPlus()
         """
         params = {
+            "tag": tag,
             "plant_setup": plant_setup,
             "measurements": measurements,
             "species_data": species_data,

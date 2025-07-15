@@ -1,3 +1,3 @@
 
 __URL__ = "https://github.com/FAIRChemistry/FAIRFlow"
-__COMMIT__ = "05b3a0a347338defbf0974ba84e43f1d87d735c7"
+__COMMIT__ = "99668fdf395af98113883d8ebcd006d7852abab3"
