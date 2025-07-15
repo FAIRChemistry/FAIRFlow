@@ -20,3 +20,6 @@ datasets
 #test notebooks
 test.ipynb
 FileChooserTest.ipynb
+
+#deprecated stuff
+deprecated*
