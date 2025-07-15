@@ -16,6 +16,9 @@ It follows the syntax specified by the sdRDM engine.
 
 ### Experiment
 
+- tag
+  - Type: string
+  - Description: name tag for an experiment. Unique within the namespace of one dataset.
 - plant_setup
   - Type: PlantSetup
   - Description: the individual plant setup that is used in this one experiment.
@@ -41,6 +44,9 @@ It follows the syntax specified by the sdRDM engine.
 
 ### Measurement
 
+- tag
+  - Type: string
+  - Description: name tag for a measurement. Unique within the namespace of one experiment.
 - _measurement_type_
   - Type: MeasurementType
   - Description: type of a measurement, e.g. potentiostatic or gas chromatography.
