@@ -4,7 +4,7 @@ import ipywidgets as widgets
 
 # Import FAIRFlow modules
 from FAIRFlow.src.utils.registry import register_scenario
-from FAIRFlow.src.acquisition.generic.acquisition import ScenarioBase
+from FAIRFlow.src.acquisition.acquisition import ScenarioBase
 
 @register_scenario
 class FaradayEfficiency(ScenarioBase):

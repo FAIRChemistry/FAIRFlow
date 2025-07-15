@@ -7,9 +7,17 @@ print(module.__version__)
 array = module.array([1, 2, 3])
 
 SCENARIO_MAPPING = {
-    "selective_oxidation": "SelectiveOxidation",
-    "faraday_efficiency": "FaradayEfficiency"  
+    "selective_oxidation": {
+        "name"    : "Selective oxidation",
+        "cls_name": "SelectiveOxidation",
+    },
+    "faraday_efficiency": {
+        "name"    : "Faraday efficiency",
+        "cls_name": "FaradayEfficiency",
+    },  
 }
+
+
 
 # def NR_TO_SCENARIO_CLS(scenario_name):
 
