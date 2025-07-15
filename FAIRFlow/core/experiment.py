@@ -10,16 +10,16 @@ from lxml.etree import _Element
 from sdRDM.base.listplus import ListPlus
 from sdRDM.base.utils import forge_signature
 from sdRDM.tools.utils import elem2dict
+from .metadata import Metadata
 from .calibration import Calibration
-from .plantsetup import PlantSetup
-from .measurementtype import MeasurementType
-from .component import Component
-from .datatype import DataType
 from .measurement import Measurement
 from .data import Data
 from .quantity import Quantity
-from .metadata import Metadata
 from .speciesdata import SpeciesData
+from .plantsetup import PlantSetup
+from .component import Component
+from .datatype import DataType
+from .measurementtype import MeasurementType
 
 
 @forge_signature
@@ -59,7 +59,7 @@ class Experiment(sdRDM.DataModel, search_mode="unordered"):
         default="https://github.com/FAIRChemistry/FAIRFlow"
     )
     _commit: Optional[str] = PrivateAttr(
-        default="48e5e2960b778614033539b3838aa2bb02d9a653"
+        default="05b3a0a347338defbf0974ba84e43f1d87d735c7"
     )
     _raw_xml_data: Dict = PrivateAttr(default_factory=dict)
 
