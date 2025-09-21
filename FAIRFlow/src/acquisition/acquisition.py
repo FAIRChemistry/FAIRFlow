@@ -241,13 +241,13 @@ class AcquireData:
             ),
         )
 
-        self.w_Text_ExperimentId   = widgets.Text(
-            placeholder='Enter experiment id',
+        self.w_Text_ExperimentName   = widgets.Text(
+            placeholder='Enter experiment name',
             description='Name:',
             style={'description_width': 'auto'},
             layout=widgets.Layout(
                 width='auto',
-                grid_area='text_experiment_id'
+                grid_area='text_experiment_name'
             ),
         )
         self.w_Output_DropdownExperiment = widgets.Output(          # This is widgets that displays one whole experiment
@@ -260,7 +260,7 @@ class AcquireData:
 
         self.w_Gridbox_Experiment = widgets.GridBox(
             children = [
-                self.w_Text_ExperimentId,                              # textexperiment_id
+                self.w_Text_ExperimentName,                              # textexperiment_id
                 self.w_Button_NewExperiment,                           # button_new_experiment
                 self.w_Button_DeleteExperiment,                        # button_delete_experiment
                 self.w_Output_ModExperiment,                           # output_mod_experiment
@@ -280,7 +280,7 @@ class AcquireData:
                 grid_template_rows='auto, auto, auto, auto, auto, auto, auto, auto auto auto',
                 grid_template_columns="20% 15% 15% 15% 15% 15%",
                 grid_template_areas='''
-                "text_experiment_id        button_new_experiment       button_new_experiment       button_delete_experiment    button_delete_experiment    output_mod_experiment     "
+                "text_experiment_name        button_new_experiment       button_new_experiment       button_delete_experiment    button_delete_experiment    output_mod_experiment     "
                 "dropdown_experiment         dropdown_experiment         dropdown_experiment         dropdown_experiment         dropdown_experiment         dropdown_experiment       "
                 "output_dropdown_experiment  output_dropdown_experiment  output_dropdown_experiment  output_dropdown_experiment  output_dropdown_experiment  output_dropdown_experiment"
                 '''
@@ -359,7 +359,7 @@ class AcquireData:
             if not hasattr(experiment_object, "plant_setup"):
                 setattr(experiment_object, "plant", plant)
             else:
-                experiment_object.pid_component = plant
+                experiment_object.plant_setup = plant
             setattr(self.w_FileChooser_PID._filename, "value",  "")
             with self.w_Output_ReadPID:
                 self.w_Output_ReadPID.clear_output(wait=False)
@@ -371,7 +371,7 @@ class AcquireData:
     def Handler_Button_NewExperiment(self, _=None):
         with self.w_Output_ModExperiment:
             self.w_Output_ModExperiment.clear_output()
-            new_experiment_id = self.w_Text_ExperimentId.value.strip()
+            new_experiment_id = self.w_Text_ExperimentName.value.strip()
             if new_experiment_id:
                 if new_experiment_id in self.experiment_objects_dict.keys():
                     self.w_Output_ModExperiment.clear_output()
@@ -384,7 +384,7 @@ class AcquireData:
                     print(f"✅ New experiment added: {new_experiment_id}")
                 # # What is a measurement object?
                 # 
-                self.w_Text_ExperimentId.  value = ''
+                self.w_Text_ExperimentName.  value = ''
             else:
                 print("⚠️ Please enter an id before adding.")
         self.w_Dropdown_Experiment.value = new_experiment_id
@@ -572,13 +572,13 @@ class ScenarioBase(ABC):
             ),
         )
 
-        self.w_Text_MeasurementId = widgets.Text(
-            placeholder='Enter measurement id',
+        self.w_Text_MeasurementName = widgets.Text(
+            placeholder='Enter measurement name',
             description='Name:',
             style={'description_width': 'auto'},
             layout=widgets.Layout(
                 width='auto',
-                grid_area='text_measurement_id'
+                grid_area='text_measurement_name'
             ),
         )
 
@@ -595,7 +595,7 @@ class ScenarioBase(ABC):
 
         self.w_Gridbox_Measurement = widgets.GridBox(
             children = [
-                self.w_Text_MeasurementId,                            # text_measurement_id
+                self.w_Text_MeasurementName,                            # text_measuremname
                 self.w_Button_NewMeasurement,                           # button_new_measurement
                 self.w_Button_DeleteMeasurement,                        # button_delete_measurement
                 self.w_Output_ModMeasurement,                           # output_mod_measurement
@@ -620,7 +620,7 @@ class ScenarioBase(ABC):
                 grid_template_rows='auto, auto, auto, auto, auto, auto, auto, auto auto auto',
                 grid_template_columns="20% 15% 15% 15% 15% 15%",
                 grid_template_areas='''
-                "text_measurement_id          button_new_measurement          button_new_measurement      button_delete_measurement       button_delete_measurement   output_mod_measurement  "
+                "text_measurement_name          button_new_measurement          button_new_measurement      button_delete_measurement       button_delete_measurement   output_mod_measurement  "
                 "dropdown_measure               dropdown_measure                dropdown_measure            dropdown_measure                dropdown_measure            dropdown_measure        "
                 "output_dropdown_measure        output_dropdown_measure         output_dropdown_measure     output_dropdown_measure         output_dropdown_measure     output_dropdown_measure "
                 "dropdown_component             dropdown_component              dropdown_component          dropdown_component              dropdown_component          dropdown_component      "
@@ -639,7 +639,7 @@ class ScenarioBase(ABC):
     def Handler_Button_NewMeasurement(self, _=None):
         with self.w_Output_ModMeasurement:
             self.w_Output_ModMeasurement.clear_output()
-            new_measurement_id = self.w_Text_MeasurementId.value.strip()
+            new_measurement_id = self.w_Text_MeasurementName.value.strip()
             if new_measurement_id:
                 # 
                 # Here the logic for creating a new measurement!!!
@@ -654,7 +654,7 @@ class ScenarioBase(ABC):
                     print(f"✅ New measurement added: {new_measurement_id}")
                 # # What is a measurement object?
                 # 
-                self.w_Text_MeasurementId.value = ''
+                self.w_Text_MeasurementName.value = ''
             else:
                 print("⚠️ Please enter an ID before adding.")
         self.w_Dropdown_Measure.value = new_measurement_id
